@@ -4,8 +4,6 @@ import { VegetableItem } from './types';
 import { PRODUCE_ITEMS } from './constants';
 import { SurveyPage } from './components/SurveyPage';
 
-const BASE_PATH = import.meta.env.BASE_URL || '/';
-
 // 밝은 색상인지 판단하는 헬퍼 함수
 const isLightColor = (hexColor: string): boolean => {
   const hex = hexColor.replace('#', '');
@@ -38,8 +36,6 @@ const App: React.FC = () => {
   const [items, setItems] = useState<FloatingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
   const [showSelectionBar, setShowSelectionBar] = useState(true);
-  const animationRef = useRef<number>();
-  const timeRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
   // 초기 아이템 생성 - 일부는 화면 밖에서 시작
@@ -150,41 +146,52 @@ const App: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 부드러운 움직임 - 회전 + 화면 밖으로 나갔다가 반대편에서 재등장
+  // 애니메이션 - setInterval로 부드럽게 (30fps)
   useEffect(() => {
     const interval = setInterval(() => {
       setItems(prevItems => 
         prevItems.map(item => {
           let newX = item.x + item.vx;
           let newY = item.y + item.vy;
+          let newVx = item.vx;
+          let newVy = item.vy;
           
           // 천천히 회전
           const newRotation = item.currentRotation + item.rotationSpeed;
           
-          // 화면 밖으로 나가면 반대편에서 재등장
-          const padding = item.size;
+          // 화면 경계에서 부드럽게 반사
+          const minX = 80;
+          const maxX = window.innerWidth - 80;
+          const minY = 100;
+          const maxY = window.innerHeight - 280;
           
-          if (newX < -padding) {
-            newX = window.innerWidth + padding * 0.5;
-          } else if (newX > window.innerWidth + padding) {
-            newX = -padding * 0.5;
+          if (newX < minX) {
+            newX = minX;
+            newVx = Math.abs(item.vx);
+          } else if (newX > maxX) {
+            newX = maxX;
+            newVx = -Math.abs(item.vx);
           }
           
-          if (newY < 60) {
-            newY = window.innerHeight - 200;
-          } else if (newY > window.innerHeight - 180) {
-            newY = 80;
+          if (newY < minY) {
+            newY = minY;
+            newVy = Math.abs(item.vy);
+          } else if (newY > maxY) {
+            newY = maxY;
+            newVy = -Math.abs(item.vy);
           }
 
           return { 
             ...item, 
             x: newX, 
-            y: newY, 
+            y: newY,
+            vx: newVx,
+            vy: newVy,
             currentRotation: newRotation 
           };
         })
       );
-    }, 50); // 50ms마다 업데이트 (20fps) - CSS transition으로 보간
+    }, 33); // ~30fps
 
     return () => clearInterval(interval);
   }, []);
@@ -199,7 +206,7 @@ const App: React.FC = () => {
       <div 
         className="relative w-screen h-screen overflow-hidden select-none snap-start"
         style={{
-          backgroundImage: `url(${BASE_PATH}background.png?v=new)`,
+          backgroundImage: `url(/background.png?v=new)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -212,7 +219,7 @@ const App: React.FC = () => {
             {/* 왼쪽 로고 */}
             <div className="flex items-center gap-3">
               <img 
-                src={`${BASE_PATH}logo.png`} 
+                src="/logo.png" 
                 alt="SLUNCH FACTORY" 
                 className="h-8 w-auto"
               />
@@ -260,7 +267,6 @@ const App: React.FC = () => {
                 width: item.size,
                 height: item.size,
                 transform: `translate(-50%, -50%) rotate(${item.currentRotation}deg) scale(${item.scale})`,
-                transition: 'left 0.3s linear, top 0.3s linear, transform 0.3s linear',
               }}
               onClick={(e) => handleItemClick(item, e)}
             >
