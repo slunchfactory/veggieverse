@@ -4,6 +4,8 @@ import { VegetableItem } from './types';
 import { PRODUCE_ITEMS } from './constants';
 import { SurveyPage } from './components/SurveyPage';
 
+const BASE_PATH = import.meta.env.BASE_URL || '/';
+
 // 밝은 색상인지 판단하는 헬퍼 함수
 const isLightColor = (hexColor: string): boolean => {
   const hex = hexColor.replace('#', '');
@@ -239,7 +241,7 @@ const App: React.FC = () => {
       <div 
         className="relative w-screen h-screen overflow-hidden select-none snap-start"
         style={{
-          backgroundImage: `url(/background.png?v=new)`,
+          backgroundImage: `url(${BASE_PATH}background.png?v=new)`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -252,7 +254,7 @@ const App: React.FC = () => {
             {/* 왼쪽 로고 */}
             <div className="flex items-center gap-3">
               <img 
-                src="/logo.png" 
+                src={`${BASE_PATH}logo.png`} 
                 alt="SLUNCH FACTORY" 
                 className="h-8 w-auto"
               />
