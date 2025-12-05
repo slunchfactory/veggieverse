@@ -150,28 +150,28 @@ const App: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 애니메이션 루프 - 더 자연스러운 움직임
+  // 애니메이션 루프 - 부드러운 움직임
   const animate = useCallback(() => {
-    timeRef.current += 0.012; // 약간 느리게
+    timeRef.current += 0.008;
 
     setItems(prevItems => 
       prevItems.map(item => {
-        // 곡선 경로를 위한 sin/cos 적용
-        const curveX = Math.sin(timeRef.current * item.pathCurve + item.floatOffset) * 0.02;
-        const curveY = Math.cos(timeRef.current * item.pathCurve * 0.7 + item.wobbleOffset) * 0.02;
+        // 부드러운 곡선 경로
+        const curveX = Math.sin(timeRef.current * item.pathCurve * 0.5 + item.floatOffset) * 0.008;
+        const curveY = Math.cos(timeRef.current * item.pathCurve * 0.3 + item.wobbleOffset) * 0.008;
         
         let newVx = item.vx + curveX;
         let newVy = item.vy + curveY;
         
-        // 속도 제한 (너무 빨라지지 않도록)
+        // 속도 제한
         const currentSpeed = Math.sqrt(newVx * newVx + newVy * newVy);
-        const maxSpeed = 0.25;
-        const minSpeed = 0.05;
+        const maxSpeed = 0.15;
+        const minSpeed = 0.03;
         
         if (currentSpeed > maxSpeed) {
           newVx = (newVx / currentSpeed) * maxSpeed;
           newVy = (newVy / currentSpeed) * maxSpeed;
-        } else if (currentSpeed < minSpeed) {
+        } else if (currentSpeed < minSpeed && currentSpeed > 0) {
           newVx = (newVx / currentSpeed) * minSpeed;
           newVy = (newVy / currentSpeed) * minSpeed;
         }
@@ -179,33 +179,28 @@ const App: React.FC = () => {
         let newX = item.x + newVx;
         let newY = item.y + newVy;
 
-        // 회전 업데이트 (약간의 변화 추가)
-        const rotationWobble = Math.sin(timeRef.current * 0.5 + item.wobbleOffset) * 0.01;
-        const newRotation = item.currentRotation + item.rotationSpeed + rotationWobble;
+        // 회전 업데이트 (일정한 속도)
+        const newRotation = item.currentRotation + item.rotationSpeed;
 
-        // 화면 경계 처리 - 부드럽게 방향 전환 (텔레포트 없음)
+        // 화면 경계 처리
         const padding = item.size;
-        const margin = 50;
+        const margin = 80;
         
-        // 왼쪽 경계
         if (newX < -padding) {
           newX = -padding + 1;
-          newVx = Math.abs(newVx) * 0.8; // 오른쪽으로 부드럽게 반사
+          newVx = Math.abs(newVx) * 0.9;
         }
-        // 오른쪽 경계
         if (newX > window.innerWidth + padding) {
           newX = window.innerWidth + padding - 1;
-          newVx = -Math.abs(newVx) * 0.8; // 왼쪽으로 부드럽게 반사
+          newVx = -Math.abs(newVx) * 0.9;
         }
-        // 상단 경계
         if (newY < margin) {
           newY = margin + 1;
-          newVy = Math.abs(newVy) * 0.8; // 아래로 부드럽게 반사
+          newVy = Math.abs(newVy) * 0.9;
         }
-        // 하단 경계 (선택바 위)
         if (newY > window.innerHeight - 280) {
           newY = window.innerHeight - 281;
-          newVy = -Math.abs(newVy) * 0.8; // 위로 부드럽게 반사
+          newVy = -Math.abs(newVy) * 0.9;
         }
 
         return {
@@ -290,26 +285,26 @@ const App: React.FC = () => {
         {/* 떠다니는 야채/과일들 */}
         {items.map((item) => {
           // 더 자연스러운 둥실둥실 효과 - 여러 sin/cos 조합
-          const floatY = 
-            Math.sin(timeRef.current * item.floatSpeed + item.floatOffset) * item.floatAmplitudeY +
-            Math.sin(timeRef.current * item.floatSpeed * 0.5 + item.wobbleOffset) * (item.floatAmplitudeY * 0.3);
-          const floatX = 
-            Math.cos(timeRef.current * item.floatSpeed * 0.8 + item.floatOffset) * item.floatAmplitudeX +
-            Math.cos(timeRef.current * item.floatSpeed * 0.3 + item.wobbleOffset) * (item.floatAmplitudeX * 0.2);
+          // 간소화된 부드러운 움직임
+          const floatY = Math.round(Math.sin(timeRef.current * item.floatSpeed + item.floatOffset) * item.floatAmplitudeY);
+          const floatX = Math.round(Math.cos(timeRef.current * item.floatSpeed * 0.8 + item.floatOffset) * item.floatAmplitudeX);
+          const rotation = Math.round(item.currentRotation);
           
           const isSelected = selectedItems.some(i => i.id === item.id);
           
           return (
             <div
               key={item.id}
-              className={`absolute cursor-pointer transition-all duration-500 ease-out hover:scale-110 hover:z-50 group
+              className={`absolute cursor-pointer hover:scale-110 hover:z-50 group
                 ${isSelected ? 'z-40' : ''}`}
               style={{
-                left: item.x,
-                top: item.y,
+                left: Math.round(item.x),
+                top: Math.round(item.y),
                 width: item.size,
                 height: item.size,
-                transform: `translate(-50%, -50%) translate(${floatX}px, ${floatY}px) rotate(${item.currentRotation}deg) scale(${item.scale})`,
+                transform: `translate(-50%, -50%) translate(${floatX}px, ${floatY}px) rotate(${rotation}deg) scale(${item.scale})`,
+                willChange: 'transform',
+                transition: 'transform 0.1s linear',
               }}
               onClick={(e) => handleItemClick(item, e)}
             >
