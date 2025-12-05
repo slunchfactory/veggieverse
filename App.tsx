@@ -150,34 +150,41 @@ const App: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 느린 위치 이동 (setInterval 사용)
+  // 부드러운 움직임 - 회전 + 화면 밖으로 나갔다가 반대편에서 재등장
   useEffect(() => {
     const interval = setInterval(() => {
       setItems(prevItems => 
         prevItems.map(item => {
-          let newX = item.x + item.vx * 0.5;
-          let newY = item.y + item.vy * 0.5;
-
-          // 화면 경계에서 방향 전환
-          const padding = 50;
-          const margin = 100;
+          let newX = item.x + item.vx;
+          let newY = item.y + item.vy;
           
-          let newVx = item.vx;
-          let newVy = item.vy;
+          // 천천히 회전
+          const newRotation = item.currentRotation + item.rotationSpeed;
           
-          if (newX < padding || newX > window.innerWidth - padding) {
-            newVx = -item.vx;
-            newX = Math.max(padding, Math.min(window.innerWidth - padding, newX));
+          // 화면 밖으로 나가면 반대편에서 재등장
+          const padding = item.size;
+          
+          if (newX < -padding) {
+            newX = window.innerWidth + padding * 0.5;
+          } else if (newX > window.innerWidth + padding) {
+            newX = -padding * 0.5;
           }
-          if (newY < margin || newY > window.innerHeight - 300) {
-            newVy = -item.vy;
-            newY = Math.max(margin, Math.min(window.innerHeight - 300, newY));
+          
+          if (newY < 60) {
+            newY = window.innerHeight - 200;
+          } else if (newY > window.innerHeight - 180) {
+            newY = 80;
           }
 
-          return { ...item, x: newX, y: newY, vx: newVx, vy: newVy };
+          return { 
+            ...item, 
+            x: newX, 
+            y: newY, 
+            currentRotation: newRotation 
+          };
         })
       );
-    }, 100); // 100ms마다 업데이트 (10fps)
+    }, 50); // 50ms마다 업데이트 (20fps) - CSS transition으로 보간
 
     return () => clearInterval(interval);
   }, []);
@@ -245,16 +252,15 @@ const App: React.FC = () => {
           return (
             <div
               key={item.id}
-              className={`absolute cursor-pointer hover:scale-110 hover:z-50 group floating-item
+              className={`absolute cursor-pointer hover:z-50 group
                 ${isSelected ? 'z-40' : ''}`}
               style={{
                 left: item.x,
                 top: item.y,
                 width: item.size,
                 height: item.size,
-                transform: `translate(-50%, -50%) scale(${item.scale})`,
-                animationDelay: `${item.floatOffset}s`,
-                animationDuration: `${3 + item.floatSpeed * 2}s`,
+                transform: `translate(-50%, -50%) rotate(${item.currentRotation}deg) scale(${item.scale})`,
+                transition: 'left 0.3s linear, top 0.3s linear, transform 0.3s linear',
               }}
               onClick={(e) => handleItemClick(item, e)}
             >
