@@ -140,9 +140,8 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
     if (currentStep < QUESTIONS.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // 마지막 질문 완료 시 결과 화면으로 + 몬스터 생성
+      // 마지막 질문 완료 시 결과 화면으로 (이미지는 시작하기에서 이미 생성 중)
       setShowResult(true);
-      generateMonster();
     }
   };
 
@@ -253,7 +252,10 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
             )}
             
             <button
-              onClick={() => setStarted(true)}
+              onClick={() => {
+                setStarted(true);
+                generateMonster(); // 시작하기 클릭 시 이미지 생성 시작
+              }}
               className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-stone-800 transition-colors"
             >
               시작하기
@@ -507,7 +509,16 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
           
           {/* 네비게이션 버튼 */}
           <div className="flex gap-4">
-            {currentStep > 0 && (
+            {currentStep === 0 ? (
+              // 첫 질문에서는 "처음으로" 버튼
+              <button
+                onClick={scrollToTop}
+                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors"
+              >
+                처음으로
+              </button>
+            ) : (
+              // 그 외에는 "이전" 버튼
               <button
                 onClick={handleBack}
                 className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors"
