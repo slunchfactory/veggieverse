@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronUp, Award, Calendar, FileText } from 'lucide-react';
+import { ChevronUp, Award, Calendar, FileText, Sparkles, Share2, Download } from 'lucide-react';
 import { VegetableItem } from '../types';
 
 interface SurveyPageProps {
@@ -80,11 +80,50 @@ const VEGAN_TYPES = [
   { mbti: 'ESTP', name: 'Wildgrain', emoji: '🌵', description: '즉흥적, 모험적이며 현장에서 비건을 즐기는 사람', color: '#C19F7B' },
 ];
 
+// 몬스터 이름 생성 함수
+const generateMonsterName = (items: VegetableItem[]): string => {
+  if (items.length === 0) return 'Veggie Monster';
+  
+  // 선택한 야채 이름들을 조합해서 몬스터 이름 생성
+  const names = items.map(item => item.name);
+  const prefixes = ['Mighty', 'Ancient', 'Mystic', 'Cosmic', 'Wild', 'Sacred', 'Primal'];
+  const suffixes = ['Guardian', 'Spirit', 'Beast', 'Titan', 'Golem', 'Dragon', 'Phoenix'];
+  
+  const prefix = prefixes[Math.floor(Math.random() * prefixes.length)];
+  const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+  
+  // 야채 이름들의 첫 글자를 조합
+  const veggiePart = names.map(n => n.slice(0, 3)).join('');
+  
+  return `${prefix} ${veggiePart}${suffix}`;
+};
+
+// 몬스터 설명 생성 함수
+const generateMonsterDescription = (items: VegetableItem[]): string => {
+  if (items.length === 0) return '';
+  
+  const names = items.map(item => item.name).join(', ');
+  const descriptions = [
+    `${names}의 힘을 흡수하여 탄생한 신비로운 채소 정령입니다.`,
+    `${names}가 융합되어 만들어진 강력한 비건 수호자입니다.`,
+    `${names}의 에센스가 결합된 자연의 화신입니다.`,
+    `${names}의 영혼이 깃든 채소계의 전설적인 존재입니다.`,
+  ];
+  
+  return descriptions[Math.floor(Math.random() * descriptions.length)];
+};
+
 export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [showResult, setShowResult] = useState(false);
+  
+  // AI 몬스터 이미지 관련 상태
+  const [monsterImageUrl, setMonsterImageUrl] = useState<string | null>(null);
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false);
+  const [monsterName, setMonsterName] = useState('');
+  const [monsterDescription, setMonsterDescription] = useState('');
 
   const scrollToTop = () => {
     const container = document.querySelector('.snap-y');
@@ -101,7 +140,9 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
     if (currentStep < QUESTIONS.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
+      // 마지막 질문 완료 시 결과 화면으로 + 몬스터 생성
       setShowResult(true);
+      generateMonster();
     }
   };
 
@@ -111,10 +152,39 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
     }
   };
 
+  // 몬스터 생성 함수 (나중에 API 연동)
+  const generateMonster = async () => {
+    setIsGeneratingImage(true);
+    setMonsterName(generateMonsterName(selectedItems));
+    setMonsterDescription(generateMonsterDescription(selectedItems));
+    
+    // TODO: 여기에 로컬 프롬프터 API 연동
+    // 현재는 시뮬레이션 (2초 후 완료)
+    // 
+    // 연동 시 예상 코드:
+    // const veggieNames = selectedItems.map(item => item.name);
+    // const response = await fetch('http://localhost:YOUR_PORT/generate-monster', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({ vegetables: veggieNames })
+    // });
+    // const data = await response.json();
+    // setMonsterImageUrl(data.imageUrl);
+    
+    setTimeout(() => {
+      // 플레이스홀더: 실제 연동 시 이 부분을 API 응답으로 대체
+      setMonsterImageUrl(null); // null이면 플레이스홀더 표시
+      setIsGeneratingImage(false);
+    }, 2000);
+  };
+
+  // 이미지 재생성 함수
+  const regenerateMonster = () => {
+    generateMonster();
+  };
+
   // 결과 계산 (간단한 로직)
   const calculateResult = () => {
-    const answerValues = Object.values(answers);
-    
     // 답변 기반으로 MBTI 유사 계산
     let e = 0, i = 0, s = 0, n = 0, t = 0, f = 0, j = 0, p = 0;
     
@@ -150,8 +220,8 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
   if (!started) {
     return (
       <div className="min-h-screen bg-stone-100">
-        {/* 상단 노란 바 */}
-        <div className="h-2 bg-[#4CAF50]" style={{ width: '0%' }}></div>
+        {/* 상단 바 */}
+        <div className="h-2 bg-stone-200"></div>
         
         {/* 위로 가기 버튼 */}
         <button
@@ -216,54 +286,154 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
         </button>
 
         <div className="flex items-center justify-center min-h-screen p-8">
-          <div className="bg-white rounded-3xl p-10 max-w-xl w-full shadow-sm">
-            {/* 배지 아이콘 */}
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4" style={{ backgroundColor: `${result.color}30` }}>
-                <Award className="w-10 h-10" style={{ color: result.color }} />
+          <div className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-sm">
+            
+            {/* 🎨 AI 생성 몬스터 영역 */}
+            <div className="mb-8">
+              {/* 몬스터 이미지 */}
+              <div className="relative w-full aspect-square max-w-sm mx-auto mb-6 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-100 via-lime-50 to-yellow-100">
+                {isGeneratingImage ? (
+                  // 로딩 상태
+                  <div className="absolute inset-0 flex flex-col items-center justify-center">
+                    <div className="relative">
+                      <div className="w-20 h-20 border-4 border-emerald-200 rounded-full animate-spin border-t-emerald-500"></div>
+                      <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-emerald-500 animate-pulse" />
+                    </div>
+                    <p className="mt-4 text-emerald-600 font-medium">몬스터 생성 중...</p>
+                    <p className="text-sm text-stone-400 mt-1">
+                      {selectedItems.map(i => i.name).join(' + ')}
+                    </p>
+                  </div>
+                ) : monsterImageUrl ? (
+                  // 실제 AI 생성 이미지
+                  <img 
+                    src={monsterImageUrl} 
+                    alt={monsterName}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  // 플레이스홀더 (API 연동 전)
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+                    <div className="text-8xl mb-4">🌱</div>
+                    <div className="flex gap-2 mb-4">
+                      {selectedItems.map((item, idx) => (
+                        <div 
+                          key={item.id} 
+                          className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md"
+                          style={{ marginLeft: idx > 0 ? '-8px' : '0' }}
+                        >
+                          <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain bg-white" />
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-stone-500 text-sm text-center">
+                      AI 이미지 연동 대기 중
+                    </p>
+                    <p className="text-xs text-stone-400 mt-1">
+                      프롬프터 연동 시 자동 생성됩니다
+                    </p>
+                  </div>
+                )}
+                
+                {/* 재생성 버튼 */}
+                {!isGeneratingImage && (
+                  <button
+                    onClick={regenerateMonster}
+                    className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-stone-700 hover:bg-white transition-colors shadow-lg flex items-center gap-2"
+                  >
+                    <Sparkles className="w-4 h-4" />
+                    다시 생성
+                  </button>
+                )}
+              </div>
+              
+              {/* 몬스터 이름 & 설명 */}
+              <div className="text-center">
+                <h2 className="text-2xl font-bold text-stone-800 mb-2">
+                  {monsterName || 'Your Veggie Monster'}
+                </h2>
+                <p className="text-stone-500 text-sm mb-4">
+                  {monsterDescription || '선택한 야채들로 만들어진 당신만의 몬스터'}
+                </p>
+                
+                {/* 재료 태그 */}
+                <div className="flex justify-center gap-2 flex-wrap">
+                  {selectedItems.map(item => (
+                    <span 
+                      key={item.id}
+                      className="px-3 py-1 rounded-full text-xs font-medium"
+                      style={{ 
+                        backgroundColor: `${item.color || '#4CAF50'}20`,
+                        color: item.color || '#4CAF50'
+                      }}
+                    >
+                      {item.name}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
             
-            {/* 결과 타이틀 */}
-            <h2 className="text-2xl font-bold text-center text-stone-800 mb-2">
-              {result.emoji} {result.name}
-            </h2>
-            <p className="text-stone-500 text-center mb-8">
-              {result.description}
-            </p>
+            {/* 구분선 */}
+            <div className="border-t border-stone-200 my-6"></div>
+            
+            {/* 비건 유형 결과 */}
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" style={{ backgroundColor: `${result.color}30` }}>
+                <Award className="w-8 h-8" style={{ color: result.color }} />
+              </div>
+              
+              <h3 className="text-xl font-bold text-stone-800 mb-1">
+                {result.emoji} {result.name}
+              </h3>
+              <p className="text-stone-500 text-sm mb-4">
+                {result.description}
+              </p>
+              
+              {/* 신뢰도 바 */}
+              <div className="inline-block rounded-full px-4 py-2" style={{ backgroundColor: `${result.color}20` }}>
+                <span className="text-sm font-semibold" style={{ color: result.color }}>
+                  매칭률: {result.confidence}%
+                </span>
+              </div>
+            </div>
             
             {/* 특징 & 성격 */}
-            <div className="grid grid-cols-2 gap-6 mb-8">
-              <div className="text-center">
-                <h4 className="font-semibold text-stone-800 mb-3">특징</h4>
-                <p className="text-sm text-stone-600"><strong>식이 선호도:</strong> {answers[1] === 'vegan' ? '완전비건' : answers[1] === 'lacto' ? '락토비건' : answers[1] === 'flexitarian' ? '플렉시테리언' : '페스케테리언'}</p>
-                <p className="text-sm text-stone-600"><strong>요리 스타일:</strong> {answers[2] === 'traditional' ? '전통식' : answers[2] === 'fusion' ? '퓨전' : answers[2] === 'simple' ? '심플' : '고급'}</p>
-                <p className="text-sm text-stone-600"><strong>주요 가치:</strong> {answers[3] === 'nutrition' ? '영양' : answers[3] === 'taste' ? '맛' : answers[3] === 'convenience' ? '간편함' : '새로움'}</p>
+            <div className="grid grid-cols-2 gap-4 mb-6 text-sm">
+              <div className="bg-stone-50 rounded-2xl p-4">
+                <h4 className="font-semibold text-stone-800 mb-2">특징</h4>
+                <p className="text-stone-600">식이: {answers[1] === 'vegan' ? '완전비건' : answers[1] === 'lacto' ? '락토비건' : answers[1] === 'flexitarian' ? '플렉시테리언' : '페스케테리언'}</p>
+                <p className="text-stone-600">스타일: {answers[2] === 'traditional' ? '전통식' : answers[2] === 'fusion' ? '퓨전' : answers[2] === 'simple' ? '심플' : '고급'}</p>
+                <p className="text-stone-600">가치: {answers[3] === 'nutrition' ? '영양' : answers[3] === 'taste' ? '맛' : answers[3] === 'convenience' ? '간편함' : '새로움'}</p>
               </div>
-              <div className="text-center">
-                <h4 className="font-semibold text-stone-800 mb-3">성격</h4>
-                <p className="text-sm text-stone-600"><strong>MBTI:</strong> {result.mbti}</p>
-                <p className="text-sm text-stone-600"><strong>라이프스타일:</strong> {answers[4] === 'family' ? '가족형' : answers[4] === 'health' ? '건강형' : answers[4] === 'quick' ? '효율형' : '탐험형'}</p>
-                <p className="text-sm text-stone-600"><strong>동기:</strong> {answers[5] === 'health' ? '건강' : answers[5] === 'environment' ? '환경' : answers[5] === 'animal' ? '동물보호' : '경험'}</p>
-              </div>
-            </div>
-            
-            {/* 신뢰도 바 */}
-            <div className="rounded-2xl p-4 mb-8" style={{ backgroundColor: `${result.color}20` }}>
-              <div className="text-center">
-                <span className="font-semibold" style={{ color: result.color }}>신뢰도: {result.confidence}%</span>
+              <div className="bg-stone-50 rounded-2xl p-4">
+                <h4 className="font-semibold text-stone-800 mb-2">성격</h4>
+                <p className="text-stone-600">MBTI: {result.mbti}</p>
+                <p className="text-stone-600">라이프: {answers[4] === 'family' ? '가족형' : answers[4] === 'health' ? '건강형' : answers[4] === 'quick' ? '효율형' : '탐험형'}</p>
+                <p className="text-stone-600">동기: {answers[5] === 'health' ? '건강' : answers[5] === 'environment' ? '환경' : answers[5] === 'animal' ? '동물보호' : '경험'}</p>
               </div>
             </div>
             
-            {/* 버튼들 */}
-            <div className="flex gap-4">
-              <button className="flex-1 py-3 px-6 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+            {/* 액션 버튼들 */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <button className="py-3 px-4 bg-blue-500 text-white rounded-xl font-semibold hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
                 <Calendar className="w-5 h-5" />
-                1주일 식단 추천받기
+                식단 추천받기
               </button>
-              <button className="flex-1 py-3 px-6 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2">
+              <button className="py-3 px-4 bg-emerald-500 text-white rounded-xl font-semibold hover:bg-emerald-600 transition-colors flex items-center justify-center gap-2">
                 <FileText className="w-5 h-5" />
-                맞춤 레시피 보기
+                레시피 보기
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3">
+              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
+                <Share2 className="w-5 h-5" />
+                공유하기
+              </button>
+              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
+                <Download className="w-5 h-5" />
+                이미지 저장
               </button>
             </div>
             
@@ -274,6 +444,9 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems }) => {
                 setCurrentStep(0);
                 setAnswers({});
                 setStarted(false);
+                setMonsterImageUrl(null);
+                setMonsterName('');
+                setMonsterDescription('');
               }}
               className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors"
             >
