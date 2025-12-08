@@ -51,6 +51,16 @@ const FEATURED_PRODUCTS = [
   },
 ];
 
+// 메인 섹션 썸네일용 6개 리스트
+const MAIN_THUMB_ITEMS = [
+  { id: 'm1', name: '슬런치 김치볶음밥 밀키트(2인분)', price: 12000 },
+  { id: 'm2', name: '슬런치 시금치 뇨끼', price: 18000 },
+  { id: 'm3', name: '슬런치 블루베리 타르트', price: 39000 },
+  { id: 'm4', name: '슬런치 잠봉뵈르', price: 8000 },
+  { id: 'm5', name: '슬런치 오리엔탈 셀러드(2인분)', price: 24000 },
+  { id: 'm6', name: '슬런치 김치전', price: 13000 },
+];
+
 export const HomePage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showToast, setShowToast] = useState(true);
@@ -163,7 +173,7 @@ export const HomePage: React.FC = () => {
       
       {/* 매거진 스타일 레이아웃 */}
       <div className="bg-white">
-        <div className="max-w-[1400px] mx-auto">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
           <div className="flex flex-col lg:flex-row">
             {/* 왼쪽 컬럼 - 텍스트 + 상품 그리드 */}
             <div className="lg:w-[55%] p-8">
@@ -191,9 +201,9 @@ export const HomePage: React.FC = () => {
                 </div>
               </div>
               
-              {/* 상품 그리드 2열 */}
+              {/* 상품 그리드 2열 x 3행 (총 6개) */}
               <div className="grid grid-cols-2 gap-4">
-                {FEATURED_PRODUCTS.slice(0, 2).map((product, idx) => (
+                {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => (
                   <div key={product.id} className="cursor-pointer group">
                     <div 
                       className="w-full mb-2 overflow-hidden rounded-lg"
@@ -208,15 +218,46 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
             
-            {/* 오른쪽 컬럼 - 대형 이미지 1개 */}
-            <div className="lg:w-[45%]">
+            {/* 오른쪽 컬럼 - 대형 이미지 1개 (960x1200 제한) */}
+            <div className="lg:w-[45%] flex justify-center items-start">
               <div 
                 className="w-full h-full"
-                style={{ aspectRatio: '4/5', backgroundColor: '#3d1c12' }}
+                style={{ 
+                  aspectRatio: '4/5', 
+                  backgroundColor: '#3d1c12',
+                  maxWidth: '960px',
+                  maxHeight: '1200px'
+                }}
               >
                 {/* 이미지 자리 */}
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 뉴스레터 섹션 */}
+      <div className="bg-white border-t border-stone-200">
+        <div className="max-w-[1400px] mx-auto px-6 py-8">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
+            <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1,2,3,4].map((id) => (
+              <Link key={id} to="/newsletter" className="cursor-pointer group">
+                <div 
+                  className="w-full overflow-hidden"
+                  style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}
+                >
+                  {/* 썸네일 자리 */}
+                </div>
+                <p className="mt-2 text-[10px] text-stone-500">뉴스레터</p>
+                <p className="text-sm text-stone-800 group-hover:text-stone-900">
+                  에디터가 발행하는 아티클 #{id}
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </div>

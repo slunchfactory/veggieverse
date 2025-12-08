@@ -186,9 +186,9 @@ export const StorePage: React.FC = () => {
         )}
       </div>
       
-      {/* 상품 그리드 - 5열 */}
-      <div className="max-w-[1400px] mx-auto px-6 pb-16">
-        <div className="grid grid-cols-5 gap-x-4 gap-y-10">
+      {/* 상품 그리드 - 반응형 2~5열 */}
+      <div className="max-w-[1400px] mx-auto px-6 pb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-10">
           {sortedProducts.map((product) => (
             <ProductCard key={product.id} product={product} isAlgorithmMode={sortType === 'algorithm'} />
           ))}

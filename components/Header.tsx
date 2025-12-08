@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Search, ShoppingCart, User } from 'lucide-react';
+import { Search, ShoppingCart, User, Menu } from 'lucide-react';
 
 interface UserProfile {
   profileImage: string | null;
@@ -22,35 +22,36 @@ export const Header: React.FC<HeaderProps> = ({
   onResetProfile 
 }) => {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const navItems = [
-    { name: '슬런치팩토리', path: '/brand' },
-    { name: '스토어', path: '/store' },
-    { name: '이벤트', path: '/event' },
-    { name: '커뮤니티', path: '/community' },
-    { name: '리뷰', path: '/review' },
-    { name: '제휴문의', path: '/contact' },
+    { name: 'About', path: '/brand' },
+    { name: 'Store', path: '/store' },
+    { name: 'Event', path: '/event' },
+    { name: 'Newsletter', path: '/newsletter' },
+    { name: 'Review', path: '/review' },
+    { name: 'Contact', path: '/contact' },
   ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: '#D8D262' }}>
-      <nav className="h-16 flex items-center justify-between px-8 max-w-[1400px] mx-auto">
+      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
-        <Link to="/shop" className="flex items-center gap-3">
+        <Link to="/shop" className="flex items-center gap-3 flex-shrink-0 min-w-[100px]">
           <img 
             src={`${import.meta.env.BASE_URL}logo.png`}
             alt="SLUNCH FACTORY" 
-            className="h-8 w-auto"
+            className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
           />
         </Link>
         
-        {/* 가운데 메뉴 */}
-        <div className="flex items-center gap-8">
+        {/* 가운데 메뉴 - 데스크톱 */}
+        <div className="hidden lg:flex items-center gap-8">
           {navItems.map((item) => (
             <Link 
               key={item.path}
               to={item.path} 
-              className={`text-sm font-semibold transition-colors ${
+              className={`text-xs sm:text-sm font-semibold transition-colors uppercase ${
                 location.pathname === item.path 
                   ? 'text-black' 
                   : 'text-stone-600 hover:text-black'
@@ -61,9 +62,9 @@ export const Header: React.FC<HeaderProps> = ({
           ))}
         </div>
         
-        {/* 오른쪽 아이콘 */}
-        <div className="flex items-center gap-6">
-          <span className="text-stone-500 text-sm">KR</span>
+        {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
+        <div className="flex items-center gap-4 sm:gap-6">
+          <span className="text-stone-500 text-xs sm:text-sm whitespace-nowrap">KR</span>
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container">
@@ -124,8 +125,38 @@ export const Header: React.FC<HeaderProps> = ({
           <button className="text-stone-600 hover:text-black transition-colors">
             <Search className="w-5 h-5" />
           </button>
+          
+          {/* 모바일 메뉴 버튼 */}
+          <button 
+            className="lg:hidden text-stone-700 hover:text-black transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
       </nav>
+
+      {/* 모바일 메뉴 드롭다운 */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden bg-[#D8D262] border-t border-stone-200 shadow-sm">
+          <div className="px-4 py-3 space-y-2">
+            {navItems.map((item) => (
+              <Link 
+                key={item.path}
+                to={item.path} 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`block text-sm py-1 ${
+                  location.pathname === item.path 
+                    ? 'text-black font-semibold' 
+                    : 'text-stone-700'
+                }`}
+              >
+                {item.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </header>
   );
 };

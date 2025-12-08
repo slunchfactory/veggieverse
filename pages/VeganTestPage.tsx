@@ -343,14 +343,6 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile }) =
           </div>
         )}
 
-        {/* 안내 텍스트 */}
-        {selectedItems.length === 0 && (
-          <div className="fixed bottom-28 left-1/2 -translate-x-1/2 z-20 text-center">
-            <p className="text-stone-500 text-sm">
-              좋아하는 채소를 선택해주세요
-            </p>
-          </div>
-        )}
       </div>
 
       {/* 두 번째 페이지 - 설문조사 */}

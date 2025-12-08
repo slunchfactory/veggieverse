@@ -6,6 +6,7 @@ import { HomePage } from './pages/HomePage';
 import { StorePage } from './pages/StorePage';
 import { BrandPage } from './pages/BrandPage';
 import { CommunityPage } from './pages/CommunityPage';
+import { NewsletterPage } from './pages/NewsletterPage';
 import { ReviewPage } from './pages/ReviewPage';
 import { VeganTestPage } from './pages/VeganTestPage';
 
@@ -28,7 +29,7 @@ const Layout: React.FC<{
   const isVeganTestPage = location.pathname === '/';
   
   return (
-    <div className={`min-h-screen ${isVeganTestPage ? '' : 'flex flex-col overflow-auto'}`}>
+    <div className={`min-h-screen min-w-[360px] ${isVeganTestPage ? '' : 'flex flex-col overflow-auto'}`}>
       {/* 비건 테스트 페이지에서는 헤더 숨김 */}
       {!isVeganTestPage && (
         <Header 
@@ -38,7 +39,7 @@ const Layout: React.FC<{
           onResetProfile={onResetProfile}
         />
       )}
-      <main className={`${isVeganTestPage ? '' : 'flex-1 pt-16 overflow-auto'}`}>
+      <main className={`${isVeganTestPage ? '' : 'flex-1 pt-16 pb-8 overflow-auto'}`}>
         {children}
       </main>
       {!isVeganTestPage && <Footer />}
@@ -117,6 +118,7 @@ const AppContent: React.FC = () => {
         <Route path="/shop" element={<HomePage />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/brand" element={<BrandPage />} />
+        <Route path="/newsletter" element={<NewsletterPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/review" element={<ReviewPage />} />
         <Route path="/event" element={<ComingSoonPage title="이벤트" />} />
