@@ -27,45 +27,14 @@ interface FloatingItem extends VegetableItem {
   rotationDuration: number;
   driftX: number;
   driftY: number;
+  rotateDirection: number;
 }
-
-// 랜덤 아이템 생성 함수
-const createRandomItem = (id: string, x?: number, y?: number): FloatingItem => {
-  const produce = PRODUCE_ITEMS[Math.floor(Math.random() * PRODUCE_ITEMS.length)];
-  const size = 80 + Math.random() * 70;
-  
-  return {
-    id,
-    name: produce.name,
-    x: x ?? Math.random() * (window.innerWidth - 100) + 50,
-    y: y ?? Math.random() * (window.innerHeight - 400) + 100,
-    scale: 1.3 + Math.random() * 1.2,
-    rotation: Math.random() * 360,
-    imageUrl: produce.image,
-    color: '',
-    size,
-    labelColor: produce.color,
-    labelOffsetX: (Math.random() - 0.5) * 40,
-    labelOffsetY: (Math.random() - 0.5) * 40,
-    labelRotation: -15 + Math.random() * 30,
-    // CSS 애니메이션 파라미터
-    animationDuration: 8 + Math.random() * 8, // 8-16초
-    animationDelay: Math.random() * -16, // 음수로 즉시 시작
-    floatAmplitude: 20 + Math.random() * 30, // 20-50px
-    rotationDuration: 20 + Math.random() * 40, // 20-60초 (천천히 회전)
-    driftX: (Math.random() - 0.5) * 100, // 좌우 드리프트
-    driftY: (Math.random() - 0.5) * 60, // 상하 드리프트
-  };
-};
 
 const App: React.FC = () => {
   const [items, setItems] = useState<FloatingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
   const [showSelectionBar, setShowSelectionBar] = useState(true);
-  const [itemIdCounter, setItemIdCounter] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const lastAddTime = useRef(0);
 
   // 초기 아이템 생성
   useEffect(() => {
@@ -89,54 +58,9 @@ const App: React.FC = () => {
       rotationDuration: 20 + Math.random() * 40,
       driftX: (Math.random() - 0.5) * 100,
       driftY: (Math.random() - 0.5) * 60,
+      rotateDirection: Math.random() > 0.5 ? 1 : -1,
     }));
     setItems(initialItems);
-    setItemIdCounter(PRODUCE_ITEMS.length);
-  }, []);
-
-  // 클릭/드래그로 아이템 추가
-  const addItemAt = useCallback((x: number, y: number) => {
-    const now = Date.now();
-    if (now - lastAddTime.current < 100) return; // 100ms 쓰로틀
-    lastAddTime.current = now;
-
-    setItemIdCounter(prev => {
-      const newItem = createRandomItem(`added-${prev}`, x, y);
-      setItems(items => [...items, newItem]);
-      return prev + 1;
-    });
-  }, []);
-
-  // 배경 클릭 핸들러
-  const handleBackgroundClick = useCallback((e: React.MouseEvent) => {
-    // 아이템이나 버튼 클릭이 아닌 경우에만
-    if ((e.target as HTMLElement).closest('.floating-item') || 
-        (e.target as HTMLElement).closest('button') ||
-        (e.target as HTMLElement).closest('header') ||
-        (e.target as HTMLElement).closest('.selection-bar')) {
-      return;
-    }
-    addItemAt(e.clientX, e.clientY);
-  }, [addItemAt]);
-
-  // 드래그 핸들러
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).closest('.floating-item') || 
-        (e.target as HTMLElement).closest('button') ||
-        (e.target as HTMLElement).closest('header') ||
-        (e.target as HTMLElement).closest('.selection-bar')) {
-      return;
-    }
-    isDragging.current = true;
-  }, []);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging.current) return;
-    addItemAt(e.clientX, e.clientY);
-  }, [addItemAt]);
-
-  const handleMouseUp = useCallback(() => {
-    isDragging.current = false;
   }, []);
 
   // 아이템 선택/해제
@@ -206,11 +130,6 @@ const App: React.FC = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
-        onClick={handleBackgroundClick}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
       >
         {/* 상단 헤더 */}
         <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: '#f9ff35' }}>
@@ -255,7 +174,6 @@ const App: React.FC = () => {
         {/* 떠다니는 야채/과일들 - CSS 애니메이션 사용 */}
         {items.map((item) => {
           const isSelected = selectedItems.some(i => i.id === item.id);
-          const rotateDirection = Math.random() > 0.5 ? 1 : -1;
           
           return (
             <div
@@ -268,10 +186,7 @@ const App: React.FC = () => {
                 width: item.size,
                 height: item.size,
                 transform: `translate(-50%, -50%) scale(${item.scale})`,
-                animation: `
-                  float-${item.id.replace(/[^a-zA-Z0-9]/g, '')} ${item.animationDuration}s ease-in-out infinite,
-                  rotate-gentle ${item.rotationDuration}s linear infinite ${rotateDirection === -1 ? 'reverse' : ''}
-                `,
+                animation: `float-${item.id.replace(/[^a-zA-Z0-9]/g, '')} ${item.animationDuration}s ease-in-out infinite`,
                 animationDelay: `${item.animationDelay}s`,
               }}
               onClick={(e) => handleItemClick(item, e)}
@@ -280,23 +195,21 @@ const App: React.FC = () => {
               <style>{`
                 @keyframes float-${item.id.replace(/[^a-zA-Z0-9]/g, '')} {
                   0%, 100% { 
-                    transform: translate(-50%, -50%) scale(${item.scale}) translate(0, 0);
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(0, 0) rotate(0deg);
                   }
                   25% { 
-                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${-item.floatAmplitude}px);
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${-item.floatAmplitude}px) rotate(${item.rotateDirection * 3}deg);
                   }
                   50% { 
-                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX}px, 0);
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX}px, 0) rotate(0deg);
                   }
                   75% { 
-                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${item.floatAmplitude}px);
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${item.floatAmplitude}px) rotate(${item.rotateDirection * -3}deg);
                   }
                 }
               `}</style>
               
-              <div className="relative w-full h-full animate-spin-slow" style={{
-                animationDuration: `${item.rotationDuration}s`,
-              }}>
+              <div className="relative w-full h-full">
                 {/* 원본 이미지 */}
                 <img
                   src={item.imageUrl}
@@ -423,11 +336,6 @@ const App: React.FC = () => {
           <div className="w-full h-10 bg-black"></div>
         </div>
         )}
-
-        {/* 힌트 텍스트 */}
-        <div className="fixed bottom-48 left-1/2 -translate-x-1/2 text-stone-500 text-sm pointer-events-none opacity-60">
-          화면을 클릭하거나 드래그하면 더 많은 야채가 나타나요!
-        </div>
       </div>
 
       {/* 두 번째 페이지 - 설문조사 */}
