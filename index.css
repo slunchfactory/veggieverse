@@ -107,7 +107,41 @@ a:focus-visible {
   transform: translateY(-15px) scale(1.05);
 }
 
-/* 플로팅 아이템 - JavaScript에서 위치/회전 제어, CSS로 부드럽게 보간 */
-.floating-produce {
-  will-change: transform, left, top;
+/* 플로팅 아이템 - CSS 애니메이션으로 부드럽게 */
+.floating-item {
+  will-change: transform;
+}
+
+/* 부드러운 회전 애니메이션 */
+@keyframes rotate-gentle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 느린 회전 */
+.animate-spin-slow {
+  animation: rotate-gentle linear infinite;
+}
+
+/* 새 아이템 등장 애니메이션 */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.floating-item {
+  animation-fill-mode: both;
 }

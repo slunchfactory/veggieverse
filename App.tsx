@@ -15,83 +15,128 @@ const isLightColor = (hexColor: string): boolean => {
 };
 
 interface FloatingItem extends VegetableItem {
-  vx: number;
-  vy: number;
-  floatOffset: number;
-  floatSpeed: number;
-  floatAmplitudeX: number; // X축 흔들림 크기
-  floatAmplitudeY: number; // Y축 흔들림 크기
   size: number;
-  rotationSpeed: number; // 회전 속도 (양수: 시계, 음수: 반시계)
-  currentRotation: number; // 현재 회전 각도
-  wobbleOffset: number; // 추가 흔들림 오프셋
-  pathCurve: number; // 곡선 경로 강도
-  labelColor: string; // 라벨 배경 색상
-  labelOffsetX: number; // 스티커 X 오프셋
-  labelOffsetY: number; // 스티커 Y 오프셋
-  labelRotation: number; // 스티커 회전
+  labelColor: string;
+  labelOffsetX: number;
+  labelOffsetY: number;
+  labelRotation: number;
+  // CSS 애니메이션용
+  animationDuration: number;
+  animationDelay: number;
+  floatAmplitude: number;
+  rotationDuration: number;
+  driftX: number;
+  driftY: number;
 }
+
+// 랜덤 아이템 생성 함수
+const createRandomItem = (id: string, x?: number, y?: number): FloatingItem => {
+  const produce = PRODUCE_ITEMS[Math.floor(Math.random() * PRODUCE_ITEMS.length)];
+  const size = 80 + Math.random() * 70;
+  
+  return {
+    id,
+    name: produce.name,
+    x: x ?? Math.random() * (window.innerWidth - 100) + 50,
+    y: y ?? Math.random() * (window.innerHeight - 400) + 100,
+    scale: 1.3 + Math.random() * 1.2,
+    rotation: Math.random() * 360,
+    imageUrl: produce.image,
+    color: '',
+    size,
+    labelColor: produce.color,
+    labelOffsetX: (Math.random() - 0.5) * 40,
+    labelOffsetY: (Math.random() - 0.5) * 40,
+    labelRotation: -15 + Math.random() * 30,
+    // CSS 애니메이션 파라미터
+    animationDuration: 8 + Math.random() * 8, // 8-16초
+    animationDelay: Math.random() * -16, // 음수로 즉시 시작
+    floatAmplitude: 20 + Math.random() * 30, // 20-50px
+    rotationDuration: 20 + Math.random() * 40, // 20-60초 (천천히 회전)
+    driftX: (Math.random() - 0.5) * 100, // 좌우 드리프트
+    driftY: (Math.random() - 0.5) * 60, // 상하 드리프트
+  };
+};
 
 const App: React.FC = () => {
   const [items, setItems] = useState<FloatingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
   const [showSelectionBar, setShowSelectionBar] = useState(true);
+  const [itemIdCounter, setItemIdCounter] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const lastAddTime = useRef(0);
 
-  // 초기 아이템 생성 - 일부는 화면 밖에서 시작
+  // 초기 아이템 생성
   useEffect(() => {
-    const newItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 0.08 + Math.random() * 0.12; // 더 느리게
-      
-      // 약 40%는 화면 밖에서 시작
-      const startOutside = Math.random() < 0.4;
-      let startX, startY;
-      
-      if (startOutside) {
-        const edge = Math.floor(Math.random() * 4);
-        const size = 100 + Math.random() * 60;
-        switch (edge) {
-          case 0: startX = Math.random() * window.innerWidth; startY = -size - Math.random() * 200; break;
-          case 1: startX = window.innerWidth + size + Math.random() * 200; startY = Math.random() * window.innerHeight; break;
-          case 2: startX = Math.random() * window.innerWidth; startY = window.innerHeight + size + Math.random() * 200; break;
-          default: startX = -size - Math.random() * 200; startY = Math.random() * window.innerHeight;
-        }
-      } else {
-        startX = Math.random() * window.innerWidth;
-        startY = Math.random() * (window.innerHeight - 250);
-      }
-      
-      // 회전 방향 랜덤 (시계 또는 반시계)
-      const rotationDirection = Math.random() > 0.5 ? 1 : -1;
-      
-      return {
-        id: `produce-${index}`,
-        name: produce.name,
-        x: startX,
-        y: startY,
-        scale: 1.3 + Math.random() * 1.2, // 130% ~ 250% 크기
-        rotation: Math.random() * 360,
-        imageUrl: produce.image,
-        color: '',
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        floatOffset: Math.random() * Math.PI * 2,
-        floatSpeed: 0.2 + Math.random() * 0.3, // 더 다양한 속도
-        floatAmplitudeX: 15 + Math.random() * 25, // X축 흔들림 15~40px
-        floatAmplitudeY: 20 + Math.random() * 30, // Y축 흔들림 20~50px
-        size: 80 + Math.random() * 70,
-        rotationSpeed: (0.02 + Math.random() * 0.06) * rotationDirection, // 시계/반시계 랜덤
-        currentRotation: Math.random() * 360,
-        wobbleOffset: Math.random() * Math.PI * 2, // 추가 흔들림
-        pathCurve: 0.5 + Math.random() * 1.5, // 곡선 경로 강도
-        labelColor: produce.color, // 과일 메인 컬러
-        labelOffsetX: (Math.random() - 0.5) * 40, // 스티커 X 오프셋 (-20 ~ 20)
-        labelOffsetY: (Math.random() - 0.5) * 40, // 스티커 Y 오프셋 (-20 ~ 20)
-        labelRotation: -15 + Math.random() * 30, // 스티커 회전 (-15 ~ 15도)
-      };
+    const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => ({
+      id: `produce-${index}`,
+      name: produce.name,
+      x: Math.random() * (window.innerWidth - 100) + 50,
+      y: Math.random() * (window.innerHeight - 400) + 100,
+      scale: 1.3 + Math.random() * 1.2,
+      rotation: Math.random() * 360,
+      imageUrl: produce.image,
+      color: '',
+      size: 80 + Math.random() * 70,
+      labelColor: produce.color,
+      labelOffsetX: (Math.random() - 0.5) * 40,
+      labelOffsetY: (Math.random() - 0.5) * 40,
+      labelRotation: -15 + Math.random() * 30,
+      animationDuration: 8 + Math.random() * 8,
+      animationDelay: Math.random() * -16,
+      floatAmplitude: 20 + Math.random() * 30,
+      rotationDuration: 20 + Math.random() * 40,
+      driftX: (Math.random() - 0.5) * 100,
+      driftY: (Math.random() - 0.5) * 60,
+    }));
+    setItems(initialItems);
+    setItemIdCounter(PRODUCE_ITEMS.length);
+  }, []);
+
+  // 클릭/드래그로 아이템 추가
+  const addItemAt = useCallback((x: number, y: number) => {
+    const now = Date.now();
+    if (now - lastAddTime.current < 100) return; // 100ms 쓰로틀
+    lastAddTime.current = now;
+
+    setItemIdCounter(prev => {
+      const newItem = createRandomItem(`added-${prev}`, x, y);
+      setItems(items => [...items, newItem]);
+      return prev + 1;
     });
-    setItems(newItems);
+  }, []);
+
+  // 배경 클릭 핸들러
+  const handleBackgroundClick = useCallback((e: React.MouseEvent) => {
+    // 아이템이나 버튼 클릭이 아닌 경우에만
+    if ((e.target as HTMLElement).closest('.floating-item') || 
+        (e.target as HTMLElement).closest('button') ||
+        (e.target as HTMLElement).closest('header') ||
+        (e.target as HTMLElement).closest('.selection-bar')) {
+      return;
+    }
+    addItemAt(e.clientX, e.clientY);
+  }, [addItemAt]);
+
+  // 드래그 핸들러
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    if ((e.target as HTMLElement).closest('.floating-item') || 
+        (e.target as HTMLElement).closest('button') ||
+        (e.target as HTMLElement).closest('header') ||
+        (e.target as HTMLElement).closest('.selection-bar')) {
+      return;
+    }
+    isDragging.current = true;
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!isDragging.current) return;
+    addItemAt(e.clientX, e.clientY);
+  }, [addItemAt]);
+
+  const handleMouseUp = useCallback(() => {
+    isDragging.current = false;
   }, []);
 
   // 아이템 선택/해제
@@ -146,56 +191,6 @@ const App: React.FC = () => {
     return () => container.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // 애니메이션 - setInterval로 부드럽게 (30fps)
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setItems(prevItems => 
-        prevItems.map(item => {
-          let newX = item.x + item.vx;
-          let newY = item.y + item.vy;
-          let newVx = item.vx;
-          let newVy = item.vy;
-          
-          // 천천히 회전
-          const newRotation = item.currentRotation + item.rotationSpeed;
-          
-          // 화면 경계에서 부드럽게 반사
-          const minX = 80;
-          const maxX = window.innerWidth - 80;
-          const minY = 100;
-          const maxY = window.innerHeight - 280;
-          
-          if (newX < minX) {
-            newX = minX;
-            newVx = Math.abs(item.vx);
-          } else if (newX > maxX) {
-            newX = maxX;
-            newVx = -Math.abs(item.vx);
-          }
-          
-          if (newY < minY) {
-            newY = minY;
-            newVy = Math.abs(item.vy);
-          } else if (newY > maxY) {
-            newY = maxY;
-            newVy = -Math.abs(item.vy);
-          }
-
-          return { 
-            ...item, 
-            x: newX, 
-            y: newY,
-            vx: newVx,
-            vy: newVy,
-            currentRotation: newRotation 
-          };
-        })
-      );
-    }, 33); // ~30fps
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div 
       ref={containerRef}
@@ -211,6 +206,11 @@ const App: React.FC = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
         }}
+        onClick={handleBackgroundClick}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       >
         {/* 상단 헤더 */}
         <header className="fixed top-0 left-0 right-0 z-50" style={{ backgroundColor: '#f9ff35' }}>
@@ -252,30 +252,56 @@ const App: React.FC = () => {
           </nav>
         </header>
 
-        {/* 떠다니는 야채/과일들 */}
+        {/* 떠다니는 야채/과일들 - CSS 애니메이션 사용 */}
         {items.map((item) => {
           const isSelected = selectedItems.some(i => i.id === item.id);
+          const rotateDirection = Math.random() > 0.5 ? 1 : -1;
           
           return (
             <div
               key={item.id}
-              className={`absolute cursor-pointer hover:z-50 group
+              className={`floating-item absolute cursor-pointer hover:z-50 group
                 ${isSelected ? 'z-40' : ''}`}
               style={{
                 left: item.x,
                 top: item.y,
                 width: item.size,
                 height: item.size,
-                transform: `translate(-50%, -50%) rotate(${item.currentRotation}deg) scale(${item.scale})`,
+                transform: `translate(-50%, -50%) scale(${item.scale})`,
+                animation: `
+                  float-${item.id.replace(/[^a-zA-Z0-9]/g, '')} ${item.animationDuration}s ease-in-out infinite,
+                  rotate-gentle ${item.rotationDuration}s linear infinite ${rotateDirection === -1 ? 'reverse' : ''}
+                `,
+                animationDelay: `${item.animationDelay}s`,
               }}
               onClick={(e) => handleItemClick(item, e)}
             >
-              <div className="relative w-full h-full">
+              {/* 각 아이템별 고유 keyframe 인라인 스타일 */}
+              <style>{`
+                @keyframes float-${item.id.replace(/[^a-zA-Z0-9]/g, '')} {
+                  0%, 100% { 
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(0, 0);
+                  }
+                  25% { 
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${-item.floatAmplitude}px);
+                  }
+                  50% { 
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX}px, 0);
+                  }
+                  75% { 
+                    transform: translate(-50%, -50%) scale(${item.scale}) translate(${item.driftX * 0.5}px, ${item.floatAmplitude}px);
+                  }
+                }
+              `}</style>
+              
+              <div className="relative w-full h-full animate-spin-slow" style={{
+                animationDuration: `${item.rotationDuration}s`,
+              }}>
                 {/* 원본 이미지 */}
                 <img
                   src={item.imageUrl}
                   alt={item.name}
-                  className={`w-full h-full object-contain transition-all duration-300 group-hover:scale-105
+                  className={`w-full h-full object-contain transition-opacity duration-300 group-hover:scale-105
                     ${isSelected ? 'opacity-0' : 'opacity-100'}`}
                   loading="lazy"
                   draggable={false}
@@ -397,6 +423,11 @@ const App: React.FC = () => {
           <div className="w-full h-10 bg-black"></div>
         </div>
         )}
+
+        {/* 힌트 텍스트 */}
+        <div className="fixed bottom-48 left-1/2 -translate-x-1/2 text-stone-500 text-sm pointer-events-none opacity-60">
+          화면을 클릭하거나 드래그하면 더 많은 야채가 나타나요!
+        </div>
       </div>
 
       {/* 두 번째 페이지 - 설문조사 */}
