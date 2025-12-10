@@ -388,6 +388,10 @@ const CircularCarouselHero: React.FC = () => {
               const distanceFromCenter = Math.abs(y + radius);
               const scale = 0.4 + (1 - distanceFromCenter / (radius * 2)) * 1.6;
               
+              // 중앙 카드를 위로 더 올리기 (중앙일수록 더 많이)
+              const liftAmount = (1 - distanceFromCenter / (radius * 2)) * 60; // 최대 60px 위로
+              const adjustedY = y - liftAmount;
+              
               // 아래쪽 카드는 살짝 투명하게
               const opacity = Math.max(0.4, 1 - (y + radius) / (radius * 1.8));
               
@@ -402,7 +406,7 @@ const CircularCarouselHero: React.FC = () => {
                   style={{
                     left: '50%',
                     top: '50%',
-                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${cardRotation}deg) scale(${scale})`,
+                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${adjustedY}px)) rotate(${cardRotation}deg) scale(${scale})`,
                     zIndex,
                     opacity,
                     transformOrigin: 'center center',
