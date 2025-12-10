@@ -343,18 +343,10 @@ export const StorePage: React.FC = () => {
                 />
                 {/* 영상 위 텍스트 오버레이 */}
                 <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" style={{ paddingBottom: '2rem' }}>
-                  <span className="text-[11px] sm:text-[12px] font-medium text-white/70 tracking-widest uppercase">LIFE</span>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mt-2 leading-tight break-keep">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight break-keep">
                     슬런치가 추천하는<br/>겨울 비건 레시피
                   </h3>
                   <p className="text-[12px] sm:text-[14px] lg:text-[15px] text-white/70 mt-3">따뜻한 겨울을 위한 건강한 한 끼</p>
-                  <div className="flex items-center justify-between mt-4">
-                    <span className="text-[11px] sm:text-[12px] text-white/50">2025. 12. 10</span>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-none bg-stone-600 overflow-hidden"></div>
-                      <span className="text-[12px] text-white/70">슬런치</span>
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -390,10 +382,7 @@ export const StorePage: React.FC = () => {
                       {/* 카드 정보 (오른쪽) */}
                       <div className="flex-1 flex flex-col justify-between py-1">
                         <div>
-                          <span className="text-[9px] font-semibold text-stone-600 tracking-wide">
-                            {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
-                          </span>
-                          <h4 className="text-[13px] font-bold text-stone-900 leading-tight mt-0.5 line-clamp-2 group-hover:underline">
+                          <h4 className="text-[13px] font-bold text-stone-900 leading-tight line-clamp-2 group-hover:underline">
                             {product.name}
                           </h4>
                           <p className="text-[10px] text-stone-600 mt-1 line-clamp-2">
@@ -449,10 +438,7 @@ export const StorePage: React.FC = () => {
                         </div>
                       </div>
                       <div className="pt-3 bg-[#E54B1A]">
-                        <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
-                          {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
-                        </span>
-                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight mt-1 group-hover:underline">
+                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight group-hover:underline">
                           {product.name}
                         </h4>
                         <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
@@ -504,10 +490,7 @@ export const StorePage: React.FC = () => {
                         </div>
                       </div>
                       <div className="pt-3 bg-[#E54B1A]">
-                        <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
-                          {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
-                        </span>
-                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight mt-1 group-hover:underline">
+                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight group-hover:underline">
                           {product.name}
                         </h4>
                         <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
