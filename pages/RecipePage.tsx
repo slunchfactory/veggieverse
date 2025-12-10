@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Upload, Trophy } from 'lucide-react';
 import { COLORS } from '../constants/colors';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // 카테고리별 레시피 데이터
 interface Recipe {
@@ -225,9 +226,13 @@ const RecipeCarousel: React.FC<{
               }}
             >
               <img
-                src={recipe.image}
+                src={getRecipeThumbnailImage(recipe.id)}
                 alt={recipe.title}
-                className="w-full h-full object-contain p-6 group-hover/card:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = getFallbackRecipeImage(recipe.id);
+                }}
               />
               <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-none" />
             </div>
@@ -402,10 +407,14 @@ const CircularCarouselHero: React.FC = () => {
                     style={{ backgroundColor: recipe.color.bg }}
                   >
                     <img
-                      src={recipe.image}
+                      src={getRecipeThumbnailImage(recipe.id)}
                       alt=""
-                      className="w-full h-full object-contain p-3 sm:p-4"
+                      className="w-full h-full object-cover"
                       draggable={false}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = getFallbackRecipeImage(recipe.id);
+                      }}
                     />
                   </div>
                 </Link>

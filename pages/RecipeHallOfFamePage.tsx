@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Crown, Medal, Trophy, Heart, Eye } from 'lucide-react';
 import { COLORS } from '../constants/colors';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // Top 20 인기 레시피 데이터
 const hallOfFameRecipes = [
@@ -107,11 +108,13 @@ const RecipeHallOfFamePage: React.FC = () => {
                     style={{ backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].bg }}
                   />
                   <img
-                    src={recipe.image}
+                    src={getRecipeThumbnailImage(recipe.id)}
                     alt={recipe.title}
-                    className={`absolute inset-0 w-full h-full object-contain group-hover:scale-110 transition-transform duration-500 ${
-                      recipe.rank <= 3 ? 'p-12' : 'p-8'
-                    }`}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = getFallbackRecipeImage(recipe.id);
+                    }}
                   />
                   
                   {/* 랭킹 뱃지 (원형) */}

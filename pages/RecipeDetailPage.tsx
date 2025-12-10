@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, Bookmark, Clock, ChefHat, Users, Sparkles, Lightbulb, ChevronRight, MessageCircle } from 'lucide-react';
 import { getIngredientIcon } from '../utils/ingredientIcon';
+import { getRecipeHeroImage, getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // 샘플 레시피 상세 데이터
 const sampleRecipe = {
@@ -154,9 +155,13 @@ const RecipeDetailPage: React.FC = () => {
       {/* 히어로 이미지 */}
       <div className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-100 to-orange-100">
         <img
-          src={sampleRecipe.heroImage}
+          src={getRecipeHeroImage(Number(id) || 1)}
           alt={sampleRecipe.title}
-          className="absolute inset-0 w-full h-full object-contain p-16"
+          className="absolute inset-0 w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getFallbackRecipeImage(Number(id) || 1);
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
         
@@ -464,7 +469,11 @@ const RecipeDetailPage: React.FC = () => {
                   >
                     <div className="aspect-square rounded-none overflow-hidden mb-3 bg-gradient-to-br from-amber-50 to-orange-100">
                       <img
-                        src={recipe.image}
+                        src={getRecipeThumbnailImage(recipe.id)}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = getFallbackRecipeImage(recipe.id);
+                        }}
                         alt={recipe.title}
                         className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-300"
                       />
