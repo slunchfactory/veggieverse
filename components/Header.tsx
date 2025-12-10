@@ -43,8 +43,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="fixed left-0 right-0 z-50"
-      style={{ backgroundColor: '#D8D262', top: offsetTop }}
+      className="fixed left-0 right-0 z-50 bg-transparent"
+      style={{ top: offsetTop }}
     >
       <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
@@ -67,7 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.path}
                   to={item.path} 
                   className={`text-xs sm:text-sm font-semibold transition-colors uppercase flex items-center gap-1 ${
-                    isActive ? 'text-black' : 'text-stone-600 hover:text-black'
+                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
                   }`}
                   onClick={() => setOpenMenu(null)}
                 >
@@ -84,7 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   to={item.path} 
                   className={`text-xs sm:text-sm font-semibold transition-colors uppercase flex items-center gap-1 ${
-                    isActive ? 'text-black' : 'text-stone-600 hover:text-black'
+                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -150,7 +150,7 @@ export const Header: React.FC<HeaderProps> = ({
         
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <span className="text-stone-500 text-xs sm:text-sm whitespace-nowrap">KR</span>
+          <span className="text-stone-600 text-xs sm:text-sm whitespace-nowrap">KR</span>
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container">
@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
               {userProfile.profileImage ? (
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-stone-800 shadow-sm">
+                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-stone-300 shadow-sm">
                   <img 
                     src={userProfile.profileImage} 
                     alt="My Profile" 
@@ -168,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               ) : (
                 <div className="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center">
-                  <User className="w-4 h-4 text-stone-500" />
+                  <User className="w-4 h-4 text-stone-600" />
                 </div>
               )}
             </button>
@@ -204,17 +204,17 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </div>
           
-          <Link to="/cart" className="text-stone-600 hover:text-black transition-colors relative">
+          <Link to="/cart" className="text-stone-700 hover:text-stone-900 transition-colors relative">
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-none flex items-center justify-center">0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center">0</span>
           </Link>
-          <button className="text-stone-600 hover:text-black transition-colors">
+          <button className="text-stone-700 hover:text-stone-900 transition-colors">
             <Search className="w-5 h-5" />
           </button>
           
           {/* 모바일 메뉴 버튼 */}
           <button 
-            className="lg:hidden text-stone-700 hover:text-black transition-colors"
+            className="lg:hidden text-stone-700 hover:text-stone-900 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <Menu className="w-6 h-6" />
@@ -224,7 +224,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-[#D8D262] border-t border-stone-200 shadow-sm">
+        <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-sm">
           <div className="px-4 py-3 space-y-2">
             {navItems.map((item) => {
               const isStore = item.hasDropdown;
@@ -243,7 +243,7 @@ export const Header: React.FC<HeaderProps> = ({
                     }}
                     className={`block text-sm py-1 ${
                       location.pathname === item.path 
-                        ? 'text-black font-semibold' 
+                        ? 'text-stone-900 font-semibold' 
                         : 'text-stone-700'
                     }`}
                   >
@@ -263,7 +263,7 @@ export const Header: React.FC<HeaderProps> = ({
                               navigate(`/store?category=${encodeURIComponent(cat)}`);
                             }
                           }}
-                          className="block text-left w-full text-sm text-stone-700 py-1"
+                          className="block text-left w-full text-sm text-stone-600 py-1 hover:text-stone-900"
                         >
                           {cat}
                         </button>

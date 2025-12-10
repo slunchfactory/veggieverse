@@ -275,7 +275,7 @@ export const StorePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
       {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
       {activeTab === 'ALL' && (
         <div className="w-full max-w-[1200px] mx-auto">
@@ -312,7 +312,7 @@ export const StorePage: React.FC = () => {
             </div>
 
             {/* 우측 - 추천 콘텐츠 영역 */}
-            <div className="lg:w-1/2 lg:h-full bg-[#D8D262] overflow-y-auto no-scrollbar">
+            <div className="lg:w-1/2 lg:h-full bg-[#E54B1A] overflow-y-auto no-scrollbar">
               
               {/* 모바일/태블릿: 가로형 카드 2열 그리드 */}
               <div className="lg:hidden p-4 sm:p-5">
@@ -335,7 +335,7 @@ export const StorePage: React.FC = () => {
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-2 left-2 z-10">
                           <div className="w-6 h-6 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3 h-3 text-[#D8D262]" />
+                            <Sparkles className="w-3 h-3 text-[#E54B1A]" />
                           </div>
                         </div>
                       </div>
@@ -396,11 +396,11 @@ export const StorePage: React.FC = () => {
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
                           <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
+                            <Sparkles className="w-3.5 h-3.5 text-[#E54B1A]" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-[#D8D262]">
+                      <div className="pt-3 bg-[#E54B1A]">
                         <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
                           {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
                         </span>
@@ -451,11 +451,11 @@ export const StorePage: React.FC = () => {
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
                           <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
+                            <Sparkles className="w-3.5 h-3.5 text-[#E54B1A]" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-[#D8D262]">
+                      <div className="pt-3 bg-[#E54B1A]">
                         <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
                           {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
                         </span>
@@ -615,7 +615,7 @@ export const StorePage: React.FC = () => {
                   className="flex items-center justify-between gap-8 px-4 py-2.5 border border-stone-300 bg-white text-[12px] text-stone-700 hover:border-stone-400 transition-colors min-w-[180px]"
                 >
                   <span className="flex items-center gap-1.5">
-                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
+                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3 text-[#E54B1A]" />}
                     {currentSortLabel}
                   </span>
                   <ChevronDown className={`w-4 h-4 text-stone-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
@@ -639,7 +639,7 @@ export const StorePage: React.FC = () => {
                               : 'text-stone-600 hover:bg-stone-50'
                           }`}
                         >
-                          {option.icon && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
+                          {option.icon && <Sparkles className="w-3 h-3 text-[#E54B1A]" />}
                           {option.label}
                         </button>
                       ))}
@@ -680,7 +680,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) =
     <div className="group cursor-pointer">
       {/* 썸네일 - 5:6 비율 */}
       <div 
-        className={`relative w-full mb-3 overflow-hidden ${isAlgorithmMode && product.isBest ? 'ring-2 ring-[#D8D262]' : ''}`}
+        className={`relative w-full mb-3 overflow-hidden ${isAlgorithmMode && product.isBest ? 'ring-2 ring-[#E54B1A]' : ''}`}
         style={{ 
           aspectRatio: '5/6',
           backgroundColor: '#54271d' 
@@ -693,7 +693,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) =
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-[#D8D262] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1">
+          <div className="absolute top-2 left-2 px-2 py-1 bg-[#E54B1A] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
             추천
           </div>

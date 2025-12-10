@@ -1,7 +1,9 @@
 import React, { useMemo, useState } from 'react';
 
-const AVATAR_SRC = '/veggieverse/watermelon-helmet.png';
+const AVATAR_IMG = '/veggieverse/slunch-character.png';
+const AVATAR_VIDEO = '/veggieverse/slunch-character-move.mp4';
 type TabKey = 'chat' | 'profile' | 'saved';
+
 
 export const ChatWidget: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,21 +21,23 @@ export const ChatWidget: React.FC = () => {
       {/* 트리거 */}
       <button
         aria-label="챗봇 열기"
-        className={`${positionClass} w-14 h-14 sm:w-16 sm:h-16 rounded-none shadow-xl bg-white border border-stone-200 hover:shadow-2xl transition-all flex items-center justify-center`}
+        className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-black border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden shadow-xl`}
         onClick={() => setIsOpen(prev => !prev)}
-        style={{ boxShadow: '0 12px 30px rgba(0,0,0,0.15)' }}
+        style={{ borderRadius: '24%' }}
       >
         {avatarError ? (
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-none bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-2xl">
+          <div className="w-full h-full flex items-center justify-center text-5xl bg-stone-100">
             🍉
           </div>
         ) : (
-          <img
-            src={AVATAR_SRC}
-            alt="챗봇"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-none object-cover"
+          <video
+            src={AVATAR_VIDEO}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
             onError={() => setAvatarError(true)}
-            draggable={false}
           />
         )}
       </button>
@@ -98,7 +102,7 @@ export const ChatWidget: React.FC = () => {
                 <label className="flex items-center gap-2 text-[12px] text-stone-500 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="accent-[#D8D262]"
+                    className="accent-[#3D9E3D]"
                     checked={contextTasteOn}
                     onChange={() => setContextTasteOn(!contextTasteOn)}
                   />
@@ -166,7 +170,7 @@ export const ChatWidget: React.FC = () => {
                 placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
                 className="flex-1 resize-none rounded-none border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
               />
-              <button className="px-4 py-2 bg-[#D8D262] text-black rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
+              <button className="px-4 py-2 bg-[#3D9E3D] text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
                 전송
               </button>
             </div>

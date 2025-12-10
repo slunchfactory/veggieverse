@@ -150,7 +150,7 @@ const RecipeDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
       {/* 히어로 이미지 */}
       <div className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-100 to-orange-100">
         <img
@@ -330,7 +330,7 @@ const RecipeDetailPage: React.FC = () => {
                   <div className="space-y-8">
                     {sampleRecipe.steps.map((step) => (
                       <div key={step.step} className="flex gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-none flex items-center justify-center font-bold">
+                        <div className="flex-shrink-0 w-10 h-10 text-white rounded-none flex items-center justify-center font-bold" style={{ backgroundColor: '#3D9E3D' }}>
                           {step.step}
                         </div>
                         <div className="flex-1">

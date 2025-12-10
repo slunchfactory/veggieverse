@@ -74,12 +74,12 @@ const popularRecipes: Recipe[] = [
 
 // 카테고리별 색상 매핑
 const categoryColors: Record<string, { text: string; bg: string }> = {
-  new: COLORS.lightLime,
-  lunch: COLORS.lincolnGreen,
-  dessert: COLORS.babyPink,
-  korean: COLORS.bloodRed,
-  drink: COLORS.darkCerulean,
-  date: COLORS.grape,
+  new: COLORS.green,
+  lunch: COLORS.orange,
+  dessert: COLORS.pink,
+  korean: COLORS.maroon,
+  drink: COLORS.purple,
+  date: COLORS.pink,
 };
 
 // 카테고리별 레시피 데이터
@@ -218,10 +218,10 @@ const RecipeCarousel: React.FC<{
               className="relative w-full aspect-square rounded-none overflow-hidden mb-3"
               style={{ 
                 backgroundColor: categoryColor ? categoryColor.bg : 
-                  idx % 4 === 0 ? COLORS.lightLime.bg :
-                  idx % 4 === 1 ? COLORS.grape.bg :
-                  idx % 4 === 2 ? COLORS.babyPink.bg :
-                  COLORS.darkCerulean.bg
+                  idx % 4 === 0 ? COLORS.green.bg :
+                  idx % 4 === 1 ? COLORS.purple.bg :
+                  idx % 4 === 2 ? COLORS.pink.bg :
+                  COLORS.orange.bg
               }}
             >
               <img
@@ -250,87 +250,161 @@ const RecipeCarousel: React.FC<{
   );
 };
 
-// 팬 카드 데이터
-const fanCardRecipes = [
-  { id: 1, image: '/vege_flot_img/fig.png', color: COLORS.bloodRed },
-  { id: 2, image: '/vege_flot_img/mango.png', color: COLORS.sinopia },
-  { id: 3, image: '/vege_flot_img/lettuce.png', color: COLORS.lightLime },
-  { id: 4, image: '/vege_flot_img/avocado.png', color: COLORS.lincolnGreen },
-  { id: 5, image: '/vege_flot_img/tomato.png', color: COLORS.babyPink },
-  { id: 6, image: '/vege_flot_img/blueberry.png', color: COLORS.darkCerulean },
-  { id: 7, image: '/vege_flot_img/carrot.png', color: COLORS.brilliantRose },
-  { id: 8, image: '/vege_flot_img/lemon.png', color: COLORS.goldenBrown },
-  { id: 9, image: '/vege_flot_img/grape.png', color: COLORS.grape },
+// 원형 캐러셀 데이터 (20개)
+const circularRecipes = [
+  { id: 1, image: '/vege_flot_img/fig.png', color: COLORS.maroon },
+  { id: 2, image: '/vege_flot_img/mango.png', color: COLORS.orange },
+  { id: 3, image: '/vege_flot_img/lettuce.png', color: COLORS.green },
+  { id: 4, image: '/vege_flot_img/avocado.png', color: COLORS.black },
+  { id: 5, image: '/vege_flot_img/tomato.png', color: COLORS.pink },
+  { id: 6, image: '/vege_flot_img/blueberry.png', color: COLORS.purple },
+  { id: 7, image: '/vege_flot_img/carrot.png', color: COLORS.orange },
+  { id: 8, image: '/vege_flot_img/lemon.png', color: COLORS.green },
+  { id: 9, image: '/vege_flot_img/grape.png', color: COLORS.purple },
+  { id: 10, image: '/vege_flot_img/mushroom.png', color: COLORS.maroon },
+  { id: 11, image: '/vege_flot_img/broccoli.png', color: COLORS.green },
+  { id: 12, image: '/vege_flot_img/corn.png', color: COLORS.orange },
+  { id: 13, image: '/vege_flot_img/eggplant.png', color: COLORS.purple },
+  { id: 14, image: '/vege_flot_img/cucumber.png', color: COLORS.green },
+  { id: 15, image: '/vege_flot_img/pepper.png', color: COLORS.orange },
+  { id: 16, image: '/vege_flot_img/spinach.png', color: COLORS.green },
+  { id: 17, image: '/vege_flot_img/onion.png', color: COLORS.pink },
+  { id: 18, image: '/vege_flot_img/garlic.png', color: COLORS.maroon },
+  { id: 19, image: '/vege_flot_img/ginger.png', color: COLORS.orange },
+  { id: 20, image: '/vege_flot_img/potato.png', color: COLORS.purple },
 ];
 
-// 팬 카드 히어로 컴포넌트
-const FanCardHero: React.FC = () => {
+// 원형 캐러셀 히어로 컴포넌트
+const CircularCarouselHero: React.FC = () => {
+  const [rotation, setRotation] = useState(0);
+  const totalCards = circularRecipes.length;
+  const anglePerCard = 360 / totalCards; // 각 카드 간 각도 (18도)
+
+  const slideLeft = () => {
+    setRotation(prev => prev + anglePerCard);
+  };
+
+  const slideRight = () => {
+    setRotation(prev => prev - anglePerCard);
+  };
+
+  // 원의 반지름 (구심점이 아래에 있음)
+  const radius = 300;
+
   return (
-    <section className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-white overflow-hidden">
-      <div className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex flex-col items-center justify-start pt-12 sm:pt-16 lg:pt-20 pb-0">
+    <section 
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden"
+      style={{ backgroundColor: COLORS.cream.bg }}
+    >
+      <div className="relative min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] flex flex-col items-center justify-start pt-12 sm:pt-16 lg:pt-20 pb-0">
         
         {/* 상단 텍스트 */}
-        <div className="text-center px-4 max-w-3xl mx-auto mb-8 sm:mb-12">
+        <div className="text-center px-4 max-w-3xl mx-auto mb-8 sm:mb-12 relative z-20">
           <div className="flex items-center justify-center gap-2 mb-4">
-            <div className="w-8 h-8 bg-stone-900 rounded flex items-center justify-center">
+            <div 
+              className="w-8 h-8 rounded flex items-center justify-center"
+              style={{ backgroundColor: COLORS.black.bg }}
+            >
               <span className="text-white text-lg">🥗</span>
             </div>
-            <span className="font-semibold text-stone-900">Recipe</span>
+            <span className="font-semibold" style={{ color: COLORS.black.bg }}>Recipe</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-6">
+          <h1 
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+            style={{ color: COLORS.black.bg }}
+          >
             Most Popular<br />Meals and Recipes
           </h1>
           <div className="flex items-center justify-center gap-4">
             <Link 
               to="/recipe/hall-of-fame" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white font-medium transition-all hover:bg-stone-800"
+              className="inline-flex items-center gap-2 px-6 py-3 font-medium transition-all hover:opacity-90"
+              style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text }}
             >
               <Trophy className="w-4 h-4" />
               <span>명예의 전당</span>
             </Link>
-            <button className="inline-flex items-center gap-2 px-6 py-3 border-2 border-stone-900 text-stone-900 font-medium transition-all hover:bg-stone-100">
+            <button 
+              className="inline-flex items-center gap-2 px-6 py-3 border-2 font-medium transition-all hover:opacity-80"
+              style={{ borderColor: COLORS.black.bg, color: COLORS.black.bg }}
+            >
               <Upload className="w-4 h-4" />
               <span>레시피 작성</span>
             </button>
           </div>
         </div>
 
-        {/* 팬 카드 배열 */}
-        <div className="relative w-full h-[280px] sm:h-[340px] lg:h-[400px] mt-auto">
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end justify-center">
-            {fanCardRecipes.map((recipe, idx) => {
-              const totalCards = fanCardRecipes.length;
-              const middleIdx = Math.floor(totalCards / 2);
-              const offset = idx - middleIdx;
+        {/* 원형 캐러셀 */}
+        <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[400px] mt-auto overflow-hidden">
+          {/* 좌측 버튼 */}
+          <button
+            onClick={slideLeft}
+            className="absolute left-4 sm:left-8 lg:left-16 top-1/3 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
+            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text }}
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+          
+          {/* 우측 버튼 */}
+          <button
+            onClick={slideRight}
+            className="absolute right-4 sm:right-8 lg:right-16 top-1/3 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
+            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text }}
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+
+          {/* 원형 배치 컨테이너 - 구심점이 화면 아래에 있음 */}
+          <div 
+            className="absolute left-1/2 -translate-x-1/2"
+            style={{ top: `${radius + 320}px` }}
+          >
+            {circularRecipes.map((recipe, idx) => {
+              // 각 카드의 각도 (위쪽 중앙이 -90도)
+              const rawAngle = idx * anglePerCard + rotation;
+              const cardAngle = (rawAngle - 90) * (Math.PI / 180);
               
-              // 회전 각도 (중앙에서 멀수록 더 기울어짐)
-              const rotation = offset * 8;
-              // 수평 위치
-              const translateX = offset * 90;
-              // 수직 위치 (중앙이 가장 높음)
-              const translateY = Math.abs(offset) * 25;
-              // z-index (중앙이 가장 앞)
-              const zIndex = totalCards - Math.abs(offset);
+              // 원형 좌표 계산
+              const x = Math.cos(cardAngle) * radius;
+              const y = Math.sin(cardAngle) * radius;
+              
+              // 카드가 구심점을 향하도록 회전 (원의 중심을 바라봄)
+              // 위쪽 중앙(0도)일 때 0도 회전, 좌우로 갈수록 기울어짐
+              const cardRotation = rawAngle;
+              
+              // 위쪽에 있는 카드일수록 앞으로 (y가 작을수록 z-index 높음)
+              const zIndex = Math.round(50 - (y + radius) / 15);
+              
+              // 중앙 카드는 더 크게 (최대 1.6배)
+              const distanceFromCenter = Math.abs(y + radius);
+              const scale = 0.4 + (1 - distanceFromCenter / (radius * 2)) * 1.2;
+              
+              // 아래쪽 카드는 살짝 투명하게
+              const opacity = Math.max(0.4, 1 - (y + radius) / (radius * 1.8));
+              
+              // 화면 밖으로 나간 카드 숨기기 (아래쪽만 숨김)
+              if (y > -50) return null;
               
               return (
                 <Link
                   key={recipe.id}
                   to={`/recipe/${recipe.id}`}
-                  className="absolute transition-all duration-300 hover:scale-105 hover:-translate-y-4"
+                  className="absolute transition-all duration-500 ease-out hover:scale-110"
                   style={{
-                    transform: `translateX(${translateX}px) translateY(${translateY}px) rotate(${rotation}deg)`,
+                    transform: `translate(${x}px, ${y}px) rotate(${cardRotation}deg) scale(${scale})`,
                     zIndex,
-                    transformOrigin: 'bottom center',
+                    opacity,
+                    transformOrigin: 'center center',
                   }}
                 >
                   <div 
-                    className="w-32 h-40 sm:w-40 sm:h-52 lg:w-48 lg:h-64 rounded-2xl overflow-hidden shadow-xl"
+                    className="w-28 h-36 sm:w-36 sm:h-44 lg:w-44 lg:h-56 rounded-2xl overflow-hidden shadow-xl -translate-x-1/2 -translate-y-1/2"
                     style={{ backgroundColor: recipe.color.bg }}
                   >
                     <img
                       src={recipe.image}
                       alt=""
-                      className="w-full h-full object-contain p-4 sm:p-6"
+                      className="w-full h-full object-contain p-3 sm:p-4"
                       draggable={false}
                     />
                   </div>
@@ -346,9 +420,9 @@ const FanCardHero: React.FC = () => {
 
 const RecipePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
-      {/* 인기 레시피 섹션 - 팬 카드 히어로 */}
-      <FanCardHero />
+    <div className="min-h-screen" style={{ backgroundColor: COLORS.cream.bg }}>
+      {/* 인기 레시피 섹션 - 원형 캐러셀 히어로 */}
+      <CircularCarouselHero />
 
       <div className="page-container py-10">
 

@@ -85,11 +85,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
       {/* 비건 테스트 토스트 배너 */}
       <div 
-        className={`fixed left-0 right-0 z-40 transition-transform duration-500 ease-out ${
-          showToast ? 'translate-y-0' : '-translate-y-full'
+        className={`fixed left-0 right-0 z-30 transition-all duration-150 ease-out ${
+          showToast ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
         style={{ backgroundColor: '#292624', top: `${headerOffset}px` }}
       >
@@ -105,7 +105,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             <Link 
               to="/"
               className="mt-1 px-5 py-1.5 text-[12px] font-medium rounded-none transition-colors hover:opacity-90"
-              style={{ backgroundColor: '#D8D262', color: '#292624' }}
+              style={{ backgroundColor: '#E54B1A', color: '#292624' }}
             >
               테스트 시작
             </Link>
@@ -125,10 +125,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       {/* 최소화된 플로팅 버튼 - 토스트가 닫혔을 때 표시 */}
       <button
         onClick={openToast}
-        className={`fixed right-6 z-40 px-3 py-2 rounded-none shadow-lg transition-all duration-300 flex items-center gap-2 ${
+        className={`fixed right-6 z-30 px-3 py-2 rounded-none shadow-lg transition-all duration-300 flex items-center gap-2 ${
           showToast ? 'opacity-0 pointer-events-none translate-x-4' : 'opacity-100 translate-x-0'
         }`}
-        style={{ backgroundColor: '#292624', top: `${headerOffset + 8}px` }}
+        style={{ backgroundColor: '#292624', top: `${headerOffset + 16}px` }}
       >
         <span className="text-lg">🥗</span>
         <span className="text-[11px] font-medium text-stone-300">비건 테스트</span>
@@ -150,10 +150,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* 텍스트 오버레이 - 하단 섹션과 동일한 여백 */}
               <div className="absolute bottom-20 left-0 w-full">
                 <div className="page-container px-6 sm:px-8 text-left">
-                  <p className="text-2xl md:text-3xl font-medium text-[#D8D262] leading-relaxed">
+                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] leading-relaxed">
                     {slide.title}
                   </p>
-                  <p className="text-2xl md:text-3xl font-medium text-[#D8D262]">
+                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A]">
                     {slide.subtitle}
                   </p>
                 </div>

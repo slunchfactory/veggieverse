@@ -29,38 +29,37 @@ const hallOfFameRecipes = [
 
 // 카드별 색상 배열
 const cardColors = [
-  COLORS.goldenBrown,  // 1등
-  COLORS.lightLime,    // 2등
-  COLORS.brilliantRose, // 3등
-  COLORS.grape,
-  COLORS.babyPink,
-  COLORS.darkCerulean,
-  COLORS.lincolnGreen,
-  COLORS.pastelMagenta,
-  COLORS.sinopia,
-  COLORS.bloodRed,
+  COLORS.orange,  // 1등
+  COLORS.green,   // 2등
+  COLORS.purple,  // 3등
+  COLORS.pink,
+  COLORS.maroon,
+  COLORS.black,
+  COLORS.green,
+  COLORS.purple,
+  COLORS.orange,
+  COLORS.pink,
 ];
 
 const RecipeHallOfFamePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
       {/* 히어로 헤더 */}
       <div 
         className="relative overflow-hidden py-16 sm:py-20"
-        style={{ backgroundColor: COLORS.goldenBrown.bg }}
+        style={{ backgroundColor: '#E54B1A' }}
       >
         {/* 배경 장식 */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 rounded-none blur-3xl" style={{ backgroundColor: COLORS.goldenBrown.text }} />
-          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-none blur-3xl" style={{ backgroundColor: COLORS.sinopia.text }} />
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-none blur-3xl bg-white" />
+          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-none blur-3xl bg-white" />
         </div>
         
         <div className="page-container relative">
           {/* 뒤로가기 */}
           <Link 
             to="/recipe" 
-            className="inline-flex items-center gap-2 mb-8 transition-colors hover:opacity-80"
-            style={{ color: COLORS.goldenBrown.text }}
+            className="inline-flex items-center gap-2 mb-8 transition-colors hover:opacity-80 text-white"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>레시피로 돌아가기</span>
@@ -69,21 +68,15 @@ const RecipeHallOfFamePage: React.FC = () => {
           {/* 타이틀 */}
           <div className="text-center">
             <div 
-              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg"
-              style={{ backgroundColor: COLORS.goldenBrown.text, color: COLORS.goldenBrown.bg }}
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg bg-white"
+              style={{ color: '#E54B1A' }}
             >
               <Trophy className="w-10 h-10" />
             </div>
-            <h1 
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4"
-              style={{ color: COLORS.goldenBrown.text }}
-            >
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-white">
               명예의 전당
             </h1>
-            <p 
-              className="text-lg sm:text-xl max-w-2xl mx-auto"
-              style={{ color: `${COLORS.goldenBrown.text}cc` }}
-            >
+            <p className="text-lg sm:text-xl max-w-2xl mx-auto text-white/80">
               슬런치 유저들이 가장 사랑한 Top 20 레시피를 만나보세요
             </p>
           </div>
