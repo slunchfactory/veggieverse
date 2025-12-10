@@ -11,6 +11,7 @@ import { VeganTestPage } from './pages/VeganTestPage';
 import RecipePage from './pages/RecipePage';
 import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
+import { ProductDetailPage } from './pages/ProductDetailPage';
 import { ChatWidget } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';
 
@@ -128,6 +129,7 @@ const AppContent: React.FC = () => {
         {/* 쇼핑몰 메인 */}
         <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
         <Route path="/store" element={<StorePage />} />
+        <Route path="/store/product/:productId" element={<ProductDetailPage />} />
         <Route path="/brand" element={<BrandPage />} />
         <Route path="/newsletter" element={<NewsletterPage />} />
         <Route path="/community" element={<CommunityPage />} />

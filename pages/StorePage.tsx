@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Sparkles, ChevronDown, Check, Heart, X, ExternalLink, Minus, Plus, ShoppingCart } from 'lucide-react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
 
 // 상품 타입 정의
 interface Product {
@@ -173,7 +173,7 @@ export const StorePage: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('ALL');
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const navigate = useNavigate();
   
   // 하트(좋아요) 상태 관리
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
@@ -703,21 +703,13 @@ export const StorePage: React.FC = () => {
                   key={product.id} 
                   product={product} 
                   isAlgorithmMode={sortType === 'algorithm'} 
-                  onClick={() => setSelectedProduct(product)}
+                  onClick={() => navigate(`/store/product/${product.id}`)}
                 />
               ))}
             </div>
           </div>
         </div>
       </div>
-
-      {/* 상품 상세 모달 */}
-      {selectedProduct && (
-        <ProductDetailModal 
-          product={selectedProduct} 
-          onClose={() => setSelectedProduct(null)} 
-        />
-      )}
     </div>
   );
 };
@@ -788,153 +780,3 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
   );
 };
 
-// 상품 상세 모달
-interface ProductDetailModalProps {
-  product: Product | null;
-  onClose: () => void;
-}
-
-const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose }) => {
-  const [quantity, setQuantity] = useState(1);
-
-  if (!product) return null;
-
-  const totalPrice = product.price * quantity;
-
-  const handlePurchase = () => {
-    if (product.externalUrl) {
-      window.open(product.externalUrl, '_blank');
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* 배경 오버레이 */}
-      <div 
-        className="absolute inset-0 bg-black/60"
-        onClick={onClose}
-      />
-      
-      {/* 모달 컨텐츠 */}
-      <div className="relative bg-white w-full max-w-[900px] max-h-[90vh] overflow-y-auto mx-4">
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 hover:bg-stone-100 transition-colors"
-        >
-          <X className="w-5 h-5 text-stone-600" />
-        </button>
-
-        <div className="flex flex-col md:flex-row">
-          {/* 좌측 - 상품 이미지 */}
-          <div className="md:w-1/2 bg-[#54271d] aspect-square flex items-center justify-center relative">
-            <span className="text-white/30 text-lg">IMG</span>
-            {product.soldOut && (
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                <span className="text-white text-xl font-medium">Sold out</span>
-              </div>
-            )}
-          </div>
-          
-          {/* 우측 - 상품 정보 */}
-          <div className="md:w-1/2 p-6 md:p-8">
-            {/* 상품명 */}
-            <h2 className="text-xl font-bold text-stone-900 mb-2">
-              {product.name}
-            </h2>
-            
-            {/* 가격 */}
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-2xl font-bold text-stone-900">
-                {product.price.toLocaleString()}원
-              </span>
-              {product.originalPrice && (
-                <span className="text-lg text-stone-400 line-through">
-                  {product.originalPrice.toLocaleString()}원
-                </span>
-              )}
-            </div>
-            
-            {/* 설명 */}
-            {product.description && (
-              <p className="text-sm text-stone-600 mb-6 leading-relaxed">
-                {product.description}
-              </p>
-            )}
-            
-            {/* 스펙트럼 & 카테고리 */}
-            <div className="flex gap-2 mb-6">
-              <span className="px-3 py-1 bg-stone-100 text-stone-600 text-xs">
-                {product.spectrum}
-              </span>
-              <span className="px-3 py-1 bg-stone-100 text-stone-600 text-xs">
-                {product.category}
-              </span>
-            </div>
-            
-            {/* 구분선 */}
-            <div className="border-t border-stone-200 my-6" />
-            
-            {/* 수량 선택 */}
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm text-stone-600">수량</span>
-              <div className="flex items-center border border-stone-300">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-3 py-2 hover:bg-stone-100 transition-colors"
-                  disabled={product.soldOut}
-                >
-                  <Minus className="w-4 h-4 text-stone-600" />
-                </button>
-                <span className="px-4 py-2 text-sm font-medium">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(quantity + 1)}
-                  className="px-3 py-2 hover:bg-stone-100 transition-colors"
-                  disabled={product.soldOut}
-                >
-                  <Plus className="w-4 h-4 text-stone-600" />
-                </button>
-              </div>
-            </div>
-            
-            {/* 총 금액 */}
-            <div className="flex items-center justify-between mb-6">
-              <span className="text-sm text-stone-600">총 금액</span>
-              <span className="text-xl font-bold text-stone-900">
-                {totalPrice.toLocaleString()}원
-              </span>
-            </div>
-            
-            {/* 구매 버튼 */}
-            <div className="flex gap-3">
-              <button
-                onClick={handlePurchase}
-                disabled={product.soldOut}
-                className={`flex-1 py-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
-                  product.soldOut
-                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                    : 'bg-stone-900 text-white hover:bg-stone-800'
-                }`}
-              >
-                <ShoppingCart className="w-4 h-4" />
-                {product.soldOut ? '품절' : '구매하기'}
-              </button>
-              <button
-                onClick={handlePurchase}
-                className="px-4 py-4 border border-stone-300 text-stone-600 hover:bg-stone-50 transition-colors flex items-center gap-2"
-              >
-                <ExternalLink className="w-4 h-4" />
-                <span className="text-sm">공식몰</span>
-              </button>
-            </div>
-            
-            {/* 안내 문구 */}
-            <p className="mt-4 text-xs text-stone-400 text-center">
-              구매하기 클릭 시 슬런치 공식 쇼핑몰로 이동합니다
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
