@@ -53,7 +53,7 @@ export const ChatWidget: React.FC = () => {
               </div>
             ) : (
               <img
-                src={AVATAR_SRC}
+                src={AVATAR_IMG}
                 alt="챗봇"
                 className="w-10 h-10 rounded-none object-cover"
                 onError={() => setAvatarError(true)}
