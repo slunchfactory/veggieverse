@@ -21,7 +21,7 @@ export const ChatWidget: React.FC = () => {
       {/* 트리거 */}
       <button
         aria-label="챗봇 열기"
-        className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-black border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden shadow-xl`}
+        className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-transparent border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden`}
         onClick={() => setIsOpen(prev => !prev)}
         style={{ borderRadius: '24%' }}
       >
