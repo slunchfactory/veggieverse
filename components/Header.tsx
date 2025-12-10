@@ -41,29 +41,21 @@ export const Header: React.FC<HeaderProps> = ({
   const primaryCategories = ['ALL', 'NEW'];
   const secondaryCategories = ['샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
 
-  // 블렌드 효과 스타일 - 흰색 텍스트 + difference = 밝은 배경에서 검은색, 어두운 배경에서 흰색
-  const blendStyle = {
-    color: '#ffffff',
-    mixBlendMode: 'difference' as const,
-  };
-
   return (
     <header
       className="fixed left-0 right-0 z-50"
-      style={{ top: offsetTop, backgroundColor: 'transparent' }}
+      style={{ top: offsetTop, backgroundColor: 'transparent', mixBlendMode: 'difference' }}
     >
       <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
-        {/* 왼쪽 로고 - mix-blend-mode로 배경에 따라 반전 */}
+        {/* 왼쪽 로고 */}
         <Link 
           to="/shop" 
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
-          style={blendStyle}
         >
           <img 
             src={`${import.meta.env.BASE_URL}logo.png`}
             alt="SLUNCH FACTORY" 
             className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
-            style={{ filter: 'invert(1)' }}
           />
         </Link>
         
@@ -77,8 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className="text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1"
-                  style={blendStyle}
+                  className="text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 text-white"
                   onClick={() => setOpenMenu(null)}
                 >
                   {item.name}
@@ -93,8 +84,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className="text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1"
-                  style={blendStyle}
+                  className="text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 text-white"
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
@@ -107,7 +97,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {isStore && openMenu === 'store' && (
                   <div 
                     className="fixed left-0 right-0 bg-white border-b border-stone-200 shadow-[0_20px_40px_-24px_rgba(0,0,0,0.25)] z-50"
-                    style={{ top: 64 + offsetTop }}
+                    style={{ top: 64 + offsetTop, mixBlendMode: 'normal' }}
                   >
                     <div className="max-w-[900px] mx-auto px-6 py-5">
                       <div className="flex flex-wrap gap-8 text-sm text-stone-800">
@@ -159,20 +149,16 @@ export const Header: React.FC<HeaderProps> = ({
         
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <span 
-            className="text-xs sm:text-sm whitespace-nowrap font-bold"
-            style={blendStyle}
-          >KR</span>
+          <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-white">KR</span>
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container">
             <button 
               onClick={onProfileMenuToggle}
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-              style={blendStyle}
             >
               {userProfile.profileImage ? (
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-stone-300 shadow-sm">
+                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-white shadow-sm">
                   <img 
                     src={userProfile.profileImage} 
                     alt="My Profile" 
@@ -180,14 +166,14 @@ export const Header: React.FC<HeaderProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center" style={{ mixBlendMode: 'normal' }}>
-                  <User className="w-4 h-4 text-stone-600" />
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
+                  <User className="w-4 h-4 text-stone-900" />
                 </div>
               )}
             </button>
             
             {showProfileMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-none shadow-lg border border-stone-200 py-2 z-50">
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-none shadow-lg border border-stone-200 py-2 z-50" style={{ mixBlendMode: 'normal' }}>
                 {userProfile.profileImage ? (
                   <>
                     <div className="px-4 py-2 border-b border-stone-100">
@@ -219,20 +205,18 @@ export const Header: React.FC<HeaderProps> = ({
           
           <Link 
             to="/cart" 
-            className="transition-colors relative"
-            style={blendStyle}
+            className="transition-colors relative text-white"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center" style={{ mixBlendMode: 'normal' }}>0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center">0</span>
           </Link>
-          <button className="transition-colors" style={blendStyle}>
+          <button className="transition-colors text-white">
             <Search className="w-5 h-5" />
           </button>
           
           {/* 모바일 메뉴 버튼 */}
           <button 
-            className="lg:hidden transition-colors"
-            style={blendStyle}
+            className="lg:hidden transition-colors text-white"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <Menu className="w-6 h-6" />
@@ -242,7 +226,7 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-sm">
+        <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-sm" style={{ mixBlendMode: 'normal' }}>
           <div className="px-4 py-3 space-y-2">
             {navItems.map((item) => {
               const isStore = item.hasDropdown;
