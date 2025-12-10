@@ -205,7 +205,7 @@ const RecipeCarousel: React.FC<{
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex gap-5 overflow-x-auto no-scrollbar pb-4"
+        className="flex gap-5 overflow-x-auto no-scrollbar pb-4 w-full"
         style={{ scrollSnapType: 'x mandatory' }}
       >
         {recipes.map((recipe, idx) => (
@@ -298,7 +298,7 @@ const CircularCarouselHero: React.FC = () => {
 
   return (
     <section 
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden"
+      className="relative w-full overflow-hidden"
       style={{ backgroundColor: '#ffffff' }}
     >
       <div className="relative min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] flex flex-col items-center justify-start pt-12 sm:pt-16 lg:pt-20 pb-0">
@@ -439,7 +439,7 @@ const CircularCarouselHero: React.FC = () => {
 
 const RecipePage: React.FC = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
       {/* 인기 레시피 섹션 - 원형 캐러셀 히어로 */}
       <CircularCarouselHero />
 
