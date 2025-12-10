@@ -1,9 +1,25 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
+import { Sparkles, ChevronDown, Check, Heart, X, ExternalLink, Minus, Plus, ShoppingCart } from 'lucide-react';
 
-// 샘플 상품 데이터
-const PRODUCTS = [
+// 상품 타입 정의
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  isBest: boolean;
+  popularity: number;
+  cuisine: string;
+  spectrum: string;
+  category: string;
+  description?: string;
+  externalUrl?: string;
+  soldOut?: boolean;
+}
+
+// 슬런치 공식 사이트 기반 상품 데이터
+const PRODUCTS: Product[] = [
   {
     id: 1,
     name: '슬런치 볶음김치 (4캔)',
@@ -13,6 +29,8 @@ const PRODUCTS = [
     cuisine: '한식',
     spectrum: '비건',
     category: '신메뉴',
+    description: '젓갈이 들어가지 않은 비건 볶음김치 캔 160g x 4개',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 2,
@@ -23,76 +41,104 @@ const PRODUCTS = [
     cuisine: '한식',
     spectrum: '비건',
     category: '신메뉴',
+    description: '젓갈이 들어가지 않은 비건 볶음김치 캔 160g x 3개',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 3,
     name: '슬런치 김치볶음밥 밀키트',
-    price: 15000,
+    price: 12000,
+    originalPrice: 15000,
     isBest: true,
     popularity: 92,
     cuisine: '한식',
-    spectrum: '플렉시',
+    spectrum: '비건',
     category: '밀키트',
+    description: '젓갈이 들어가지 않은 비건 캔김치로 구성한 김치볶음밥 밀키트 (2인분)',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 4,
     name: '슬런치 시금치 뇨끼',
     price: 18000,
+    originalPrice: 24000,
     isBest: true,
     popularity: 85,
     cuisine: '양식',
-    spectrum: '락토',
-    category: '수프•메인요리',
+    spectrum: '비건',
+    category: '수프와 메인요리',
+    description: '계란, 우유, 버터를 넣지 않은 비건 뇨끼',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 5,
     name: '슬런치 블루베리 타르트',
     price: 39000,
+    originalPrice: 44000,
     isBest: false,
     popularity: 78,
     cuisine: '디저트',
     spectrum: '비건',
     category: '베이커리',
+    description: '슬런치 팩토리 프리미엄 블루베리 타르트',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 6,
     name: '슬런치 자두 타르트',
     price: 39000,
+    originalPrice: 44000,
     isBest: true,
     popularity: 82,
     cuisine: '디저트',
     spectrum: '비건',
     category: '베이커리',
+    description: '상큼한 자두를 올린 프리미엄 비건 타르트',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 7,
     name: '슬런치 복숭아 타르트',
     price: 32000,
+    originalPrice: 35000,
     isBest: true,
     popularity: 80,
     cuisine: '디저트',
-    spectrum: '플렉시',
+    spectrum: '비건',
     category: '베이커리',
+    description: '달콤한 복숭아를 올린 비건 디저트',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 8,
     name: '슬런치 잠봉뵈르',
     price: 8000,
+    originalPrice: 12000,
     isBest: true,
     popularity: 90,
     cuisine: '양식',
-    spectrum: '플렉시',
+    spectrum: '비건',
     category: '샐러드',
+    description: '슬런치 팩토리의 베스트 셀러',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 9,
     name: '슬런치 비건 마요네즈',
     price: 12000,
-    isBest: false,
+    isBest: true,
     popularity: 70,
     cuisine: '양식',
     spectrum: '비건',
-    category: '양념•오일',
+    category: '소스와 오일',
+    description: '계란 없이 만든 고소한 비건 마요네즈',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 10,
@@ -127,6 +173,7 @@ export const StorePage: React.FC = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('ALL');
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   
   // 하트(좋아요) 상태 관리
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
@@ -652,32 +699,38 @@ export const StorePage: React.FC = () => {
             {/* 상품 그리드 */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10">
               {sortedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} isAlgorithmMode={sortType === 'algorithm'} />
+                <ProductCard 
+                  key={product.id} 
+                  product={product} 
+                  isAlgorithmMode={sortType === 'algorithm'} 
+                  onClick={() => setSelectedProduct(product)}
+                />
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* 상품 상세 모달 */}
+      {selectedProduct && (
+        <ProductDetailModal 
+          product={selectedProduct} 
+          onClose={() => setSelectedProduct(null)} 
+        />
+      )}
     </div>
   );
 };
 
 interface ProductCardProps {
-  product: {
-    id: number;
-    name: string;
-    price: number;
-    isBest: boolean;
-    popularity: number;
-    cuisine: string;
-    spectrum: string;
-  };
+  product: Product;
   isAlgorithmMode?: boolean;
+  onClick: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onClick }) => {
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer" onClick={onClick}>
       {/* 썸네일 - 5:6 비율 */}
       <div 
         className={`relative w-full mb-3 overflow-hidden ${isAlgorithmMode && product.isBest ? 'ring-2 ring-[#E54B1A]' : ''}`}
@@ -691,8 +744,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) =
           <span className="text-white/30 text-xs">IMG</span>
         </div>
         
+        {/* Sold Out 오버레이 */}
+        {product.soldOut && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+            <span className="text-white text-sm font-medium">Sold out</span>
+          </div>
+        )}
+        
         {/* 알고리즘 추천 뱃지 */}
-        {isAlgorithmMode && product.isBest && (
+        {isAlgorithmMode && product.isBest && !product.soldOut && (
           <div className="absolute top-2 left-2 px-2 py-1 bg-[#E54B1A] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
             추천
@@ -703,19 +763,177 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) =
       {/* 상품 정보 */}
       <div>
         {/* 상품명 */}
-        <h3 className="text-[13px] text-stone-700 mb-1 leading-snug">
+        <h3 className="text-[13px] text-stone-700 mb-1 leading-snug group-hover:text-stone-900 group-hover:underline">
           {product.name}
         </h3>
         
         {/* 가격 */}
-        <p className="text-[13px] text-stone-800">
-          KRW {product.price.toLocaleString()}
-        </p>
+        <div className="flex items-center gap-2">
+          <p className="text-[13px] text-stone-800 font-medium">
+            KRW {product.price.toLocaleString()}
+          </p>
+          {product.originalPrice && (
+            <p className="text-[11px] text-stone-400 line-through">
+              {product.originalPrice.toLocaleString()}
+            </p>
+          )}
+        </div>
         
         {/* BEST 뱃지 */}
         {product.isBest && !isAlgorithmMode && (
           <p className="text-[10px] text-stone-400 mt-1 tracking-wide">BEST</p>
         )}
+      </div>
+    </div>
+  );
+};
+
+// 상품 상세 모달
+interface ProductDetailModalProps {
+  product: Product | null;
+  onClose: () => void;
+}
+
+const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose }) => {
+  const [quantity, setQuantity] = useState(1);
+
+  if (!product) return null;
+
+  const totalPrice = product.price * quantity;
+
+  const handlePurchase = () => {
+    if (product.externalUrl) {
+      window.open(product.externalUrl, '_blank');
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* 배경 오버레이 */}
+      <div 
+        className="absolute inset-0 bg-black/60"
+        onClick={onClose}
+      />
+      
+      {/* 모달 컨텐츠 */}
+      <div className="relative bg-white w-full max-w-[900px] max-h-[90vh] overflow-y-auto mx-4">
+        {/* 닫기 버튼 */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-10 p-2 hover:bg-stone-100 transition-colors"
+        >
+          <X className="w-5 h-5 text-stone-600" />
+        </button>
+
+        <div className="flex flex-col md:flex-row">
+          {/* 좌측 - 상품 이미지 */}
+          <div className="md:w-1/2 bg-[#54271d] aspect-square flex items-center justify-center relative">
+            <span className="text-white/30 text-lg">IMG</span>
+            {product.soldOut && (
+              <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <span className="text-white text-xl font-medium">Sold out</span>
+              </div>
+            )}
+          </div>
+          
+          {/* 우측 - 상품 정보 */}
+          <div className="md:w-1/2 p-6 md:p-8">
+            {/* 상품명 */}
+            <h2 className="text-xl font-bold text-stone-900 mb-2">
+              {product.name}
+            </h2>
+            
+            {/* 가격 */}
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-2xl font-bold text-stone-900">
+                {product.price.toLocaleString()}원
+              </span>
+              {product.originalPrice && (
+                <span className="text-lg text-stone-400 line-through">
+                  {product.originalPrice.toLocaleString()}원
+                </span>
+              )}
+            </div>
+            
+            {/* 설명 */}
+            {product.description && (
+              <p className="text-sm text-stone-600 mb-6 leading-relaxed">
+                {product.description}
+              </p>
+            )}
+            
+            {/* 스펙트럼 & 카테고리 */}
+            <div className="flex gap-2 mb-6">
+              <span className="px-3 py-1 bg-stone-100 text-stone-600 text-xs">
+                {product.spectrum}
+              </span>
+              <span className="px-3 py-1 bg-stone-100 text-stone-600 text-xs">
+                {product.category}
+              </span>
+            </div>
+            
+            {/* 구분선 */}
+            <div className="border-t border-stone-200 my-6" />
+            
+            {/* 수량 선택 */}
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm text-stone-600">수량</span>
+              <div className="flex items-center border border-stone-300">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-3 py-2 hover:bg-stone-100 transition-colors"
+                  disabled={product.soldOut}
+                >
+                  <Minus className="w-4 h-4 text-stone-600" />
+                </button>
+                <span className="px-4 py-2 text-sm font-medium">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-3 py-2 hover:bg-stone-100 transition-colors"
+                  disabled={product.soldOut}
+                >
+                  <Plus className="w-4 h-4 text-stone-600" />
+                </button>
+              </div>
+            </div>
+            
+            {/* 총 금액 */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="text-sm text-stone-600">총 금액</span>
+              <span className="text-xl font-bold text-stone-900">
+                {totalPrice.toLocaleString()}원
+              </span>
+            </div>
+            
+            {/* 구매 버튼 */}
+            <div className="flex gap-3">
+              <button
+                onClick={handlePurchase}
+                disabled={product.soldOut}
+                className={`flex-1 py-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 ${
+                  product.soldOut
+                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                    : 'bg-stone-900 text-white hover:bg-stone-800'
+                }`}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                {product.soldOut ? '품절' : '구매하기'}
+              </button>
+              <button
+                onClick={handlePurchase}
+                className="px-4 py-4 border border-stone-300 text-stone-600 hover:bg-stone-50 transition-colors flex items-center gap-2"
+              >
+                <ExternalLink className="w-4 h-4" />
+                <span className="text-sm">공식몰</span>
+              </button>
+            </div>
+            
+            {/* 안내 문구 */}
+            <p className="mt-4 text-xs text-stone-400 text-center">
+              구매하기 클릭 시 슬런치 공식 쇼핑몰로 이동합니다
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
