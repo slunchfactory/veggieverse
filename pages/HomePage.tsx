@@ -8,21 +8,25 @@ const HERO_SLIDES = [
     id: 1,
     title: '비건 채식주의자들을 위한',
     subtitle: '레스토랑, 슬런치 팩토리',
+    image: 'main/main-banner-1.png',
   },
   {
     id: 2,
     title: 'From Nature with Slow',
     subtitle: '자연에서 온 건강한 비건 푸드',
+    image: 'main/main-banner-2.png',
   },
   {
     id: 3,
     title: '비건 밀키트 출시',
     subtitle: '집에서도 슬런치의 맛을 즐기세요',
+    image: 'main/main-banner-3.png',
   },
   {
     id: 4,
     title: 'Slow Lunch',
     subtitle: 'Full of Abundance',
+    image: 'main/main-banner-4.png',
   },
 ];
 
@@ -147,13 +151,19 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               className="min-w-full h-full relative flex-shrink-0"
               style={{ backgroundColor: '#54271d' }}
             >
+              {/* 배경 이미지 */}
+              <img 
+                src={`${import.meta.env.BASE_URL}${slide.image}`}
+                alt={slide.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
               {/* 텍스트 오버레이 - 하단 섹션과 동일한 여백 */}
               <div className="absolute bottom-20 left-0 w-full">
                 <div className="page-container px-6 sm:px-8 text-left">
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] leading-relaxed">
+                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] leading-relaxed drop-shadow-lg">
                     {slide.title}
                   </p>
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A]">
+                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] drop-shadow-lg">
                     {slide.subtitle}
                   </p>
                 </div>
