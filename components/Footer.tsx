@@ -3,22 +3,22 @@ import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#292624] text-white" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+    <footer className="bg-[#292624] text-white overflow-x-hidden" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       {/* 상단 섹션 - 가로로 퍼진 레이아웃 */}
-      <div className="max-w-[1400px] mx-auto px-8 py-8">
-        <div className="flex items-start gap-8">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 overflow-x-hidden">
+        <div className="flex flex-col sm:flex-row items-start gap-6 sm:gap-8">
           {/* 로고 */}
-          <div className="w-40 flex-shrink-0">
+          <div className="w-32 sm:w-40 flex-shrink-0">
             <img 
               src={`${import.meta.env.BASE_URL}common/logo_footer.png`}
               alt="SLUNCH FACTORY" 
-              className="h-8"
+              className="h-6 sm:h-8"
               style={{ filter: 'brightness(0) saturate(100%) invert(83%) sepia(47%) saturate(370%) hue-rotate(11deg) brightness(97%) contrast(89%)' }}
             />
           </div>
           
           {/* 링크 그룹들 */}
-          <div className="flex gap-16 flex-1">
+          <div className="flex flex-wrap gap-6 sm:gap-12 lg:gap-16 flex-1">
             {/* 정책 */}
             <div className="space-y-1">
               <Link to="/terms" className="block text-[11px] text-stone-400 hover:text-white">Terms and Conditions</Link>
@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
             </div>
             
             {/* 서포트 */}
-            <div>
+            <div className="sm:ml-auto">
               <p className="text-[11px] text-stone-300 font-medium mb-1">SUPPORT</p>
               <p className="text-[11px] text-stone-500 leading-snug">We are always open to any form of collaboration.</p>
               <p className="text-[11px] text-stone-500 mb-2">Feel free to Contact us!</p>
@@ -49,9 +49,9 @@ export const Footer: React.FC = () => {
       </div>
       
       {/* 하단 회사 정보 - 한 줄로 */}
-      <div className="border-t border-stone-700">
-        <div className="max-w-[1400px] mx-auto px-8 py-4">
-          <p className="text-[10px] text-stone-600 leading-relaxed">
+      <div className="border-t border-stone-700 overflow-x-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <p className="text-[10px] text-stone-600 leading-relaxed break-keep">
             대표자 | 이현아 · 상호명 | 주식회사 슬런치팩토리 · 사업자번호 | 288-86-02863 · 통신판매업신고번호 | 제2023-경기부천-0868호 · md@slunch.co.kr · 주소 | 경기 부천시 소사로160번길 23-8 · 고객센터 | 032-224-6525 · *유선 상담을 진행하지 않습니다. 카카오톡 채널로 문의해 주세요.
           </p>
         </div>

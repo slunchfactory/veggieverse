@@ -17,7 +17,11 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  max-width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+html {
   overflow-x: hidden;
 }
 
@@ -28,6 +32,9 @@ body {
   background: #ffffff;
   color: #1A1A1A;
   overflow-y: auto;
+  overflow-x: hidden !important;
+  position: relative;
+  width: 100%;
 }
 
 /* 모든 버튼 모서리를 직각으로 통일 (특수 버튼 제외) */
@@ -230,4 +237,13 @@ a:focus-visible {
 /* 메인 콘텐츠 isolation - blend가 올바르게 작동하도록 */
 #root > div {
   isolation: isolate;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* 모든 페이지 컨테이너에 overflow-x 방지 */
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
