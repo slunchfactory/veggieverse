@@ -74,14 +74,16 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const [showToast, setShowToast] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [translateX, setTranslateX] = useState(0);
+  const [currentX, setCurrentX] = useState(0);
 
+  // 드래그 중이 아닐 때만 자동 슬라이드
   useEffect(() => {
+    if (isDragging) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [isDragging]);
 
   const dismissToast = () => {
     setShowToast(false);
@@ -93,30 +95,37 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
 
   // 드래그 핸들러
   const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    setIsDragging(true);
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    setIsDragging(true);
     setStartX(clientX);
+    setCurrentX(clientX);
   };
 
   const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
     if (!isDragging) return;
+    e.preventDefault();
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const diff = clientX - startX;
-    setTranslateX(diff);
+    setCurrentX(clientX);
   };
 
   const handleDragEnd = () => {
     if (!isDragging) return;
-    setIsDragging(false);
     
-    // 50px 이상 드래그하면 슬라이드 변경
-    if (translateX > 50) {
+    const diff = currentX - startX;
+    
+    // 80px 이상 드래그하면 슬라이드 변경
+    if (diff > 80) {
       setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
-    } else if (translateX < -50) {
+    } else if (diff < -80) {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
     }
-    setTranslateX(0);
+    
+    setIsDragging(false);
+    setStartX(0);
+    setCurrentX(0);
   };
+
+  const dragOffset = isDragging ? currentX - startX : 0;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
@@ -182,7 +191,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         {/* 슬라이드 컨테이너 */}
         <div 
           className={`flex h-full ${isDragging ? '' : 'transition-transform duration-700 ease-in-out'}`}
-          style={{ transform: `translateX(calc(-${currentSlide * 100}% + ${translateX}px))` }}
+          style={{ transform: `translateX(calc(-${currentSlide * 100}% + ${dragOffset}px))` }}
         >
           {HERO_SLIDES.map((slide, index) => (
             <div 
@@ -194,7 +203,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               <img 
                 src={`${import.meta.env.BASE_URL}${slide.image}`}
                 alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                draggable={false}
               />
               {/* 텍스트 오버레이 - 하단 섹션과 동일한 여백 */}
               <div className="absolute bottom-20 left-0 w-full">
