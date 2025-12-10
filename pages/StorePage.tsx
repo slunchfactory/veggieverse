@@ -327,9 +327,9 @@ export const StorePage: React.FC = () => {
       {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
       {activeTab === 'ALL' && (
         <div className="w-full max-w-[1200px] mx-auto">
-          <div className="flex flex-col lg:flex-row" style={{ height: 'calc(100vh - 96px)', minHeight: '600px', maxHeight: '900px' }}>
-            {/* 좌측 - 세로형 영상 영역 (전체 높이) */}
-            <div className="lg:w-1/2 h-[50vh] lg:h-full flex-shrink-0">
+          <div className="flex flex-col lg:flex-row lg:items-start">
+            {/* 좌측 - 세로형 영상 영역 (sticky로 고정) */}
+            <div className="lg:w-1/2 h-[50vh] lg:h-screen lg:sticky lg:top-24 flex-shrink-0">
               <div className="relative w-full h-full overflow-hidden bg-stone-900">
                 {/* YouTube 영상 자동재생 */}
                 <iframe
@@ -352,7 +352,7 @@ export const StorePage: React.FC = () => {
             </div>
 
             {/* 우측 - 추천 콘텐츠 영역 */}
-            <div className="lg:w-1/2 lg:h-full bg-[#E54B1A] overflow-y-auto no-scrollbar">
+            <div className="lg:w-1/2 bg-[#E54B1A] flex-shrink-0">
               
               {/* 모바일/태블릿: 가로형 카드 2열 그리드 */}
               <div className="lg:hidden p-4 sm:p-5">
