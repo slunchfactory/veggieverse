@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
         >
           <img 
-            src={`${import.meta.env.BASE_URL}logo.png`}
+            src={`${import.meta.env.BASE_URL}common/logo.png`}
             alt="SLUNCH FACTORY" 
             className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
           />

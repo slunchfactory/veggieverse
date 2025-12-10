@@ -10,7 +10,7 @@ export const Footer: React.FC = () => {
           {/* 로고 */}
           <div className="w-40 flex-shrink-0">
             <img 
-              src={`${import.meta.env.BASE_URL}logo_footer.png`}
+              src={`${import.meta.env.BASE_URL}common/logo_footer.png`}
               alt="SLUNCH FACTORY" 
               className="h-8"
               style={{ filter: 'brightness(0) saturate(100%) invert(83%) sepia(47%) saturate(370%) hue-rotate(11deg) brightness(97%) contrast(89%)' }}

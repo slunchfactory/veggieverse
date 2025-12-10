@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-const AVATAR_IMG = '/veggieverse/slunch-character.png';
-const AVATAR_VIDEO = '/veggieverse/slunch-character-move.mp4';
+const AVATAR_IMG = '/veggieverse/characters/slunch-character.png';
+const AVATAR_VIDEO = '/veggieverse/characters/slunch-character-move.mp4';
 type TabKey = 'chat' | 'profile' | 'saved';
 
 

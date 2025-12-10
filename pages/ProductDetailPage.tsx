@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, Minus, Plus, ShoppingCart, Heart } from 'lucide-react';
+import { getProductThumbnailImages } from '../utils/productImages';
 
 // 상품 타입 정의
 interface Product {
@@ -151,6 +152,7 @@ export const ProductDetailPage: React.FC = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const product = PRODUCTS.find(p => p.id === Number(productId));
+  const images = product ? getProductThumbnailImages(product.id) : [];
 
   if (!product) {
     return (
@@ -195,12 +197,23 @@ export const ProductDetailPage: React.FC = () => {
             <div 
               className="w-full aspect-square bg-[#54271d] mb-4 relative overflow-hidden"
             >
-              {product.images && product.images.length > 0 ? (
-                <img 
-                  src={product.images[selectedImageIndex]} 
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+              {images.length > 0 ? (
+                <div className="relative w-full h-full">
+                  {images.map((img, idx) => (
+                    <img 
+                      key={idx}
+                      src={img} 
+                      alt={product.name}
+                      className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                        idx === selectedImageIndex ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  ))}
+                </div>
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="text-white/30 text-lg">IMG</span>
@@ -209,24 +222,49 @@ export const ProductDetailPage: React.FC = () => {
               
               {/* Sold Out 오버레이 */}
               {product.soldOut && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
                   <span className="text-white text-2xl font-medium">Sold out</span>
+                </div>
+              )}
+
+              {/* 이미지 인디케이터 (여러 이미지 있을 때) */}
+              {images.length > 1 && (
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setSelectedImageIndex(idx)}
+                      className={`w-1.5 h-1.5 rounded-full transition-all ${
+                        idx === selectedImageIndex 
+                          ? 'bg-white w-4' 
+                          : 'bg-white/50 hover:bg-white/75'
+                      }`}
+                      aria-label={`이미지 ${idx + 1}`}
+                    />
+                  ))}
                 </div>
               )}
             </div>
 
             {/* 썸네일 이미지 리스트 */}
-            {product.images && product.images.length > 1 && (
-              <div className="flex gap-2 overflow-x-auto">
-                {product.images.map((img, idx) => (
+            {images.length > 1 && (
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {images.map((img, idx) => (
                   <button
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
-                    className={`w-20 h-20 flex-shrink-0 overflow-hidden border-2 ${
-                      selectedImageIndex === idx ? 'border-stone-900' : 'border-transparent'
+                    className={`w-20 h-20 flex-shrink-0 overflow-hidden border-2 transition-colors ${
+                      selectedImageIndex === idx ? 'border-stone-900' : 'border-stone-200 hover:border-stone-400'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img 
+                      src={img} 
+                      alt="" 
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
                   </button>
                 ))}
               </div>

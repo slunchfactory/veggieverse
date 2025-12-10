@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
+import { getProductThumbnailImages } from '../utils/productImages';
 
 // 상품 타입 정의
 interface Product {
@@ -721,6 +722,26 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onClick }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const images = getProductThumbnailImages(product.id);
+  const hasMultipleImages = images.length > 1;
+
+  // 자동 슬라이드
+  useEffect(() => {
+    if (!hasMultipleImages) return;
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [hasMultipleImages, images.length]);
+
+  const handleImageClick = (e: React.MouseEvent) => {
+    if (hasMultipleImages) {
+      e.stopPropagation();
+      setCurrentImageIndex((prev) => (prev + 1) % images.length);
+    }
+  };
+
   return (
     <div className="group cursor-pointer" onClick={onClick}>
       {/* 썸네일 - 5:6 비율 */}
@@ -731,23 +752,65 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           backgroundColor: '#54271d' 
         }}
       >
-        {/* 이미지 자리 */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-white/30 text-xs">IMG</span>
-        </div>
+        {/* 이미지 슬라이드 */}
+        {images.length > 0 ? (
+          <div className="relative w-full h-full">
+            {images.map((img, idx) => (
+              <img
+                key={idx}
+                src={img}
+                alt={product.name}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                  idx === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+                onClick={handleImageClick}
+                onError={(e) => {
+                  // 이미지 로드 실패 시 다음 이미지로 시도
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                }}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-white/30 text-xs">IMG</span>
+          </div>
+        )}
         
         {/* Sold Out 오버레이 */}
         {product.soldOut && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
             <span className="text-white text-sm font-medium">Sold out</span>
           </div>
         )}
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && !product.soldOut && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-[#E54B1A] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1">
+          <div className="absolute top-2 left-2 px-2 py-1 bg-[#E54B1A] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1 z-10">
             <Sparkles className="w-3 h-3" />
             추천
+          </div>
+        )}
+
+        {/* 이미지 인디케이터 (하단 중앙) */}
+        {hasMultipleImages && !product.soldOut && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            {images.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentImageIndex(idx);
+                }}
+                className={`w-1 h-1 rounded-full transition-all ${
+                  idx === currentImageIndex 
+                    ? 'bg-white w-2' 
+                    : 'bg-white/50 hover:bg-white/75'
+                }`}
+                aria-label={`이미지 ${idx + 1}`}
+              />
+            ))}
           </div>
         )}
       </div>

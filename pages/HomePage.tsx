@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { getHomeProductImage } from '../utils/productImages';
 
 // 히어로 슬라이드 데이터
 const HERO_SLIDES = [
@@ -8,7 +9,7 @@ const HERO_SLIDES = [
     id: 1,
     title: '비건 채식주의자들을 위한',
     subtitle: '레스토랑, 슬런치 팩토리',
-    image: 'main/main-banner-1.png',
+    image: 'main/banner/main-banner-1.png',
   },
   {
     id: 2,
@@ -267,18 +268,34 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               
               {/* 상품 그리드 2열 x 3행 (총 6개) */}
               <div className="grid grid-cols-2 gap-4">
-                {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => (
-                  <div key={product.id} className="cursor-pointer group">
-                    <div 
-                      className="w-full mb-2 overflow-hidden rounded-none"
-                      style={{ aspectRatio: '4/5', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a' }}
-                    >
-                      {/* 이미지 자리 */}
+                {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => {
+                  const imageUrl = getHomeProductImage(idx);
+                  return (
+                    <div key={product.id} className="cursor-pointer group">
+                      <div 
+                        className="w-full mb-2 overflow-hidden rounded-none relative"
+                        style={{ aspectRatio: '4/5', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a' }}
+                      >
+                        {imageUrl ? (
+                          <img 
+                            src={imageUrl}
+                            alt={product.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                            }}
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-white/30 text-xs">IMG</span>
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-[12px] text-stone-700 group-hover:text-stone-900">{product.name}</p>
+                      <p className="text-[11px] text-stone-500">KRW {product.price.toLocaleString()}</p>
                     </div>
-                    <p className="text-[12px] text-stone-700 group-hover:text-stone-900">{product.name}</p>
-                    <p className="text-[11px] text-stone-500">KRW {product.price.toLocaleString()}</p>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
             
