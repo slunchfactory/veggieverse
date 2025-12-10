@@ -72,6 +72,9 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [showToast, setShowToast] = useState(true);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -86,6 +89,33 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
 
   const openToast = () => {
     setShowToast(true);
+  };
+
+  // 드래그 핸들러
+  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDragging(true);
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    setStartX(clientX);
+  };
+
+  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDragging) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const diff = clientX - startX;
+    setTranslateX(diff);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    // 50px 이상 드래그하면 슬라이드 변경
+    if (translateX > 50) {
+      setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+    } else if (translateX < -50) {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }
+    setTranslateX(0);
   };
 
   return (
@@ -139,11 +169,20 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </button>
 
       {/* 히어로 배너 슬라이더 */}
-      <div className="relative h-[500px] overflow-hidden">
+      <div 
+        className="relative h-[500px] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        onMouseDown={handleDragStart}
+        onMouseMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        onTouchStart={handleDragStart}
+        onTouchMove={handleDragMove}
+        onTouchEnd={handleDragEnd}
+      >
         {/* 슬라이드 컨테이너 */}
         <div 
-          className="flex h-full transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          className={`flex h-full ${isDragging ? '' : 'transition-transform duration-700 ease-in-out'}`}
+          style={{ transform: `translateX(calc(-${currentSlide * 100}% + ${translateX}px))` }}
         >
           {HERO_SLIDES.map((slide, index) => (
             <div 
