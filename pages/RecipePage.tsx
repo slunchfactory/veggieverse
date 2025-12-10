@@ -294,7 +294,7 @@ const CircularCarouselHero: React.FC = () => {
   };
 
   // 원의 반지름 (구심점이 아래에 있음)
-  const radius = 300;
+  const radius = 350;
 
   return (
     <section 
@@ -384,9 +384,9 @@ const CircularCarouselHero: React.FC = () => {
               // 위쪽에 있는 카드일수록 앞으로 (y가 작을수록 z-index 높음)
               const zIndex = Math.round(50 - (y + radius) / 15);
               
-              // 중앙 카드는 더 크게 (최대 1.6배)
+              // 중앙 카드는 더 크게 (최대 2.0배)
               const distanceFromCenter = Math.abs(y + radius);
-              const scale = 0.4 + (1 - distanceFromCenter / (radius * 2)) * 1.2;
+              const scale = 0.4 + (1 - distanceFromCenter / (radius * 2)) * 1.6;
               
               // 아래쪽 카드는 살짝 투명하게
               const opacity = Math.max(0.4, 1 - (y + radius) / (radius * 1.8));
