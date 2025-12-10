@@ -56,41 +56,43 @@ export const CommunityPage: React.FC = () => {
       
       {/* 테이블 */}
       <div className="page-container pb-16">
-        {/* 테이블 헤더 */}
-        <div className="border-t-2 border-stone-800">
-          <div className="grid grid-cols-12 py-4 border-b border-stone-200 text-sm font-semibold text-stone-600">
-            <div className="col-span-1 text-center">번호</div>
-            <div className="col-span-7 text-center">제목</div>
-            <div className="col-span-1 text-center">작성자</div>
-            <div className="col-span-2 text-center">작성일</div>
-            <div className="col-span-1 text-center">조회</div>
-          </div>
-          
-          {/* 테이블 바디 */}
-          {NOTICES.length > 0 ? (
-            NOTICES.map((notice) => (
-              <div 
-                key={notice.id}
-                className="grid grid-cols-12 py-4 border-b border-stone-200 text-sm hover:bg-stone-50 cursor-pointer"
-              >
-                <div className="col-span-1 text-center text-stone-500">{notice.id}</div>
-                <div className="col-span-7 text-center text-stone-800 hover:text-black">
-                  {notice.title}
-                </div>
-                <div className="col-span-1 text-center text-stone-500">{notice.author}</div>
-                <div className="col-span-2 text-center text-stone-500">{notice.date}</div>
-                <div className="col-span-1 text-center text-stone-500">{notice.views}</div>
-              </div>
-            ))
-          ) : (
-            <div className="py-20 text-center text-stone-500">
-              검색결과가 없습니다.
+        {/* 테이블 헤더 - 모바일에서는 간소화 */}
+        <div className="border-t-2 border-stone-800 overflow-x-auto">
+          <div className="min-w-[600px]">
+            <div className="grid grid-cols-12 py-4 border-b border-stone-200 text-sm font-semibold text-stone-600">
+              <div className="col-span-1 text-center">번호</div>
+              <div className="col-span-7 text-center">제목</div>
+              <div className="col-span-1 text-center hidden sm:block">작성자</div>
+              <div className="col-span-2 text-center">작성일</div>
+              <div className="col-span-1 text-center hidden sm:block">조회</div>
             </div>
-          )}
+            
+            {/* 테이블 바디 */}
+            {NOTICES.length > 0 ? (
+              NOTICES.map((notice) => (
+                <div 
+                  key={notice.id}
+                  className="grid grid-cols-12 py-4 border-b border-stone-200 text-sm hover:bg-stone-50 cursor-pointer"
+                >
+                  <div className="col-span-1 text-center text-stone-500">{notice.id}</div>
+                  <div className="col-span-7 text-center text-stone-800 hover:text-black">
+                    {notice.title}
+                  </div>
+                  <div className="col-span-1 text-center text-stone-500 hidden sm:block">{notice.author}</div>
+                  <div className="col-span-2 text-center text-stone-500">{notice.date}</div>
+                  <div className="col-span-1 text-center text-stone-500 hidden sm:block">{notice.views}</div>
+                </div>
+              ))
+            ) : (
+              <div className="py-20 text-center text-stone-500">
+                검색결과가 없습니다.
+              </div>
+            )}
+          </div>
         </div>
         
         {/* 검색 바 */}
-        <div className="flex justify-center items-center gap-2 mt-12">
+        <div className="flex flex-wrap justify-center items-center gap-2 mt-12">
           {/* 기간 선택 */}
           <div className="relative">
             <select 

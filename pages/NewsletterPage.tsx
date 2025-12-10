@@ -2,7 +2,7 @@ import React from 'react';
 
 export const NewsletterPage: React.FC = () => {
   return (
-    <div className="page-container py-12">
+    <div className="page-container py-12 min-h-screen">
       <h1 className="text-2xl font-bold text-stone-800 mb-4">뉴스레터</h1>
       <p className="text-stone-600 mb-6">
         에디터가 발행하는 아티클을 순차적으로 업데이트할 예정입니다.

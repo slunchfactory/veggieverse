@@ -339,8 +339,8 @@ const CircularCarouselHero: React.FC = () => {
           {/* 좌측 버튼 */}
           <button
             onClick={slideLeft}
-            className="absolute left-4 sm:left-8 lg:left-16 top-1/3 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
-            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text }}
+            className="rounded-btn absolute left-4 sm:left-8 lg:left-16 top-1/3 -translate-y-1/2 w-12 h-12 flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
+            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text, borderRadius: '50%' }}
           >
             <ChevronLeft className="w-6 h-6" />
           </button>
@@ -348,8 +348,8 @@ const CircularCarouselHero: React.FC = () => {
           {/* 우측 버튼 */}
           <button
             onClick={slideRight}
-            className="absolute right-4 sm:right-8 lg:right-16 top-1/3 -translate-y-1/2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
-            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text }}
+            className="rounded-btn absolute right-4 sm:right-8 lg:right-16 top-1/3 -translate-y-1/2 w-12 h-12 flex items-center justify-center shadow-lg transition-all z-50 hover:scale-110"
+            style={{ backgroundColor: COLORS.black.bg, color: COLORS.black.text, borderRadius: '50%' }}
           >
             <ChevronRight className="w-6 h-6" />
           </button>

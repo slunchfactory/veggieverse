@@ -30,8 +30,8 @@ body {
   overflow-y: auto;
 }
 
-/* 모든 버튼 모서리를 직각으로 통일 (챗봇 버튼 제외) */
-button:not(.chatbot-trigger) {
+/* 모든 버튼 모서리를 직각으로 통일 (특수 버튼 제외) */
+button:not(.chatbot-trigger):not(.rounded-btn) {
   border-radius: 0 !important;
 }
 
