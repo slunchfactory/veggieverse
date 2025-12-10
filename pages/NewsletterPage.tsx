@@ -18,7 +18,7 @@ const ARTICLES: Article[] = [
     category: 'HEALTH',
     title: '멈춰야 보이는 것들',
     subtitle: '번아웃을 겪고 나서야 깨달은 것들',
-    author: '슬런치 에디터',
+    author: 'Josin',
     date: '2024.12.10',
     thumbnail: '/article-1.jpg',
     content: (
@@ -67,7 +67,7 @@ const ARTICLES: Article[] = [
     category: 'CULTURE',
     title: '2060년, 나는 마흔이 된다',
     subtitle: '초고령 사회를 앞둔 Z세대의 고민',
-    author: '슬런치 에디터',
+    author: 'Huna',
     date: '2024.12.05',
     thumbnail: '/article-2.jpg',
     content: (
@@ -116,7 +116,7 @@ const ARTICLES: Article[] = [
     category: 'FOOD',
     title: '냉장고를 열면 한 끼가 보인다',
     subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유',
-    author: '슬런치 에디터',
+    author: 'ChaCha',
     date: '2024.11.28',
     thumbnail: '/article-3.jpg',
     content: (
@@ -165,7 +165,7 @@ const ARTICLES: Article[] = [
     category: 'LIFE',
     title: '"그 영화 재밌어" 다음에 할 말',
     subtitle: '소개팅에서 영화 이야기 잘하는 법',
-    author: '슬런치 에디터',
+    author: 'Jin',
     date: '2024.11.20',
     thumbnail: '/article-4.jpg',
     content: (
@@ -212,7 +212,7 @@ const ARTICLES: Article[] = [
     category: "SLUNCH'S PICK",
     title: '마음을 전하는 데 10만원은 필요 없다',
     subtitle: '3만원으로 완성하는 크리스마스 선물',
-    author: '슬런치 에디터',
+    author: 'Josin',
     date: '2024.11.15',
     thumbnail: '/article-5.jpg',
     content: (
