@@ -75,3 +75,4 @@ public/
 - 숫자는 01, 02 형식으로 앞에 0 붙이기 (정렬 편의)
 - 예: `product-01.jpg`, `detail-01.jpg`
 
+
