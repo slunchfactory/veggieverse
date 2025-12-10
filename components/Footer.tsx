@@ -60,7 +60,7 @@ export const Footer: React.FC = () => {
       {/* 맨 위로 버튼 - 리모컨 스타일 */}
       <button 
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors"
+        className="fixed bottom-6 right-6 w-11 h-11 bg-white/10 backdrop-blur-sm border border-white/20 rounded-none flex items-center justify-center hover:bg-white/20 transition-colors"
       >
         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

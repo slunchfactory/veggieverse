@@ -30,7 +30,7 @@ export const CommunityPage: React.FC = () => {
       {/* 서브 메뉴 드롭다운 */}
       <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40">
         {showSubMenu && (
-          <div className="bg-white shadow-lg rounded-lg py-2 min-w-[150px]">
+          <div className="bg-white shadow-lg rounded-none py-2 min-w-[150px]">
             {SUB_MENUS.map((menu) => (
               <button
                 key={menu.path}
@@ -96,7 +96,7 @@ export const CommunityPage: React.FC = () => {
             <select 
               value={searchType}
               onChange={(e) => setSearchType(e.target.value)}
-              className="appearance-none px-4 py-2 pr-8 border border-stone-300 rounded text-sm text-stone-600 bg-white focus:outline-none focus:border-stone-500"
+              className="appearance-none px-4 py-2 pr-8 border border-stone-300 rounded-none text-sm text-stone-600 bg-white focus:outline-none focus:border-stone-500"
             >
               <option>일주일</option>
               <option>한달</option>
@@ -110,7 +110,7 @@ export const CommunityPage: React.FC = () => {
             <select 
               value={searchField}
               onChange={(e) => setSearchField(e.target.value)}
-              className="appearance-none px-4 py-2 pr-8 border border-stone-300 rounded text-sm text-stone-600 bg-white focus:outline-none focus:border-stone-500"
+              className="appearance-none px-4 py-2 pr-8 border border-stone-300 rounded-none text-sm text-stone-600 bg-white focus:outline-none focus:border-stone-500"
             >
               <option>제목</option>
               <option>내용</option>
@@ -124,12 +124,12 @@ export const CommunityPage: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="px-4 py-2 border border-stone-300 rounded text-sm w-64 focus:outline-none focus:border-stone-500"
+            className="px-4 py-2 border border-stone-300 rounded-none text-sm w-64 focus:outline-none focus:border-stone-500"
             placeholder="검색어를 입력하세요"
           />
           
           {/* 검색 버튼 */}
-          <button className="px-4 py-2 border border-stone-300 rounded text-sm text-stone-600 hover:bg-stone-50">
+          <button className="px-4 py-2 border border-stone-300 rounded-none text-sm text-stone-600 hover:bg-stone-50">
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>

@@ -19,7 +19,7 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({ scale, onZoomIn, onZoo
 
       {/* Bottom Controls */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 pointer-events-none">
-        <div className="flex bg-stone-900 text-white rounded-md shadow-xl pointer-events-auto">
+        <div className="flex bg-stone-900 text-white rounded-none shadow-xl pointer-events-auto">
           <button className="flex items-center gap-2 px-6 py-3 hover:bg-stone-800 transition-colors rounded-l-md border-r border-stone-700">
             <Menu className="w-4 h-4" />
             <span className="text-sm font-medium">Menu</span>
@@ -33,20 +33,20 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({ scale, onZoomIn, onZoo
 
       {/* Bottom Right Zoom/Nav Controls */}
       <div className="fixed bottom-8 right-8 z-40 flex items-center gap-3 pointer-events-none">
-        <div className="bg-stone-900/10 backdrop-blur-sm text-stone-800 p-3 rounded-full pointer-events-auto cursor-help" title="Drag to explore">
+        <div className="bg-stone-900/10 backdrop-blur-sm text-stone-800 p-3 rounded-none pointer-events-auto cursor-help" title="Drag to explore">
            <Move className="w-5 h-5 animate-pulse" />
         </div>
         
         <div className="flex gap-2 pointer-events-auto">
           <button 
             onClick={onZoomOut}
-            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-lg hover:scale-105 transition-transform text-stone-800"
+            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-none shadow-lg hover:scale-105 transition-transform text-stone-800"
           >
             <Minus className="w-5 h-5" />
           </button>
           <button 
             onClick={onZoomIn}
-            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-lg hover:scale-105 transition-transform text-stone-800"
+            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-none shadow-lg hover:scale-105 transition-transform text-stone-800"
           >
             <Plus className="w-5 h-5" />
           </button>

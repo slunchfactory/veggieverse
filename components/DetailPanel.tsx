@@ -20,7 +20,7 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
       {/* Close Button */}
       <button 
         onClick={onClose}
-        className="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-100 transition-colors z-10"
+        className="absolute top-6 right-6 p-2 rounded-none hover:bg-stone-100 transition-colors z-10"
       >
         <X className="w-6 h-6 text-stone-400" />
       </button>
@@ -29,10 +29,10 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
       <div className="p-8 md:p-12 min-h-full flex flex-col">
         {loading ? (
           <div className="flex-1 flex flex-col items-center justify-center space-y-4">
-            <div className="w-40 h-40 bg-stone-50 rounded-3xl animate-pulse"></div>
-            <div className="h-8 w-48 bg-stone-50 rounded animate-pulse"></div>
-            <div className="h-4 w-64 bg-stone-50 rounded animate-pulse"></div>
-            <div className="h-4 w-56 bg-stone-50 rounded animate-pulse"></div>
+            <div className="w-40 h-40 bg-stone-50 rounded-none animate-pulse"></div>
+            <div className="h-8 w-48 bg-stone-50 rounded-none animate-pulse"></div>
+            <div className="h-4 w-64 bg-stone-50 rounded-none animate-pulse"></div>
+            <div className="h-4 w-56 bg-stone-50 rounded-none animate-pulse"></div>
             <p className="text-stone-400 font-medium mt-4">Consulting the Chef AI...</p>
           </div>
         ) : data && item ? (
@@ -56,20 +56,20 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
             </div>
 
             <div className="space-y-6">
-              <div className="flex items-start gap-4 p-5 bg-stone-50/80 rounded-2xl">
+              <div className="flex items-start gap-4 p-5 bg-stone-50/80 rounded-none">
                 <Info className="w-5 h-5 text-stone-400 shrink-0 mt-1" />
                 <p className="text-stone-600 leading-relaxed">{data.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                 <div className="p-5 bg-gradient-to-br from-orange-50 to-amber-50/50 rounded-2xl">
+                 <div className="p-5 bg-gradient-to-br from-orange-50 to-amber-50/50 rounded-none">
                     <div className="flex items-center gap-2 mb-2 text-orange-600">
                         <Sparkles className="w-4 h-4" />
                         <span className="font-semibold text-sm uppercase tracking-wide">Fun Fact</span>
                     </div>
                     <p className="text-sm text-stone-600 leading-relaxed">{data.funFact}</p>
                  </div>
-                 <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-2xl">
+                 <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-none">
                     <div className="flex items-center gap-2 mb-2 text-green-600">
                         <Calendar className="w-4 h-4" />
                         <span className="font-semibold text-sm uppercase tracking-wide">Season</span>
@@ -89,7 +89,7 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
                   <ul className="grid grid-cols-2 gap-2">
                     {data.simpleRecipe.ingredients.map((ing, i) => (
                       <li key={i} className="text-sm text-stone-600 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span>
+                        <span className="w-1.5 h-1.5 rounded-none bg-green-400"></span>
                         {ing}
                       </li>
                     ))}
@@ -101,7 +101,7 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
                   <ol className="space-y-4">
                     {data.simpleRecipe.steps.map((step, i) => (
                       <li key={i} className="flex gap-4 text-stone-600">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-orange-400 to-amber-400 text-white text-xs font-bold flex items-center justify-center shadow-sm">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-none bg-gradient-to-br from-orange-400 to-amber-400 text-white text-xs font-bold flex items-center justify-center shadow-sm">
                           {i + 1}
                         </span>
                         <p className="text-sm leading-relaxed pt-0.5">{step}</p>

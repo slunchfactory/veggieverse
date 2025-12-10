@@ -303,7 +303,7 @@ export const StorePage: React.FC = () => {
                   <div className="flex items-center justify-between mt-4">
                     <span className="text-[11px] sm:text-[12px] text-white/50">2025. 12. 10</span>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-stone-600 overflow-hidden"></div>
+                      <div className="w-8 h-8 rounded-none bg-stone-600 overflow-hidden"></div>
                       <span className="text-[12px] text-white/70">슬런치</span>
                     </div>
                   </div>
@@ -334,7 +334,7 @@ export const StorePage: React.FC = () => {
                         />
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-2 left-2 z-10">
-                          <div className="w-6 h-6 rounded-full bg-stone-800 flex items-center justify-center">
+                          <div className="w-6 h-6 rounded-none bg-stone-800 flex items-center justify-center">
                             <Sparkles className="w-3 h-3 text-[#D8D262]" />
                           </div>
                         </div>
@@ -395,7 +395,7 @@ export const StorePage: React.FC = () => {
                         />
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
                             <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
                           </div>
                         </div>
@@ -450,7 +450,7 @@ export const StorePage: React.FC = () => {
                         />
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
                             <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
                           </div>
                         </div>
@@ -693,7 +693,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode }) =
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-[#D8D262] rounded text-[10px] font-medium text-stone-800 flex items-center gap-1">
+          <div className="absolute top-2 left-2 px-2 py-1 bg-[#D8D262] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1">
             <Sparkles className="w-3 h-3" />
             추천
           </div>

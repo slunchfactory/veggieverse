@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
               {userProfile.profileImage ? (
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-stone-800 shadow-sm">
+                <div className="w-8 h-8 rounded-none overflow-hidden border-2 border-stone-800 shadow-sm">
                   <img 
                     src={userProfile.profileImage} 
                     alt="My Profile" 
@@ -167,14 +167,14 @@ export const Header: React.FC<HeaderProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-none bg-stone-200 flex items-center justify-center">
                   <User className="w-4 h-4 text-stone-500" />
                 </div>
               )}
             </button>
             
             {showProfileMenu && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-stone-200 py-2 z-50">
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-none shadow-lg border border-stone-200 py-2 z-50">
                 {userProfile.profileImage ? (
                   <>
                     <div className="px-4 py-2 border-b border-stone-100">
@@ -206,7 +206,7 @@ export const Header: React.FC<HeaderProps> = ({
           
           <Link to="/cart" className="text-stone-600 hover:text-black transition-colors relative">
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-full flex items-center justify-center">0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-none flex items-center justify-center">0</span>
           </Link>
           <button className="text-stone-600 hover:text-black transition-colors">
             <Search className="w-5 h-5" />

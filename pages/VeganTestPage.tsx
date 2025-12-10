@@ -387,7 +387,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 {/* 중앙 라벨 - 호버 시 노출 (최상단 z-index) */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ zIndex: 30 }}>
                   <span
-                    className="px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm"
+                    className="px-3 py-1.5 rounded-none text-xs font-semibold shadow-sm"
                     style={{
                       fontFamily: 'Jost, sans-serif',
                       fontSize: '13px',
@@ -443,7 +443,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
         {/* 하단 선택 바 - 원본 이미지 표시 */}
         {showSelectionBar && (
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[80]">
-            <div className="bg-white/95 backdrop-blur-sm rounded-full shadow-lg px-6 py-3 flex items-center gap-4">
+            <div className="bg-white/95 backdrop-blur-sm rounded-none shadow-lg px-6 py-3 flex items-center gap-4">
               {/* 선택된 아이템들 - 원본 이미지 */}
               <div className="flex items-center gap-3">
                 {[0, 1, 2].map((index) => {
@@ -454,7 +454,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       className="relative"
                     >
                       <div
-                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
+                        className={`w-14 h-14 rounded-none flex items-center justify-center transition-all ${
                           item 
                             ? 'bg-stone-50' 
                             : 'border-2 border-dashed border-stone-300'
@@ -474,7 +474,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       {item && (
                         <button
                           onClick={() => removeSelection(item.id)}
-                          className="absolute -top-1 -right-1 w-5 h-5 text-white rounded-full flex items-center justify-center transition-colors z-10 shadow-sm"
+                          className="absolute -top-1 -right-1 w-5 h-5 text-white rounded-none flex items-center justify-center transition-colors z-10 shadow-sm"
                           style={{ backgroundColor: '#292624' }}
                         >
                           <X className="w-3 h-3" />
@@ -492,7 +492,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <button
                 onClick={goToSurvey}
                 disabled={selectedItems.length < 3}
-                className="px-5 py-2 rounded-full font-semibold text-sm flex items-center gap-1.5 transition-all"
+                className="px-5 py-2 rounded-none font-semibold text-sm flex items-center gap-1.5 transition-all"
                 style={{
                   backgroundColor: selectedItems.length === 3 ? '#292624' : '#e5e5e5',
                   color: selectedItems.length === 3 ? '#fff' : '#a3a3a3',

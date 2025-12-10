@@ -662,7 +662,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
     return (
       <div className="min-h-screen bg-transparent">
         <div className="flex items-center justify-center min-h-screen p-8">
-          <div className="bg-white rounded-3xl p-12 max-w-lg w-full shadow-sm text-center">
+          <div className="bg-white rounded-none p-12 max-w-lg w-full shadow-sm text-center">
             {/* 상단 네비게이션 */}
             <button
               onClick={scrollToTop}
@@ -683,7 +683,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             {selectedItems.length > 0 && (
               <div className="flex justify-center gap-3 mb-8">
                 {selectedItems.map(item => (
-                  <div key={item.id} className="w-14 h-14 rounded-full overflow-hidden shadow-md border-2 border-white">
+                  <div key={item.id} className="w-14 h-14 rounded-none overflow-hidden shadow-md border-2 border-white">
                     <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain bg-stone-50" />
                   </div>
                 ))}
@@ -716,17 +716,17 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
     return (
       <div className="min-h-screen bg-transparent">
         <div className="flex items-center justify-center min-h-screen p-8">
-          <div className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-sm">
+          <div className="bg-white rounded-none p-8 max-w-2xl w-full shadow-sm">
             
             {/* 🎨 AI 생성 몬스터 영역 */}
             <div className="mb-8">
               {/* 몬스터 이미지 */}
-              <div className="relative w-full aspect-square max-w-sm mx-auto mb-6 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-100 via-lime-50 to-yellow-100">
+              <div className="relative w-full aspect-square max-w-sm mx-auto mb-6 rounded-none overflow-hidden bg-gradient-to-br from-emerald-100 via-lime-50 to-yellow-100">
                 {isGeneratingImage ? (
                   // 로딩 상태
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="relative">
-                      <div className="w-20 h-20 border-4 border-emerald-200 rounded-full animate-spin border-t-emerald-500"></div>
+                      <div className="w-20 h-20 border-4 border-emerald-200 rounded-none animate-spin border-t-emerald-500"></div>
                       <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-emerald-500 animate-pulse" />
                     </div>
                     <p className="mt-4 text-emerald-600 font-medium">몬스터 생성 중...</p>
@@ -749,7 +749,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                       {selectedItems.map((item, idx) => (
                         <div 
                           key={item.id} 
-                          className="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow-md"
+                          className="w-12 h-12 rounded-none overflow-hidden border-2 border-white shadow-md"
                           style={{ marginLeft: idx > 0 ? '-8px' : '0' }}
                         >
                           <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain bg-white" />
@@ -791,7 +791,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                   {selectedItems.map(item => (
                     <span 
                       key={item.id}
-                      className="px-3 py-1 rounded-full text-xs font-medium"
+                      className="px-3 py-1 rounded-none text-xs font-medium"
                       style={{ 
                         backgroundColor: `${item.color || '#4CAF50'}20`,
                         color: item.color || '#4CAF50'
@@ -822,7 +822,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
               const description = generatePersonalityDescription(answers, result);
               return (
                 <div className="mb-6">
-                  <div className="bg-stone-50 rounded-2xl p-6">
+                  <div className="bg-stone-50 rounded-none p-6">
                     {description.text.split('\n\n').map((paragraph, index) => (
                       <p 
                         key={index} 
@@ -931,7 +931,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
       </button>
 
       <div className="flex items-center justify-center min-h-screen p-8">
-        <div className="bg-white rounded-3xl p-10 max-w-xl w-full shadow-sm">
+        <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
           {/* 질문 */}
           <h2 className="text-2xl font-bold text-center text-stone-800 mb-8">
             {currentQuestion.question}
@@ -1001,7 +1001,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 
                 {/* 상충 경고 메시지 */}
                 {dietConflictWarning && (
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-700">
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-none text-sm text-amber-700">
                     {dietConflictWarning}
                   </div>
                 )}
@@ -1049,7 +1049,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             <button
               onClick={handleNext}
               disabled={currentQuestion.hasDietCategories ? !hasPrimaryDiet() : !answers[currentQuestion.id]}
-              className={`flex-1 py-3 rounded-xl font-semibold transition-colors ${
+              className={`flex-1 py-3 rounded-none font-semibold transition-colors ${
                 (currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id])
                   ? 'text-white hover:opacity-90'
                   : 'bg-stone-200 text-stone-400 cursor-not-allowed'

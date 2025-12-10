@@ -51,8 +51,8 @@ const RecipeHallOfFamePage: React.FC = () => {
       >
         {/* 배경 장식 */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-10 left-10 w-32 h-32 rounded-full blur-3xl" style={{ backgroundColor: COLORS.goldenBrown.text }} />
-          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full blur-3xl" style={{ backgroundColor: COLORS.sinopia.text }} />
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-none blur-3xl" style={{ backgroundColor: COLORS.goldenBrown.text }} />
+          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-none blur-3xl" style={{ backgroundColor: COLORS.sinopia.text }} />
         </div>
         
         <div className="page-container relative">
@@ -69,7 +69,7 @@ const RecipeHallOfFamePage: React.FC = () => {
           {/* 타이틀 */}
           <div className="text-center">
             <div 
-              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg"
+              className="inline-flex items-center justify-center w-20 h-20 rounded-none mb-6 shadow-lg"
               style={{ backgroundColor: COLORS.goldenBrown.text, color: COLORS.goldenBrown.bg }}
             >
               <Trophy className="w-10 h-10" />
@@ -102,7 +102,7 @@ const RecipeHallOfFamePage: React.FC = () => {
             >
               {/* 카드 */}
               <div 
-                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-none overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
                 style={recipe.rank <= 3 ? { 
                   boxShadow: `0 0 0 3px ${cardColors[(recipe.rank - 1) % cardColors.length].bg}` 
                 } : {}}
@@ -123,7 +123,7 @@ const RecipeHallOfFamePage: React.FC = () => {
                   
                   {/* 랭킹 뱃지 */}
                   <div 
-                    className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full"
+                    className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-none"
                     style={{ 
                       backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].text,
                       color: cardColors[(recipe.rank - 1) % cardColors.length].bg

@@ -188,7 +188,7 @@ const RecipeCarousel: React.FC<{
       {canScrollLeft && (
         <button
           onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-stone-50 transition-all opacity-0 group-hover:opacity-100"
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-none shadow-lg flex items-center justify-center hover:bg-stone-50 transition-all opacity-0 group-hover:opacity-100"
         >
           <ChevronLeft className="w-6 h-6 text-stone-700" />
         </button>
@@ -196,7 +196,7 @@ const RecipeCarousel: React.FC<{
       {canScrollRight && (
         <button
           onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-stone-50 transition-all opacity-0 group-hover:opacity-100"
+          className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-none shadow-lg flex items-center justify-center hover:bg-stone-50 transition-all opacity-0 group-hover:opacity-100"
         >
           <ChevronRight className="w-6 h-6 text-stone-700" />
         </button>
@@ -215,7 +215,7 @@ const RecipeCarousel: React.FC<{
             style={{ scrollSnapAlign: 'start' }}
           >
             <div 
-              className="relative w-full aspect-square rounded-xl overflow-hidden mb-3"
+              className="relative w-full aspect-square rounded-none overflow-hidden mb-3"
               style={{ 
                 backgroundColor: categoryColor ? categoryColor.bg : 
                   idx % 4 === 0 ? COLORS.lightLime.bg :
@@ -229,7 +229,7 @@ const RecipeCarousel: React.FC<{
                 alt={recipe.title}
                 className="w-full h-full object-contain p-6 group-hover/card:scale-105 transition-transform duration-300"
               />
-              <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-xl" />
+              <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-none" />
             </div>
             <h3 className="font-bold text-stone-900 text-base mb-1 group-hover/card:text-green-700 transition-colors">
               {recipe.title}
@@ -261,7 +261,7 @@ const RecipePage: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-stone-900">Recipe</h1>
             <p className="text-stone-500 mt-1">다양한 비건 레시피를 만나보세요</p>
           </div>
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-full font-medium text-sm transition-colors shadow-lg shadow-green-600/25">
+          <button className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-none font-medium text-sm transition-colors shadow-lg shadow-green-600/25">
             <Upload className="w-4 h-4" />
             <span>레시피 작성</span>
           </button>
@@ -269,13 +269,13 @@ const RecipePage: React.FC = () => {
 
         {/* 인기 레시피 섹션 - 메인 히어로 */}
         <section 
-          className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-3xl"
+          className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-none"
           style={{ backgroundColor: COLORS.sinopia.bg }}
         >
           <div className="flex items-end justify-between mb-3">
             <div>
               <span 
-                className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3 rounded-full"
+                className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3 rounded-none"
                 style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
               >
                 ⭐ Featured
@@ -289,7 +289,7 @@ const RecipePage: React.FC = () => {
             </div>
             <Link 
               to="/recipe/hall-of-fame" 
-              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
+              className="flex items-center gap-2 px-4 py-2 rounded-none text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
               style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
             >
               <Trophy className="w-4 h-4" />
@@ -325,7 +325,7 @@ const RecipePage: React.FC = () => {
                   >
                     {/* 대형 이미지 */}
                     <div 
-                      className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-4 shadow-lg"
+                      className="relative w-full aspect-[4/5] rounded-none overflow-hidden mb-4 shadow-lg"
                       style={{ backgroundColor: cardColor.bg }}
                     >
                       <img
@@ -336,14 +336,14 @@ const RecipePage: React.FC = () => {
                       {/* 랭킹 뱃지 */}
                       {idx < 3 && (
                         <div 
-                          className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center"
+                          className="absolute top-4 left-4 w-10 h-10 rounded-none flex items-center justify-center"
                           style={{ backgroundColor: cardColor.text, color: cardColor.bg }}
                         >
                           <span className="font-bold">{idx + 1}</span>
                         </div>
                       )}
                       {/* 호버 오버레이 */}
-                      <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-2xl" />
+                      <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-none" />
                     </div>
                     {/* 텍스트 */}
                     <h3 
@@ -370,7 +370,7 @@ const RecipePage: React.FC = () => {
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <span 
-                    className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-full"
+                    className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-none"
                     style={{ backgroundColor: colors.bg, color: colors.text }}
                   >
                     {category.subtitle}
@@ -393,7 +393,7 @@ const RecipePage: React.FC = () => {
         {/* 레시피 작성 CTA */}
         <section className="py-16 border-t border-stone-200">
           <div className="text-center max-w-xl mx-auto">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-none flex items-center justify-center mx-auto mb-6">
               <Plus className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-2xl font-bold text-stone-900 mb-3">
@@ -403,7 +403,7 @@ const RecipePage: React.FC = () => {
               당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.
               <br />다른 유저들에게 영감을 줄 수 있어요!
             </p>
-            <button className="inline-flex items-center gap-2 px-8 py-3 bg-stone-900 hover:bg-stone-800 text-white rounded-full font-medium transition-colors">
+            <button className="inline-flex items-center gap-2 px-8 py-3 bg-stone-900 hover:bg-stone-800 text-white rounded-none font-medium transition-colors">
               <Upload className="w-5 h-5" />
               <span>레시피 작성하기</span>
             </button>

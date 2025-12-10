@@ -9,7 +9,7 @@ export const NewsletterPage: React.FC = () => {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {[1,2,3,4].map(id => (
-          <div key={id} className="border border-stone-200 rounded-lg p-4 bg-white shadow-sm">
+          <div key={id} className="border border-stone-200 rounded-none p-4 bg-white shadow-sm">
             <div 
               className="w-full mb-3 overflow-hidden rounded"
               style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}

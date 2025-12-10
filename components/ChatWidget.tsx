@@ -19,19 +19,19 @@ export const ChatWidget: React.FC = () => {
       {/* 트리거 */}
       <button
         aria-label="챗봇 열기"
-        className={`${positionClass} w-14 h-14 sm:w-16 sm:h-16 rounded-full shadow-xl bg-white border border-stone-200 hover:shadow-2xl transition-all flex items-center justify-center`}
+        className={`${positionClass} w-14 h-14 sm:w-16 sm:h-16 rounded-none shadow-xl bg-white border border-stone-200 hover:shadow-2xl transition-all flex items-center justify-center`}
         onClick={() => setIsOpen(prev => !prev)}
         style={{ boxShadow: '0 12px 30px rgba(0,0,0,0.15)' }}
       >
         {avatarError ? (
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-2xl">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-none bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-2xl">
             🍉
           </div>
         ) : (
           <img
             src={AVATAR_SRC}
             alt="챗봇"
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-none object-cover"
             onError={() => setAvatarError(true)}
             draggable={false}
           />
@@ -44,14 +44,14 @@ export const ChatWidget: React.FC = () => {
           {/* 헤더 */}
           <div className="h-16 px-4 flex items-center gap-3 border-b border-stone-200">
             {avatarError ? (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-xl">
+              <div className="w-10 h-10 rounded-none bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-xl">
                 🍉
               </div>
             ) : (
               <img
                 src={AVATAR_SRC}
                 alt="챗봇"
-                className="w-10 h-10 rounded-full object-cover"
+                className="w-10 h-10 rounded-none object-cover"
                 onError={() => setAvatarError(true)}
                 draggable={false}
               />
@@ -114,7 +114,7 @@ export const ChatWidget: React.FC = () => {
                   {quickPrompts.map(p => (
                     <button
                       key={p}
-                      className="text-left text-[12px] px-3 py-2 border border-stone-200 rounded-lg hover:border-stone-400 transition-colors"
+                      className="text-left text-[12px] px-3 py-2 border border-stone-200 rounded-none hover:border-stone-400 transition-colors"
                       onClick={() => setInput(p)}
                     >
                       {p}
@@ -126,16 +126,16 @@ export const ChatWidget: React.FC = () => {
 
             {tab === 'profile' && (
               <div className="space-y-3">
-                <div className="p-3 border border-stone-200 rounded-lg">
+                <div className="p-3 border border-stone-200 rounded-none">
                   <p className="text-[12px] text-stone-500 mb-1">식단 유형</p>
                   <p className="text-sm font-semibold text-stone-900">비건 / 저염 / 고단백</p>
                 </div>
-                <div className="p-3 border border-stone-200 rounded-lg">
+                <div className="p-3 border border-stone-200 rounded-none">
                   <p className="text-[12px] text-stone-500 mb-1">선호 / 비선호</p>
                   <p className="text-sm text-stone-800">선호: 버섯, 올리브, 토마토</p>
                   <p className="text-sm text-stone-800">비선호: 너무 매운 음식, 파인애플</p>
                 </div>
-                <div className="p-3 border border-stone-200 rounded-lg">
+                <div className="p-3 border border-stone-200 rounded-none">
                   <p className="text-[12px] text-stone-500 mb-1">알레르기</p>
                   <p className="text-sm text-stone-800">견과류(피넛) 주의</p>
                 </div>
@@ -144,11 +144,11 @@ export const ChatWidget: React.FC = () => {
 
             {tab === 'saved' && (
               <div className="space-y-3">
-                <div className="p-3 border border-stone-200 rounded-lg">
+                <div className="p-3 border border-stone-200 rounded-none">
                   <p className="text-[12px] text-stone-500 mb-1">핀한 레시피</p>
                   <p className="text-sm text-stone-800">토마토 병아리콩 스튜 (저염)</p>
                 </div>
-                <div className="p-3 border border-stone-200 rounded-lg">
+                <div className="p-3 border border-stone-200 rounded-none">
                   <p className="text-[12px] text-stone-500 mb-1">장보기 리스트</p>
                   <p className="text-sm text-stone-800">병아리콩, 시금치, 레몬, 올리브오일</p>
                 </div>
@@ -164,9 +164,9 @@ export const ChatWidget: React.FC = () => {
                 onChange={(e) => setInput(e.target.value)}
                 rows={2}
                 placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
-                className="flex-1 resize-none rounded-lg border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
+                className="flex-1 resize-none rounded-none border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
               />
-              <button className="px-4 py-2 bg-[#D8D262] text-black rounded-lg text-sm font-semibold hover:opacity-90 transition-colors">
+              <button className="px-4 py-2 bg-[#D8D262] text-black rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
                 전송
               </button>
             </div>

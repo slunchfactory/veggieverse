@@ -164,14 +164,14 @@ const RecipeDetailPage: React.FC = () => {
         <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 flex items-center justify-between">
           <Link 
             to="/recipe" 
-            className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-stone-700 hover:bg-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-none text-stone-700 hover:bg-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="hidden sm:inline">레시피</span>
           </Link>
           
           <div className="flex items-center gap-2">
-            <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full text-stone-700 hover:bg-white transition-colors">
+            <button className="p-2 bg-white/90 backdrop-blur-sm rounded-none text-stone-700 hover:bg-white transition-colors">
               <Share2 className="w-5 h-5" />
             </button>
           </div>
@@ -193,7 +193,7 @@ const RecipeDetailPage: React.FC = () => {
               
               {/* 작성자 정보 */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-full bg-green-100 overflow-hidden">
+                <div className="w-10 h-10 rounded-none bg-green-100 overflow-hidden">
                   <img src={sampleRecipe.author.avatar} alt="" className="w-full h-full object-contain p-1" />
                 </div>
                 <div>
@@ -210,7 +210,7 @@ const RecipeDetailPage: React.FC = () => {
               {/* 태그 */}
               <div className="flex flex-wrap gap-2 mb-4">
                 {sampleRecipe.tags.map((tag) => (
-                  <span key={tag} className="px-3 py-1 bg-stone-100 text-stone-600 text-sm rounded-full">
+                  <span key={tag} className="px-3 py-1 bg-stone-100 text-stone-600 text-sm rounded-none">
                     {tag}
                   </span>
                 ))}
@@ -223,7 +223,7 @@ const RecipeDetailPage: React.FC = () => {
             </div>
 
             {/* 시간/난이도 정보 */}
-            <div className="grid grid-cols-3 gap-4 p-6 bg-stone-50 rounded-2xl mb-10">
+            <div className="grid grid-cols-3 gap-4 p-6 bg-stone-50 rounded-none mb-10">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 text-stone-500 mb-1">
                   <Clock className="w-4 h-4" />
@@ -251,7 +251,7 @@ const RecipeDetailPage: React.FC = () => {
             <div className="flex items-center gap-4 mb-10">
               <button
                 onClick={() => setIsLiked(!isLiked)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${
                   isLiked 
                     ? 'bg-red-50 text-red-600 border-2 border-red-200' 
                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
@@ -262,7 +262,7 @@ const RecipeDetailPage: React.FC = () => {
               </button>
               <button
                 onClick={() => setIsSaved(!isSaved)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-none font-medium transition-all ${
                   isSaved 
                     ? 'bg-amber-50 text-amber-600 border-2 border-amber-200' 
                     : 'bg-stone-100 text-stone-600 hover:bg-stone-200'
@@ -282,7 +282,7 @@ const RecipeDetailPage: React.FC = () => {
                     <h2 className="text-2xl font-bold text-stone-900">재료</h2>
                     <div className="flex items-center gap-2">
                       <Users className="w-5 h-5 text-stone-500" />
-                      <div className="flex border border-stone-200 rounded-lg overflow-hidden">
+                      <div className="flex border border-stone-200 rounded-none overflow-hidden">
                         {[2, 3, 4].map((num) => (
                           <button
                             key={num}
@@ -303,8 +303,8 @@ const RecipeDetailPage: React.FC = () => {
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     {sampleRecipe.ingredients.map((ingredient, idx) => (
-                      <div key={idx} className="flex items-center gap-4 p-3 bg-stone-50 rounded-xl">
-                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center overflow-hidden shadow-sm">
+                      <div key={idx} className="flex items-center gap-4 p-3 bg-stone-50 rounded-none">
+                        <div className="w-14 h-14 rounded-none bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center overflow-hidden shadow-sm">
                           <img 
                             src={getIngredientIcon(ingredient.name)} 
                             alt={ingredient.name}
@@ -330,7 +330,7 @@ const RecipeDetailPage: React.FC = () => {
                   <div className="space-y-8">
                     {sampleRecipe.steps.map((step) => (
                       <div key={step.step} className="flex gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center font-bold">
+                        <div className="flex-shrink-0 w-10 h-10 bg-green-600 text-white rounded-none flex items-center justify-center font-bold">
                           {step.step}
                         </div>
                         <div className="flex-1">
@@ -360,7 +360,7 @@ const RecipeDetailPage: React.FC = () => {
               {/* 오른쪽: 영양 정보 */}
               <div className="lg:col-span-1">
                 <div className="sticky top-24">
-                  <section className="p-6 bg-stone-50 rounded-2xl">
+                  <section className="p-6 bg-stone-50 rounded-none">
                     <h2 className="text-lg font-bold text-stone-900 mb-4">영양 정보</h2>
                     <p className="text-sm text-stone-500 mb-4">/ 1인분 기준</p>
                     
@@ -400,9 +400,9 @@ const RecipeDetailPage: React.FC = () => {
             </div>
 
             {/* AI 추천 섹션 */}
-            <section className="mt-16 p-8 bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-3xl border border-violet-100">
+            <section className="mt-16 p-8 bg-gradient-to-br from-violet-50 via-purple-50 to-fuchsia-50 rounded-none border border-violet-100">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-none flex items-center justify-center">
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -415,7 +415,7 @@ const RecipeDetailPage: React.FC = () => {
                 {sampleRecipe.aiRecommendations.tips.map((tip, idx) => (
                   <div 
                     key={idx} 
-                    className="p-5 bg-white/70 backdrop-blur-sm rounded-2xl border border-white hover:shadow-lg transition-shadow"
+                    className="p-5 bg-white/70 backdrop-blur-sm rounded-none border border-white hover:shadow-lg transition-shadow"
                   >
                     <div className="flex items-start gap-3">
                       <span className="text-2xl">{tip.icon}</span>
@@ -440,7 +440,7 @@ const RecipeDetailPage: React.FC = () => {
                   모두 보기
                 </button>
               </div>
-              <div className="p-4 bg-stone-50 rounded-xl text-center text-stone-500">
+              <div className="p-4 bg-stone-50 rounded-none text-center text-stone-500">
                 댓글 기능은 준비 중입니다...
               </div>
             </section>
@@ -462,7 +462,7 @@ const RecipeDetailPage: React.FC = () => {
                     to={`/recipe/${recipe.id}`}
                     className="group cursor-pointer"
                   >
-                    <div className="aspect-square rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-amber-50 to-orange-100">
+                    <div className="aspect-square rounded-none overflow-hidden mb-3 bg-gradient-to-br from-amber-50 to-orange-100">
                       <img
                         src={recipe.image}
                         alt={recipe.title}

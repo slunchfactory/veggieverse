@@ -168,7 +168,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors ${
+              className={`w-2 h-2 rounded-none transition-colors ${
                 index === currentSlide ? 'bg-white' : 'bg-white/40'
               }`}
             />
@@ -211,7 +211,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => (
                   <div key={product.id} className="cursor-pointer group">
                     <div 
-                      className="w-full mb-2 overflow-hidden rounded-lg"
+                      className="w-full mb-2 overflow-hidden rounded-none"
                       style={{ aspectRatio: '4/5', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a' }}
                     >
                       {/* 이미지 자리 */}
