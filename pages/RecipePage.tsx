@@ -250,13 +250,39 @@ const RecipeCarousel: React.FC<{
   );
 };
 
-// 중앙 정렬 스와이프 캐러셀 컴포넌트
-const PopularRecipesCarousel: React.FC<{ recipes: Recipe[] }> = ({ recipes }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+// 20개 레시피 썸네일 데이터 (오비탈용)
+const orbitalRecipes = [
+  { id: 1, image: '/vege_flot_img/mushroom.png', title: '버섯 리조또' },
+  { id: 2, image: '/vege_flot_img/tomato.png', title: '토마토 파스타' },
+  { id: 3, image: '/vege_flot_img/avocado.png', title: '아보카도 볼' },
+  { id: 4, image: '/vege_flot_img/broccoli.png', title: '브로콜리 수프' },
+  { id: 5, image: '/vege_flot_img/carrot.png', title: '당근 케이크' },
+  { id: 6, image: '/vege_flot_img/lemon.png', title: '레몬 타르트' },
+  { id: 7, image: '/vege_flot_img/mango.png', title: '망고 스무디' },
+  { id: 8, image: '/vege_flot_img/grape.png', title: '포도 샐러드' },
+  { id: 9, image: '/vege_flot_img/coconut.png', title: '코코넛 푸딩' },
+  { id: 10, image: '/vege_flot_img/orange.png', title: '오렌지 주스' },
+  { id: 11, image: '/vege_flot_img/kiwi.png', title: '키위 요거트' },
+  { id: 12, image: '/vege_flot_img/peach.png', title: '복숭아 타르트' },
+  { id: 13, image: '/vege_flot_img/blueberry.png', title: '블루베리 머핀' },
+  { id: 14, image: '/vege_flot_img/raspberry.png', title: '라즈베리 잼' },
+  { id: 15, image: '/vege_flot_img/pineapple.png', title: '파인애플 볶음밥' },
+  { id: 16, image: '/vege_flot_img/watermelon.png', title: '수박 화채' },
+  { id: 17, image: '/vege_flot_img/sweet potato.png', title: '고구마 라떼' },
+  { id: 18, image: '/vege_flot_img/corn.png', title: '콘 스프' },
+  { id: 19, image: '/vege_flot_img/olive.png', title: '올리브 파스타' },
+  { id: 20, image: '/vege_flot_img/ginger.png', title: '생강차' },
+];
+
+// 원형 오비탈 캐러셀 컴포넌트
+const OrbitalCarousel: React.FC = () => {
+  const [rotation, setRotation] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [translateX, setTranslateX] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [velocity, setVelocity] = useState(0);
+  const lastX = useRef(0);
+  const lastTime = useRef(Date.now());
+  const animationRef = useRef<number>();
 
   const cardColors = [
     COLORS.lightLime,
@@ -267,201 +293,178 @@ const PopularRecipesCarousel: React.FC<{ recipes: Recipe[] }> = ({ recipes }) =>
     COLORS.lincolnGreen,
     COLORS.bloodRed,
     COLORS.brilliantRose,
+    COLORS.goldenBrown,
+    COLORS.sinopia,
   ];
 
-  const goToSlide = (index: number) => {
-    if (index < 0) index = recipes.length - 1;
-    if (index >= recipes.length) index = 0;
-    setCurrentIndex(index);
-    setTranslateX(0);
-  };
+  const totalItems = orbitalRecipes.length;
+  const angleStep = 360 / totalItems;
+
+  // 관성 애니메이션
+  useEffect(() => {
+    const animate = () => {
+      if (!isDragging && Math.abs(velocity) > 0.1) {
+        setRotation(prev => prev + velocity);
+        setVelocity(prev => prev * 0.95); // 감속
+        animationRef.current = requestAnimationFrame(animate);
+      }
+    };
+    
+    if (!isDragging && Math.abs(velocity) > 0.1) {
+      animationRef.current = requestAnimationFrame(animate);
+    }
+    
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isDragging, velocity]);
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
     setStartX(e.clientX);
+    lastX.current = e.clientX;
+    lastTime.current = Date.now();
+    setVelocity(0);
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+    }
   };
 
   const handlePointerMove = (e: React.PointerEvent) => {
     if (!isDragging) return;
     const diff = e.clientX - startX;
-    setTranslateX(diff);
+    const now = Date.now();
+    const dt = now - lastTime.current;
+    
+    if (dt > 0) {
+      setVelocity((e.clientX - lastX.current) / dt * 10);
+    }
+    
+    lastX.current = e.clientX;
+    lastTime.current = now;
+    setRotation(prev => prev + diff * 0.15);
+    setStartX(e.clientX);
   };
 
   const handlePointerUp = () => {
-    if (!isDragging) return;
     setIsDragging(false);
-    
-    if (translateX > 80) {
-      goToSlide(currentIndex - 1);
-    } else if (translateX < -80) {
-      goToSlide(currentIndex + 1);
-    } else {
-      setTranslateX(0);
-    }
   };
 
-  // 자동 슬라이드
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isDragging) {
-        goToSlide(currentIndex + 1);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [currentIndex, isDragging]);
+  const rotate = (direction: number) => {
+    setRotation(prev => prev + direction * angleStep);
+    setVelocity(0);
+  };
 
   return (
     <section 
-      className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-20 py-16 overflow-hidden"
+      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden"
       style={{ backgroundColor: COLORS.sinopia.bg }}
     >
-      {/* 헤더 */}
-      <div className="page-container mb-10">
-        <div className="flex items-end justify-between">
-          <div>
-            <span 
-              className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3"
-              style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
-            >
-              ⭐ Featured
-            </span>
-            <h2 
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
-              style={{ color: COLORS.sinopia.text }}
-            >
-              Most Popular<br />Meals and Recipes
-            </h2>
-          </div>
-          <Link 
-            to="/recipe/hall-of-fame" 
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
-            style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
-          >
-            <Trophy className="w-4 h-4" />
-            <span>명예의 전당</span>
-          </Link>
-        </div>
-        <p className="text-lg mt-3" style={{ color: `${COLORS.sinopia.text}99` }}>
-          Check out our most favorited recipes!
-        </p>
-      </div>
-
-      {/* 캐러셀 */}
-      <div 
-        ref={containerRef}
-        className="relative select-none"
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        onPointerLeave={handlePointerUp}
-        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-      >
-        <div className="flex items-center justify-center gap-4 sm:gap-8 px-4">
-          {recipes.map((recipe, idx) => {
-            const cardColor = cardColors[idx % cardColors.length];
-            const distance = idx - currentIndex;
-            const isActive = idx === currentIndex;
-            
-            // 순환 처리
-            let adjustedDistance = distance;
-            if (distance > recipes.length / 2) adjustedDistance = distance - recipes.length;
-            if (distance < -recipes.length / 2) adjustedDistance = distance + recipes.length;
-            
-            const scale = isActive ? 1 : 0.75;
-            const opacity = Math.abs(adjustedDistance) > 2 ? 0 : isActive ? 1 : 0.6;
-            const zIndex = isActive ? 10 : 10 - Math.abs(adjustedDistance);
-            const xOffset = adjustedDistance * 280 + (isDragging ? translateX : 0);
-            
-            return (
-              <Link
-                key={recipe.id}
-                to={isActive ? `/recipe/${recipe.id}` : '#'}
-                onClick={(e) => {
-                  if (!isActive) {
-                    e.preventDefault();
-                    goToSlide(idx);
-                  }
-                }}
-                className="absolute transition-all duration-500 ease-out"
-                style={{
-                  transform: `translateX(${xOffset}px) scale(${scale})`,
-                  opacity,
-                  zIndex,
-                  pointerEvents: Math.abs(adjustedDistance) > 2 ? 'none' : 'auto',
-                }}
-              >
-                {/* 카드 */}
-                <div 
-                  className="w-[280px] sm:w-[320px] overflow-hidden shadow-2xl"
-                  style={{ backgroundColor: cardColor.bg }}
+      <div className="relative min-h-[700px] sm:min-h-[800px] lg:min-h-[900px] flex flex-col items-center justify-center py-16">
+        
+        {/* 오비탈 컨테이너 */}
+        <div 
+          className="absolute inset-0 select-none"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+        >
+          {/* 원형 배치된 카드들 */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+            {orbitalRecipes.map((recipe, idx) => {
+              const angle = (idx * angleStep + rotation) * (Math.PI / 180);
+              const radiusX = Math.min(window.innerWidth * 0.42, 600);
+              const radiusY = Math.min(window.innerWidth * 0.28, 380);
+              
+              const x = Math.sin(angle) * radiusX;
+              const y = -Math.cos(angle) * radiusY * 0.5 + Math.sin(angle) * radiusY * 0.3;
+              const z = Math.cos(angle);
+              
+              const scale = 0.5 + (z + 1) * 0.35;
+              const opacity = 0.4 + (z + 1) * 0.3;
+              const zIndex = Math.round((z + 1) * 10);
+              
+              const cardColor = cardColors[idx % cardColors.length];
+              
+              return (
+                <Link
+                  key={recipe.id}
+                  to={`/recipe/${recipe.id}`}
+                  className="absolute transition-all duration-100 ease-out hover:scale-110"
+                  style={{
+                    transform: `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`,
+                    opacity,
+                    zIndex,
+                  }}
+                  onClick={(e) => isDragging && e.preventDefault()}
                 >
-                  {/* 이미지 */}
-                  <div className="relative aspect-[4/5]">
+                  <div 
+                    className="w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-xl"
+                    style={{ backgroundColor: cardColor.bg }}
+                  >
                     <img
                       src={recipe.image}
                       alt={recipe.title}
-                      className="w-full h-full object-contain p-8"
+                      className="w-full h-full object-contain p-3 sm:p-4"
                       draggable={false}
                     />
-                    {/* 순위 뱃지 (원형) */}
-                    {idx < 3 && (
-                      <div 
-                        className="absolute top-4 left-4 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
-                        style={{ backgroundColor: cardColor.text, color: cardColor.bg }}
-                      >
-                        {idx + 1}
-                      </div>
-                    )}
                   </div>
-                  {/* 텍스트 */}
-                  <div className="p-5" style={{ backgroundColor: cardColor.bg }}>
-                    <h3 
-                      className="font-bold text-xl mb-2"
-                      style={{ color: cardColor.text }}
-                    >
-                      {recipe.title}
-                    </h3>
-                    <p 
-                      className="text-sm opacity-80"
-                      style={{ color: cardColor.text }}
-                    >
-                      {recipe.description}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* 중앙 텍스트 */}
+        <div className="relative z-30 text-center px-4 max-w-2xl mx-auto pointer-events-none">
+          <h2 
+            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4"
+            style={{ color: COLORS.sinopia.text }}
+          >
+            Most Popular<br />Meals and Recipes
+          </h2>
+          <p 
+            className="text-base sm:text-lg lg:text-xl mb-8"
+            style={{ color: `${COLORS.sinopia.text}aa` }}
+          >
+            다양한 비건 레시피를 만나보세요
+          </p>
+          <Link 
+            to="/recipe/hall-of-fame" 
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all shadow-lg hover:scale-105 pointer-events-auto"
+            style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
+          >
+            <Trophy className="w-5 h-5" />
+            <span>명예의 전당 보기</span>
+            <ChevronRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* 네비게이션 버튼 */}
         <button
-          onClick={() => goToSlide(currentIndex - 1)}
-          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all z-20"
+          onClick={() => rotate(-1)}
+          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-xl transition-all z-40 hover:scale-110"
         >
           <ChevronLeft className="w-6 h-6 text-stone-700" />
         </button>
         <button
-          onClick={() => goToSlide(currentIndex + 1)}
-          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all z-20"
+          onClick={() => rotate(1)}
+          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-xl transition-all z-40 hover:scale-110"
         >
           <ChevronRight className="w-6 h-6 text-stone-700" />
         </button>
-      </div>
 
-      {/* 인디케이터 */}
-      <div className="flex justify-center gap-2 mt-10">
-        {recipes.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => goToSlide(idx)}
-            className="w-2 h-2 rounded-full transition-all"
-            style={{
-              backgroundColor: idx === currentIndex ? COLORS.sinopia.text : `${COLORS.sinopia.text}40`,
-              width: idx === currentIndex ? '24px' : '8px',
-            }}
-          />
-        ))}
+        {/* 레시피 작성 버튼 */}
+        <div className="absolute bottom-8 right-8 z-40">
+          <button className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium text-sm transition-colors shadow-lg hover:scale-105">
+            <Upload className="w-4 h-4" />
+            <span>레시피 작성</span>
+          </button>
+        </div>
       </div>
     </section>
   );
@@ -470,22 +473,10 @@ const PopularRecipesCarousel: React.FC<{ recipes: Recipe[] }> = ({ recipes }) =>
 const RecipePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
-      <div className="page-container py-10">
-        
-        {/* 상단 헤더 + 레시피 작성 버튼 */}
-        <div className="flex items-center justify-between mb-10">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-stone-900">Recipe</h1>
-            <p className="text-stone-500 mt-1">다양한 비건 레시피를 만나보세요</p>
-          </div>
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-none font-medium text-sm transition-colors shadow-lg shadow-green-600/25">
-            <Upload className="w-4 h-4" />
-            <span>레시피 작성</span>
-          </button>
-        </div>
+      {/* 인기 레시피 섹션 - 풀와이드 오비탈 캐러셀 */}
+      <OrbitalCarousel />
 
-        {/* 인기 레시피 섹션 - 풀와이드 중앙 캐러셀 */}
-        <PopularRecipesCarousel recipes={popularRecipes} />
+      <div className="page-container py-10">
 
         {/* 카테고리별 섹션들 */}
         {recipeCategories.map((category) => {
