@@ -21,85 +21,85 @@ export const getProductThumbnailImages = (productId: number): string[] => {
     case 2:
       // 볶음김치
       return [
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔1.jpg'),
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔2.jpg'),
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔3.jpg'),
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔4.jpg'),
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔5.jpg'),
-        getImageUrl('store/thumbnails/볶음김치/김치)볶음김치캔6.png'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-1.jpg'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-2.jpg'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-3.jpg'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-4.jpg'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-5.jpg'),
+        getImageUrl('store/thumbnails/kimchi/kimchi-can-6.png'),
       ].filter(Boolean);
     
     case 3:
       // 김치볶음밥 밀키트
       return [
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트1.jpg'),
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트2.jpg'),
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트3.jpg'),
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트4.jpg'),
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트5.jpg'),
-        getImageUrl('store/thumbnails/김치볶음밥 밀키트/김치)밀키트6.png'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-1.jpg'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-2.jpg'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-3.jpg'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-4.jpg'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-5.jpg'),
+        getImageUrl('store/thumbnails/kimchi-fried-rice-mealkit/kimchi-mealkit-6.png'),
       ].filter(Boolean);
     
     case 4:
       // 시금치 뇨끼
       return [
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼1.jpg'),
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼2.jpg'),
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼3.jpg'),
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼4.jpg'),
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼5.jpg'),
-        getImageUrl('store/thumbnails/시금치뇨끼 밀키트/시금치뇨끼6.png'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-1.jpg'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-2.jpg'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-3.jpg'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-4.jpg'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-5.jpg'),
+        getImageUrl('store/thumbnails/spinach-gnocchi-mealkit/spinach-gnocchi-6.png'),
       ].filter(Boolean);
     
     case 5:
       // 블루베리 타르트 (조각)
       return [
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/블루베리타르트)조각1.jpg'),
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/블루베리타르트)조각2.jpg'),
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/블루베리타르트)조각3.jpg'),
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/블루베리타르트)조각4.jpg'),
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/타르트3종)조각 공통썸네일1.jpg'),
-        getImageUrl('store/thumbnails/블루베리 타르트_조각/타르트3종)조각 공통썸네일2.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/blueberry-tart-piece-1.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/blueberry-tart-piece-2.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/blueberry-tart-piece-3.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/blueberry-tart-piece-4.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/tart-3-piece-common-1.jpg'),
+        getImageUrl('store/thumbnails/blueberry-tart-piece/tart-3-piece-common-2.jpg'),
       ].filter(Boolean);
     
     case 6:
       // 자두 타르트 (조각)
       return [
-        getImageUrl('store/thumbnails/자두 타르트_조각/자두타르트)조각1.jpg'),
-        getImageUrl('store/thumbnails/자두 타르트_조각/자두타르트)조각2.jpg'),
-        getImageUrl('store/thumbnails/자두 타르트_조각/타르트3종)조각 공통썸네일1.jpg'),
-        getImageUrl('store/thumbnails/자두 타르트_조각/타르트3종)조각 공통썸네일2.jpg'),
+        getImageUrl('store/thumbnails/plum-tart-piece/plum-tart-piece-1.jpg'),
+        getImageUrl('store/thumbnails/plum-tart-piece/plum-tart-piece-2.jpg'),
+        getImageUrl('store/thumbnails/plum-tart-piece/tart-3-piece-common-1.jpg'),
+        getImageUrl('store/thumbnails/plum-tart-piece/tart-3-piece-common-2.jpg'),
       ].filter(Boolean);
     
     case 7:
       // 복숭아 타르트 (조각)
       return [
-        getImageUrl('store/thumbnails/복숭아 타르트_조각/복숭아타르트)조각1.jpg'),
-        getImageUrl('store/thumbnails/복숭아 타르트_조각/복숭아타르트)조각2.jpg'),
-        getImageUrl('store/thumbnails/복숭아 타르트_조각/복숭아타르트)조각3.jpg'),
-        getImageUrl('store/thumbnails/복숭아 타르트_조각/타르트3종)조각 공통썸네일1.jpg'),
-        getImageUrl('store/thumbnails/복숭아 타르트_조각/타르트3종)조각 공통썸네일2.jpg'),
+        getImageUrl('store/thumbnails/peach-tart-piece/peach-tart-piece-1.jpg'),
+        getImageUrl('store/thumbnails/peach-tart-piece/peach-tart-piece-2.jpg'),
+        getImageUrl('store/thumbnails/peach-tart-piece/peach-tart-piece-3.jpg'),
+        getImageUrl('store/thumbnails/peach-tart-piece/tart-3-piece-common-1.jpg'),
+        getImageUrl('store/thumbnails/peach-tart-piece/tart-3-piece-common-2.jpg'),
       ].filter(Boolean);
     
     case 8:
       // 잠봉뵈르
       return [
-        getImageUrl('store/thumbnails/잠봉뵈르 밀키트/잠봉뵈르1.jpg'),
-        getImageUrl('store/thumbnails/잠봉뵈르 밀키트/잠봉뵈르2.jpg'),
-        getImageUrl('store/thumbnails/잠봉뵈르 밀키트/잠봉뵈르3.jpg'),
-        getImageUrl('store/thumbnails/잠봉뵈르 밀키트/잠봉뵈르4.jpg'),
-        getImageUrl('store/thumbnails/잠봉뵈르 밀키트/잠봉뵈르5.jpg'),
+        getImageUrl('store/thumbnails/jambon-beurre-mealkit/jambon-beurre-1.jpg'),
+        getImageUrl('store/thumbnails/jambon-beurre-mealkit/jambon-beurre-2.jpg'),
+        getImageUrl('store/thumbnails/jambon-beurre-mealkit/jambon-beurre-3.jpg'),
+        getImageUrl('store/thumbnails/jambon-beurre-mealkit/jambon-beurre-4.jpg'),
+        getImageUrl('store/thumbnails/jambon-beurre-mealkit/jambon-beurre-5.jpg'),
       ].filter(Boolean);
     
     case 9:
     case 10:
       // 피넛버터초코바
       return [
-        getImageUrl('store/thumbnails/피넛버터초코바/피넛버터초코바1.jpg'),
-        getImageUrl('store/thumbnails/피넛버터초코바/피넛버터초코바2.jpg'),
-        getImageUrl('store/thumbnails/피넛버터초코바/피넛버터초코바3.jpg'),
-        getImageUrl('store/thumbnails/피넛버터초코바/피넛버터초코바4.jpg'),
-        getImageUrl('store/thumbnails/피넛버터초코바/피넛버터초코바5.jpg'),
+        getImageUrl('store/thumbnails/peanut-butter-choco-bar/peanut-butter-choco-bar-1.jpg'),
+        getImageUrl('store/thumbnails/peanut-butter-choco-bar/peanut-butter-choco-bar-2.jpg'),
+        getImageUrl('store/thumbnails/peanut-butter-choco-bar/peanut-butter-choco-bar-3.jpg'),
+        getImageUrl('store/thumbnails/peanut-butter-choco-bar/peanut-butter-choco-bar-4.jpg'),
+        getImageUrl('store/thumbnails/peanut-butter-choco-bar/peanut-butter-choco-bar-5.jpg'),
       ].filter(Boolean);
     
     default:
@@ -112,10 +112,10 @@ export const getProductThumbnailImages = (productId: number): string[] => {
  */
 export const getHomeProductImage = (index: number): string => {
   const images = [
-    getImageUrl('main/products/김치)볶음김치캔5.jpg'),
-    getImageUrl('main/products/시금치뇨끼6.png'),
-    getImageUrl('main/products/자두타르트)홀1.jpg'),
-    getImageUrl('main/products/피넛버터초코바4.jpg'),
+    getImageUrl('main/products/kimchi-can-5.jpg'),
+    getImageUrl('main/products/spinach-gnocchi-6.png'),
+    getImageUrl('main/products/plum-tart-whole-1.jpg'),
+    getImageUrl('main/products/peanut-butter-choco-bar-4.jpg'),
   ];
   return images[index] || '';
 };
