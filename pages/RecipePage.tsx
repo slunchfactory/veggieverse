@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Upload, Trophy } from 'lucide-react';
 import { COLORS } from '../constants/colors';
@@ -250,6 +250,223 @@ const RecipeCarousel: React.FC<{
   );
 };
 
+// 중앙 정렬 스와이프 캐러셀 컴포넌트
+const PopularRecipesCarousel: React.FC<{ recipes: Recipe[] }> = ({ recipes }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [translateX, setTranslateX] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const cardColors = [
+    COLORS.lightLime,
+    COLORS.grape,
+    COLORS.babyPink,
+    COLORS.darkCerulean,
+    COLORS.pastelMagenta,
+    COLORS.lincolnGreen,
+    COLORS.bloodRed,
+    COLORS.brilliantRose,
+  ];
+
+  const goToSlide = (index: number) => {
+    if (index < 0) index = recipes.length - 1;
+    if (index >= recipes.length) index = 0;
+    setCurrentIndex(index);
+    setTranslateX(0);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    setStartX(e.clientX);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const diff = e.clientX - startX;
+    setTranslateX(diff);
+  };
+
+  const handlePointerUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    
+    if (translateX > 80) {
+      goToSlide(currentIndex - 1);
+    } else if (translateX < -80) {
+      goToSlide(currentIndex + 1);
+    } else {
+      setTranslateX(0);
+    }
+  };
+
+  // 자동 슬라이드
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isDragging) {
+        goToSlide(currentIndex + 1);
+      }
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [currentIndex, isDragging]);
+
+  return (
+    <section 
+      className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 xl:-mx-12 2xl:-mx-20 py-16 overflow-hidden"
+      style={{ backgroundColor: COLORS.sinopia.bg }}
+    >
+      {/* 헤더 */}
+      <div className="page-container mb-10">
+        <div className="flex items-end justify-between">
+          <div>
+            <span 
+              className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3"
+              style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
+            >
+              ⭐ Featured
+            </span>
+            <h2 
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
+              style={{ color: COLORS.sinopia.text }}
+            >
+              Most Popular<br />Meals and Recipes
+            </h2>
+          </div>
+          <Link 
+            to="/recipe/hall-of-fame" 
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
+            style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
+          >
+            <Trophy className="w-4 h-4" />
+            <span>명예의 전당</span>
+          </Link>
+        </div>
+        <p className="text-lg mt-3" style={{ color: `${COLORS.sinopia.text}99` }}>
+          Check out our most favorited recipes!
+        </p>
+      </div>
+
+      {/* 캐러셀 */}
+      <div 
+        ref={containerRef}
+        className="relative select-none"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerLeave={handlePointerUp}
+        style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+      >
+        <div className="flex items-center justify-center gap-4 sm:gap-8 px-4">
+          {recipes.map((recipe, idx) => {
+            const cardColor = cardColors[idx % cardColors.length];
+            const distance = idx - currentIndex;
+            const isActive = idx === currentIndex;
+            
+            // 순환 처리
+            let adjustedDistance = distance;
+            if (distance > recipes.length / 2) adjustedDistance = distance - recipes.length;
+            if (distance < -recipes.length / 2) adjustedDistance = distance + recipes.length;
+            
+            const scale = isActive ? 1 : 0.75;
+            const opacity = Math.abs(adjustedDistance) > 2 ? 0 : isActive ? 1 : 0.6;
+            const zIndex = isActive ? 10 : 10 - Math.abs(adjustedDistance);
+            const xOffset = adjustedDistance * 280 + (isDragging ? translateX : 0);
+            
+            return (
+              <Link
+                key={recipe.id}
+                to={isActive ? `/recipe/${recipe.id}` : '#'}
+                onClick={(e) => {
+                  if (!isActive) {
+                    e.preventDefault();
+                    goToSlide(idx);
+                  }
+                }}
+                className="absolute transition-all duration-500 ease-out"
+                style={{
+                  transform: `translateX(${xOffset}px) scale(${scale})`,
+                  opacity,
+                  zIndex,
+                  pointerEvents: Math.abs(adjustedDistance) > 2 ? 'none' : 'auto',
+                }}
+              >
+                {/* 카드 */}
+                <div 
+                  className="w-[280px] sm:w-[320px] overflow-hidden shadow-2xl"
+                  style={{ backgroundColor: cardColor.bg }}
+                >
+                  {/* 이미지 */}
+                  <div className="relative aspect-[4/5]">
+                    <img
+                      src={recipe.image}
+                      alt={recipe.title}
+                      className="w-full h-full object-contain p-8"
+                      draggable={false}
+                    />
+                    {/* 순위 뱃지 (원형) */}
+                    {idx < 3 && (
+                      <div 
+                        className="absolute top-4 left-4 w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold shadow-lg"
+                        style={{ backgroundColor: cardColor.text, color: cardColor.bg }}
+                      >
+                        {idx + 1}
+                      </div>
+                    )}
+                  </div>
+                  {/* 텍스트 */}
+                  <div className="p-5" style={{ backgroundColor: cardColor.bg }}>
+                    <h3 
+                      className="font-bold text-xl mb-2"
+                      style={{ color: cardColor.text }}
+                    >
+                      {recipe.title}
+                    </h3>
+                    <p 
+                      className="text-sm opacity-80"
+                      style={{ color: cardColor.text }}
+                    >
+                      {recipe.description}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* 네비게이션 버튼 */}
+        <button
+          onClick={() => goToSlide(currentIndex - 1)}
+          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all z-20"
+        >
+          <ChevronLeft className="w-6 h-6 text-stone-700" />
+        </button>
+        <button
+          onClick={() => goToSlide(currentIndex + 1)}
+          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white flex items-center justify-center shadow-lg transition-all z-20"
+        >
+          <ChevronRight className="w-6 h-6 text-stone-700" />
+        </button>
+      </div>
+
+      {/* 인디케이터 */}
+      <div className="flex justify-center gap-2 mt-10">
+        {recipes.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => goToSlide(idx)}
+            className="w-2 h-2 rounded-full transition-all"
+            style={{
+              backgroundColor: idx === currentIndex ? COLORS.sinopia.text : `${COLORS.sinopia.text}40`,
+              width: idx === currentIndex ? '24px' : '8px',
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
 const RecipePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
@@ -267,100 +484,8 @@ const RecipePage: React.FC = () => {
           </button>
         </div>
 
-        {/* 인기 레시피 섹션 - 메인 히어로 */}
-        <section 
-          className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-none"
-          style={{ backgroundColor: COLORS.sinopia.bg }}
-        >
-          <div className="flex items-end justify-between mb-3">
-            <div>
-              <span 
-                className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3 rounded-none"
-                style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
-              >
-                ⭐ Featured
-              </span>
-              <h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
-                style={{ color: COLORS.sinopia.text }}
-              >
-                Most Popular<br />Meals and Recipes
-              </h2>
-            </div>
-            <Link 
-              to="/recipe/hall-of-fame" 
-              className="flex items-center gap-2 px-4 py-2 rounded-none text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
-              style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
-            >
-              <Trophy className="w-4 h-4" />
-              <span>명예의 전당</span>
-            </Link>
-          </div>
-          <p className="text-lg mb-10" style={{ color: `${COLORS.sinopia.text}99` }}>
-            Check out our most favorited recipes!
-          </p>
-          
-          {/* 대형 캐러셀 */}
-          <div className="relative group">
-            <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4" style={{ scrollSnapType: 'x mandatory' }}>
-              {popularRecipes.map((recipe, idx) => {
-                const cardColors = [
-                  COLORS.lightLime,
-                  COLORS.grape,
-                  COLORS.babyPink,
-                  COLORS.darkCerulean,
-                  COLORS.pastelMagenta,
-                  COLORS.lincolnGreen,
-                  COLORS.bloodRed,
-                  COLORS.brilliantRose,
-                ];
-                const cardColor = cardColors[idx % cardColors.length];
-                
-                return (
-                  <Link
-                    key={recipe.id}
-                    to={`/recipe/${recipe.id}`}
-                    className="flex-shrink-0 w-[320px] sm:w-[360px] cursor-pointer group/card"
-                    style={{ scrollSnapAlign: 'start' }}
-                  >
-                    {/* 대형 이미지 */}
-                    <div 
-                      className="relative w-full aspect-[4/5] rounded-none overflow-hidden mb-4 shadow-lg"
-                      style={{ backgroundColor: cardColor.bg }}
-                    >
-                      <img
-                        src={recipe.image}
-                        alt={recipe.title}
-                        className="absolute inset-0 w-full h-full object-contain p-10 group-hover/card:scale-110 transition-transform duration-500"
-                      />
-                      {/* 랭킹 뱃지 */}
-                      {idx < 3 && (
-                        <div 
-                          className="absolute top-4 left-4 w-10 h-10 rounded-none flex items-center justify-center"
-                          style={{ backgroundColor: cardColor.text, color: cardColor.bg }}
-                        >
-                          <span className="font-bold">{idx + 1}</span>
-                        </div>
-                      )}
-                      {/* 호버 오버레이 */}
-                      <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-none" />
-                    </div>
-                    {/* 텍스트 */}
-                    <h3 
-                      className="font-bold text-xl mb-2 transition-colors"
-                      style={{ color: COLORS.sinopia.text }}
-                    >
-                      {recipe.title}
-                    </h3>
-                    <p style={{ color: `${COLORS.sinopia.text}99` }} className="text-base leading-relaxed">
-                      {recipe.description}
-                    </p>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </section>
+        {/* 인기 레시피 섹션 - 풀와이드 중앙 캐러셀 */}
+        <PopularRecipesCarousel recipes={popularRecipes} />
 
         {/* 카테고리별 섹션들 */}
         {recipeCategories.map((category) => {

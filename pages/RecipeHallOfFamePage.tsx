@@ -69,7 +69,7 @@ const RecipeHallOfFamePage: React.FC = () => {
           {/* 타이틀 */}
           <div className="text-center">
             <div 
-              className="inline-flex items-center justify-center w-20 h-20 rounded-none mb-6 shadow-lg"
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg"
               style={{ backgroundColor: COLORS.goldenBrown.text, color: COLORS.goldenBrown.bg }}
             >
               <Trophy className="w-10 h-10" />
@@ -121,18 +121,19 @@ const RecipeHallOfFamePage: React.FC = () => {
                     }`}
                   />
                   
-                  {/* 랭킹 뱃지 */}
+                  {/* 랭킹 뱃지 (원형) */}
                   <div 
-                    className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-none"
+                    className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
                     style={{ 
                       backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].text,
                       color: cardColors[(recipe.rank - 1) % cardColors.length].bg
                     }}
                   >
-                    {recipe.rank === 1 && <Crown className="w-4 h-4" />}
-                    {recipe.rank === 2 && <Medal className="w-4 h-4" />}
-                    {recipe.rank === 3 && <Medal className="w-4 h-4" />}
-                    <span className="font-bold text-sm">#{recipe.rank}</span>
+                    {recipe.rank <= 3 ? (
+                      recipe.rank === 1 ? <Crown className="w-5 h-5" /> : <Medal className="w-5 h-5" />
+                    ) : (
+                      <span className="font-bold text-sm">{recipe.rank}</span>
+                    )}
                   </div>
                 </div>
                 
