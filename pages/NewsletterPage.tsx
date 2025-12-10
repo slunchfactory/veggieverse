@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Star, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 interface Article {
   id: number;
@@ -7,7 +7,6 @@ interface Article {
   title: string;
   subtitle: string;
   author: string;
-  rating: number;
   date: string;
   thumbnail: string;
   content: React.ReactNode;
@@ -16,144 +15,245 @@ interface Article {
 const ARTICLES: Article[] = [
   {
     id: 1,
-    category: 'FILM REVIEW',
-    title: '승부',
-    subtitle: '바둑판 위의 드라마, 그 치열한 승부의 세계',
-    author: '하얼빈',
-    rating: 4,
+    category: 'ESSAY',
+    title: '멈춰야 보이는 것들',
+    subtitle: '번아웃을 겪고 나서야 깨달은 것들',
+    author: '슬런치 에디터',
     date: '2024.12.10',
     thumbnail: '/article-1.jpg',
     content: (
       <>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          &lt;승부&gt;는 조훈현 바둑 기사와 이창호 바둑 기사의 드라마틱한 실화를 바탕으로 만들어진 영화입니다. <strong className="text-stone-900">이 영화의 목표는 무엇일까요?</strong> 관객들에게 스포츠 영화의 짜릿함을 선사해야 하지만 현실이 스포일러이기 때문에 적절한 각색이 필수겠죠. 극적인 결말을 위해 실제 사실 관계를 조정하거나 MSG를 쳐야 하는데, 또 너무 많이 건들면 실존 인물들과 그 사건을 잘 아는 사람들에게 부정적으로 다가갈 위험도 큽니다. 제가 본 &lt;승부&gt;는 그 밸런스가 아주 좋았던 영화입니다. 딱 납득 가능한 만큼 수정해서 정말 긴장감 넘치는 스포츠 드라마를 만들어냈습니다. 배우들의 멋진 연기 또한 인상적이었죠. 하지만 그 이상은 없었다고 느꼈습니다. 앞서 &lt;범죄도시2&gt;가 이룩한 것과 같은 영화 재미 이상의 무언가는 없었습니다. 영화가 다루고 있는 실화가 지금 다시 소환될 때 어떤 사회적인 의미를 가지고 있던 것도 아니었고요.
+          작년 여름, 나는 침대에서 일어날 수가 없었다. 몸이 아픈 게 아니었다. 알람을 끄고 천장을 한 시간 동안 바라봤다. 출근해야 한다는 걸 알면서도, 그냥 아무것도 하고 싶지 않았다. 번아웃이라는 단어를 머리로는 알고 있었지만, 그게 내 이야기가 될 줄은 몰랐다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          돌이켜보면 신호는 있었다. 좋아하던 일이 싫어지기 시작했고, 주말에도 월요일 걱정을 했다. 친구들 만나는 게 귀찮아졌고, 취미생활은 언제 했는지 기억도 안 났다. 그런데도 나는 계속 달렸다. 멈추면 뒤처질 것 같았고, 뒤처지면 다시는 따라잡을 수 없을 것 같았다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">열심히의 함정</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          우리는 '열심히'를 미덕으로 배웠다. 새벽까지 일하면 성실한 사람이고, 주말에도 노트북을 켜면 책임감 있는 사람이다. 쉬는 건 게으른 것이고, 여유를 부리면 도태되는 것이다. 그렇게 믿으며 살았다. 그 믿음이 나를 침대에 눕혀놓기 전까지는.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          번아웃이 오고 나서야 깨달았다. 나는 왜 이렇게까지 달렸을까. 정말 이 일이 좋아서였을까, 아니면 멈추는 게 두려워서였을까. 매일 출근하면서 '이게 내가 원하던 삶인가?' 생각했다. 근데 바빠서 그 질문을 계속 미뤘다. 멈추고 나서야 그 질문과 제대로 마주할 수 있었다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">노 빡빡</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          회복하는 데 결정적이었던 건 태국 치앙마이 여행이었다. 거기서 만난 현지인이 내가 뭘 하든 이렇게 말했다. "노 빡빡. 천천히 해도 돼. 내일 해도 돼." 처음엔 답답했다. 나는 돈 주고 온 관광객인데, 왜 이렇게 느긋한 거지. 근데 며칠이 지나자 그 말이 위로가 되기 시작했다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          서울에서 프리랜서의 삶을 유지하기 위해 정말 '빡빡'하게 살았다. 그게 당연한 줄 알았다. 근데 치앙마이에서는 아무도 그렇게 살지 않았다. 카페 사장님은 손님이 와도 천천히 커피를 내렸고, 시장 상인들은 흥정하다 말고 점심을 먹으러 갔다. 그들이 게으른 게 아니었다. 다만 삶의 속도가 달랐을 뿐이었다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">쉬는 것도 일의 일부</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          지금은 일주일에 하루, 무조건 쉬는 날을 정해두고 있다. 처음엔 불안했다. 이 시간에 다른 사람들은 일하고 있을 텐데. 근데 신기하게도 쉬고 나면 오히려 작업 효율이 올라갔다. 억지로 책상 앞에 앉아 있던 시간들이 얼마나 비효율적이었는지 그제야 알았다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          번아웃은 실패가 아니다. 몸이 보내는 신호다. '너 지금 잘못된 방향으로 가고 있어'라는. 나는 그 신호를 너무 오래 무시했다. 완전히 쓰러지고 나서야 멈췄다. 지금 이 글을 읽는 누군가가 나처럼 되지 않았으면 좋겠다. 쓰러지기 전에 멈춰도 된다. 쉬는 것도 일의 일부다.
         </p>
         <div className="border-t border-b border-stone-300 py-8 my-8">
           <p className="text-center text-stone-500 italic">
-            "아직 기회가 남은 자들을 향한 길고 텐션 높은 담화"
+            "요즘 나는 알람을 30분 늦춰놨다. 그 30분 동안 천장을 보며 멍하니 있는다.<br/>
+            아무것도 안 하는 시간. 그게 하루 중 제일 좋다."
           </p>
         </div>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          그럼에도 불구하고, 이 영화는 바둑이라는 소재를 스크린에서 이토록 긴장감 있게 풀어낸 몇 안 되는 작품입니다. 조훈현 역의 배우와 이창호 역의 배우 모두 실제 인물의 특징을 잘 살려냈고, 특히 대국 장면에서의 손놀림과 표정 연기는 정말 인상적이었습니다.
-        </p>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          영화는 단순히 승패를 다루는 것이 아니라, 스승과 제자 사이의 복잡한 감정, 그리고 최고의 자리를 향한 외로운 여정을 그려냅니다. 바둑을 모르는 관객도 충분히 몰입할 수 있도록 대국 장면을 연출한 점도 높이 평가할 만합니다.
-        </p>
       </>
     ),
   },
   {
     id: 2,
-    category: 'FOOD ESSAY',
-    title: '비건의 시작',
-    subtitle: '채식을 선택한 이유, 그리고 6개월 후',
+    category: 'COLUMN',
+    title: '2060년, 나는 마흔이 된다',
+    subtitle: '초고령 사회를 앞둔 Z세대의 고민',
     author: '슬런치 에디터',
-    rating: 0,
     date: '2024.12.05',
     thumbnail: '/article-2.jpg',
     content: (
       <>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          6개월 전, 저는 완전한 육식주의자였습니다. 고기 없는 식사는 상상도 할 수 없었죠. 하지만 우연히 본 다큐멘터리 한 편이 제 식습관을 완전히 바꿔놓았습니다.
+          고등학교 사회 시간에 인구 피라미드 그래프를 봤다. 2025년 한국의 65세 이상 인구 비율은 약 20%. 2050년이 되면 40%를 넘는다고 했다. 선생님이 말했다. "2050년이면 너희가 마흔 즈음 되겠네. 그때는 일하는 사람보다 은퇴한 사람이 더 많아." 교실이 조용해졌다. 나도 계산을 해봤다. 2060년이면 나는 마흔일곱이다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          막연하게 알고 있던 '고령화'가 갑자기 내 문제로 다가왔다. 뉴스에서 듣던 이야기가 아니라, 내 미래 이야기였다. 연금은 받을 수 있을까. 부모님은 어떻게 모실까. 내가 늙으면 누가 나를 돌봐줄까. 열일곱에 하기엔 너무 무거운 생각들이 머리에 가득 찼다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">정답이 없는 시대</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          부모님 세대에는 정답이 있었다. 좋은 대학 가고, 좋은 회사 들어가고, 정년까지 버티면 됐다. 근데 우리 세대는 다르다. 10년 뒤에 어떤 직업이 살아남을지 아무도 모른다. 지금 인기 있는 직업이 AI에 대체될 수도 있고, 아직 존재하지 않는 직업이 뜰 수도 있다. 유튜버라는 직업이 10년 전엔 없었던 것처럼.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          그래서 어른들이 하는 말이 다 맞는 것 같지도 않다. "안정적인 직장을 구해라." 근데 안정적인 직장이 뭔데요? "공무원이 최고야." 근데 공무원 연금도 언제까지 나올지 모르잖아요. 조언을 구해도 시원한 답이 없다. 어른들도 모르는 것 같다. 솔직히.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">외할머니 댁에서 찾은 힌트</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          설날에 외할머니 댁에 갔다. 할머니가 스마트폰으로 카카오톡 보내는 법을 물어보셨다. 가르쳐드리면서 생각했다. 이런 분들이 우리 할머니만 있는 게 아니구나. 배달 앱 쓰는 법, 유튜브 보는 법, 화상통화하는 법. 배우고 싶어 하시는 게 엄청 많았다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          문득 이런 생각이 들었다. 고령화가 위기라면, 고령층을 위한 서비스는 기회 아닐까. 시니어를 위한 디지털 교육, 건강 관리, 돌봄 서비스. 지금 존재하지 않는 직업이 내 직업이 될 수도 있겠다. 위기와 기회는 같은 곳에서 온다고 했던가.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">관계라는 자원</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          어떤 책에서 읽었다. 초고령 사회에서 가장 중요한 자원은 돈도 기술도 아니라 '관계'라고. 세대 간 갈등이 아니라 연대가 필요한 시대가 온다고. 어르신들의 경험과 젊은 세대의 기술이 만나면 시너지가 난다고. 그 말이 와닿았다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          집에 가는 길에 외할머니께 전화를 걸었다. "할머니, 요즘 뭐 불편한 거 없어요?" 대화가 30분이나 이어졌다. 그 30분 안에 사업 아이디어가 세 개쯤 있었던 것 같기도 하고. 농담이 아니라 진심이다.
         </p>
         <div className="border-t border-b border-stone-300 py-8 my-8">
           <p className="text-center text-stone-500 italic">
-            "변화는 하루아침에 오지 않는다. 하지만 시작은 언제나 오늘이다."
+            "2060년의 나에게 편지를 쓴다면 이렇게 쓸 것 같다.<br/>
+            그때도 계속 배우고 있길. 그리고 아직도 할머니한테 전화하고 있길."
           </p>
         </div>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          처음에는 정말 힘들었습니다. 무엇을 먹어야 할지 모르겠고, 외식은 더 어려웠습니다. 하지만 슬런치 팩토리를 알게 된 후로 비건 생활이 훨씬 수월해졌습니다. 맛있는 비건 요리가 이렇게 다양할 수 있다는 것을 알게 되었거든요.
-        </p>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          6개월이 지난 지금, 저는 이전보다 훨씬 건강해졌습니다. 체중도 줄었고, 무엇보다 소화가 잘 됩니다. 피부도 좋아졌다는 이야기를 많이 듣습니다. 비건 생활이 모든 사람에게 맞는 것은 아니겠지만, 한 번쯤 시도해볼 가치는 충분히 있다고 생각합니다.
-        </p>
       </>
     ),
   },
   {
     id: 3,
-    category: 'RECIPE STORY',
-    title: '할머니의 된장찌개',
-    subtitle: '비건 버전으로 재해석한 추억의 맛',
-    author: '김채린 셰프',
-    rating: 0,
+    category: 'FOOD',
+    title: '냉장고를 열면 한 끼가 보인다',
+    subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유',
+    author: '슬런치 에디터',
     date: '2024.11.28',
     thumbnail: '/article-3.jpg',
     content: (
       <>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          어린 시절, 할머니 댁에 가면 항상 된장찌개가 끓고 있었습니다. 그 구수한 냄새는 지금도 생생하게 기억납니다. 비건이 된 후, 가장 그리웠던 음식 중 하나가 바로 그 된장찌개였습니다.
+          나는 배달 앱 골드 등급이다. 자랑이 아니라 반성이다. 집밥을 해먹고 싶은 마음은 있다. 근데 퇴근하면 장 볼 힘이 없고, 주말에 장을 봐도 재료가 냉장고에서 시든다. 양파가 싹을 틔운 걸 발견했을 때의 죄책감이란. 결국 배달 앱을 켠다. 이번 달 배달비만 15만원이다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          언젠가부터 인스타그램에 집밥 사진 올리는 사람들이 부러워졌다. 예쁜 그릇에 담긴 한 상 차림. 나는 왜 저렇게 못 할까. 그 부러움이 요리에 대한 압박이 됐다. 집밥을 하려면 저 정도는 해야 하는 것 같았다. 그래서 더 시작을 못 했다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">완벽주의라는 적</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          집밥의 가장 큰 적은 완벽주의다. 이걸 깨닫는 데 오래 걸렸다. 예쁘게 차려야 한다, 영양 균형을 맞춰야 한다, 반찬이 여러 개 있어야 한다. 그런 생각이 시작도 하기 전에 지치게 만들었다. 어느 날 깨달았다. 밥 위에 계란 후라이 하나 올리면 그게 한 끼라는 걸.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          요리는 예술이 아니라 생존 기술이다. 배고프면 먹어야 하고, 매일 배달 시키면 통장이 텅 빈다. 그게 다다. 거창할 것 없다. 인스타그램에 올릴 것도 아닌데 뭘 그렇게 예쁘게 하려고 했을까. 이제는 안다. 맛있으면 장땡이다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">일주일 식단의 비밀</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          요즘은 일요일에 한 번만 장을 본다. 온라인으로 시킨다. 마트 가면 과자를 사거든. 나만 그런가. 새벽 배송이면 자고 일어나면 와 있다. 장 보는 시간 30분, 들고 오는 체력, 다 아낄 수 있다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          그리고 '만능 재료'를 정해뒀다. 양파, 계란, 대파, 두부. 이 네 가지는 항상 냉장고에 있다. 이것만 있으면 볶음밥, 계란찜, 된장찌개, 두부조림이 된다. 화려하진 않지만 충분히 맛있다. 비결은 '중복'이다. 월요일에 만든 찌개 국물로 화요일엔 우동을 끓이고, 남은 재료는 수요일 볶음밥에 넣는다. 새로운 요리를 매일 하는 게 아니라 변주를 하는 거다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">라면도 집에서 끓이면 다르다</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          솔직히 집밥이 제일 맛있다. 내 입맛에 맞게 간을 할 수 있으니까. 라면도 집에서 끓이면 다르다. 계란 넣고, 파 송송 썰어 넣고. 그 수고로움이 맛이 된다. 배달 음식은 편하지만 뭔가 허전하다. 집밥은 허전하지 않다. 내가 만들었다는 게 양념이 되는 것 같다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          어젯밤에 간장 계란밥을 해먹었다. 밥 위에 계란 후라이, 간장 한 스푼, 참기름 몇 방울, 김가루. 끝이다. 5분도 안 걸렸다. 근데 배달 음식보다 맛있었다. 먹으면서 생각했다. 이게 뭐라고 이렇게 뿌듯하지.
         </p>
         <div className="border-t border-b border-stone-300 py-8 my-8">
           <p className="text-center text-stone-500 italic">
-            "음식은 단순한 영양 섭취가 아니라, 기억과 감정을 담는 그릇이다."
+            "냉장고를 열면 한 끼가 보인다는 말이 이제 조금 이해가 된다.<br/>
+            거창한 요리를 할 필요 없다. 있는 재료로, 먹을 만큼만, 내 입맛대로. 그게 집밥이다."
           </p>
         </div>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          수많은 실험 끝에, 저는 할머니의 된장찌개를 비건 버전으로 재현하는 데 성공했습니다. 비결은 표고버섯과 다시마로 우린 육수, 그리고 젓갈 대신 사용하는 발효 식품들이었습니다. 두부와 각종 야채를 넣고 끓이면, 그 맛이 정말 놀라울 정도로 비슷합니다.
-        </p>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          이 레시피를 슬런치 팩토리에서 선보일 예정입니다. 많은 분들이 저처럼 추억의 맛을 비건으로 즐길 수 있기를 바랍니다.
-        </p>
       </>
     ),
   },
   {
     id: 4,
-    category: 'LIFESTYLE',
-    title: '지속가능한 식탁',
-    subtitle: '환경을 생각하는 작은 실천들',
-    author: '그린라이프',
-    rating: 0,
+    category: 'RELATIONSHIP',
+    title: '"그 영화 재밌어" 다음에 할 말',
+    subtitle: '소개팅에서 영화 이야기 잘하는 법',
+    author: '슬런치 에디터',
     date: '2024.11.20',
     thumbnail: '/article-4.jpg',
     content: (
       <>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          우리가 매일 먹는 음식이 지구에 어떤 영향을 미치는지 생각해본 적 있으신가요? 축산업은 전 세계 온실가스 배출의 약 14.5%를 차지합니다. 이는 전 세계 모든 교통수단이 배출하는 양과 맞먹는 수치입니다.
+          소개팅에서 영화 이야기를 잘 못한다. "최근에 뭐 봤어요?"라고 물으면 "음... 넷플릭스에서 뭐 봤는데..." 하다가 제목이 생각 안 나서 멈칫한다. 겨우 제목을 떠올려도 "재밌었어요" 말고 할 말이 없다. 어색한 침묵. 다른 주제로 넘어간다. 매번 그랬다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          그래서 생각해봤다. 영화 이야기를 왜 못할까. 영화를 안 봐서? 아니다, 꽤 본다. 영화를 몰라서? 그것도 아닌 것 같다. 문제는 '어떻게' 이야기하는지 몰랐던 거다. 영화 줄거리를 설명하면 스포일러가 되고, 감상을 말하려니 "재밌었어요" 말고 떠오르는 게 없고.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">피해야 할 것들</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          먼저 피해야 할 것부터 정리했다. 스포일러는 당연히 안 된다. "그 영화 반전이 진짜..."까지만 말해도 이미 반전이 있다는 걸 알려준 거다. 그리고 상대방 취향을 평가하는 말. "그 영화도 몰라요?" "마블은 영화가 아니야." 이런 말은 대화를 끝내는 가장 빠른 방법이다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          영화 지식 자랑도 금물이다. "이 영화의 시네마토그래피가 어쩌고저쩌고..." 이러면 대화가 아니라 강의가 된다. 상대방이 영화학과라면 모를까. 소개팅은 나를 뽐내는 자리가 아니다. 상대방과 연결되는 자리다. 그걸 자꾸 잊어버린다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">'왜'를 물어보는 것</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          좋은 영화 이야기는 '왜'를 물어보는 거라고 한다. "어떤 영화 좋아해요?"보다 "그 영화 왜 좋아해요?"가 훨씬 좋은 질문이다. 상대방이 자기 이야기를 할 수 있게 해주니까. 영화 취향은 그 사람이 세상을 어떻게 보는지를 말해준다. 로맨스를 좋아하는 사람, 스릴러를 좋아하는 사람, 다큐멘터리를 좋아하는 사람. 각자 다른 걸 원하고, 다른 걸 두려워한다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          영화관 경험을 물어보는 것도 좋다고 한다. "제일 기억에 남는 영화관 경험이 뭐예요?" 이러면 영화 내용뿐 아니라 그때 누구랑 갔는지, 어떤 기분이었는지까지 이야기할 수 있다. 영화가 아니라 그 사람의 기억을 듣는 거다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">취향이 달라도 괜찮다</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          취향이 다를 때도 기회다. "저는 그 영화 별로였는데, 어떤 점이 좋았어요?" 이렇게 물으면 상대방의 관점을 이해할 수 있다. 싸우라는 게 아니다. 다름을 인정하고 호기심을 보이는 거다. 같은 영화를 봐도 다르게 느낄 수 있다는 걸 받아들이면, 대화가 훨씬 풍성해진다.
         </p>
         <div className="border-t border-b border-stone-300 py-8 my-8">
           <p className="text-center text-stone-500 italic">
-            "지구를 위한 가장 쉬운 실천은 식탁에서 시작된다."
+            "다음 소개팅에서는 이렇게 물어봐야겠다.<br/>
+            '최근 본 영화 중에 제일 웃겼던 장면이 뭐예요?'<br/>
+            무겁지 않으면서 상대방의 유머 코드를 알 수 있을 것 같다."
           </p>
         </div>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          완전한 비건이 되지 않더라도, 일주일에 한두 번 채식 식사를 하는 것만으로도 큰 변화를 만들 수 있습니다. 이른바 '플렉시테리언' 식단이죠. 또한 로컬 푸드를 선택하고, 음식물 쓰레기를 줄이는 것도 중요합니다.
-        </p>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          슬런치 팩토리는 모든 식재료를 가능한 한 지역 농가에서 공급받고, 남은 음식은 퇴비로 활용합니다. 작은 실천들이 모여 큰 변화를 만든다고 믿기 때문입니다.
-        </p>
       </>
     ),
   },
   {
     id: 5,
-    category: 'INTERVIEW',
-    title: '셰프가 말하는 비건',
-    subtitle: '슬런치 팩토리 수석 셰프 인터뷰',
-    author: '에디터 K',
-    rating: 0,
+    category: 'LIFESTYLE',
+    title: '마음을 전하는 데 10만원은 필요 없다',
+    subtitle: '3만원으로 완성하는 크리스마스 선물',
+    author: '슬런치 에디터',
     date: '2024.11.15',
     thumbnail: '/article-5.jpg',
     content: (
       <>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          <strong>Q. 비건 요리를 시작하게 된 계기가 무엇인가요?</strong>
+          크리스마스가 다가오면 스트레스를 받는다. 뭘 선물해야 할지 모르겠고, 좋은 거 사주자니 통장이 걱정되고, 저렴한 거 사자니 성의 없어 보일까 봐 걱정된다. 해마다 반복되는 고민이다. 올해도 어김없이 12월이 왔고, 나는 또 검색창에 '크리스마스 선물 추천'을 치고 있다.
         </p>
         <p className="mb-6 text-stone-700 leading-relaxed">
-          A. 처음에는 단순한 호기심이었어요. 고기 없이 어디까지 맛을 낼 수 있을까? 그 도전이 저를 비건 요리의 세계로 이끌었습니다. 그리고 깊이 들어갈수록, 식물성 재료가 가진 무한한 가능성에 매료되었죠.
+          검색 결과를 보면 한숨이 나온다. "20대 여자친구 선물 TOP 10" 같은 글에 나오는 건 죄다 10만원이 넘는다. 향수, 지갑, 악세서리. 그런 걸 살 돈이 있으면 고민을 안 하지. 나는 3만원으로 어떻게든 해결해야 하는 사람이다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">비싼 선물이 좋은 선물일까</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          곰곰이 생각해봤다. 내가 받아서 기뻤던 선물이 뭐였지? 떠오르는 건 10만원짜리 향수가 아니었다. 친구가 내 최애 과자를 잔뜩 사다 준 것. 언니가 내가 좋아하는 캐릭터 양말을 선물해준 것. 비싸지 않았다. 근데 '내 취향을 알아줬다'는 느낌이 들어서 기뻤다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          그러고 보니 선물의 핵심은 가격이 아니라 '이 사람이 나를 생각했구나'라는 느낌인 것 같다. 10만원짜리 향수를 아무 생각 없이 사는 것보다, 3만원을 고민하며 쓰는 게 더 마음이 전해질 수 있다. 적어도 나는 그렇게 믿기로 했다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">3만원의 마법, 조합</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          3만원으로 선물하는 가장 좋은 방법은 '조합'이다. 작은 것 여러 개를 모아서 하나의 패키지로 만드는 거다. 예를 들어 커피 좋아하는 친구에게. 드립백 커피 5개(1만원) + 예쁜 머그컵(1만2천원) + 손편지(0원) + 쿠키 3개(8천원). 이러면 '커피 키트'가 완성된다. 그냥 머그컵 하나 주는 것보다 훨씬 정성스러워 보인다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          포인트는 '테마'다. 그냥 여러 개 사는 게 아니라, 하나의 이야기로 묶는 거다. '집에서 보내는 따뜻한 저녁' 테마라면, 입욕제(8천원) + 양초(1만원) + 핫초코 스틱(5천원) + 두꺼운 양말(7천원). 이렇게 모으면 "피곤할 때 이거 하나씩 쓰면서 쉬어"라는 메시지가 된다.
+        </p>
+
+        <h3 className="text-lg font-bold text-stone-900 mt-10 mb-4">손편지의 힘</h3>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          손편지가 부담스러운 사람도 있을 거다. 뭐라고 써야 할지 모르겠으니까. 근데 길게 안 써도 된다. "이거 보고 네 생각났어"라는 한 줄이면 충분하다. 선물과 연결되는 짧은 이유만 적으면 된다. 커피 드립백에 "아침에 이거 마시면서 오늘 하루도 파이팅"이라고만 적어도 받는 사람은 기분이 좋다.
+        </p>
+        <p className="mb-6 text-stone-700 leading-relaxed">
+          그리고 포장. 똑같은 선물도 포장에 따라 완전 달라 보인다. 다이소에서 3천원이면 예쁜 박스랑 리본 살 수 있다. 크래프트지로 감싸서 마른 꽃 하나 꽂아도 감성이 터진다. 포장에 들이는 시간도 선물의 일부다.
         </p>
         <div className="border-t border-b border-stone-300 py-8 my-8">
           <p className="text-center text-stone-500 italic">
-            "제한은 창의성의 어머니다. 비건 요리는 그 진리를 매일 증명한다."
+            "어제 편의점에 들렀다. 핫초코 스틱 3개, 마시멜로 한 봉지, 그리고 엽서 한 장.<br/>
+            합계 7천원. 엽서에 뭐라고 쓸지 벌써 생각하고 있다.<br/>
+            '추운 날, 이거 마시면서 녹아.'"
           </p>
         </div>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          <strong>Q. 비건 요리에서 가장 중요하게 생각하는 것은?</strong>
-        </p>
-        <p className="mb-6 text-stone-700 leading-relaxed">
-          A. 맛이요. 당연하죠. 건강하고 윤리적이라도 맛이 없으면 아무도 먹지 않을 거예요. 저는 비건 요리가 일반 요리와 비교해서 전혀 뒤지지 않는다는 것을 증명하고 싶습니다. 아니, 더 나을 수도 있다는 것을요.
-        </p>
       </>
     ),
   },
@@ -161,22 +261,6 @@ const ARTICLES: Article[] = [
 
 export const NewsletterPage: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-
-  const renderStars = (rating: number) => {
-    if (rating === 0) return null;
-    return (
-      <div className="flex items-center gap-0.5 mb-4">
-        {[1, 2, 3, 4, 5].map((star) => (
-          <Star
-            key={star}
-            className={`w-4 h-4 ${
-              star <= rating ? 'fill-stone-800 text-stone-800' : 'fill-none text-stone-300'
-            }`}
-          />
-        ))}
-      </div>
-    );
-  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
@@ -200,24 +284,27 @@ export const NewsletterPage: React.FC = () => {
 
             {/* 제목 */}
             <h1 className="text-3xl font-bold text-stone-900 mb-2">
-              &lt;{selectedArticle.title}&gt;
+              {selectedArticle.title}
             </h1>
-            <p className="text-lg text-stone-600 mb-6">{selectedArticle.subtitle}</p>
+            <p className="text-lg text-stone-600 mb-8">{selectedArticle.subtitle}</p>
 
-            {/* 별점 */}
-            {renderStars(selectedArticle.rating)}
+            {/* 작성자 & 날짜 */}
+            <div className="flex items-center gap-4 text-sm text-stone-500 mb-10 pb-10 border-b border-stone-200">
+              <span>{selectedArticle.author}</span>
+              <span>·</span>
+              <span>{selectedArticle.date}</span>
+            </div>
 
             {/* 본문 */}
             <article className="prose prose-stone max-w-none">
               {selectedArticle.content}
             </article>
 
-            {/* 구분선 */}
+            {/* 하단 정보 */}
             <div className="border-t border-stone-200 mt-12 pt-8">
               <p className="text-center text-xl font-bold text-stone-900 mb-2">
-                &lt;{selectedArticle.title}&gt;
+                {selectedArticle.title}
               </p>
-              {renderStars(selectedArticle.rating)}
               <p className="text-center text-sm text-stone-500">
                 {selectedArticle.author}
               </p>
