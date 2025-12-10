@@ -327,9 +327,9 @@ export const StorePage: React.FC = () => {
       {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
       {activeTab === 'ALL' && (
         <div className="w-full max-w-[1200px] mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-start">
+          <div className="flex flex-col lg:flex-row lg:items-stretch">
             {/* 좌측 - 세로형 영상 영역 (sticky로 고정) */}
-            <div className="lg:w-1/2 h-[50vh] lg:h-screen lg:sticky lg:top-24 flex-shrink-0">
+            <div className="lg:w-1/2 h-[50vh] lg:h-auto lg:self-stretch lg:sticky lg:top-24 flex-shrink-0">
               <div className="relative w-full h-full overflow-hidden bg-stone-900">
                 {/* YouTube 영상 자동재생 */}
                 <iframe
