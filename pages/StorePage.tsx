@@ -172,7 +172,6 @@ export const StorePage: React.FC = () => {
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
   const [spectrum, setSpectrum] = useState<string>('전체');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [activeTab, setActiveTab] = useState<string>('ALL');
   const navigate = useNavigate();
   
@@ -286,7 +285,8 @@ export const StorePage: React.FC = () => {
 
   const spectrumOptions = ['전체', '비건', '락토', '플렉시'];
   const cuisineOptions = ['한식', '양식', '디저트'];
-  const categoryOptions = ['신메뉴', '기획전', '밀키트', '베이커리', '양념•오일', '샐러드', '수프•메인요리'];
+  // 기획전만 별도 필터로 남김 (나머지는 상단 카테고리 탭에 포함됨)
+  const promotionOptions = ['기획전'];
 
   // 알고리즘 추천 상품 (BEST 상품 중 상위 4개)
   const algorithmRecommended = useMemo(() => {
@@ -594,25 +594,19 @@ export const StorePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* 카테고리 (접이식) */}
-              <div>
-                <button
-                  onClick={() => setIsCategoryOpen((prev) => !prev)}
-                  className="w-full flex items-center justify-between text-[13px] font-semibold mb-3"
-                >
-                  <span>카테고리</span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} />
-                </button>
-                {isCategoryOpen && (
+              {/* 기획전 필터 */}
+              {promotionOptions.length > 0 && (
+                <div>
+                  <div className="text-[13px] font-semibold mb-3">기획전</div>
                   <div className="flex flex-col gap-2">
-                    {categoryOptions.map((c) => {
-                      const checked = selectedCategories.includes(c);
+                    {promotionOptions.map((opt) => {
+                      const checked = selectedCategories.includes(opt);
                       return (
                         <button
-                          key={c}
+                          key={opt}
                           onClick={() =>
                             setSelectedCategories((prev) =>
-                              prev.includes(c) ? prev.filter((i) => i !== c) : [...prev, c]
+                              prev.includes(opt) ? prev.filter((i) => i !== opt) : [...prev, opt]
                             )
                           }
                           className={`w-full px-3 py-2 flex items-center gap-2 border text-[12px] transition-colors ${
@@ -626,13 +620,13 @@ export const StorePage: React.FC = () => {
                           >
                             {checked && <Check className="w-3 h-3" />}
                           </span>
-                          {c}
+                          {opt}
                         </button>
                       );
                     })}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </aside>
 
