@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Upload, Trophy } from 'lucide-react';
+import { COLORS } from '../constants/colors';
 
 // 카테고리별 레시피 데이터
 interface Recipe {
@@ -70,6 +71,16 @@ const popularRecipes: Recipe[] = [
     image: '/vege_flot_img/mango.png',
   },
 ];
+
+// 카테고리별 색상 매핑
+const categoryColors: Record<string, { text: string; bg: string }> = {
+  new: COLORS.lightLime,
+  lunch: COLORS.lincolnGreen,
+  dessert: COLORS.babyPink,
+  korean: COLORS.bloodRed,
+  drink: COLORS.darkCerulean,
+  date: COLORS.grape,
+};
 
 // 카테고리별 레시피 데이터
 const recipeCategories: RecipeCategory[] = [
@@ -148,7 +159,11 @@ const recipeCategories: RecipeCategory[] = [
 ];
 
 // 재사용 가능한 캐러셀 컴포넌트
-const RecipeCarousel: React.FC<{ recipes: Recipe[]; showAuthor?: boolean }> = ({ recipes, showAuthor = false }) => {
+const RecipeCarousel: React.FC<{ 
+  recipes: Recipe[]; 
+  showAuthor?: boolean;
+  categoryColor?: { text: string; bg: string };
+}> = ({ recipes, showAuthor = false, categoryColor }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -192,14 +207,23 @@ const RecipeCarousel: React.FC<{ recipes: Recipe[]; showAuthor?: boolean }> = ({
         className="flex gap-5 overflow-x-auto no-scrollbar pb-4"
         style={{ scrollSnapType: 'x mandatory' }}
       >
-        {recipes.map((recipe) => (
+        {recipes.map((recipe, idx) => (
           <Link
             key={recipe.id}
             to={`/recipe/${recipe.id}`}
             className="flex-shrink-0 w-[260px] cursor-pointer group/card"
             style={{ scrollSnapAlign: 'start' }}
           >
-            <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-amber-50 to-orange-100">
+            <div 
+              className="relative w-full aspect-square rounded-xl overflow-hidden mb-3"
+              style={{ 
+                backgroundColor: categoryColor ? categoryColor.bg : 
+                  idx % 4 === 0 ? COLORS.lightLime.bg :
+                  idx % 4 === 1 ? COLORS.grape.bg :
+                  idx % 4 === 2 ? COLORS.babyPink.bg :
+                  COLORS.darkCerulean.bg
+              }}
+            >
               <img
                 src={recipe.image}
                 alt={recipe.title}
@@ -244,97 +268,127 @@ const RecipePage: React.FC = () => {
         </div>
 
         {/* 인기 레시피 섹션 - 메인 히어로 */}
-        <section className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-3xl">
+        <section 
+          className="mb-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-12 rounded-3xl"
+          style={{ backgroundColor: COLORS.sinopia.bg }}
+        >
           <div className="flex items-end justify-between mb-3">
             <div>
-              <span className="text-sm font-semibold text-orange-600 tracking-wide uppercase mb-2 block">
+              <span 
+                className="inline-block px-3 py-1 text-sm font-semibold tracking-wide uppercase mb-3 rounded-full"
+                style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
+              >
                 ⭐ Featured
               </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-stone-900 leading-tight">
+              <h2 
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight"
+                style={{ color: COLORS.sinopia.text }}
+              >
                 Most Popular<br />Meals and Recipes
               </h2>
             </div>
             <Link 
               to="/recipe/hall-of-fame" 
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full text-sm font-medium hover:from-amber-600 hover:to-orange-600 transition-all shadow-lg shadow-orange-300/30 flex-shrink-0 ml-4 mb-2"
+              className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all shadow-lg flex-shrink-0 ml-4 mb-2 hover:scale-105"
+              style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
             >
               <Trophy className="w-4 h-4" />
               <span>명예의 전당</span>
             </Link>
           </div>
-          <p className="text-stone-600 text-lg mb-10">
+          <p className="text-lg mb-10" style={{ color: `${COLORS.sinopia.text}99` }}>
             Check out our most favorited recipes!
           </p>
           
           {/* 대형 캐러셀 */}
           <div className="relative group">
             <div className="flex gap-6 overflow-x-auto no-scrollbar pb-4" style={{ scrollSnapType: 'x mandatory' }}>
-              {popularRecipes.map((recipe, idx) => (
-                <Link
-                  key={recipe.id}
-                  to={`/recipe/${recipe.id}`}
-                  className="flex-shrink-0 w-[320px] sm:w-[360px] cursor-pointer group/card"
-                  style={{ scrollSnapAlign: 'start' }}
-                >
-                  {/* 대형 이미지 */}
-                  <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-4 bg-white shadow-lg shadow-orange-200/50">
+              {popularRecipes.map((recipe, idx) => {
+                const cardColors = [
+                  COLORS.lightLime,
+                  COLORS.grape,
+                  COLORS.babyPink,
+                  COLORS.darkCerulean,
+                  COLORS.pastelMagenta,
+                  COLORS.lincolnGreen,
+                  COLORS.bloodRed,
+                  COLORS.brilliantRose,
+                ];
+                const cardColor = cardColors[idx % cardColors.length];
+                
+                return (
+                  <Link
+                    key={recipe.id}
+                    to={`/recipe/${recipe.id}`}
+                    className="flex-shrink-0 w-[320px] sm:w-[360px] cursor-pointer group/card"
+                    style={{ scrollSnapAlign: 'start' }}
+                  >
+                    {/* 대형 이미지 */}
                     <div 
-                      className="absolute inset-0"
-                      style={{ 
-                        background: idx % 4 === 0 ? 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)' :
-                                   idx % 4 === 1 ? 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)' :
-                                   idx % 4 === 2 ? 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)' :
-                                   'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)'
-                      }}
-                    />
-                    <img
-                      src={recipe.image}
-                      alt={recipe.title}
-                      className="absolute inset-0 w-full h-full object-contain p-10 group-hover/card:scale-110 transition-transform duration-500"
-                    />
-                    {/* 랭킹 뱃지 */}
-                    {idx < 3 && (
-                      <div className="absolute top-4 left-4 w-10 h-10 bg-stone-900 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold">{idx + 1}</span>
-                      </div>
-                    )}
-                    {/* 호버 오버레이 */}
-                    <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/5 transition-colors duration-300 rounded-2xl" />
-                  </div>
-                  {/* 텍스트 */}
-                  <h3 className="font-bold text-stone-900 text-xl mb-2 group-hover/card:text-orange-600 transition-colors">
-                    {recipe.title}
-                  </h3>
-                  <p className="text-stone-500 text-base leading-relaxed">
-                    {recipe.description}
-                  </p>
-                </Link>
-              ))}
+                      className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-4 shadow-lg"
+                      style={{ backgroundColor: cardColor.bg }}
+                    >
+                      <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        className="absolute inset-0 w-full h-full object-contain p-10 group-hover/card:scale-110 transition-transform duration-500"
+                      />
+                      {/* 랭킹 뱃지 */}
+                      {idx < 3 && (
+                        <div 
+                          className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center"
+                          style={{ backgroundColor: cardColor.text, color: cardColor.bg }}
+                        >
+                          <span className="font-bold">{idx + 1}</span>
+                        </div>
+                      )}
+                      {/* 호버 오버레이 */}
+                      <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-2xl" />
+                    </div>
+                    {/* 텍스트 */}
+                    <h3 
+                      className="font-bold text-xl mb-2 transition-colors"
+                      style={{ color: COLORS.sinopia.text }}
+                    >
+                      {recipe.title}
+                    </h3>
+                    <p style={{ color: `${COLORS.sinopia.text}99` }} className="text-base leading-relaxed">
+                      {recipe.description}
+                    </p>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* 카테고리별 섹션들 */}
-        {recipeCategories.map((category) => (
-          <section key={category.id} className="mb-14">
-            <div className="flex items-start justify-between mb-2">
-              <div>
-                <span className="text-xs font-semibold text-green-600 tracking-wide uppercase mb-1 block">
-                  {category.subtitle}
-                </span>
-                <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
-                  {category.title}
-                </h2>
+        {recipeCategories.map((category) => {
+          const colors = categoryColors[category.id] || COLORS.lincolnGreen;
+          return (
+            <section key={category.id} className="mb-14">
+              <div className="flex items-start justify-between mb-2">
+                <div>
+                  <span 
+                    className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-full"
+                    style={{ backgroundColor: colors.bg, color: colors.text }}
+                  >
+                    {category.subtitle}
+                  </span>
+                  <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+                    {category.title}
+                  </h2>
+                </div>
+                <button className="text-stone-600 hover:text-stone-900 underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
+                  See all
+                </button>
               </div>
-              <button className="text-stone-600 hover:text-stone-900 underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
-                See all
-              </button>
-            </div>
-            <div className="mt-6">
-              <RecipeCarousel recipes={category.recipes} showAuthor />
-            </div>
-          </section>
-        ))}
+              <div className="mt-6">
+                <RecipeCarousel recipes={category.recipes} showAuthor categoryColor={colors} />
+              </div>
+            </section>
+          );
+        })}
 
         {/* 레시피 작성 CTA */}
         <section className="py-16 border-t border-stone-200">

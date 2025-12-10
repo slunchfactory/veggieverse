@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Crown, Medal, Trophy, Heart, Eye } from 'lucide-react';
+import { COLORS } from '../constants/colors';
 
 // Top 20 인기 레시피 데이터
 const hallOfFameRecipes = [
@@ -26,23 +27,40 @@ const hallOfFameRecipes = [
   { id: 20, rank: 20, title: '수박 가스파초', description: '시원한 여름 냉수프', image: '/vege_flot_img/watermelon.png', author: '여름요리사', likes: 912, views: 5120 },
 ];
 
+// 카드별 색상 배열
+const cardColors = [
+  COLORS.goldenBrown,  // 1등
+  COLORS.lightLime,    // 2등
+  COLORS.brilliantRose, // 3등
+  COLORS.grape,
+  COLORS.babyPink,
+  COLORS.darkCerulean,
+  COLORS.lincolnGreen,
+  COLORS.pastelMagenta,
+  COLORS.sinopia,
+  COLORS.bloodRed,
+];
+
 const RecipeHallOfFamePage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-white">
+    <div className="min-h-screen bg-white">
       {/* 히어로 헤더 */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 py-16 sm:py-20">
+      <div 
+        className="relative overflow-hidden py-16 sm:py-20"
+        style={{ backgroundColor: COLORS.goldenBrown.bg }}
+      >
         {/* 배경 장식 */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-10 left-10 w-32 h-32 bg-yellow-300 rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-40 h-40 bg-orange-300 rounded-full blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-200 rounded-full blur-3xl" />
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-full blur-3xl" style={{ backgroundColor: COLORS.goldenBrown.text }} />
+          <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full blur-3xl" style={{ backgroundColor: COLORS.sinopia.text }} />
         </div>
         
         <div className="page-container relative">
           {/* 뒤로가기 */}
           <Link 
             to="/recipe" 
-            className="inline-flex items-center gap-2 text-stone-600 hover:text-stone-900 mb-8 transition-colors"
+            className="inline-flex items-center gap-2 mb-8 transition-colors hover:opacity-80"
+            style={{ color: COLORS.goldenBrown.text }}
           >
             <ArrowLeft className="w-5 h-5" />
             <span>레시피로 돌아가기</span>
@@ -50,13 +68,22 @@ const RecipeHallOfFamePage: React.FC = () => {
           
           {/* 타이틀 */}
           <div className="text-center">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full mb-6 shadow-lg shadow-orange-300/50">
-              <Trophy className="w-10 h-10 text-white" />
+            <div 
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg"
+              style={{ backgroundColor: COLORS.goldenBrown.text, color: COLORS.goldenBrown.bg }}
+            >
+              <Trophy className="w-10 h-10" />
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 mb-4">
+            <h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4"
+              style={{ color: COLORS.goldenBrown.text }}
+            >
               명예의 전당
             </h1>
-            <p className="text-lg sm:text-xl text-stone-600 max-w-2xl mx-auto">
+            <p 
+              className="text-lg sm:text-xl max-w-2xl mx-auto"
+              style={{ color: `${COLORS.goldenBrown.text}cc` }}
+            >
               슬런치 유저들이 가장 사랑한 Top 20 레시피를 만나보세요
             </p>
           </div>
@@ -74,26 +101,17 @@ const RecipeHallOfFamePage: React.FC = () => {
               }`}
             >
               {/* 카드 */}
-              <div className={`bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 ${
-                recipe.rank <= 3 ? 'ring-2 ring-offset-2' : ''
-              } ${
-                recipe.rank === 1 ? 'ring-yellow-400' : 
-                recipe.rank === 2 ? 'ring-stone-300' : 
-                recipe.rank === 3 ? 'ring-amber-600' : ''
-              }`}>
+              <div 
+                className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                style={recipe.rank <= 3 ? { 
+                  boxShadow: `0 0 0 3px ${cardColors[(recipe.rank - 1) % cardColors.length].bg}` 
+                } : {}}
+              >
                 {/* 이미지 영역 */}
                 <div className={`relative ${recipe.rank <= 3 ? 'aspect-[16/10]' : 'aspect-square'}`}>
                   <div 
                     className="absolute inset-0"
-                    style={{ 
-                      background: recipe.rank === 1 ? 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)' :
-                                 recipe.rank === 2 ? 'linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%)' :
-                                 recipe.rank === 3 ? 'linear-gradient(135deg, #fef3c7 0%, #fcd34d 100%)' :
-                                 recipe.rank % 4 === 0 ? 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)' :
-                                 recipe.rank % 4 === 1 ? 'linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%)' :
-                                 recipe.rank % 4 === 2 ? 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)' :
-                                 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)'
-                    }}
+                    style={{ backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].bg }}
                   />
                   <img
                     src={recipe.image}
@@ -104,12 +122,13 @@ const RecipeHallOfFamePage: React.FC = () => {
                   />
                   
                   {/* 랭킹 뱃지 */}
-                  <div className={`absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full ${
-                    recipe.rank === 1 ? 'bg-gradient-to-r from-yellow-400 to-amber-500 text-white' :
-                    recipe.rank === 2 ? 'bg-gradient-to-r from-stone-300 to-stone-400 text-white' :
-                    recipe.rank === 3 ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-white' :
-                    'bg-white/90 text-stone-700'
-                  }`}>
+                  <div 
+                    className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full"
+                    style={{ 
+                      backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].text,
+                      color: cardColors[(recipe.rank - 1) % cardColors.length].bg
+                    }}
+                  >
                     {recipe.rank === 1 && <Crown className="w-4 h-4" />}
                     {recipe.rank === 2 && <Medal className="w-4 h-4" />}
                     {recipe.rank === 3 && <Medal className="w-4 h-4" />}
