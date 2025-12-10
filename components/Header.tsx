@@ -62,15 +62,22 @@ export const Header: React.FC<HeaderProps> = ({
         {/* 가운데 메뉴 - 데스크톱 */}
         <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname === item.path || 
+              (item.path === '/store' && location.pathname.startsWith('/store')) ||
+              (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
+              (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
+              (item.path === '/event' && location.pathname.startsWith('/event')) ||
+              (item.path === '/brand' && location.pathname.startsWith('/brand'));
             const isStore = item.hasDropdown;
             if (!isStore) {
               return (
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 ${
-                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
+                    isActive 
+                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
+                      : 'text-stone-700 font-bold hover:text-stone-900'
                   }`}
                   onClick={() => setOpenMenu(null)}
                 >
@@ -86,8 +93,10 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className={`text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 ${
-                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
+                    isActive 
+                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
+                      : 'text-stone-700 font-bold hover:text-stone-900'
                   }`}
                   onClick={(e) => {
                     e.preventDefault();
@@ -234,6 +243,12 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="px-4 py-3 space-y-2">
             {navItems.map((item) => {
               const isStore = item.hasDropdown;
+              const isActive = location.pathname === item.path || 
+                (item.path === '/store' && location.pathname.startsWith('/store')) ||
+                (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
+                (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
+                (item.path === '/event' && location.pathname.startsWith('/event')) ||
+                (item.path === '/brand' && location.pathname.startsWith('/brand'));
               return (
                 <div key={item.path}>
                   <Link 
@@ -248,9 +263,9 @@ export const Header: React.FC<HeaderProps> = ({
                       }
                     }}
                     className={`block text-sm py-1 ${
-                      location.pathname === item.path 
-                        ? 'text-stone-900 font-semibold' 
-                        : 'text-stone-700'
+                      isActive 
+                        ? 'text-stone-900 font-extrabold underline underline-offset-4' 
+                        : 'text-stone-700 font-medium'
                     }`}
                   >
                     {item.name}
