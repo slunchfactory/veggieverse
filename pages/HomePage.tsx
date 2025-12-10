@@ -249,17 +249,24 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>
           </div>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1,2,3].map((id) => (
-              <Link key={id} to="/newsletter" className="cursor-pointer group">
+            {[
+              { id: 1, category: 'ESSAY', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들' },
+              { id: 2, category: 'COLUMN', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민' },
+              { id: 3, category: 'FOOD', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유' },
+            ].map((article) => (
+              <Link key={article.id} to="/newsletter" className="cursor-pointer group">
                 <div 
                   className="w-full overflow-hidden"
                   style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}
                 >
                   {/* 썸네일 자리 */}
                 </div>
-                <p className="mt-2 text-[10px] text-stone-500">뉴스레터</p>
-                <p className="text-sm text-stone-800 group-hover:text-stone-900">
-                  에디터가 발행하는 아티클 #{id}
+                <p className="mt-2 text-[10px] text-stone-500 tracking-wider">{article.category}</p>
+                <p className="text-sm font-semibold text-stone-800 group-hover:underline">
+                  {article.title}
+                </p>
+                <p className="text-xs text-stone-500 mt-1 line-clamp-1">
+                  {article.subtitle}
                 </p>
               </Link>
             ))}
