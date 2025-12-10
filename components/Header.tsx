@@ -56,6 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
             src={`${import.meta.env.BASE_URL}logo.png`}
             alt="SLUNCH FACTORY" 
             className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
+            style={{ filter: 'invert(1) brightness(2)' }}
           />
         </Link>
         
