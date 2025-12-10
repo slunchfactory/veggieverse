@@ -26,7 +26,7 @@ export const CommunityPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen pt-20" style={{ backgroundColor: '#F5F0E6' }}>
+    <div className="min-h-screen pt-20" style={{ backgroundColor: '#ffffff' }}>
       {/* 서브 메뉴 드롭다운 */}
       <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40">
         {showSubMenu && (

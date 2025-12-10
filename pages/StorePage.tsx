@@ -275,7 +275,7 @@ export const StorePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
       {activeTab === 'ALL' && (
         <div className="w-full max-w-[1200px] mx-auto">

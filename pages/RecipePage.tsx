@@ -294,7 +294,7 @@ const CircularCarouselHero: React.FC = () => {
   return (
     <section 
       className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden"
-      style={{ backgroundColor: COLORS.cream.bg }}
+      style={{ backgroundColor: '#ffffff' }}
     >
       <div className="relative min-h-[600px] sm:min-h-[700px] lg:min-h-[800px] flex flex-col items-center justify-start pt-12 sm:pt-16 lg:pt-20 pb-0">
         
@@ -420,7 +420,7 @@ const CircularCarouselHero: React.FC = () => {
 
 const RecipePage: React.FC = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: COLORS.cream.bg }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* 인기 레시피 섹션 - 원형 캐러셀 히어로 */}
       <CircularCarouselHero />
 

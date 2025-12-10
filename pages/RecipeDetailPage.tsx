@@ -150,7 +150,7 @@ const RecipeDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* 히어로 이미지 */}
       <div className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-100 to-orange-100">
         <img

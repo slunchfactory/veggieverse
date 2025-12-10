@@ -85,7 +85,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* 비건 테스트 토스트 배너 */}
       <div 
         className={`fixed left-0 right-0 z-30 transition-all duration-150 ease-out ${

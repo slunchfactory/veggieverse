@@ -43,7 +43,7 @@ const cardColors = [
 
 const RecipeHallOfFamePage: React.FC = () => {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F5F0E6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* 히어로 헤더 */}
       <div 
         className="relative overflow-hidden py-16 sm:py-20"
