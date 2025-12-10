@@ -361,8 +361,12 @@ const CircularCarouselHero: React.FC = () => {
 
           {/* 원형 배치 컨테이너 - 구심점이 화면 아래에 있음 */}
           <div 
-            className="absolute left-1/2 -translate-x-1/2"
-            style={{ top: `${radius + 320}px` }}
+            className="absolute"
+            style={{ 
+              left: '50%',
+              top: `${radius + 320}px`,
+              transform: 'translateX(-50%)'
+            }}
           >
             {circularRecipes.map((recipe, idx) => {
               // 각 카드의 각도 (위쪽 중앙이 -90도)
@@ -396,14 +400,16 @@ const CircularCarouselHero: React.FC = () => {
                   to={`/recipe/${recipe.id}`}
                   className="absolute transition-all duration-500 ease-out hover:scale-110"
                   style={{
-                    transform: `translate(${x}px, ${y}px) rotate(${cardRotation}deg) scale(${scale})`,
+                    left: '50%',
+                    top: '50%',
+                    transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${cardRotation}deg) scale(${scale})`,
                     zIndex,
                     opacity,
                     transformOrigin: 'center center',
                   }}
                 >
                   <div 
-                    className="w-28 h-36 sm:w-36 sm:h-44 lg:w-44 lg:h-56 rounded-2xl overflow-hidden shadow-xl -translate-x-1/2 -translate-y-1/2"
+                    className="w-28 h-36 sm:w-36 sm:h-44 lg:w-44 lg:h-56 rounded-2xl overflow-hidden shadow-xl"
                     style={{ backgroundColor: recipe.color.bg }}
                   >
                     <img
