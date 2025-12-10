@@ -250,166 +250,87 @@ const RecipeCarousel: React.FC<{
   );
 };
 
-// 20개 레시피 썸네일 데이터 (오비탈용)
-const orbitalRecipes = [
-  { id: 1, image: '/vege_flot_img/mushroom.png', title: '버섯 리조또' },
-  { id: 2, image: '/vege_flot_img/tomato.png', title: '토마토 파스타' },
-  { id: 3, image: '/vege_flot_img/avocado.png', title: '아보카도 볼' },
-  { id: 4, image: '/vege_flot_img/broccoli.png', title: '브로콜리 수프' },
-  { id: 5, image: '/vege_flot_img/carrot.png', title: '당근 케이크' },
-  { id: 6, image: '/vege_flot_img/lemon.png', title: '레몬 타르트' },
-  { id: 7, image: '/vege_flot_img/mango.png', title: '망고 스무디' },
-  { id: 8, image: '/vege_flot_img/grape.png', title: '포도 샐러드' },
-  { id: 9, image: '/vege_flot_img/coconut.png', title: '코코넛 푸딩' },
-  { id: 10, image: '/vege_flot_img/orange.png', title: '오렌지 주스' },
-  { id: 11, image: '/vege_flot_img/kiwi.png', title: '키위 요거트' },
-  { id: 12, image: '/vege_flot_img/peach.png', title: '복숭아 타르트' },
-  { id: 13, image: '/vege_flot_img/blueberry.png', title: '블루베리 머핀' },
-  { id: 14, image: '/vege_flot_img/raspberry.png', title: '라즈베리 잼' },
-  { id: 15, image: '/vege_flot_img/pineapple.png', title: '파인애플 볶음밥' },
-  { id: 16, image: '/vege_flot_img/watermelon.png', title: '수박 화채' },
-  { id: 17, image: '/vege_flot_img/sweet potato.png', title: '고구마 라떼' },
-  { id: 18, image: '/vege_flot_img/corn.png', title: '콘 스프' },
-  { id: 19, image: '/vege_flot_img/olive.png', title: '올리브 파스타' },
-  { id: 20, image: '/vege_flot_img/ginger.png', title: '생강차' },
+// 팬 카드 데이터
+const fanCardRecipes = [
+  { id: 1, image: '/vege_flot_img/fig.png', color: COLORS.bloodRed },
+  { id: 2, image: '/vege_flot_img/mango.png', color: COLORS.sinopia },
+  { id: 3, image: '/vege_flot_img/lettuce.png', color: COLORS.lightLime },
+  { id: 4, image: '/vege_flot_img/avocado.png', color: COLORS.lincolnGreen },
+  { id: 5, image: '/vege_flot_img/tomato.png', color: COLORS.babyPink },
+  { id: 6, image: '/vege_flot_img/blueberry.png', color: COLORS.darkCerulean },
+  { id: 7, image: '/vege_flot_img/carrot.png', color: COLORS.brilliantRose },
+  { id: 8, image: '/vege_flot_img/lemon.png', color: COLORS.goldenBrown },
+  { id: 9, image: '/vege_flot_img/grape.png', color: COLORS.grape },
 ];
 
-// 원형 오비탈 캐러셀 컴포넌트
-const OrbitalCarousel: React.FC = () => {
-  const [rotation, setRotation] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [velocity, setVelocity] = useState(0);
-  const lastX = useRef(0);
-  const lastTime = useRef(Date.now());
-  const animationRef = useRef<number>();
-
-  const cardColors = [
-    COLORS.lightLime,
-    COLORS.grape,
-    COLORS.babyPink,
-    COLORS.darkCerulean,
-    COLORS.pastelMagenta,
-    COLORS.lincolnGreen,
-    COLORS.bloodRed,
-    COLORS.brilliantRose,
-    COLORS.goldenBrown,
-    COLORS.sinopia,
-  ];
-
-  const totalItems = orbitalRecipes.length;
-  const angleStep = 360 / totalItems;
-
-  // 관성 애니메이션
-  useEffect(() => {
-    const animate = () => {
-      if (!isDragging && Math.abs(velocity) > 0.1) {
-        setRotation(prev => prev + velocity);
-        setVelocity(prev => prev * 0.95); // 감속
-        animationRef.current = requestAnimationFrame(animate);
-      }
-    };
-    
-    if (!isDragging && Math.abs(velocity) > 0.1) {
-      animationRef.current = requestAnimationFrame(animate);
-    }
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isDragging, velocity]);
-
-  const handlePointerDown = (e: React.PointerEvent) => {
-    setIsDragging(true);
-    setStartX(e.clientX);
-    lastX.current = e.clientX;
-    lastTime.current = Date.now();
-    setVelocity(0);
-    if (animationRef.current) {
-      cancelAnimationFrame(animationRef.current);
-    }
-  };
-
-  const handlePointerMove = (e: React.PointerEvent) => {
-    if (!isDragging) return;
-    const diff = e.clientX - startX;
-    const now = Date.now();
-    const dt = now - lastTime.current;
-    
-    if (dt > 0) {
-      setVelocity((e.clientX - lastX.current) / dt * 10);
-    }
-    
-    lastX.current = e.clientX;
-    lastTime.current = now;
-    setRotation(prev => prev + diff * 0.15);
-    setStartX(e.clientX);
-  };
-
-  const handlePointerUp = () => {
-    setIsDragging(false);
-  };
-
-  const rotate = (direction: number) => {
-    setRotation(prev => prev + direction * angleStep);
-    setVelocity(0);
-  };
-
+// 팬 카드 히어로 컴포넌트
+const FanCardHero: React.FC = () => {
   return (
-    <section 
-      className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden"
-      style={{ backgroundColor: COLORS.sinopia.bg }}
-    >
-      <div className="relative min-h-[700px] sm:min-h-[800px] lg:min-h-[900px] flex flex-col items-center justify-center py-16">
+    <section className="w-screen relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] bg-white overflow-hidden">
+      <div className="relative min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex flex-col items-center justify-start pt-12 sm:pt-16 lg:pt-20 pb-0">
         
-        {/* 오비탈 컨테이너 */}
-        <div 
-          className="absolute inset-0 select-none"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerLeave={handlePointerUp}
-          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-        >
-          {/* 원형 배치된 카드들 */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-            {orbitalRecipes.map((recipe, idx) => {
-              const angle = (idx * angleStep + rotation) * (Math.PI / 180);
-              const radiusX = Math.min(window.innerWidth * 0.42, 600);
-              const radiusY = Math.min(window.innerWidth * 0.28, 380);
+        {/* 상단 텍스트 */}
+        <div className="text-center px-4 max-w-3xl mx-auto mb-8 sm:mb-12">
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <div className="w-8 h-8 bg-stone-900 rounded flex items-center justify-center">
+              <span className="text-white text-lg">🥗</span>
+            </div>
+            <span className="font-semibold text-stone-900">Recipe</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-stone-900 leading-tight mb-6">
+            Most Popular<br />Meals and Recipes
+          </h1>
+          <div className="flex items-center justify-center gap-4">
+            <Link 
+              to="/recipe/hall-of-fame" 
+              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white font-medium transition-all hover:bg-stone-800"
+            >
+              <Trophy className="w-4 h-4" />
+              <span>명예의 전당</span>
+            </Link>
+            <button className="inline-flex items-center gap-2 px-6 py-3 border-2 border-stone-900 text-stone-900 font-medium transition-all hover:bg-stone-100">
+              <Upload className="w-4 h-4" />
+              <span>레시피 작성</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 팬 카드 배열 */}
+        <div className="relative w-full h-[280px] sm:h-[340px] lg:h-[400px] mt-auto">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex items-end justify-center">
+            {fanCardRecipes.map((recipe, idx) => {
+              const totalCards = fanCardRecipes.length;
+              const middleIdx = Math.floor(totalCards / 2);
+              const offset = idx - middleIdx;
               
-              const x = Math.sin(angle) * radiusX;
-              const y = -Math.cos(angle) * radiusY * 0.5 + Math.sin(angle) * radiusY * 0.3;
-              const z = Math.cos(angle);
-              
-              const scale = 0.5 + (z + 1) * 0.35;
-              const opacity = 0.4 + (z + 1) * 0.3;
-              const zIndex = Math.round((z + 1) * 10);
-              
-              const cardColor = cardColors[idx % cardColors.length];
+              // 회전 각도 (중앙에서 멀수록 더 기울어짐)
+              const rotation = offset * 8;
+              // 수평 위치
+              const translateX = offset * 90;
+              // 수직 위치 (중앙이 가장 높음)
+              const translateY = Math.abs(offset) * 25;
+              // z-index (중앙이 가장 앞)
+              const zIndex = totalCards - Math.abs(offset);
               
               return (
                 <Link
                   key={recipe.id}
                   to={`/recipe/${recipe.id}`}
-                  className="absolute transition-all duration-100 ease-out hover:scale-110"
+                  className="absolute transition-all duration-300 hover:scale-105 hover:-translate-y-4"
                   style={{
-                    transform: `translate(-50%, -50%) translate(${x}px, ${y}px) scale(${scale})`,
-                    opacity,
+                    transform: `translateX(${translateX}px) translateY(${translateY}px) rotate(${rotation}deg)`,
                     zIndex,
+                    transformOrigin: 'bottom center',
                   }}
-                  onClick={(e) => isDragging && e.preventDefault()}
                 >
                   <div 
-                    className="w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-2xl overflow-hidden shadow-xl"
-                    style={{ backgroundColor: cardColor.bg }}
+                    className="w-32 h-40 sm:w-40 sm:h-52 lg:w-48 lg:h-64 rounded-2xl overflow-hidden shadow-xl"
+                    style={{ backgroundColor: recipe.color.bg }}
                   >
                     <img
                       src={recipe.image}
-                      alt={recipe.title}
-                      className="w-full h-full object-contain p-3 sm:p-4"
+                      alt=""
+                      className="w-full h-full object-contain p-4 sm:p-6"
                       draggable={false}
                     />
                   </div>
@@ -417,53 +338,6 @@ const OrbitalCarousel: React.FC = () => {
               );
             })}
           </div>
-        </div>
-
-        {/* 중앙 텍스트 */}
-        <div className="relative z-30 text-center px-4 max-w-2xl mx-auto pointer-events-none">
-          <h2 
-            className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight mb-4"
-            style={{ color: COLORS.sinopia.text }}
-          >
-            Most Popular<br />Meals and Recipes
-          </h2>
-          <p 
-            className="text-base sm:text-lg lg:text-xl mb-8"
-            style={{ color: `${COLORS.sinopia.text}aa` }}
-          >
-            다양한 비건 레시피를 만나보세요
-          </p>
-          <Link 
-            to="/recipe/hall-of-fame" 
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium transition-all shadow-lg hover:scale-105 pointer-events-auto"
-            style={{ backgroundColor: COLORS.goldenBrown.bg, color: COLORS.goldenBrown.text }}
-          >
-            <Trophy className="w-5 h-5" />
-            <span>명예의 전당 보기</span>
-            <ChevronRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {/* 네비게이션 버튼 */}
-        <button
-          onClick={() => rotate(-1)}
-          className="absolute left-4 sm:left-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-xl transition-all z-40 hover:scale-110"
-        >
-          <ChevronLeft className="w-6 h-6 text-stone-700" />
-        </button>
-        <button
-          onClick={() => rotate(1)}
-          className="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-xl transition-all z-40 hover:scale-110"
-        >
-          <ChevronRight className="w-6 h-6 text-stone-700" />
-        </button>
-
-        {/* 레시피 작성 버튼 */}
-        <div className="absolute bottom-8 right-8 z-40">
-          <button className="flex items-center gap-2 px-5 py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium text-sm transition-colors shadow-lg hover:scale-105">
-            <Upload className="w-4 h-4" />
-            <span>레시피 작성</span>
-          </button>
         </div>
       </div>
     </section>
@@ -473,8 +347,8 @@ const OrbitalCarousel: React.FC = () => {
 const RecipePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
-      {/* 인기 레시피 섹션 - 풀와이드 오비탈 캐러셀 */}
-      <OrbitalCarousel />
+      {/* 인기 레시피 섹션 - 팬 카드 히어로 */}
+      <FanCardHero />
 
       <div className="page-container py-10">
 
