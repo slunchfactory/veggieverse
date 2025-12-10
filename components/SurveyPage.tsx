@@ -695,7 +695,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 setStarted(true);
                 generateMonster(); // 시작하기 클릭 시 이미지 생성 시작
               }}
-              className="w-full py-4 bg-black text-white rounded-2xl font-semibold hover:bg-stone-800 transition-colors"
+              className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
             >
               시작하기
             </button>
@@ -769,7 +769,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 {!isGeneratingImage && (
                   <button
                     onClick={regenerateMonster}
-                    className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium text-stone-700 hover:bg-white transition-colors shadow-lg flex items-center gap-2"
+                    className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-none text-sm font-medium text-stone-700 hover:bg-white transition-colors shadow-lg flex items-center gap-2"
                   >
                     <Sparkles className="w-4 h-4" />
                     다시 생성
@@ -849,12 +849,12 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 }
               }}
               disabled={profileSaved}
-              className={`w-full py-4 mb-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 ${
+              className={`w-full py-4 mb-4 rounded-none font-semibold transition-all flex items-center justify-center gap-2 ${
                 profileSaved 
                   ? 'bg-emerald-100 text-emerald-600 cursor-default'
                   : 'text-white hover:opacity-90'
               }`}
-              style={!profileSaved ? { backgroundColor: '#292624' } : undefined}
+              style={!profileSaved ? { backgroundColor: '#292624' } : { borderRadius: 0 }}
             >
               {profileSaved ? (
                 <>
@@ -871,22 +871,22 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             
             {/* 액션 버튼들 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <button className="py-3 px-4 bg-stone-800 text-white rounded-xl font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
+              <button className="py-3 px-4 bg-stone-800 text-white rounded-none font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
                 <Calendar className="w-5 h-5" />
                 식단 추천받기
               </button>
-              <button className="py-3 px-4 bg-stone-800 text-white rounded-xl font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
+              <button className="py-3 px-4 bg-stone-800 text-white rounded-none font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
                 <FileText className="w-5 h-5" />
                 레시피 보기
               </button>
             </div>
             
             <div className="grid grid-cols-2 gap-3">
-              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
+              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
                 <Share2 className="w-5 h-5" />
                 공유하기
               </button>
-              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
+              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
                 <Download className="w-5 h-5" />
                 이미지 저장
               </button>
@@ -904,7 +904,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 setMonsterDescription('');
                 setProfileSaved(false);
               }}
-              className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors"
+              className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors rounded-none"
             >
               처음부터 다시하기
             </button>
@@ -924,7 +924,8 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
       {/* 위로 가기 버튼 */}
       <button
         onClick={scrollToTop}
-        className="fixed top-6 left-6 z-50 w-10 h-10 bg-black shadow-lg rounded-full flex items-center justify-center text-white hover:bg-stone-800 transition-colors"
+        className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity"
+        style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
       >
         <ChevronUp className="w-5 h-5" />
       </button>
@@ -963,7 +964,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                             <button
                               key={option.value}
                               onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-                              className={`w-full p-4 rounded-2xl border-2 text-left transition-all ${
+                              className={`w-full p-4 rounded-none border-2 text-left transition-all ${
                                 isSelected
                                   ? 'border-black bg-stone-50'
                                   : 'border-stone-200 hover:border-stone-300'
@@ -1012,7 +1013,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                   <button
                     key={option.value}
                     onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-                    className={`w-full p-4 rounded-2xl border-2 text-left transition-all ${
+                    className={`w-full p-4 rounded-none border-2 text-left transition-all ${
                       answers[currentQuestion.id] === option.value
                         ? 'border-black bg-stone-50'
                         : 'border-stone-200 hover:border-stone-300'
@@ -1032,7 +1033,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
               // 첫 질문에서는 "처음으로" 버튼
               <button
                 onClick={scrollToTop}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors"
+                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors"
               >
                 처음으로
               </button>
@@ -1040,7 +1041,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
               // 그 외에는 "이전" 버튼
               <button
                 onClick={handleBack}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-xl font-semibold hover:bg-stone-50 transition-colors"
+                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors"
               >
                 이전
               </button>
@@ -1053,7 +1054,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                   ? 'text-white hover:opacity-90'
                   : 'bg-stone-200 text-stone-400 cursor-not-allowed'
               }`}
-              style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#292624' } : undefined}
+              style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#292624', borderRadius: 0 } : { borderRadius: 0 }}
             >
               {currentStep < QUESTIONS.length - 1 ? '다음' : '결과 보기'}
             </button>

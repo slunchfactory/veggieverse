@@ -55,7 +55,7 @@ export const CommunityPage: React.FC = () => {
       </div>
       
       {/* 테이블 */}
-      <div className="max-w-[1200px] mx-auto px-8 pb-16">
+      <div className="page-container pb-16">
         {/* 테이블 헤더 */}
         <div className="border-t-2 border-stone-800">
           <div className="grid grid-cols-12 py-4 border-b border-stone-200 text-sm font-semibold text-stone-600">
@@ -139,4 +139,8 @@ export const CommunityPage: React.FC = () => {
     </div>
   );
 };
+
+
+
+
 

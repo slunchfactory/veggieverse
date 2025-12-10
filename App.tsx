@@ -7,8 +7,12 @@ import { StorePage } from './pages/StorePage';
 import { BrandPage } from './pages/BrandPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { NewsletterPage } from './pages/NewsletterPage';
-import { ReviewPage } from './pages/ReviewPage';
 import { VeganTestPage } from './pages/VeganTestPage';
+import RecipePage from './pages/RecipePage';
+import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
+import RecipeDetailPage from './pages/RecipeDetailPage';
+import { ChatWidget } from './components/ChatWidget';
+import { TopBanner } from './components/TopBanner';
 
 // 유저 프로필 타입
 interface UserProfile {
@@ -24,25 +28,29 @@ const Layout: React.FC<{
   showProfileMenu: boolean;
   onProfileMenuToggle: () => void;
   onResetProfile: () => void;
-}> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile }) => {
-  const location = useLocation();
-  const isVeganTestPage = location.pathname === '/';
+  showTopBanner: boolean;
+  onCloseBanner: () => void;
+}> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner }) => {
+  const bannerHeight = showTopBanner ? 32 : 0;
   
   return (
-    <div className={`min-h-screen min-w-[360px] ${isVeganTestPage ? '' : 'flex flex-col overflow-auto'}`}>
-      {/* 비건 테스트 페이지에서는 헤더 숨김 */}
-      {!isVeganTestPage && (
-        <Header 
-          userProfile={userProfile}
-          showProfileMenu={showProfileMenu}
-          onProfileMenuToggle={onProfileMenuToggle}
-          onResetProfile={onResetProfile}
-        />
-      )}
-      <main className={`${isVeganTestPage ? '' : 'flex-1 pt-16 pb-8 overflow-auto'}`}>
+    <div className="min-h-screen min-w-[360px] flex flex-col overflow-auto">
+      {/* 최상단 가입유도 배너 */}
+      {showTopBanner && <TopBanner onClose={onCloseBanner} />}
+      <Header 
+        userProfile={userProfile}
+        showProfileMenu={showProfileMenu}
+        onProfileMenuToggle={onProfileMenuToggle}
+        onResetProfile={onResetProfile}
+        offsetTop={bannerHeight}
+      />
+      <main
+        className="flex-1 pb-8 overflow-auto"
+        style={{ paddingTop: 64 + bannerHeight }}
+      >
         {children}
       </main>
-      {!isVeganTestPage && <Footer />}
+      <Footer />
     </div>
   );
 };
@@ -55,6 +63,7 @@ const AppContent: React.FC = () => {
     savedAt: null,
   });
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [showTopBanner, setShowTopBanner] = useState(true);
   const location = useLocation();
 
   // localStorage에서 프로필 불러오기
@@ -110,22 +119,26 @@ const AppContent: React.FC = () => {
       showProfileMenu={showProfileMenu}
       onProfileMenuToggle={toggleProfileMenu}
       onResetProfile={resetProfile}
+      showTopBanner={showTopBanner}
+      onCloseBanner={() => setShowTopBanner(false)}
     >
       <Routes>
         {/* 메인 페이지 = 비건 테스트 */}
-        <Route path="/" element={<VeganTestPage onSaveProfile={saveProfile} />} />
+        <Route path="/" element={<VeganTestPage onSaveProfile={saveProfile} headerOffset={showTopBanner ? 96 : 64} />} />
         {/* 쇼핑몰 메인 */}
-        <Route path="/shop" element={<HomePage />} />
+        <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/brand" element={<BrandPage />} />
         <Route path="/newsletter" element={<NewsletterPage />} />
         <Route path="/community" element={<CommunityPage />} />
-        <Route path="/review" element={<ReviewPage />} />
+        <Route path="/recipe" element={<RecipePage />} />
+        <Route path="/recipe/hall-of-fame" element={<RecipeHallOfFamePage />} />
+        <Route path="/recipe/:id" element={<RecipeDetailPage />} />
         <Route path="/event" element={<ComingSoonPage title="이벤트" />} />
-        <Route path="/contact" element={<ComingSoonPage title="제휴문의" />} />
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
         <Route path="/mypage" element={<ComingSoonPage title="마이페이지" />} />
       </Routes>
+      <ChatWidget />
     </Layout>
   );
 };

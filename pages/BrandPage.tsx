@@ -28,15 +28,15 @@ export const BrandPage: React.FC = () => {
       </div>
       
       {/* 브랜드 소개 섹션 1 */}
-      <div className="max-w-[1000px] mx-auto px-8 py-20">
-        <div className="grid grid-cols-2 gap-16 items-center">
-          <div>
+      <div className="page-container py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <div className="self-start">
             <h2 className="text-3xl font-bold text-stone-800 mb-8 leading-relaxed">
               비건 식문화를 선도하는<br/>
               슬런치 팩토리
             </h2>
           </div>
-          <div>
+          <div className="self-start">
             <p className="text-stone-600 leading-relaxed mb-6">
               슬런치 팩토리는 2012년부터 채식을 기반으로 한 이탈리아 비건식과 한국 비건식 요리를 전문으로 하는 비건 레스토랑 입니다.
             </p>
@@ -71,15 +71,15 @@ export const BrandPage: React.FC = () => {
       </div>
       
       {/* 브랜드 소개 섹션 2 */}
-      <div className="max-w-[1000px] mx-auto px-8 py-20">
-        <div className="grid grid-cols-2 gap-16 items-center">
-          <div>
+      <div className="page-container py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          <div className="self-start">
             <h2 className="text-3xl font-bold text-stone-800 mb-8 leading-relaxed">
               국내 통합 브랜드형 비건 전문 기업<br/>
               슬런치 팩토리
             </h2>
           </div>
-          <div>
+          <div className="self-start">
             <p className="text-stone-600 leading-relaxed mb-6">
               19년 동안 간편식 생산 사업을 쌓아온 노하우로 슬런치 팩토리는 전문 레스토랑 운영 뿐만 아니라 비건 냉동 즉석식품을 제조하는 최첨단 시설을 보유하고 있습니다. 저희는 자체 개발한 비건 가공육, 치즈 및 다양한 기타 식재료를 사용하여 혁신적이고 맛있는 비건 간편식을 지속적으로 개발해왔습니다.
             </p>
@@ -92,4 +92,5 @@ export const BrandPage: React.FC = () => {
     </div>
   );
 };
+
 

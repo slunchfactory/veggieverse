@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
-import { Sparkles, ChevronDown } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
 
 // 샘플 상품 데이터
 const PRODUCTS = [
@@ -9,6 +10,9 @@ const PRODUCTS = [
     price: 12000,
     isBest: true,
     popularity: 95,
+    cuisine: '한식',
+    spectrum: '비건',
+    category: '신메뉴',
   },
   {
     id: 2,
@@ -16,6 +20,9 @@ const PRODUCTS = [
     price: 9000,
     isBest: true,
     popularity: 88,
+    cuisine: '한식',
+    spectrum: '비건',
+    category: '신메뉴',
   },
   {
     id: 3,
@@ -23,6 +30,9 @@ const PRODUCTS = [
     price: 15000,
     isBest: true,
     popularity: 92,
+    cuisine: '한식',
+    spectrum: '플렉시',
+    category: '밀키트',
   },
   {
     id: 4,
@@ -30,6 +40,9 @@ const PRODUCTS = [
     price: 18000,
     isBest: true,
     popularity: 85,
+    cuisine: '양식',
+    spectrum: '락토',
+    category: '수프•메인요리',
   },
   {
     id: 5,
@@ -37,6 +50,9 @@ const PRODUCTS = [
     price: 39000,
     isBest: false,
     popularity: 78,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
   },
   {
     id: 6,
@@ -44,6 +60,9 @@ const PRODUCTS = [
     price: 39000,
     isBest: true,
     popularity: 82,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
   },
   {
     id: 7,
@@ -51,6 +70,9 @@ const PRODUCTS = [
     price: 32000,
     isBest: true,
     popularity: 80,
+    cuisine: '디저트',
+    spectrum: '플렉시',
+    category: '베이커리',
   },
   {
     id: 8,
@@ -58,6 +80,9 @@ const PRODUCTS = [
     price: 8000,
     isBest: true,
     popularity: 90,
+    cuisine: '양식',
+    spectrum: '플렉시',
+    category: '샐러드',
   },
   {
     id: 9,
@@ -65,6 +90,9 @@ const PRODUCTS = [
     price: 12000,
     isBest: false,
     popularity: 70,
+    cuisine: '양식',
+    spectrum: '비건',
+    category: '양념•오일',
   },
   {
     id: 10,
@@ -72,6 +100,9 @@ const PRODUCTS = [
     price: 8000,
     isBest: true,
     popularity: 75,
+    cuisine: '양식',
+    spectrum: '비건',
+    category: '양념•오일',
   },
 ];
 
@@ -88,16 +119,88 @@ const SORT_OPTIONS = [
 ];
 
 export const StorePage: React.FC = () => {
+  const [searchParams] = useSearchParams();
   const [sortType, setSortType] = useState<SortType>('default');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
+  const [spectrum, setSpectrum] = useState<string>('전체');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(true);
+  const [activeTab, setActiveTab] = useState<string>('ALL');
+  
+  // 하트(좋아요) 상태 관리
+  const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
+  const [likeCounts, setLikeCounts] = useState<Record<number, number>>(() => {
+    // 초기 하트 수 (랜덤)
+    const counts: Record<number, number> = {};
+    PRODUCTS.forEach(p => {
+      counts[p.id] = Math.floor(Math.random() * 2000) + 100;
+    });
+    return counts;
+  });
+
+  const toggleLike = (productId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setLikedItems(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(productId)) {
+        newSet.delete(productId);
+        setLikeCounts(counts => ({ ...counts, [productId]: counts[productId] - 1 }));
+      } else {
+        newSet.add(productId);
+        setLikeCounts(counts => ({ ...counts, [productId]: counts[productId] + 1 }));
+      }
+      return newSet;
+    });
+  };
+
+  const formatLikeCount = (count: number) => {
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toLocaleString();
+  };
+
+  // URL 파라미터로 카테고리 필터링
+  useEffect(() => {
+    const categoryParam = searchParams.get('category');
+    if (categoryParam) {
+      setActiveTab(categoryParam);
+      // 카테고리에 따른 필터 설정
+      if (categoryParam === 'NEW') {
+        setSelectedCategories(['신메뉴']);
+      } else {
+        // 세부 카테고리 매핑
+        const categoryMap: Record<string, string> = {
+          '샐러드': '샐러드',
+          '수프와 메인요리': '수프•메인요리',
+          '소스와 오일': '양념•오일',
+          '밀키트': '밀키트',
+          '베이커리': '베이커리',
+        };
+        const mappedCategory = categoryMap[categoryParam];
+        if (mappedCategory) {
+          setSelectedCategories([mappedCategory]);
+        }
+      }
+    } else {
+      setActiveTab('ALL');
+      setSelectedCategories([]);
+    }
+  }, [searchParams]);
 
   // 현재 선택된 정렬 옵션 라벨
   const currentSortLabel = SORT_OPTIONS.find(opt => opt.value === sortType)?.label || '기본 정렬';
 
   // 정렬된 상품 목록
   const sortedProducts = useMemo(() => {
-    const products = [...PRODUCTS];
-    
+    const products = [...PRODUCTS].filter((p) => {
+      const matchCuisine = selectedCuisines.length === 0 || selectedCuisines.includes(p.cuisine);
+      const matchSpectrum = spectrum === '전체' || p.spectrum === spectrum;
+      const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(p.category);
+      return matchCuisine && matchSpectrum && matchCategory;
+    });
+
     switch (sortType) {
       case 'price-low':
         return products.sort((a, b) => a.price - b.price);
@@ -120,78 +223,439 @@ export const StorePage: React.FC = () => {
       default:
         return products;
     }
-  }, [sortType]);
+  }, [sortType, selectedCuisines, spectrum, selectedCategories]);
 
   const handleSortChange = (value: SortType) => {
     setSortType(value);
     setIsDropdownOpen(false);
   };
 
+  const toggleCuisine = (label: string) => {
+    setSelectedCuisines((prev) =>
+      prev.includes(label) ? prev.filter((c) => c !== label) : [...prev, label]
+    );
+  };
+
+  const spectrumOptions = ['전체', '비건', '락토', '플렉시'];
+  const cuisineOptions = ['한식', '양식', '디저트'];
+  const categoryOptions = ['신메뉴', '기획전', '밀키트', '베이커리', '양념•오일', '샐러드', '수프•메인요리'];
+
+  // 알고리즘 추천 상품 (BEST 상품 중 상위 4개)
+  const algorithmRecommended = useMemo(() => {
+    return [...PRODUCTS]
+      .filter(p => p.isBest)
+      .sort((a, b) => b.popularity - a.popularity)
+      .slice(0, 4);
+  }, []);
+
+  // 우측 섹션 영상 ID 목록
+  const cardVideoIds = ['x7pnY0U5yYY', 'LeZQWQ_cXqU', '8cVFJrY89SA', 'IzNnBZMjbXU'];
+
+  // 카테고리 탭 목록
+  const categoryTabs = ['ALL', 'NEW', '샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
+  
+  const handleTabClick = (tab: string) => {
+    if (tab === 'ALL') {
+      setActiveTab('ALL');
+      setSelectedCategories([]);
+      window.history.replaceState(null, '', '/veggieverse/store');
+    } else {
+      setActiveTab(tab);
+      const categoryMap: Record<string, string> = {
+        'NEW': '신메뉴',
+        '샐러드': '샐러드',
+        '수프와 메인요리': '수프•메인요리',
+        '소스와 오일': '양념•오일',
+        '밀키트': '밀키트',
+        '베이커리': '베이커리',
+      };
+      setSelectedCategories([categoryMap[tab] || tab]);
+      window.history.replaceState(null, '', `/veggieverse/store?category=${encodeURIComponent(tab)}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
-      {/* 카테고리 헤더 */}
-      <div className="max-w-[1400px] mx-auto px-6 pt-8 pb-4">
-        <h1 className="text-[15px] font-medium text-stone-800">Slunch Factory Selected</h1>
-      </div>
-      
-      {/* 정렬 드롭다운 */}
-      <div className="max-w-[1400px] mx-auto px-6 pb-6">
-        <div className="relative inline-block">
-          {/* 드롭다운 버튼 */}
-          <button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            className="flex items-center justify-between gap-8 px-4 py-2.5 border border-stone-300 bg-white text-[12px] text-stone-700 hover:border-stone-400 transition-colors min-w-[180px]"
-          >
-            <span className="flex items-center gap-1.5">
-              {sortType === 'algorithm' && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
-              {currentSortLabel}
-            </span>
-            <ChevronDown className={`w-4 h-4 text-stone-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-          </button>
-          
-          {/* 드롭다운 메뉴 */}
-          {isDropdownOpen && (
-            <>
-              {/* 배경 클릭 시 닫기 */}
-              <div 
-                className="fixed inset-0 z-10" 
-                onClick={() => setIsDropdownOpen(false)}
-              />
-              
-              <div className="absolute top-full left-0 mt-1 bg-white border border-stone-200 shadow-lg z-20 min-w-[180px]">
-                {SORT_OPTIONS.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleSortChange(option.value as SortType)}
-                    className={`w-full text-left px-4 py-2.5 text-[12px] transition-colors flex items-center gap-1.5 ${
-                      sortType === option.value
-                        ? 'bg-stone-100 text-stone-900 font-medium'
-                        : 'text-stone-600 hover:bg-stone-50'
-                    }`}
-                  >
-                    {option.icon && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
-                    {option.label}
-                  </button>
-                ))}
+      {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
+      {activeTab === 'ALL' && (
+        <div className="w-full max-w-[1200px] mx-auto">
+          <div className="flex flex-col lg:flex-row" style={{ height: 'calc(100vh - 96px)', minHeight: '600px', maxHeight: '900px' }}>
+            {/* 좌측 - 세로형 영상 영역 (전체 높이) */}
+            <div className="lg:w-1/2 h-[50vh] lg:h-full flex-shrink-0">
+              <div className="relative w-full h-full overflow-hidden bg-stone-900">
+                {/* YouTube 영상 자동재생 */}
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                  title="슬런치 비건 레시피"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ pointerEvents: 'none' }}
+                />
+                {/* 영상 위 텍스트 오버레이 */}
+                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" style={{ paddingBottom: '2rem' }}>
+                  <span className="text-[11px] sm:text-[12px] font-medium text-white/70 tracking-widest uppercase">LIFE</span>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mt-2 leading-tight break-keep">
+                    슬런치가 추천하는<br/>겨울 비건 레시피
+                  </h3>
+                  <p className="text-[12px] sm:text-[14px] lg:text-[15px] text-white/70 mt-3">따뜻한 겨울을 위한 건강한 한 끼</p>
+                  <div className="flex items-center justify-between mt-4">
+                    <span className="text-[11px] sm:text-[12px] text-white/50">2025. 12. 10</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-stone-600 overflow-hidden"></div>
+                      <span className="text-[12px] text-white/70">슬런치</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </>
-          )}
+            </div>
+
+            {/* 우측 - 추천 콘텐츠 영역 */}
+            <div className="lg:w-1/2 lg:h-full bg-[#D8D262] overflow-y-auto no-scrollbar">
+              
+              {/* 모바일/태블릿: 가로형 카드 2열 그리드 */}
+              <div className="lg:hidden p-4 sm:p-5">
+                <div className="grid grid-cols-2 gap-4">
+                  {algorithmRecommended.slice(0, 4).map((product, idx) => (
+                    <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
+                      {/* 카드 영상 (왼쪽) */}
+                      <div 
+                        className="relative w-[45%] flex-shrink-0 overflow-hidden bg-stone-900"
+                        style={{ aspectRatio: '4/5' }}
+                      >
+                        <iframe
+                          className="absolute w-full h-full"
+                          src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                          title={product.name}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center', top: 0, left: 0 }}
+                        />
+                        {/* 추천 아이콘 (좌측 상단) */}
+                        <div className="absolute top-2 left-2 z-10">
+                          <div className="w-6 h-6 rounded-full bg-stone-800 flex items-center justify-center">
+                            <Sparkles className="w-3 h-3 text-[#D8D262]" />
+                          </div>
+                        </div>
+                      </div>
+                      {/* 카드 정보 (오른쪽) */}
+                      <div className="flex-1 flex flex-col justify-between py-1">
+                        <div>
+                          <span className="text-[9px] font-semibold text-stone-600 tracking-wide">
+                            {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
+                          </span>
+                          <h4 className="text-[13px] font-bold text-stone-900 leading-tight mt-0.5 line-clamp-2 group-hover:underline">
+                            {product.name}
+                          </h4>
+                          <p className="text-[10px] text-stone-600 mt-1 line-clamp-2">
+                            {product.spectrum} 식단에 어울리는 메뉴
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
+                          <button 
+                            onClick={(e) => toggleLike(product.id, e)}
+                            className="flex items-center gap-1 hover:scale-105 transition-transform"
+                          >
+                            <Heart 
+                              className={`w-3.5 h-3.5 transition-colors ${
+                                likedItems.has(product.id) 
+                                  ? 'fill-red-500 text-red-500' 
+                                  : 'text-stone-500 hover:text-red-400'
+                              }`} 
+                            />
+                            <span className={`text-[10px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
+                              {formatLikeCount(likeCounts[product.id] || 0)}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
+              <div className="hidden lg:flex p-5 pb-8 gap-4">
+                {/* 왼쪽 열 */}
+                <div className="flex-1 flex flex-col gap-4">
+                  {algorithmRecommended.slice(0, 2).map((product, idx) => (
+                    <div key={product.id} className="cursor-pointer group flex flex-col">
+                      <div 
+                        className="relative w-full overflow-hidden bg-stone-900"
+                        style={{ aspectRatio: '4/5' }}
+                      >
+                        <iframe
+                          className="absolute w-full h-full"
+                          src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                          title={product.name}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                        />
+                        {/* 추천 아이콘 (좌측 상단) */}
+                        <div className="absolute top-3 left-3 z-10">
+                          <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                            <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pt-3 bg-[#D8D262]">
+                        <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
+                          {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
+                        </span>
+                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight mt-1 group-hover:underline">
+                          {product.name}
+                        </h4>
+                        <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
+                          {product.spectrum} 식단에 어울리는 메뉴
+                        </p>
+                        <div className="flex items-center mt-3">
+                          <button 
+                            onClick={(e) => toggleLike(product.id, e)}
+                            className="flex items-center gap-1.5 hover:scale-105 transition-transform"
+                          >
+                            <Heart 
+                              className={`w-4 h-4 transition-colors ${
+                                likedItems.has(product.id) 
+                                  ? 'fill-red-500 text-red-500' 
+                                  : 'text-stone-500 hover:text-red-400'
+                              }`} 
+                            />
+                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
+                              {formatLikeCount(likeCounts[product.id] || 0)}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* 오른쪽 열 (아래로 오프셋) */}
+                <div className="flex-1 flex flex-col gap-4 pt-24">
+                  {algorithmRecommended.slice(2, 4).map((product, idx) => (
+                    <div key={product.id} className="cursor-pointer group flex flex-col">
+                      <div 
+                        className="relative w-full overflow-hidden bg-stone-900"
+                        style={{ aspectRatio: '4/5' }}
+                      >
+                        <iframe
+                          className="absolute w-full h-full"
+                          src={`https://www.youtube.com/embed/${cardVideoIds[idx + 2]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx + 2]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                          title={product.name}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                        />
+                        {/* 추천 아이콘 (좌측 상단) */}
+                        <div className="absolute top-3 left-3 z-10">
+                          <div className="w-8 h-8 rounded-full bg-stone-800 flex items-center justify-center">
+                            <Sparkles className="w-3.5 h-3.5 text-[#D8D262]" />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="pt-3 bg-[#D8D262]">
+                        <span className="text-[10px] font-semibold text-stone-700 tracking-wide">
+                          {product.cuisine === '한식' ? 'EAT' : product.cuisine === '디저트' ? 'STYLE' : 'LIFE'}
+                        </span>
+                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight mt-1 group-hover:underline">
+                          {product.name}
+                        </h4>
+                        <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
+                          {product.spectrum} 식단에 어울리는 메뉴
+                        </p>
+                        <div className="flex items-center mt-3">
+                          <button 
+                            onClick={(e) => toggleLike(product.id, e)}
+                            className="flex items-center gap-1.5 hover:scale-105 transition-transform"
+                          >
+                            <Heart 
+                              className={`w-4 h-4 transition-colors ${
+                                likedItems.has(product.id) 
+                                  ? 'fill-red-500 text-red-500' 
+                                  : 'text-stone-500 hover:text-red-400'
+                              }`} 
+                            />
+                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
+                              {formatLikeCount(likeCounts[product.id] || 0)}
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        
-        {/* 알고리즘 설명 툴팁 */}
-        {sortType === 'algorithm' && (
-          <p className="text-[11px] text-stone-500 mt-2">
-            ✨ 나의 비건 성향 테스트 결과를 기반으로 추천해드려요
-          </p>
-        )}
-      </div>
-      
-      {/* 상품 그리드 - 반응형 2~5열 */}
-      <div className="max-w-[1400px] mx-auto px-6 pb-12">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-10">
-          {sortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} isAlgorithmMode={sortType === 'algorithm'} />
-          ))}
+      )}
+
+      <div className="page-container pt-8 pb-6">
+        <div className="flex gap-10">
+          {/* 좌측 필터 */}
+          <aside className="w-[240px] flex-shrink-0 hidden md:block">
+            <div className="space-y-8 text-stone-800">
+              {/* 카테고리 탭 (세로형) */}
+              <div>
+                <div className="text-[13px] font-semibold mb-3 pb-2 border-b-2 border-stone-900">카테고리</div>
+                <div className="flex flex-col">
+                  {categoryTabs.map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => handleTabClick(tab)}
+                      className={`w-full text-left py-2 text-[13px] transition-colors ${
+                        activeTab === tab
+                          ? 'text-stone-900 font-semibold'
+                          : 'text-stone-500 hover:text-stone-700'
+                      }`}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 비건 스펙트럼 */}
+              <div>
+                <div className="text-[13px] font-semibold mb-3">비건 스펙트럼</div>
+                <div className="flex flex-col gap-2">
+                  {spectrumOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => setSpectrum(opt)}
+                      className={`w-full px-3 py-2 text-left border text-[12px] transition-colors ${
+                        spectrum === opt ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
+                      }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 제품 유형 */}
+              <div>
+                <div className="text-[13px] font-semibold mb-3">제품 유형</div>
+                <div className="flex flex-col gap-2">
+                  {cuisineOptions.map((c) => {
+                    const checked = selectedCuisines.includes(c);
+                    return (
+                      <button
+                        key={c}
+                        onClick={() => toggleCuisine(c)}
+                        className={`w-full px-3 py-2 flex items-center gap-2 border text-[12px] transition-colors ${
+                          checked ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
+                        }`}
+                      >
+                        <span
+                          className={`w-4 h-4 border flex items-center justify-center ${
+                            checked ? 'border-black bg-black text-white' : 'border-stone-300'
+                          }`}
+                        >
+                          {checked && <Check className="w-3 h-3" />}
+                        </span>
+                        {c}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 카테고리 (접이식) */}
+              <div>
+                <button
+                  onClick={() => setIsCategoryOpen((prev) => !prev)}
+                  className="w-full flex items-center justify-between text-[13px] font-semibold mb-3"
+                >
+                  <span>카테고리</span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isCategoryOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {isCategoryOpen && (
+                  <div className="flex flex-col gap-2">
+                    {categoryOptions.map((c) => {
+                      const checked = selectedCategories.includes(c);
+                      return (
+                        <button
+                          key={c}
+                          onClick={() =>
+                            setSelectedCategories((prev) =>
+                              prev.includes(c) ? prev.filter((i) => i !== c) : [...prev, c]
+                            )
+                          }
+                          className={`w-full px-3 py-2 flex items-center gap-2 border text-[12px] transition-colors ${
+                            checked ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
+                          }`}
+                        >
+                          <span
+                            className={`w-4 h-4 border flex items-center justify-center ${
+                              checked ? 'border-black bg-black text-white' : 'border-stone-300'
+                            }`}
+                          >
+                            {checked && <Check className="w-3 h-3" />}
+                          </span>
+                          {c}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </div>
+          </aside>
+
+          {/* 우측 콘텐츠 */}
+          <div className="flex-1">
+            {/* 정렬 드롭다운 */}
+            <div className="flex justify-end mb-6">
+              <div className="relative inline-block">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="flex items-center justify-between gap-8 px-4 py-2.5 border border-stone-300 bg-white text-[12px] text-stone-700 hover:border-stone-400 transition-colors min-w-[180px]"
+                >
+                  <span className="flex items-center gap-1.5">
+                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
+                    {currentSortLabel}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-stone-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isDropdownOpen && (
+                  <>
+                    <div 
+                      className="fixed inset-0 z-10" 
+                      onClick={() => setIsDropdownOpen(false)}
+                    />
+                    
+                    <div className="absolute top-full left-0 mt-1 bg-white border border-stone-200 shadow-lg z-20 min-w-[180px]">
+                      {SORT_OPTIONS.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => handleSortChange(option.value as SortType)}
+                          className={`w-full text-left px-4 py-2.5 text-[12px] transition-colors flex items-center gap-1.5 ${
+                            sortType === option.value
+                              ? 'bg-stone-100 text-stone-900 font-medium'
+                              : 'text-stone-600 hover:bg-stone-50'
+                          }`}
+                        >
+                          {option.icon && <Sparkles className="w-3 h-3 text-[#D8D262]" />}
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+
+            {/* 상품 그리드 */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10">
+              {sortedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} isAlgorithmMode={sortType === 'algorithm'} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -205,6 +669,8 @@ interface ProductCardProps {
     price: number;
     isBest: boolean;
     popularity: number;
+    cuisine: string;
+    spectrum: string;
   };
   isAlgorithmMode?: boolean;
 }
