@@ -41,15 +41,9 @@ export const Header: React.FC<HeaderProps> = ({
   const primaryCategories = ['ALL', 'NEW'];
   const secondaryCategories = ['샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
 
-  // 블렌드 스타일 - 흰색 텍스트가 difference로 인해 흰 배경에선 검은색, 어두운 배경에선 흰색으로 보임
-  const blendStyle: React.CSSProperties = {
-    color: '#ffffff',
-    mixBlendMode: 'difference',
-  };
-
   return (
     <header
-      className="fixed left-0 right-0 z-50"
+      className="fixed left-0 right-0 z-50 bg-transparent"
       style={{ top: offsetTop }}
     >
       <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
@@ -57,13 +51,11 @@ export const Header: React.FC<HeaderProps> = ({
         <Link 
           to="/shop" 
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
-          style={{ mixBlendMode: 'difference' }}
         >
           <img 
             src={`${import.meta.env.BASE_URL}logo.png`}
             alt="SLUNCH FACTORY" 
             className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
-            style={{ filter: 'invert(1)' }}
           />
         </Link>
         
@@ -77,8 +69,9 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className="text-xs sm:text-sm font-bold uppercase flex items-center gap-1"
-                  style={blendStyle}
+                  className={`text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 ${
+                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
+                  }`}
                   onClick={() => setOpenMenu(null)}
                 >
                   {item.name}
@@ -93,8 +86,9 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className="text-xs sm:text-sm font-bold uppercase flex items-center gap-1"
-                  style={blendStyle}
+                  className={`text-xs sm:text-sm font-bold transition-colors uppercase flex items-center gap-1 ${
+                    isActive ? 'text-stone-900' : 'text-stone-700 hover:text-stone-900'
+                  }`}
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
@@ -159,10 +153,7 @@ export const Header: React.FC<HeaderProps> = ({
         
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
         <div className="flex items-center gap-4 sm:gap-6">
-          <span 
-            className="text-xs sm:text-sm whitespace-nowrap font-bold"
-            style={blendStyle}
-          >KR</span>
+          <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600">KR</span>
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container">
@@ -218,20 +209,18 @@ export const Header: React.FC<HeaderProps> = ({
           
           <Link 
             to="/cart" 
-            className="relative"
-            style={blendStyle}
+            className="transition-colors relative text-stone-700 hover:text-stone-900"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center" style={{ mixBlendMode: 'normal' }}>0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center">0</span>
           </Link>
-          <button style={blendStyle}>
+          <button className="transition-colors text-stone-700 hover:text-stone-900">
             <Search className="w-5 h-5" />
           </button>
           
           {/* 모바일 메뉴 버튼 */}
           <button 
-            className="lg:hidden"
-            style={blendStyle}
+            className="lg:hidden transition-colors text-stone-700 hover:text-stone-900"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             <Menu className="w-6 h-6" />
