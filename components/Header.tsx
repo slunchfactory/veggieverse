@@ -32,9 +32,9 @@ export const Header: React.FC<HeaderProps> = ({
   const navItems = [
     { name: 'About', path: '/brand' },
     { name: 'Store', path: '/store', hasDropdown: true },
-    { name: 'Event', path: '/event' },
-    { name: 'Newsletter', path: '/newsletter' },
     { name: 'Recipe', path: '/recipe' },
+    { name: 'Newsletter', path: '/newsletter' },
+    { name: 'Event', path: '/event' },
   ];
 
   // 식품 특화 카테고리 (단일 레벨)
