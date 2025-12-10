@@ -13,7 +13,7 @@ export const ChatWidget: React.FC = () => {
   const [contextTasteOn, setContextTasteOn] = useState(true);
   const [input, setInput] = useState('');
 
-  const positionClass = useMemo(() => 'fixed z-[70] right-4 bottom-4 sm:right-6 sm:bottom-6', []);
+  const positionClass = useMemo(() => 'fixed z-[90] right-4 bottom-20 sm:right-6 sm:bottom-24', []);
   const quickPrompts = ['오늘 점심 추천', '주간 식단 짜줘', '장보기 리스트 만들어줘', '저염/고단백으로'];
 
   return (
