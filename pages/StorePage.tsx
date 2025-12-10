@@ -723,8 +723,15 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<string[]>([]);
   const images = getProductThumbnailImages(product.id);
   const hasMultipleImages = images.length > 1;
+
+  // 이미지 로드 성공 추적
+  useEffect(() => {
+    setLoadedImages([]);
+    setCurrentImageIndex(0);
+  }, [product.id]);
 
   // 자동 슬라이드
   useEffect(() => {
@@ -757,20 +764,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           <div className="relative w-full h-full">
             {images.map((img, idx) => (
               <img
-                key={idx}
+                key={`${product.id}-${idx}`}
                 src={img}
                 alt={product.name}
                 className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                  idx === currentImageIndex ? 'opacity-100' : 'opacity-0'
+                  idx === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                 }`}
                 onClick={handleImageClick}
+                loading="lazy"
+                onLoad={() => {
+                  if (!loadedImages.includes(img)) {
+                    setLoadedImages(prev => [...prev, img]);
+                  }
+                }}
                 onError={(e) => {
-                  // 이미지 로드 실패 시 다음 이미지로 시도
+                  // 이미지 로드 실패 시 로그
+                  console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
                   const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
+                  target.style.opacity = '0';
                 }}
               />
             ))}
+            {/* 모든 이미지 로드 실패 시 기본 배경 */}
+            {loadedImages.length === 0 && images.length > 0 && (
+              <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                <span className="text-white/30 text-xs">이미지 로딩 중...</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
