@@ -218,3 +218,16 @@ a:focus-visible {
 .floating-item {
   animation-fill-mode: both;
 }
+
+/* 헤더 텍스트 blend 효과 - 배경에 따라 색상 반전 */
+.blend-text {
+  color: white !important;
+  mix-blend-mode: difference;
+  position: relative;
+  z-index: 1;
+}
+
+/* 메인 콘텐츠 isolation - blend가 올바르게 작동하도록 */
+#root > div {
+  isolation: isolate;
+}
