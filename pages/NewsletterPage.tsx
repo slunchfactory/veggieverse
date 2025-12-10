@@ -15,7 +15,7 @@ interface Article {
 const ARTICLES: Article[] = [
   {
     id: 1,
-    category: 'ESSAY',
+    category: 'HEALTH',
     title: '멈춰야 보이는 것들',
     subtitle: '번아웃을 겪고 나서야 깨달은 것들',
     author: '슬런치 에디터',
@@ -64,7 +64,7 @@ const ARTICLES: Article[] = [
   },
   {
     id: 2,
-    category: 'COLUMN',
+    category: 'CULTURE',
     title: '2060년, 나는 마흔이 된다',
     subtitle: '초고령 사회를 앞둔 Z세대의 고민',
     author: '슬런치 에디터',
@@ -162,7 +162,7 @@ const ARTICLES: Article[] = [
   },
   {
     id: 4,
-    category: 'RELATIONSHIP',
+    category: 'LIFE',
     title: '"그 영화 재밌어" 다음에 할 말',
     subtitle: '소개팅에서 영화 이야기 잘하는 법',
     author: '슬런치 에디터',
@@ -209,7 +209,7 @@ const ARTICLES: Article[] = [
   },
   {
     id: 5,
-    category: 'LIFESTYLE',
+    category: "SLUNCH'S PICK",
     title: '마음을 전하는 데 10만원은 필요 없다',
     subtitle: '3만원으로 완성하는 크리스마스 선물',
     author: '슬런치 에디터',
