@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, Heart, Share2, Bookmark, Clock, ChefHat, Users, Sparkles, Lightbulb, ChevronRight, MessageCircle } from 'lucide-react';
-import { getIngredientIcon, handleImageError } from '../utils/ingredientIcon';
+import { getIngredientIcon } from '../utils/ingredientIcon';
 
 // 샘플 레시피 상세 데이터
 const sampleRecipe = {
@@ -304,12 +304,11 @@ const RecipeDetailPage: React.FC = () => {
                   <div className="grid sm:grid-cols-2 gap-4">
                     {sampleRecipe.ingredients.map((ingredient, idx) => (
                       <div key={idx} className="flex items-center gap-4 p-3 bg-stone-50 rounded-xl">
-                        <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center overflow-hidden shadow-sm">
+                        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-50 to-orange-100 flex items-center justify-center overflow-hidden shadow-sm">
                           <img 
                             src={getIngredientIcon(ingredient.name)} 
                             alt={ingredient.name}
-                            onError={handleImageError}
-                            className="w-12 h-12 object-cover rounded-lg" 
+                            className="w-10 h-10 object-contain" 
                           />
                         </div>
                         <div className="flex-1">
