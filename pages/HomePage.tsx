@@ -130,41 +130,50 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-      {/* 비건 테스트 토스트 배너 */}
-      <div 
-        className={`fixed left-0 right-0 z-30 transition-all duration-150 ease-out ${
-          showToast ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
-        }`}
-        style={{ backgroundColor: '#292624', top: `${headerOffset}px` }}
-      >
-        <div className="page-container py-4 relative">
-          {/* 중앙 텍스트 - 세로 정렬 */}
-          <div className="flex flex-col items-center text-center gap-2">
-            <span className="text-[15px] font-semibold text-white">
-              🥗 나의 비건 유형은?
-            </span>
-            <span className="text-[13px] text-stone-400">
-              좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
-            </span>
-            <Link 
-              to="/"
-              className="mt-1 px-5 py-1.5 text-[12px] font-medium rounded-none transition-colors hover:opacity-90"
-              style={{ backgroundColor: '#E54B1A', color: '#292624' }}
-            >
-              테스트 시작
-            </Link>
-          </div>
-          
-          {/* 닫기 버튼 - 오른쪽 고정 */}
-          <button 
+      {/* 비건 테스트 모달 팝업 */}
+      {showToast && (
+        <>
+          {/* 배경 오버레이 */}
+          <div 
+            className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
             onClick={dismissToast}
-            className="absolute right-8 top-4 p-1 transition-opacity hover:opacity-80"
-            style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.55)' }}
-          >
-            <X className="w-4 h-4 text-white" />
-          </button>
-        </div>
-      </div>
+          />
+          {/* 모달 팝업 */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+            <div 
+              className="relative bg-[#292624] p-8 max-w-md w-full pointer-events-auto animate-fadeIn"
+              style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}
+            >
+              {/* 닫기 버튼 */}
+              <button 
+                onClick={dismissToast}
+                className="absolute top-4 right-4 p-1 transition-opacity hover:opacity-80"
+                style={{ backgroundColor: 'transparent', color: '#ffffff' }}
+              >
+                <X className="w-5 h-5 text-white" />
+              </button>
+              
+              {/* 중앙 텍스트 - 세로 정렬 */}
+              <div className="flex flex-col items-center text-center gap-3">
+                <span className="text-[18px] font-semibold text-white">
+                  🥗 나의 비건 유형은?
+                </span>
+                <span className="text-[14px] text-stone-400 leading-relaxed">
+                  좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
+                </span>
+                <Link 
+                  to="/"
+                  onClick={dismissToast}
+                  className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
+                  style={{ backgroundColor: '#E54B1A', color: '#292624' }}
+                >
+                  테스트 시작
+                </Link>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
       
       {/* 최소화된 플로팅 버튼 - 토스트가 닫혔을 때 표시 */}
       <button
