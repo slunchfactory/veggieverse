@@ -324,11 +324,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
             <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
               { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들' },
               { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민' },
               { id: 3, category: 'FOOD', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유' },
+              { id: 4, category: 'CULTURE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법' },
             ].map((article) => (
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
                 <div 
