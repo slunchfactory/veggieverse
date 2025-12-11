@@ -141,8 +141,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           {/* 모달 팝업 */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <div 
-              className="relative bg-[#292624] p-8 max-w-md w-full pointer-events-auto animate-fadeIn"
-              style={{ boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)' }}
+              className="relative bg-[#292624] p-8 pointer-events-auto animate-fadeIn"
+              style={{ 
+                width: '90%',
+                maxWidth: '380px',
+                aspectRatio: '3/4',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)'
+              }}
             >
               {/* 닫기 버튼 */}
               <button 
