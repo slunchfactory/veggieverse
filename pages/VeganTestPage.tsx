@@ -336,6 +336,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
         className="relative w-screen overflow-hidden select-none snap-start z-[2]"
         style={{ height: `calc(100dvh - ${headerOffset}px)` }}
       >
+        {/* X 버튼 - 스킵 */}
+        <Link
+          to="/shop"
+          className="fixed top-4 right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
+        >
+          <X className="w-5 h-5 text-stone-800" />
+        </Link>
+
         {/* 떠다니는 야채/과일들 - 150%~250% 크기, 오른쪽 회전 */}
         {items.map((item) => {
           const isSelected = selectedItems.some(i => i.id === item.id);
