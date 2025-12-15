@@ -29,14 +29,25 @@ export const BrandPage: React.FC = () => {
       
       {/* 브랜드 소개 섹션 1 */}
       <div className="page-container py-20">
+        {/* 이미지(왼쪽) + 큰텍스트와 작은텍스트(오른쪽) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          {/* 이미지 - 왼쪽 (컬러 박스) */}
+          <div className="self-start w-full">
+            <div 
+              className="w-full aspect-[4/3] rounded-none"
+              style={{ backgroundColor: '#744b2f' }}
+            />
+          </div>
+          
+          {/* 큰 텍스트와 작은 텍스트 - 오른쪽 */}
           <div className="self-start">
+            {/* 큰 텍스트 */}
             <h2 className="text-3xl font-bold text-stone-800 mb-8 leading-relaxed">
               비건 식문화를 선도하는<br/>
               슬런치 팩토리
             </h2>
-          </div>
-          <div className="self-start">
+            
+            {/* 작은 텍스트 */}
             <p className="text-stone-600 leading-relaxed mb-6">
               슬런치 팩토리는 2012년부터 채식을 기반으로 한 이탈리아 비건식과 한국 비건식 요리를 전문으로 하는 비건 레스토랑 입니다.
             </p>
@@ -53,33 +64,27 @@ export const BrandPage: React.FC = () => {
         </div>
       </div>
       
-      {/* 매장 이미지 */}
-      <div className="w-full h-[500px] relative">
-        <img 
-          src="/store-image.jpg" 
-          alt="슬런치 팩토리 매장"
-          className="w-full h-full object-cover"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/1400x500?text=Store+Image';
-          }}
-        />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white text-4xl font-light tracking-[0.3em] drop-shadow-lg">
-            slunchfactory
-          </p>
-        </div>
-      </div>
-      
       {/* 브랜드 소개 섹션 2 */}
       <div className="page-container py-20">
+        {/* 이미지(왼쪽) + 큰텍스트와 작은텍스트(오른쪽) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-start">
+          {/* 이미지 - 왼쪽 (컬러 박스) */}
+          <div className="self-start w-full">
+            <div 
+              className="w-full aspect-[4/3] rounded-none"
+              style={{ backgroundColor: '#744b2f' }}
+            />
+          </div>
+          
+          {/* 큰 텍스트와 작은 텍스트 - 오른쪽 */}
           <div className="self-start">
+            {/* 큰 텍스트 */}
             <h2 className="text-3xl font-bold text-stone-800 mb-8 leading-relaxed">
               국내 통합 브랜드형 비건 전문 기업<br/>
               슬런치 팩토리
             </h2>
-          </div>
-          <div className="self-start">
+            
+            {/* 작은 텍스트 */}
             <p className="text-stone-600 leading-relaxed mb-6">
               19년 동안 간편식 생산 사업을 쌓아온 노하우로 슬런치 팩토리는 전문 레스토랑 운영 뿐만 아니라 비건 냉동 즉석식품을 제조하는 최첨단 시설을 보유하고 있습니다. 저희는 자체 개발한 비건 가공육, 치즈 및 다양한 기타 식재료를 사용하여 혁신적이고 맛있는 비건 간편식을 지속적으로 개발해왔습니다.
             </p>

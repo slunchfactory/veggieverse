@@ -39,11 +39,11 @@ export const Header: React.FC<HeaderProps> = ({
 
   // 식품 특화 카테고리 (단일 레벨)
   const primaryCategories = ['ALL', 'NEW'];
-  const secondaryCategories = ['샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
+  const secondaryCategories = ['슬런치 위클리', '소스와 오일', '밀키트', '베이커리'];
 
   return (
     <header
-      className="fixed left-0 right-0 z-50 bg-transparent"
+      className="fixed left-0 right-0 z-[9999] bg-white"
       style={{ top: offsetTop }}
     >
       <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">

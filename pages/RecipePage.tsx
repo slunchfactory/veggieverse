@@ -239,13 +239,13 @@ const RecipeCarousel: React.FC<{
             <h3 className="font-bold text-stone-900 text-base mb-1 group-hover/card:text-green-700 transition-colors">
               {recipe.title}
             </h3>
-            <p className="text-stone-500 text-sm leading-relaxed line-clamp-1">
+            <p className="text-stone-700 text-sm leading-relaxed line-clamp-1">
               {recipe.description}
             </p>
             {showAuthor && recipe.author && (
               <div className="flex items-center justify-between mt-2">
-                <span className="text-xs text-stone-400">by {recipe.author}</span>
-                <span className="text-xs text-stone-400">❤️ {recipe.likes?.toLocaleString()}</span>
+                <span className="text-xs text-stone-700">by {recipe.author}</span>
+                <span className="text-xs text-stone-700">❤️ {recipe.likes?.toLocaleString()}</span>
               </div>
             )}
           </Link>

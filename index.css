@@ -247,3 +247,8 @@ a:focus-visible {
   overflow-x: hidden;
   width: 100%;
 }
+
+/* 탭바 요소에 적용할 CSS */
+.tab-menu {
+  background-color: #ffffff;
+}

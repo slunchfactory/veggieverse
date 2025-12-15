@@ -75,6 +75,25 @@ const AppContent: React.FC = () => {
     }
   }, []);
 
+  // 페이지 이동 시 스크롤을 최상단으로 이동
+  useEffect(() => {
+    const scrollToTop = () => {
+      const mainContainer = document.querySelector('main');
+      if (mainContainer) {
+        mainContainer.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
+    };
+
+    // 즉시 실행
+    scrollToTop();
+    
+    // requestAnimationFrame으로 한 번 더 실행 (렌더링 후)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(scrollToTop);
+    });
+  }, [location.pathname]);
+
   // 프로필 저장 함수
   const saveProfile = useCallback((profileImage: string, veganType: string) => {
     const newProfile: UserProfile = {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VegetableItem } from '../types';
 import { PRODUCE_ITEMS } from '../constants';
@@ -42,6 +42,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
   const [items, setItems] = useState<FloatingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
   const [showSelectionBar, setShowSelectionBar] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -133,9 +134,21 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
     }
   }, [headerOffset]);
 
+  const scrollToTop = useCallback(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // 초기 상태는 명확히 숨김 (스크롤 이벤트가 발생하기 전까지는 항상 false)
+    setShowScrollToTop(false);
 
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
@@ -146,6 +159,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
         setShowSelectionBar(true);
       } else {
         setShowSelectionBar(false);
+      }
+
+      // 스크롤 리모컨 표시 여부: 스크롤을 200px 이상 내렸을 때만 표시
+      // 초기 상태(scrollTop === 0)에서는 절대 표시하지 않음
+      if (scrollTop > 200) {
+        setShowScrollToTop(true);
+      } else {
+        setShowScrollToTop(false);
       }
     };
 
@@ -336,10 +357,11 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
         className="relative w-screen overflow-hidden select-none snap-start z-[2]"
         style={{ height: `calc(100dvh - ${headerOffset}px)` }}
       >
-        {/* X 버튼 - 스킵 */}
+        {/* X 버튼 - 스킵 (헤더 아래에 위치: headerOffset은 배너+헤더 높이이므로 헤더 하단 바로 아래) */}
         <Link
           to="/shop"
-          className="fixed top-4 right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
+          className="fixed right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
+          style={{ top: `${headerOffset + 16}px` }}
         >
           <X className="w-5 h-5 text-stone-800" />
         </Link>
@@ -518,7 +540,12 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
 
       {/* 두 번째 페이지 - 설문조사 */}
       <div className="survey-page snap-start min-h-screen relative z-[2]">
-        <SurveyPage selectedItems={selectedItems} onSaveProfile={onSaveProfile} />
+        <SurveyPage 
+          selectedItems={selectedItems} 
+          onSaveProfile={onSaveProfile}
+          showScrollToTop={showScrollToTop}
+          onScrollToTop={scrollToTop}
+        />
       </div>
     </div>
   );

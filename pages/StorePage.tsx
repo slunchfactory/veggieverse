@@ -23,31 +23,19 @@ interface Product {
 const PRODUCTS: Product[] = [
   {
     id: 1,
-    name: '슬런치 볶음김치 (4캔)',
+    name: '볶음김치',
     price: 12000,
     isBest: true,
     popularity: 95,
     cuisine: '한식',
     spectrum: '비건',
     category: '신메뉴',
-    description: '젓갈이 들어가지 않은 비건 볶음김치 캔 160g x 4개',
+    description: '젓갈이 들어가지 않은 비건 볶음김치',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 2,
-    name: '슬런치 볶음김치 (3캔)',
-    price: 9000,
-    isBest: true,
-    popularity: 88,
-    cuisine: '한식',
-    spectrum: '비건',
-    category: '신메뉴',
-    description: '젓갈이 들어가지 않은 비건 볶음김치 캔 160g x 3개',
-    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-  },
-  {
-    id: 3,
-    name: '슬런치 김치볶음밥 밀키트',
+    name: '김치볶음밥',
     price: 12000,
     originalPrice: 15000,
     isBest: true,
@@ -55,101 +43,157 @@ const PRODUCTS: Product[] = [
     cuisine: '한식',
     spectrum: '비건',
     category: '밀키트',
-    description: '젓갈이 들어가지 않은 비건 캔김치로 구성한 김치볶음밥 밀키트 (2인분)',
+    description: '젓갈이 들어가지 않은 비건 캔김치로 구성한 김치볶음밥 밀키트',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
   },
   {
-    id: 4,
-    name: '슬런치 시금치 뇨끼',
+    id: 3,
+    name: '시금치 뇨끼',
     price: 18000,
     originalPrice: 24000,
     isBest: true,
     popularity: 85,
     cuisine: '양식',
     spectrum: '비건',
-    category: '수프와 메인요리',
+    category: '밀키트',
     description: '계란, 우유, 버터를 넣지 않은 비건 뇨끼',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
   },
   {
-    id: 5,
-    name: '슬런치 블루베리 타르트',
+    id: 4,
+    name: '블루베리 타르트',
     price: 39000,
     originalPrice: 44000,
-    isBest: false,
-    popularity: 78,
+    isBest: true,
+    popularity: 88,
     cuisine: '디저트',
     spectrum: '비건',
     category: '베이커리',
     description: '슬런치 팩토리 프리미엄 블루베리 타르트',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
   },
   {
-    id: 6,
-    name: '슬런치 자두 타르트',
-    price: 39000,
-    originalPrice: 44000,
+    id: 5,
+    name: '복숭아 타르트',
+    price: 32000,
+    originalPrice: 35000,
     isBest: true,
     popularity: 82,
     cuisine: '디저트',
     spectrum: '비건',
     category: '베이커리',
-    description: '상큼한 자두를 올린 프리미엄 비건 타르트',
-    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
-  },
-  {
-    id: 7,
-    name: '슬런치 복숭아 타르트',
-    price: 32000,
-    originalPrice: 35000,
-    isBest: true,
-    popularity: 80,
-    cuisine: '디저트',
-    spectrum: '비건',
-    category: '베이커리',
     description: '달콤한 복숭아를 올린 비건 디저트',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
   },
   {
-    id: 8,
-    name: '슬런치 잠봉뵈르',
+    id: 6,
+    name: '잠봉뵈르',
     price: 8000,
     originalPrice: 12000,
     isBest: true,
     popularity: 90,
     cuisine: '양식',
     spectrum: '비건',
-    category: '샐러드',
+    category: '밀키트',
     description: '슬런치 팩토리의 베스트 셀러',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
-    soldOut: true,
+  },
+  {
+    id: 7,
+    name: '자두 타르트',
+    price: 39000,
+    originalPrice: 44000,
+    isBest: true,
+    popularity: 80,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
+    description: '상큼한 자두를 올린 프리미엄 비건 타르트',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
+  {
+    id: 8,
+    name: '피넛버터 초코바',
+    price: 12000,
+    isBest: true,
+    popularity: 75,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
+    description: '고소한 피넛버터와 달콤한 초콜릿이 만나 만든 비건 초코바',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 9,
-    name: '슬런치 비건 마요네즈',
-    price: 12000,
+    name: '김치칼국수',
+    price: 15000,
     isBest: true,
-    popularity: 70,
-    cuisine: '양식',
+    popularity: 87,
+    cuisine: '한식',
     spectrum: '비건',
-    category: '소스와 오일',
-    description: '계란 없이 만든 고소한 비건 마요네즈',
+    category: '밀키트',
+    description: '젓갈 없이 만든 비건 김치칼국수',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
   {
     id: 10,
-    name: '슬런치 비건 케첩',
-    price: 8000,
+    name: '김치전',
+    price: 18000,
     isBest: true,
-    popularity: 75,
+    popularity: 83,
+    cuisine: '한식',
+    spectrum: '비건',
+    category: '밀키트',
+    description: '바삭하게 구운 비건 김치전',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
+  {
+    id: 11,
+    name: '단호박 초코 케익',
+    price: 35000,
+    isBest: true,
+    popularity: 79,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
+    description: '부드러운 단호박과 진한 초콜릿의 조화',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
+  {
+    id: 12,
+    name: '말차 케익',
+    price: 32000,
+    isBest: true,
+    popularity: 81,
+    cuisine: '디저트',
+    spectrum: '비건',
+    category: '베이커리',
+    description: '고소하고 향긋한 말차의 풍미를 담은 비건 케익',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
+  {
+    id: 13,
+    name: '슬런치 디스커버리 6팩',
+    price: 25000,
+    isBest: true,
+    popularity: 72,
     cuisine: '양식',
     spectrum: '비건',
-    category: '양념•오일',
+    category: '소스와 오일',
+    description: '슬런치의 대표 소스들을 한 번에 맛볼 수 있는 세트',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
+  {
+    id: 14,
+    name: '페퍼로니 피자',
+    price: 22000,
+    isBest: true,
+    popularity: 88,
+    cuisine: '양식',
+    spectrum: '비건',
+    category: '밀키트',
+    description: '비건 페퍼로니와 신선한 채소를 올린 비건 피자',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
 ];
 
@@ -219,9 +263,8 @@ export const StorePage: React.FC = () => {
       } else {
         // 세부 카테고리 매핑
         const categoryMap: Record<string, string> = {
-          '샐러드': '샐러드',
-          '수프와 메인요리': '수프•메인요리',
-          '소스와 오일': '양념•오일',
+          '슬런치 위클리': '샐러드',
+          '소스와 오일': '소스와 오일',
           '밀키트': '밀키트',
           '베이커리': '베이커리',
         };
@@ -300,7 +343,27 @@ export const StorePage: React.FC = () => {
   const cardVideoIds = ['x7pnY0U5yYY', 'LeZQWQ_cXqU', '8cVFJrY89SA', 'IzNnBZMjbXU'];
 
   // 카테고리 탭 목록
-  const categoryTabs = ['ALL', 'NEW', '샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
+  const categoryTabs = ['ALL', 'NEW', '슬런치 위클리', '소스와 오일', '밀키트', '베이커리'];
+  
+  // 카테고리별 제품 개수 계산
+  const getCategoryCount = (category: string): number => {
+    if (category === 'ALL') {
+      return PRODUCTS.length;
+    }
+    if (category === 'NEW') {
+      return PRODUCTS.filter(p => p.category === '신메뉴').length;
+    }
+    // 카테고리 매핑 (탭 이름 -> 실제 제품 category)
+    const categoryMap: Record<string, string> = {
+      '슬런치 위클리': '샐러드',
+      '소스와 오일': '소스와 오일',
+      '밀키트': '밀키트',
+      '베이커리': '베이커리',
+    };
+    const mappedCategory = categoryMap[category] || category;
+    // 실제 제품의 category 값으로 필터링
+    return PRODUCTS.filter(p => p.category === mappedCategory).length;
+  };
   
   const handleTabClick = (tab: string) => {
     if (tab === 'ALL') {
@@ -311,9 +374,8 @@ export const StorePage: React.FC = () => {
       setActiveTab(tab);
       const categoryMap: Record<string, string> = {
         'NEW': '신메뉴',
-        '샐러드': '샐러드',
-        '수프와 메인요리': '수프•메인요리',
-        '소스와 오일': '양념•오일',
+        '슬런치 위클리': '샐러드',
+        '소스와 오일': '소스와 오일',
         '밀키트': '밀키트',
         '베이커리': '베이커리',
       };
@@ -542,7 +604,8 @@ export const StorePage: React.FC = () => {
                           : 'text-stone-500 hover:text-stone-700'
                       }`}
                     >
-                      {tab}
+                      <span>{tab}</span>
+                      <span className="text-[12px] text-stone-400 ml-1">{getCategoryCount(tab)}</span>
                     </button>
                   ))}
                 </div>
@@ -553,15 +616,28 @@ export const StorePage: React.FC = () => {
                 <div className="text-[13px] font-semibold mb-3">비건 스펙트럼</div>
                 <div className="flex flex-col gap-2">
                   {spectrumOptions.map((opt) => (
-                    <button
+                    <label
                       key={opt}
-                      onClick={() => setSpectrum(opt)}
-                      className={`w-full px-3 py-2 text-left border text-[12px] transition-colors ${
-                        spectrum === opt ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
-                      }`}
+                      className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
                     >
-                      {opt}
-                    </button>
+                      <input
+                        type="radio"
+                        name="spectrum"
+                        checked={spectrum === opt}
+                        onChange={() => setSpectrum(opt)}
+                        className="hidden"
+                      />
+                      <span
+                        className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                          spectrum === opt
+                            ? 'border-black bg-black'
+                            : 'border-stone-300 hover:border-stone-400'
+                        }`}
+                      >
+                        {spectrum === opt && <span className="w-2 h-2 rounded-full bg-white"></span>}
+                      </span>
+                      <span>{opt}</span>
+                    </label>
                   ))}
                 </div>
               </div>
@@ -573,22 +649,27 @@ export const StorePage: React.FC = () => {
                   {cuisineOptions.map((c) => {
                     const checked = selectedCuisines.includes(c);
                     return (
-                      <button
+                      <label
                         key={c}
-                        onClick={() => toggleCuisine(c)}
-                        className={`w-full px-3 py-2 flex items-center gap-2 border text-[12px] transition-colors ${
-                          checked ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
-                        }`}
+                        className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
                       >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleCuisine(c)}
+                          className="hidden"
+                        />
                         <span
-                          className={`w-4 h-4 border flex items-center justify-center ${
-                            checked ? 'border-black bg-black text-white' : 'border-stone-300'
+                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                            checked
+                              ? 'border-black bg-black'
+                              : 'border-stone-300 hover:border-stone-400'
                           }`}
                         >
-                          {checked && <Check className="w-3 h-3" />}
+                          {checked && <Check className="w-2.5 h-2.5 text-white" />}
                         </span>
-                        {c}
-                      </button>
+                        <span>{c}</span>
+                      </label>
                     );
                   })}
                 </div>
@@ -602,26 +683,31 @@ export const StorePage: React.FC = () => {
                     {promotionOptions.map((opt) => {
                       const checked = selectedCategories.includes(opt);
                       return (
-                        <button
+                        <label
                           key={opt}
-                          onClick={() =>
-                            setSelectedCategories((prev) =>
-                              prev.includes(opt) ? prev.filter((i) => i !== opt) : [...prev, opt]
-                            )
-                          }
-                          className={`w-full px-3 py-2 flex items-center gap-2 border text-[12px] transition-colors ${
-                            checked ? 'border-black text-black' : 'border-stone-300 text-stone-600 hover:border-stone-400'
-                          }`}
+                          className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
                         >
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            onChange={() =>
+                              setSelectedCategories((prev) =>
+                                prev.includes(opt) ? prev.filter((i) => i !== opt) : [...prev, opt]
+                              )
+                            }
+                            className="hidden"
+                          />
                           <span
-                            className={`w-4 h-4 border flex items-center justify-center ${
-                              checked ? 'border-black bg-black text-white' : 'border-stone-300'
+                            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                              checked
+                                ? 'border-black bg-black'
+                                : 'border-stone-300 hover:border-stone-400'
                             }`}
                           >
-                            {checked && <Check className="w-3 h-3" />}
+                            {checked && <Check className="w-2.5 h-2.5 text-white" />}
                           </span>
-                          {opt}
-                        </button>
+                          <span>{opt}</span>
+                        </label>
                       );
                     })}
                   </div>

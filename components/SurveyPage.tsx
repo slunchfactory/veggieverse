@@ -5,6 +5,8 @@ import { VegetableItem } from '../types';
 interface SurveyPageProps {
   selectedItems: VegetableItem[];
   onSaveProfile?: (profileImage: string, veganType: string) => void;
+  showScrollToTop?: boolean;
+  onScrollToTop?: () => void;
 }
 
 // 질문 데이터
@@ -491,7 +493,7 @@ const generatePersonalityDescription = (
   };
 };
 
-export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSaveProfile }) => {
+export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSaveProfile, showScrollToTop = false, onScrollToTop }) => {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
@@ -507,9 +509,13 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
   const [monsterDescription, setMonsterDescription] = useState('');
 
   const scrollToTop = () => {
-    const container = document.querySelector('.snap-y');
-    if (container) {
-      container.scrollTo({ top: 0, behavior: 'smooth' });
+    if (onScrollToTop) {
+      onScrollToTop();
+    } else {
+      const container = document.querySelector('.snap-y');
+      if (container) {
+        container.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     }
   };
 
@@ -674,10 +680,10 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             
             <div className="text-6xl mb-6">🥗</div>
             <h2 className="text-2xl font-bold text-stone-800 mb-4">
-              나의 비건 유형 찾기
+              마이 푸드 DNA
             </h2>
             <p className="text-stone-500 mb-8">
-              5가지 질문으로 당신만의 비건 페르소나를 발견해보세요
+              5가지 질문으로 나만의 푸드 DNA를 발견해보세요
             </p>
             
             {selectedItems.length > 0 && (
@@ -699,10 +705,6 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             >
               시작하기
             </button>
-            
-            <p className="text-stone-400 text-sm mt-4">
-              ↑ 위로 스크롤하면 재료를 다시 선택할 수 있어요
-            </p>
           </div>
         </div>
       </div>
@@ -921,14 +923,17 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
   return (
     <div className="min-h-screen bg-transparent">
       
-      {/* 위로 가기 버튼 */}
-      <button
-        onClick={scrollToTop}
-        className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity"
-        style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
-      >
-        <ChevronUp className="w-5 h-5" />
-      </button>
+      {/* 위로 가기 버튼 (스크롤을 내렸을 때만 표시) */}
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
+          style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
+          aria-label="상단으로 이동"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
+      )}
 
       <div className="flex items-center justify-center min-h-screen p-8">
         <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
