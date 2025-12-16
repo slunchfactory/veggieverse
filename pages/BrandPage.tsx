@@ -7,8 +7,10 @@ export const BrandPage: React.FC = () => {
       <div className="relative h-[400px] bg-emerald-800 overflow-hidden">
         <img 
           src="/brand-hero.jpg" 
-          alt="SLUNCH FACTORY"
+          alt="SLUNCH FACTORY 브랜드 히어로 이미지"
           className="w-full h-full object-cover opacity-80"
+          loading="eager"
+          decoding="async"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = 'none';
           }}

@@ -65,8 +65,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
     const isMobile = window.innerWidth < 640;
     const sizeMultiplier = isMobile ? 0.78 : 1;
     const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
-      // 랜덤 위치 (약간의 오프스크린 포함, 배너+헤더 높이 제외)
-      const adjustedHeight = window.innerHeight - headerOffset;
+      // 랜덤 위치 (약간의 오프스크린 포함, 배너+헤더 높이 제외, 하단 여유 공간 추가)
+      const adjustedHeight = window.innerHeight - headerOffset + 150;
       const x = Math.random() * (window.innerWidth + 160) - 80;
       const y = Math.random() * (adjustedHeight + 120) - 60;
       
@@ -181,7 +181,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
       const dt = Math.min((time - lastTimeRef.current) / 1000, 0.05); // clamp delta
       lastTimeRef.current = time;
       const width = window.innerWidth;
-      const height = window.innerHeight - headerOffset; // 배너 + 헤더 높이 제외
+      const height = window.innerHeight - headerOffset + 150; // 배너 + 헤더 높이 제외 + 하단 여유 공간
       const wrapMargin = 220; // 오프스크린 이동 허용 범위
       const minSpeed = 10;
       const maxSpeed = 35;
@@ -326,37 +326,30 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
       className="w-screen overflow-y-auto overflow-x-hidden snap-y snap-mandatory relative no-scrollbar"
       style={{ 
         scrollBehavior: 'smooth',
-        backgroundColor: '#5C4033',
+        backgroundColor: '#ffffff',
         width: '100dvw',
         height: `calc(100dvh - ${headerOffset}px)`,
         maxWidth: '100dvw',
         overflowX: 'hidden',
       }}
     >
-      {/* 그레인 텍스처 - 피그마 설정: #744b2f, 모노, 사이즈1, 덴시티100, 컬러#54341f */}
-      <div 
-        className="fixed left-0 right-0 bottom-0 pointer-events-none z-0"
-        style={{
-          backgroundColor: '#744b2f',
-          top: `${headerOffset}px`,
-        }}
-      />
-      {/* 노이즈 오버레이 - 모노, 사이즈1, 덴시티100% */}
-      <div 
-        className="fixed left-0 right-0 bottom-0 pointer-events-none z-[1]"
-        style={{
-          top: `${headerOffset}px`,
-          opacity: 1,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' fill='%2354341f'/%3E%3C/svg%3E")`,
-          backgroundSize: '50px 50px',
-          mixBlendMode: 'multiply',
-        }}
-      />
       {/* 첫 번째 페이지 - 야채 선택 */}
       <div 
-        className="relative w-screen overflow-hidden select-none snap-start z-[2]"
-        style={{ height: `calc(100dvh - ${headerOffset}px)` }}
+        className="relative w-screen select-none snap-start z-[2]"
+        style={{ 
+          height: `calc(100dvh - ${headerOffset}px)`,
+          overflow: 'visible',
+          paddingBottom: '100px',
+        }}
       >
+        {/* 하단 그라데이션 오버레이 */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]"
+          style={{
+            height: '200px',
+            background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 1) 100%)',
+          }}
+        />
         {/* X 버튼 - 스킵 (헤더 아래에 위치: headerOffset은 배너+헤더 높이이므로 헤더 하단 바로 아래) */}
         <Link
           to="/shop"
@@ -455,11 +448,12 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 <img
                   src={item.imageUrl}
                   alt={item.name}
+                  loading="lazy"
+                  decoding="async"
                   className={`w-full h-full object-contain transition-all duration-300 ${
                     isSelected ? 'opacity-0' : 'group-hover:scale-105'
                   }`}
                   style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))',
                     position: 'relative',
                     zIndex: 20,
                   }}
@@ -494,6 +488,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                           <img 
                             src={item.imageUrl}
                             alt={item.name}
+                  loading="lazy"
+                  decoding="async"
                             className="w-10 h-10 object-contain"
                           />
                         ) : (

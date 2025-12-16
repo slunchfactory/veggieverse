@@ -195,6 +195,18 @@ const PRODUCTS: Product[] = [
     description: '비건 페퍼로니와 신선한 채소를 올린 비건 피자',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
   },
+  {
+    id: 15,
+    name: '슬런치 위클리',
+    price: 35000,
+    isBest: true,
+    popularity: 95,
+    cuisine: '양식',
+    spectrum: '비건',
+    category: '슬런치 위클리',
+    description: '매주 새로운 비건 메뉴를 만나보는 정기 구독 서비스',
+    externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+  },
 ];
 
 type SortType = 'default' | 'price-low' | 'price-high' | 'popularity' | 'name-az' | 'name-za' | 'algorithm';
@@ -263,7 +275,7 @@ export const StorePage: React.FC = () => {
       } else {
         // 세부 카테고리 매핑
         const categoryMap: Record<string, string> = {
-          '슬런치 위클리': '샐러드',
+          '슬런치 위클리': '슬런치 위클리',
           '소스와 오일': '소스와 오일',
           '밀키트': '밀키트',
           '베이커리': '베이커리',
@@ -303,7 +315,7 @@ export const StorePage: React.FC = () => {
       case 'name-za':
         return products.sort((a, b) => b.name.localeCompare(a.name));
       case 'algorithm':
-        // TODO: 비건 테스트 결과 기반 추천 로직 추가 예정
+        // NOTE: 비건 테스트 결과 기반 추천 로직 추가 예정
         // 현재는 인기순 + BEST 우선으로 임시 정렬
         return products.sort((a, b) => {
           if (a.isBest && !b.isBest) return -1;
@@ -355,7 +367,7 @@ export const StorePage: React.FC = () => {
     }
     // 카테고리 매핑 (탭 이름 -> 실제 제품 category)
     const categoryMap: Record<string, string> = {
-      '슬런치 위클리': '샐러드',
+      '슬런치 위클리': '슬런치 위클리',
       '소스와 오일': '소스와 오일',
       '밀키트': '밀키트',
       '베이커리': '베이커리',
@@ -374,7 +386,7 @@ export const StorePage: React.FC = () => {
       setActiveTab(tab);
       const categoryMap: Record<string, string> = {
         'NEW': '신메뉴',
-        '슬런치 위클리': '샐러드',
+        '슬런치 위클리': '슬런치 위클리',
         '소스와 오일': '소스와 오일',
         '밀키트': '밀키트',
         '베이커리': '베이커리',
@@ -842,7 +854,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 }}
                 onError={(e) => {
                   // 이미지 로드 실패 시 로그
-                  console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
+                  if (import.meta.env.DEV) {
+                    console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
+                  }
                   const target = e.target as HTMLImageElement;
                   target.style.opacity = '0';
                 }}

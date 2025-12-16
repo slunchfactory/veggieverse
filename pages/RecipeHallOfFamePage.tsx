@@ -111,6 +111,8 @@ const RecipeHallOfFamePage: React.FC = () => {
                     src={getRecipeThumbnailImage(recipe.id)}
                     alt={recipe.title}
                     className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = getFallbackRecipeImage(recipe.id);

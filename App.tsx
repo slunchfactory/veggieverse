@@ -12,7 +12,7 @@ import RecipePage from './pages/RecipePage';
 import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
-import { ChatWidget } from './components/ChatWidget';
+import { ChatWidget, ChatTrigger, ChatPanel } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';
 
 // 유저 프로필 타입
@@ -31,11 +31,14 @@ const Layout: React.FC<{
   onResetProfile: () => void;
   showTopBanner: boolean;
   onCloseBanner: () => void;
-}> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner }) => {
+  isChatOpen: boolean;
+  chatPanel: React.ReactNode;
+  shouldShowFooter: boolean;
+}> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner, isChatOpen, chatPanel, shouldShowFooter }) => {
   const bannerHeight = showTopBanner ? 32 : 0;
   
   return (
-    <div className="min-h-screen min-w-[360px] flex flex-col overflow-auto">
+    <div className="min-h-screen min-w-[360px] flex flex-col overflow-hidden">
       {/* 최상단 가입유도 배너 */}
       {showTopBanner && <TopBanner onClose={onCloseBanner} />}
       <Header 
@@ -45,13 +48,30 @@ const Layout: React.FC<{
         onResetProfile={onResetProfile}
         offsetTop={bannerHeight}
       />
-      <main
-        className="flex-1 pb-8 overflow-auto"
-        style={{ paddingTop: 64 + bannerHeight }}
-      >
-        {children}
-      </main>
-      <Footer />
+      {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
+      <div className="flex-1 flex overflow-hidden" style={{ paddingTop: 64 + bannerHeight }}>
+        {/* 좌측 메인 콘텐츠 */}
+        <div className="flex-1 flex flex-col overflow-hidden" style={{ zIndex: 0 }}>
+          <div className="flex-1 overflow-auto">
+            {children}
+          </div>
+        </div>
+        {/* 우측 챗봇 패널 */}
+        <div 
+          className={`h-full overflow-hidden transition-all duration-300 ease-in-out ${
+            isChatOpen ? 'w-full max-w-[420px]' : 'w-0'
+          }`}
+          style={{ zIndex: 10, position: 'relative' }}
+        >
+          {isChatOpen && (
+            <div className="h-full w-full bg-white border-l border-stone-200 shadow-2xl" style={{ minWidth: '320px' }}>
+              {chatPanel}
+            </div>
+          )}
+        </div>
+      </div>
+      {/* Footer - 2열 레이아웃 밖에 배치 (VeganTestPage 제외) */}
+      {shouldShowFooter && <Footer />}
     </div>
   );
 };
@@ -65,7 +85,11 @@ const AppContent: React.FC = () => {
   });
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showTopBanner, setShowTopBanner] = useState(true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const location = useLocation();
+  
+  // VeganTestPage는 자체 스크롤을 가지고 있어 Footer를 표시하지 않음
+  const shouldShowFooter = location.pathname !== '/';
 
   // localStorage에서 프로필 불러오기
   useEffect(() => {
@@ -133,6 +157,10 @@ const AppContent: React.FC = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showProfileMenu]);
 
+  const toggleChat = useCallback(() => {
+    setIsChatOpen(prev => !prev);
+  }, []);
+
   return (
     <Layout 
       userProfile={userProfile}
@@ -141,6 +169,9 @@ const AppContent: React.FC = () => {
       onResetProfile={resetProfile}
       showTopBanner={showTopBanner}
       onCloseBanner={() => setShowTopBanner(false)}
+      isChatOpen={isChatOpen}
+      chatPanel={<ChatPanel isOpen={isChatOpen} onToggle={toggleChat} />}
+      shouldShowFooter={shouldShowFooter}
     >
       <Routes>
         {/* 메인 페이지 = 비건 테스트 */}
@@ -159,7 +190,7 @@ const AppContent: React.FC = () => {
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
         <Route path="/mypage" element={<ComingSoonPage title="마이페이지" />} />
       </Routes>
-      <ChatWidget />
+      <ChatTrigger isOpen={isChatOpen} onToggle={toggleChat} />
     </Layout>
   );
 };

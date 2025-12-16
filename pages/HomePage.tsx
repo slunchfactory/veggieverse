@@ -139,7 +139,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             onClick={dismissToast}
           />
           {/* 모달 팝업 */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="test-modal-title"
+          >
             <div 
               className="relative bg-[#292624] p-8 pointer-events-auto animate-fadeIn"
               style={{ 
@@ -154,15 +159,16 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 onClick={dismissToast}
                 className="absolute top-4 right-4 p-1 transition-opacity hover:opacity-80"
                 style={{ backgroundColor: 'transparent', color: '#ffffff' }}
+                aria-label="모달 닫기"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
               
               {/* 중앙 텍스트 - 세로 정렬 */}
               <div className="flex flex-col items-center text-center gap-3">
-                <span className="text-[18px] font-semibold text-white">
-                  🥗 나의 비건 유형은?
-                </span>
+                <h2 id="test-modal-title" className="text-[18px] font-semibold text-white">
+                  <span aria-hidden="true">🥗</span> 나의 비건 유형은?
+                </h2>
                 <span className="text-[14px] text-stone-400 leading-relaxed">
                   좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
                 </span>
@@ -295,6 +301,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                             src={imageUrl}
                             alt={product.name}
                             className="w-full h-full object-cover"
+                            loading="lazy"
+                            decoding="async"
                             onError={(e) => {
                               (e.target as HTMLImageElement).style.display = 'none';
                             }}

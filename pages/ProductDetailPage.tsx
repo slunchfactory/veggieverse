@@ -180,6 +180,17 @@ const PRODUCTS: Product[] = [
     category: '밀키트',
     images: [],
   },
+  {
+    id: 15,
+    name: '슬런치 위클리',
+    price: 35000,
+    isBest: true,
+    description: '매주 새로운 비건 메뉴를 만나보는 정기 구독 서비스',
+    detailDescription: '슬런치 위클리는 매주 새로운 비건 메뉴를 집으로 배송해드리는 정기 구독 서비스입니다. 계절에 맞는 신선한 재료와 특별한 레시피로 구성된 메뉴를 만나보세요. 매주 다른 맛의 즐거움을 경험하실 수 있습니다.',
+    spectrum: '비건',
+    category: '슬런치 위클리',
+    images: [],
+  },
 ];
 
 export const ProductDetailPage: React.FC = () => {
@@ -190,6 +201,7 @@ export const ProductDetailPage: React.FC = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeSection, setActiveSection] = useState<'review' | 'detail' | 'return' | 'qna'>('review');
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [isTabSticky, setIsTabSticky] = useState(false);
   // 리뷰 데이터 (나중에 API나 상태 관리로 연동)
   const [reviews] = useState<any[]>([]);
   // 상품문의 데이터 (나중에 API나 상태 관리로 연동)
@@ -199,6 +211,7 @@ export const ProductDetailPage: React.FC = () => {
   const returnRef = useRef<HTMLDivElement>(null);
   const qnaRef = useRef<HTMLDivElement>(null);
   const tabMenuContainerRef = useRef<HTMLDivElement>(null);
+  const tabMenuTriggerRef = useRef<HTMLDivElement>(null);
 
   const product = PRODUCTS.find(p => p.id === Number(productId));
   const images = product ? getProductThumbnailImages(product.id) : [];
@@ -224,6 +237,18 @@ export const ProductDetailPage: React.FC = () => {
     alert(`${product.name} ${quantity}개 구매를 진행합니다.`);
   };
 
+  // 스크롤 컨테이너 찾기 헬퍼 함수
+  const findScrollContainer = (): HTMLElement | null => {
+    const main = document.querySelector('main');
+    if (main) return main as HTMLElement;
+    
+    // Layout의 overflow-auto div 찾기
+    const scrollContainer = document.querySelector('.flex-1.overflow-auto');
+    if (scrollContainer) return scrollContainer as HTMLElement;
+    
+    return null;
+  };
+
   const scrollToSection = (section: 'review' | 'detail' | 'return' | 'qna') => {
     const refs = {
       review: reviewRef,
@@ -235,31 +260,45 @@ export const ProductDetailPage: React.FC = () => {
     const element = refs[section].current;
     
     if (!element) {
-      console.error(`Element not found for section: ${section}`);
+      if (import.meta.env.DEV) {
+        console.error(`Element not found for section: ${section}`);
+      }
       return;
     }
     
-    const mainContainer = document.querySelector('main') as HTMLElement;
-    if (!mainContainer) return;
+    const scrollContainer = findScrollContainer();
+    if (!scrollContainer) {
+      // window 스크롤 사용
+      const elementTop = element.getBoundingClientRect().top + window.scrollY;
+      const tabMenuHeight = 56;
+      const offset = 64 + tabMenuHeight; // 헤더 + 탭바
+      window.scrollTo({
+        top: elementTop - offset,
+        behavior: 'smooth'
+      });
+      return;
+    }
 
-    // main 컨테이너 기준으로 스크롤
-    const mainPaddingTop = parseInt(getComputedStyle(mainContainer).paddingTop) || 0;
+    // 스크롤 컨테이너 기준으로 스크롤
+    const containerPaddingTop = parseInt(getComputedStyle(scrollContainer).paddingTop) || 0;
     const tabMenuHeight = 56; // 탭바 높이 고정값
-    const elementTop = element.offsetTop;
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    const elementTop = elementRect.top - containerRect.top + scrollContainer.scrollTop;
     
     // 고정된 탭바 높이와 헤더 높이를 고려한 오프셋
-    const offset = mainPaddingTop + tabMenuHeight;
+    const offset = containerPaddingTop + tabMenuHeight;
     
-    mainContainer.scrollTo({
+    scrollContainer.scrollTo({
       top: elementTop - offset,
       behavior: 'smooth'
     });
   };
 
   const scrollToTop = () => {
-    const mainContainer = document.querySelector('main');
-    if (mainContainer) {
-      mainContainer.scrollTo({
+    const scrollContainer = findScrollContainer();
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
         top: 0,
         behavior: 'smooth'
       });
@@ -273,17 +312,17 @@ export const ProductDetailPage: React.FC = () => {
 
   // 스크롤 감지로 스크롤 투 탑 버튼 표시/숨김
   useEffect(() => {
-    const mainContainer = document.querySelector('main');
+    const scrollContainer = findScrollContainer();
     const handleScroll = () => {
-      if (mainContainer) {
-        setShowScrollToTop(mainContainer.scrollTop > 200);
+      if (scrollContainer) {
+        setShowScrollToTop(scrollContainer.scrollTop > 200);
       } else {
         setShowScrollToTop(window.scrollY > 200);
       }
     };
 
-    if (mainContainer) {
-      mainContainer.addEventListener('scroll', handleScroll);
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
       handleScroll(); // 초기 상태 확인
     } else {
       window.addEventListener('scroll', handleScroll);
@@ -291,8 +330,8 @@ export const ProductDetailPage: React.FC = () => {
     }
 
     return () => {
-      if (mainContainer) {
-        mainContainer.removeEventListener('scroll', handleScroll);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
       } else {
         window.removeEventListener('scroll', handleScroll);
       }
@@ -302,9 +341,9 @@ export const ProductDetailPage: React.FC = () => {
   // 페이지 로드 시 스크롤을 최상단으로 이동
   useEffect(() => {
     const scrollToTop = () => {
-      const mainContainer = document.querySelector('main');
-      if (mainContainer) {
-        mainContainer.scrollTop = 0;
+      const scrollContainer = findScrollContainer();
+      if (scrollContainer) {
+        scrollContainer.scrollTop = 0;
       }
       window.scrollTo(0, 0);
     };
@@ -318,15 +357,36 @@ export const ProductDetailPage: React.FC = () => {
     });
   }, [productId]);
 
-  // 스크롤 감지로 활성 섹션 업데이트
+  // 스크롤 감지로 활성 섹션 업데이트 및 탭 바 고정
   useEffect(() => {
-    const mainContainer = document.querySelector('main') as HTMLElement;
-    if (!mainContainer) return;
+    const scrollContainer = findScrollContainer();
+    if (!tabMenuContainerRef.current || !tabMenuTriggerRef.current) return;
 
     const handleScroll = () => {
-      const mainPaddingTop = parseInt(getComputedStyle(mainContainer).paddingTop) || 0;
+      if (!scrollContainer) {
+        // window 스크롤 사용
+        const triggerElement = tabMenuTriggerRef.current;
+        if (triggerElement) {
+          const triggerTop = triggerElement.getBoundingClientRect().top + window.scrollY;
+          const shouldBeSticky = window.scrollY >= triggerTop - 64; // 헤더 높이(64px) 고려
+          setIsTabSticky(shouldBeSticky);
+        }
+        return;
+      }
+
+      const containerPaddingTop = parseInt(getComputedStyle(scrollContainer).paddingTop) || 0;
       const tabMenuHeight = 56; // 탭바 높이 고정값
-      const scrollOffset = mainContainer.scrollTop + mainPaddingTop + tabMenuHeight + 50; // 50px 여유
+      const scrollOffset = scrollContainer.scrollTop + containerPaddingTop + tabMenuHeight + 50; // 50px 여유
+
+      // 탭 바 고정 여부 확인
+      const triggerElement = tabMenuTriggerRef.current;
+      if (triggerElement) {
+        const containerRect = scrollContainer.getBoundingClientRect();
+        const triggerRect = triggerElement.getBoundingClientRect();
+        const triggerTop = triggerRect.top - containerRect.top + scrollContainer.scrollTop;
+        const shouldBeSticky = scrollContainer.scrollTop >= triggerTop - 64; // 헤더 높이(64px) 고려
+        setIsTabSticky(shouldBeSticky);
+      }
 
       // 각 섹션의 위치 확인
       const sections = [
@@ -349,16 +409,24 @@ export const ProductDetailPage: React.FC = () => {
       setActiveSection(activeSection);
     };
 
-    mainContainer.addEventListener('scroll', handleScroll, { passive: true });
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+    } else {
+      window.addEventListener('scroll', handleScroll, { passive: true });
+    }
     handleScroll(); // 초기 상태 확인
 
     return () => {
-      mainContainer.removeEventListener('scroll', handleScroll);
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      } else {
+        window.removeEventListener('scroll', handleScroll);
+      }
     };
   }, [product]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
       {/* 스크롤 투 탑 버튼 */}
       {showScrollToTop && (
         <button
@@ -396,10 +464,12 @@ export const ProductDetailPage: React.FC = () => {
                     <img 
                       key={idx}
                       src={img} 
-                      alt={product.name}
+                      alt={`${product.name} - 이미지 ${idx + 1}`}
                       className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                         idx === selectedImageIndex ? 'opacity-100' : 'opacity-0'
                       }`}
+                      loading={idx === 0 ? 'eager' : 'lazy'}
+                      decoding="async"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -432,7 +502,7 @@ export const ProductDetailPage: React.FC = () => {
                           ? 'bg-white w-4' 
                           : 'bg-white/50 hover:bg-white/75'
                       }`}
-                      aria-label={`이미지 ${idx + 1}`}
+                      aria-label={`이미지 ${idx + 1} 선택`}
                     />
                   ))}
                 </div>
@@ -452,7 +522,9 @@ export const ProductDetailPage: React.FC = () => {
                   >
                     <img 
                       src={img} 
-                      alt="" 
+                      alt={`${product.name} 썸네일 ${idx + 1}`}
+                      loading={idx < 3 ? 'eager' : 'lazy'}
+                      decoding="async"
                       className="w-full h-full object-cover"
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = 'none';
@@ -624,10 +696,24 @@ export const ProductDetailPage: React.FC = () => {
       </div>
 
       {/* 상품 상세 섹션 */}
-      {/* 탭 영역 */}
-      <div ref={tabMenuContainerRef} style={{ position: 'relative' }}>
+      {/* 탭 바 트리거 포인트 (보이지 않는 마커) */}
+      <div ref={tabMenuTriggerRef} className="h-0" />
+      
+      {/* 탭 영역 - JavaScript로 고정 제어 */}
+      <div 
+        ref={tabMenuContainerRef} 
+        className={`bg-white shadow-sm transition-all ${
+          isTabSticky 
+            ? 'fixed top-16 left-0 right-0 z-[9998]' 
+            : 'relative z-10'
+        }`}
+        style={isTabSticky ? {
+          width: '100%',
+          maxWidth: '100%'
+        } : {}}
+      >
         <div className="tab-menu bg-white">
-          <div className="page-container">
+          <div className={`${isTabSticky ? 'page-container' : 'page-container'}`}>
             {/* 탭 버튼 */}
             <div className="flex border-b border-stone-200">
               <button

@@ -229,6 +229,8 @@ const RecipeCarousel: React.FC<{
                 src={getRecipeThumbnailImage(recipe.id)}
                 alt={recipe.title}
                 className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                loading="lazy"
+                decoding="async"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.src = getFallbackRecipeImage(recipe.id);
@@ -418,9 +420,11 @@ const CircularCarouselHero: React.FC = () => {
                   >
                     <img
                       src={getRecipeThumbnailImage(recipe.id)}
-                      alt=""
+                      alt={recipe.title}
                       className="w-full h-full object-cover"
                       draggable={false}
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = getFallbackRecipeImage(recipe.id);

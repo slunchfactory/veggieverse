@@ -156,8 +156,10 @@ const RecipeDetailPage: React.FC = () => {
       <div className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-100 to-orange-100">
         <img
           src={getRecipeHeroImage(Number(id) || 1)}
-          alt={sampleRecipe.title}
+          alt={`${sampleRecipe.title} - 레시피 히어로 이미지`}
           className="absolute inset-0 w-full h-full object-cover"
+          loading="eager"
+          decoding="async"
           onError={(e) => {
             const target = e.target as HTMLImageElement;
             target.src = getFallbackRecipeImage(Number(id) || 1);
@@ -199,7 +201,7 @@ const RecipeDetailPage: React.FC = () => {
               {/* 작성자 정보 */}
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 rounded-none bg-green-100 overflow-hidden">
-                  <img src={sampleRecipe.author.avatar} alt="" className="w-full h-full object-contain p-1" />
+                  <img src={sampleRecipe.author.avatar} alt={`${sampleRecipe.author.name} 프로필`} className="w-full h-full object-contain p-1" loading="lazy" decoding="async" />
                 </div>
                 <div>
                   <p className="font-medium text-stone-900">{sampleRecipe.author.name}</p>

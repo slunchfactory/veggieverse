@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { ChevronUp, Calendar, FileText, Sparkles, Share2, Download, UserCircle, Check } from 'lucide-react';
+import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
+import { ChevronUp, Calendar, FileText, Sparkles, Share2, Download, UserCircle, Check, X, Link2 } from 'lucide-react';
 import { VegetableItem } from '../types';
 
 interface SurveyPageProps {
@@ -82,45 +82,78 @@ const QUESTIONS = [
   },
   {
     id: 2,
-    question: '선호하는 요리 스타일은?',
+    question: '끌리는 요리 무드는?',
     options: [
-      { label: '전통적인 요리', description: '검증된 전통 레시피를 선호합니다', value: 'traditional' },
-      { label: '퓨전 요리', description: '다양한 문화의 요리를 조합하는 것을 좋아합니다', value: 'fusion' },
-      { label: '간단한 요리', description: '최소한의 재료로 만드는 요리를 선호합니다', value: 'simple' },
-      { label: '고급 요리', description: '정교하고 세련된 요리를 좋아합니다', value: 'gourmet' },
+      { label: '클래식', description: '검증된 전통의 맛', value: 'traditional' },
+      { label: '퓨전', description: '경계 없는 조합', value: 'fusion' },
+      { label: '미니멀', description: '최소한의 재료', value: 'simple' },
+      { label: '파인', description: '정교하고 세련된', value: 'gourmet' },
     ]
   },
   {
     id: 3,
-    question: '요리할 때 가장 중요하게 생각하는 것은?',
+    question: '요리에서 가장 중요한 건?',
     options: [
-      { label: '영양 균형', description: '건강한 영양소 조합이 최우선입니다', value: 'nutrition' },
-      { label: '맛', description: '맛있는 음식이 가장 중요합니다', value: 'taste' },
-      { label: '간편함', description: '빠르고 쉽게 만들 수 있는 것이 좋습니다', value: 'convenience' },
-      { label: '새로움', description: '새로운 재료나 조리법을 시도하는 것을 좋아합니다', value: 'novelty' },
+      { label: '밸런스', description: '영양의 균형', value: 'nutrition' },
+      { label: '테이스트', description: '맛이 전부', value: 'taste' },
+      { label: '이지', description: '빠르고 간편하게', value: 'convenience' },
+      { label: '디스커버리', description: '새로운 시도', value: 'novelty' },
     ]
   },
   {
     id: 4,
-    question: '식사 시간에 가장 중요하게 생각하는 것은?',
+    question: '식사 시간, 당신에게 어떤 의미?',
     options: [
-      { label: '가족과 함께', description: '가족이 함께하는 시간이 중요합니다', value: 'family' },
-      { label: '건강한 식단', description: '영양적으로 균형잡힌 식사가 중요합니다', value: 'health' },
-      { label: '빠른 식사', description: '시간을 절약할 수 있는 것이 중요합니다', value: 'quick' },
-      { label: '새로운 경험', description: '새로운 맛과 경험을 하는 것이 중요합니다', value: 'experience' },
+      { label: '함께', description: '소중한 사람과의 시간', value: 'family' },
+      { label: '웰니스', description: '건강한 한 끼', value: 'health' },
+      { label: '효율', description: '시간 절약이 우선', value: 'quick' },
+      { label: '탐험', description: '새로운 맛의 발견', value: 'experience' },
     ]
   },
   {
     id: 5,
-    question: '비건 라이프를 선택한 주된 이유는?',
+    question: '채식을 선택한 이유는?', // 채식 선택자용
+    isConditional: true, // 조건부 질문
+    condition: (answers: Record<number, string | string[]>) => {
+      const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
+      const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
+      return primaryDiet !== 'none'; // 비건~폴로 선택자에게만 표시
+    },
     options: [
-      { label: '건강', description: '건강한 삶을 위해서입니다', value: 'health' },
-      { label: '환경 보호', description: '환경을 보호하기 위해서입니다', value: 'environment' },
-      { label: '동물 보호', description: '동물을 보호하기 위해서입니다', value: 'animal' },
-      { label: '새로운 경험', description: '새로운 경험을 해보고 싶어서입니다', value: 'curiosity' },
+      { label: '건강', description: '나를 위해', value: 'health' },
+      { label: '지구', description: '환경을 위해', value: 'environment' },
+      { label: '생명', description: '동물을 위해', value: 'animal' },
+      { label: '도전', description: '새로운 시도', value: 'curiosity' },
+    ]
+  },
+  {
+    id: 6,
+    question: '평소 식사 패턴은?', // 논비건용
+    isConditional: true,
+    condition: (answers: Record<number, string | string[]>) => {
+      const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
+      const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
+      return primaryDiet === 'none'; // 열린 식단 선택자에게만 표시
+    },
+    options: [
+      { label: '규칙적', description: '정해진 시간에 먹는 편', value: 'regular' },
+      { label: '자유로움', description: '배고플 때 먹는 편', value: 'flexible' },
+      { label: '계획형', description: '미리 식단을 짜두는 편', value: 'planned' },
+      { label: '즉흥형', description: '그때그때 정하는 편', value: 'spontaneous' },
     ]
   },
 ];
+
+// 조건에 맞는 질문만 필터링하는 함수
+const getAvailableQuestions = (answers: Record<number, string | string[]>): typeof QUESTIONS => {
+  return QUESTIONS.filter((q: any) => {
+    if (!q.isConditional) return true;
+    if (q.condition) {
+      return q.condition(answers);
+    }
+    return true;
+  }) as typeof QUESTIONS;
+};
 
 // 16가지 비건 유형
 const VEGAN_TYPES = [
@@ -187,12 +220,12 @@ const generatePersonalityDescription = (
   answers: Record<number, string | string[]>, 
   veganType: { mbti: string; name: string; description: string }
 ): PersonalityDescription => {
-  const dietSelections = Array.isArray(answers[1]) ? answers[1] : [answers[1]];
+  const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
   const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
-  const cookingStyle = answers[2] as string;
-  const priority = answers[3] as string;
-  const mealTime = answers[4] as string;
-  const motivation = answers[5] as string;
+  const cookingStyle = (answers[2] as string) || '';
+  const priority = (answers[3] as string) || '';
+  const mealTime = (answers[4] as string) || '';
+  const motivation = (answers[5] as string) || '';
   
   // 유형별 핵심 특성 문장 (랜덤)
   const typeIntros: Record<string, string[]> = {
@@ -493,13 +526,17 @@ const generatePersonalityDescription = (
   };
 };
 
-export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSaveProfile, showScrollToTop = false, onScrollToTop }) => {
+export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSaveProfile, showScrollToTop = false, onScrollToTop }) => {
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showResult, setShowResult] = useState(false);
   const [dietConflictWarning, setDietConflictWarning] = useState<string | null>(null);
   const [profileSaved, setProfileSaved] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareMessage, setShareMessage] = useState('');
+  const [shareCardPreview, setShareCardPreview] = useState<string | null>(null);
+  const [copyToast, setCopyToast] = useState(false);
   const resultCardRef = useRef<HTMLDivElement>(null);
   
   // AI 몬스터 이미지 관련 상태
@@ -577,11 +614,24 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
     return PRIMARY_DIET_VALUES.includes(selections as string);
   };
 
+  // 조건에 맞는 질문만 필터링
+  const availableQuestions = useMemo(() => {
+    return getAvailableQuestions(answers);
+  }, [answers]);
+
   const handleNext = () => {
-    if (currentStep < QUESTIONS.length - 1) {
+    if (currentStep < availableQuestions.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
-      // 마지막 질문 완료 시 결과 화면으로 (이미지는 시작하기에서 이미 생성 중)
+      // 마지막 질문 완료 시 결과 화면으로
+      // 이미지 생성이 아직 진행 중이면 그대로 두고, 완료되지 않았으면 완료 처리
+      if (isGeneratingImage) {
+        // 이미 생성 중이면 그대로 진행
+      } else {
+        // 아직 시작하지 않았거나 완료되었으면 완료 상태로 설정
+        setIsGeneratingImage(false);
+      }
+      // 결과 화면 표시
       setShowResult(true);
     }
   };
@@ -594,11 +644,12 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
 
   // 몬스터 생성 함수 (나중에 API 연동)
   const generateMonster = async () => {
-    setIsGeneratingImage(true);
-    setMonsterName(generateMonsterName(selectedItems));
-    setMonsterDescription(generateMonsterDescription(selectedItems));
+    try {
+      setIsGeneratingImage(true);
+      setMonsterName(generateMonsterName(selectedItems));
+      setMonsterDescription(generateMonsterDescription(selectedItems));
     
-    // TODO: 여기에 로컬 프롬프터 API 연동
+    // NOTE: 로컬 프롬프터 API 연동 예정
     // 현재는 시뮬레이션 (2초 후 완료)
     // 
     // 연동 시 예상 코드:
@@ -611,11 +662,18 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
     // const data = await response.json();
     // setMonsterImageUrl(data.imageUrl);
     
-    setTimeout(() => {
-      // 플레이스홀더: 실제 연동 시 이 부분을 API 응답으로 대체
-      setMonsterImageUrl(null); // null이면 플레이스홀더 표시
+      setTimeout(() => {
+        // 플레이스홀더: 실제 연동 시 이 부분을 API 응답으로 대체
+        setMonsterImageUrl(null); // null이면 플레이스홀더 표시
+        setIsGeneratingImage(false);
+      }, 2000);
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error generating monster:', error);
+      }
       setIsGeneratingImage(false);
-    }, 2000);
+      setMonsterImageUrl(null);
+    }
   };
 
   // 이미지 재생성 함수
@@ -623,67 +681,283 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
     generateMonster();
   };
 
-  // 결과 계산 (간단한 로직)
-  const calculateResult = () => {
-    // 답변 기반으로 MBTI 유사 계산
-    let e = 0, i = 0, s = 0, n = 0, t = 0, f = 0, j = 0, p = 0;
+  // 네이티브 공유 함수 (모바일용)
+  const handleNativeShare = async () => {
+    if (!result) return;
     
-    // 식단 선호도 (배열 형태 지원)
-    const dietSelections = Array.isArray(answers[1]) ? answers[1] : [answers[1]];
-    const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v));
-    
-    if (primaryDiet === 'vegan' || primaryDiet === 'lacto' || primaryDiet === 'ovo' || primaryDiet === 'lacto-ovo') { i++; j++; }
-    else if (primaryDiet === 'flexitarian' || primaryDiet === 'pescatarian' || primaryDiet === 'pollo') { e++; p++; }
-    else { e++; p++; }
-    
-    // 추가 옵션 반영
-    if (dietSelections.includes('halal') || dietSelections.includes('kosher')) { s++; j++; }
-    if (dietSelections.includes('gluten-free') || dietSelections.includes('lactose-free')) { t++; i++; }
-    
-    // 요리 스타일
-    if (answers[2] === 'traditional' || answers[2] === 'simple') { s++; j++; }
-    else { n++; p++; }
-    
-    // 요리 시 중요한 것
-    if (answers[3] === 'nutrition' || answers[3] === 'convenience') { t++; }
-    else { f++; }
-    
-    // 식사 시간
-    if (answers[4] === 'family' || answers[4] === 'experience') { f++; e++; }
-    else { t++; i++; }
-    
-    // 비건 이유
-    if (answers[5] === 'health' || answers[5] === 'environment') { t++; j++; }
-    else { f++; p++; }
-    
-    const mbti = `${e >= i ? 'E' : 'I'}${n >= s ? 'N' : 'S'}${f >= t ? 'F' : 'T'}${p >= j ? 'P' : 'J'}`;
-    
-    const result = VEGAN_TYPES.find(type => type.mbti === mbti) || VEGAN_TYPES[0];
-    
-    return result;
+    try {
+      const cardImageUrl = await generateShareCard(result);
+      const response = await fetch(cardImageUrl);
+      const blob = await response.blob();
+      const file = new File([blob], `테이스트스피릿-${result.name}.png`, { type: 'image/png' });
+      
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: `나의 테이스트 스피릿: ${result.name}`,
+          text: `${result.name} - ${result.description}`,
+          files: [file],
+        });
+      } else {
+        await navigator.share({
+          title: `나의 테이스트 스피릿: ${result.name}`,
+          text: `${result.name} - ${result.description}`,
+          url: window.location.href,
+        });
+      }
+      
+      URL.revokeObjectURL(cardImageUrl);
+      } catch (error) {
+        if (import.meta.env.DEV) {
+          console.error('공유 실패:', error);
+        }
+      // 실패 시 모달 표시
+      setShowShareModal(true);
+    }
   };
+
+  // 공유용 카드 이미지 생성 함수
+  const generateShareCard = useCallback(async (spiritResult: { name: string; description: string; mbti: string; emoji: string; color: string } | null): Promise<string> => {
+    if (!spiritResult) {
+      throw new Error('Result not available');
+    }
+    
+    const currentMonsterImageUrl = monsterImageUrl; // 클로저로 캡처
+    
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Canvas context not available'));
+        return;
+      }
+
+      // 카드 크기 (SNS 공유 최적화: 1200x630)
+      const width = 1200;
+      const height = 630;
+      canvas.width = width;
+      canvas.height = height;
+
+      // 배경 그라데이션
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, '#f0fdf4');
+      gradient.addColorStop(0.5, '#fefce8');
+      gradient.addColorStop(1, '#fef3c7');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // 스피릿 이미지 영역 (왼쪽)
+      const imageSize = 400;
+      const imageX = 100;
+      const imageY = (height - imageSize) / 2;
+
+      // 이미지 로드 및 그리기
+      const loadImage = (url: string): Promise<HTMLImageElement> => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = url;
+        });
+      };
+
+      const drawCard = async () => {
+        try {
+          // 스피릿 이미지 (또는 플레이스홀더)
+          if (currentMonsterImageUrl) {
+            try {
+              const img = await loadImage(currentMonsterImageUrl);
+              ctx.drawImage(img, imageX, imageY, imageSize, imageSize);
+            } catch (e) {
+              // 이미지 로드 실패 시 플레이스홀더
+              ctx.fillStyle = '#d1fae5';
+              ctx.fillRect(imageX, imageY, imageSize, imageSize);
+              ctx.fillStyle = '#10b981';
+              ctx.font = 'bold 80px Arial';
+              ctx.textAlign = 'center';
+              ctx.fillText('🌱', imageX + imageSize / 2, imageY + imageSize / 2 + 30);
+            }
+          } else {
+            // 플레이스홀더
+            ctx.fillStyle = '#d1fae5';
+            ctx.fillRect(imageX, imageY, imageSize, imageSize);
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 80px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('🌱', imageX + imageSize / 2, imageY + imageSize / 2 + 30);
+          }
+
+          // 텍스트 영역 (오른쪽)
+          const textX = imageX + imageSize + 80;
+          const textY = height / 2;
+          const maxTextWidth = width - textX - 100;
+
+          // 스피릿 이름
+          ctx.fillStyle = '#1c1917';
+          ctx.font = 'bold 64px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText(`✦ ${spiritResult.name} ✦`, textX, textY - 100);
+
+          // 설명
+          ctx.fillStyle = '#78716c';
+          ctx.font = '32px Arial';
+          ctx.fillText(spiritResult.description, textX, textY - 20);
+
+          // 해시태그
+          ctx.fillStyle = '#57534e';
+          ctx.font = '24px Arial';
+          ctx.fillText('#슬런치 #테이스트스피릿', textX, textY + 60);
+
+          // Canvas를 이미지로 변환
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              resolve(url);
+            } else {
+              reject(new Error('Failed to create blob'));
+            }
+          }, 'image/png');
+        } catch (error) {
+          reject(error);
+        }
+      };
+
+      drawCard();
+    });
+  }, [monsterImageUrl, selectedItems]);
+
+  // 결과 계산 (간단한 로직)
+  const calculateResult = useCallback(() => {
+    try {
+      // 답변이 없거나 비어있으면 기본값 반환
+      if (!answers || typeof answers !== 'object' || Object.keys(answers).length === 0) {
+        return VEGAN_TYPES[0];
+      }
+      
+      // 답변 기반으로 MBTI 유사 계산
+      let e = 0, i = 0, s = 0, n = 0, t = 0, f = 0, j = 0, p = 0;
+      
+      // 식단 선호도 (배열 형태 지원)
+      const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
+      const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
+      
+      if (primaryDiet === 'vegan' || primaryDiet === 'lacto' || primaryDiet === 'ovo' || primaryDiet === 'lacto-ovo') { i++; j++; }
+      else if (primaryDiet === 'flexitarian' || primaryDiet === 'pescatarian' || primaryDiet === 'pollo') { e++; p++; }
+      else { e++; p++; }
+      
+      // 추가 옵션 반영
+      if (dietSelections.includes('halal') || dietSelections.includes('kosher')) { s++; j++; }
+      if (dietSelections.includes('gluten-free') || dietSelections.includes('lactose-free')) { t++; i++; }
+      
+      // 요리 스타일
+      if (answers[2] === 'traditional' || answers[2] === 'simple') { s++; j++; }
+      else if (answers[2]) { n++; p++; }
+      
+      // 요리 시 중요한 것
+      if (answers[3] === 'nutrition' || answers[3] === 'convenience') { t++; }
+      else if (answers[3]) { f++; }
+      
+      // 식사 시간
+      if (answers[4] === 'family' || answers[4] === 'experience') { f++; e++; }
+      else if (answers[4]) { t++; i++; }
+      
+      // 비건 이유
+      if (answers[5] === 'health' || answers[5] === 'environment') { t++; j++; }
+      else if (answers[5]) { f++; p++; }
+      
+      const mbti = `${e >= i ? 'E' : 'I'}${n >= s ? 'N' : 'S'}${f >= t ? 'F' : 'T'}${p >= j ? 'P' : 'J'}`;
+      
+      const result = VEGAN_TYPES.find(type => type.mbti === mbti) || VEGAN_TYPES[0];
+      
+      return result;
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error calculating result:', error);
+      }
+      return VEGAN_TYPES[0]; // 기본값 반환
+    }
+  }, [answers]);
+
+  // 결과 계산 (항상 실행, showResult가 false면 null 반환)
+  // ⚠️ 중요: 모든 hooks는 조건부 return 이전에 호출되어야 함
+  const result = useMemo(() => {
+    if (!showResult) return null;
+    try {
+      return calculateResult();
+    } catch (error) {
+      console.error('Error calculating result:', error);
+      return VEGAN_TYPES[0];
+    }
+  }, [showResult, calculateResult]);
+  
+  const personalityDescription = useMemo(() => {
+    if (!showResult || !result) return null;
+    try {
+      return generatePersonalityDescription(answers, result);
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        console.error('Error generating personality description:', error);
+      }
+      return { text: '결과를 생성하는 중 오류가 발생했습니다.' };
+    }
+  }, [showResult, result, answers]);
+
+  // 공유 모달이 열릴 때 기본 멘트와 카드 이미지 생성
+  useEffect(() => {
+    if (showShareModal && result) {
+      // 기본 공유 멘트 생성
+      const defaultMessage = `나의 테이스트 스피릿은 ✦${result.name}✦
+
+${result.description}
+
+너도 테스트해봐 👉 ${window.location.href}
+
+#테이스트스피릿 #슬런치`;
+      setShareMessage(defaultMessage);
+      
+      // 카드 이미지 미리보기 생성
+      generateShareCard(result)
+        .then((cardImageUrl) => {
+          setShareCardPreview(cardImageUrl);
+        })
+        .catch((error) => {
+          if (import.meta.env.DEV) {
+            console.error('카드 이미지 생성 실패:', error);
+          }
+        });
+    }
+    
+    // 모달이 닫힐 때 메모리 정리
+    return () => {
+      if (!showShareModal && shareCardPreview) {
+        URL.revokeObjectURL(shareCardPreview);
+        setShareCardPreview(null);
+      }
+    };
+  }, [showShareModal, result]);
 
   // 시작 전 화면
   if (!started) {
     return (
-      <div className="min-h-screen bg-transparent">
+      <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
         <div className="flex items-center justify-center min-h-screen p-8">
           <div className="bg-white rounded-none p-12 max-w-lg w-full shadow-sm text-center">
             {/* 상단 네비게이션 */}
             <button
               onClick={scrollToTop}
               className="text-sm text-stone-400 hover:text-stone-600 mb-6 flex items-center gap-1 mx-auto"
+              aria-label="다시 선택하기"
             >
-              <ChevronUp className="w-4 h-4" />
+              <ChevronUp className="w-4 h-4" aria-hidden="true" />
               다시 선택하기
             </button>
             
             <div className="text-6xl mb-6">🥗</div>
             <h2 className="text-2xl font-bold text-stone-800 mb-4">
-              마이 푸드 DNA
+              마이 테이스트 스피릿
             </h2>
             <p className="text-stone-500 mb-8">
-              5가지 질문으로 나만의 푸드 DNA를 발견해보세요
+              5가지 질문에 답하고 당신의 테이스트 스피릿을 깨워보세요.
             </p>
             
             {selectedItems.length > 0 && (
@@ -698,12 +972,19 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
             
             <button
               onClick={() => {
-                setStarted(true);
-                generateMonster(); // 시작하기 클릭 시 이미지 생성 시작
+                try {
+                  setStarted(true);
+                  generateMonster(); // 시작하기 클릭 시 이미지 생성 시작
+                } catch (error) {
+                  if (import.meta.env.DEV) {
+                    console.error('Error starting survey:', error);
+                  }
+                  setStarted(true); // 에러가 발생해도 시작은 진행
+                }
               }}
               className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
             >
-              시작하기
+              스피릿 깨우기
             </button>
           </div>
         </div>
@@ -713,16 +994,25 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
 
   // 결과 화면
   if (showResult) {
-    const result = calculateResult();
+    if (!result) {
+      // result가 없으면 기본값 사용
+      return (
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+          <div className="text-center">
+            <p className="text-stone-500 mb-4">결과를 계산하는 중...</p>
+          </div>
+        </div>
+      );
+    }
     
     return (
-      <div className="min-h-screen bg-transparent">
+      <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
         <div className="flex items-center justify-center min-h-screen p-8">
           <div className="bg-white rounded-none p-8 max-w-2xl w-full shadow-sm">
             
-            {/* 🎨 AI 생성 몬스터 영역 */}
+            {/* 🎨 AI 생성 스피릿 영역 */}
             <div className="mb-8">
-              {/* 몬스터 이미지 */}
+              {/* 스피릿 이미지 */}
               <div className="relative w-full aspect-square max-w-sm mx-auto mb-6 rounded-none overflow-hidden bg-gradient-to-br from-emerald-100 via-lime-50 to-yellow-100">
                 {isGeneratingImage ? (
                   // 로딩 상태
@@ -731,16 +1021,13 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                       <div className="w-20 h-20 border-4 border-emerald-200 rounded-none animate-spin border-t-emerald-500"></div>
                       <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-emerald-500 animate-pulse" />
                     </div>
-                    <p className="mt-4 text-emerald-600 font-medium">몬스터 생성 중...</p>
-                    <p className="text-sm text-stone-400 mt-1">
-                      {selectedItems.map(i => i.name).join(' + ')}
-                    </p>
+                    <p className="mt-4 text-emerald-600 font-medium">스피릿 소환 중...</p>
                   </div>
                 ) : monsterImageUrl ? (
                   // 실제 AI 생성 이미지
                   <img 
                     src={monsterImageUrl} 
-                    alt={monsterName}
+                    alt={result.name}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -759,10 +1046,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                       ))}
                     </div>
                     <p className="text-stone-500 text-sm text-center">
-                      AI 이미지 연동 대기 중
-                    </p>
-                    <p className="text-xs text-stone-400 mt-1">
-                      프롬프터 연동 시 자동 생성됩니다
+                      스피릿 소환 중...
                     </p>
                   </div>
                 )}
@@ -772,125 +1056,359 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                   <button
                     onClick={regenerateMonster}
                     className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-none text-sm font-medium text-stone-700 hover:bg-white transition-colors shadow-lg flex items-center gap-2"
+                    aria-label="다른 형상 보기"
                   >
-                    <Sparkles className="w-4 h-4" />
-                    다시 생성
+                    <Sparkles className="w-4 h-4" aria-hidden="true" />
+                    <span aria-hidden="true">✦</span> 다른 형상 보기
                   </button>
                 )}
               </div>
               
-              {/* 몬스터 이름 & 설명 */}
+              {/* 스피릿 정보 */}
               <div className="text-center">
-                <h2 className="text-2xl font-bold text-stone-800 mb-2">
-                  {monsterName || 'Your Veggie Monster'}
+                {/* 라벨 */}
+                <p className="text-xs text-stone-400 mb-2">당신의 테이스트 스피릿</p>
+                
+                {/* 스피릿 이름 - 가장 크게 */}
+                <h2 className="text-4xl font-bold text-stone-800 mb-2">
+                  ✦ {result.name} ✦
                 </h2>
+                
+                {/* 한 줄 설명 */}
                 <p className="text-stone-500 text-sm mb-4">
-                  {monsterDescription || '선택한 야채들로 만들어진 당신만의 몬스터'}
+                  {result.description}
                 </p>
                 
-                {/* 재료 태그 */}
-                <div className="flex justify-center gap-2 flex-wrap">
-                  {selectedItems.map(item => (
-                    <span 
-                      key={item.id}
-                      className="px-3 py-1 rounded-none text-xs font-medium"
-                      style={{ 
-                        backgroundColor: `${item.color || '#4CAF50'}20`,
-                        color: item.color || '#4CAF50'
-                      }}
-                    >
-                      {item.name}
-                    </span>
-                  ))}
+                {/* 키워드 태그 */}
+                <div className="flex justify-center gap-2 flex-wrap mb-4">
+                  {(() => {
+                    // MBTI 기반 키워드 생성
+                    const keywords: string[] = [];
+                    
+                    // T/F 기반
+                    if (result.mbti.includes('T')) {
+                      keywords.push('논리적');
+                    } else {
+                      keywords.push('감성적');
+                    }
+                    
+                    // J/P 기반
+                    if (result.mbti.includes('J')) {
+                      keywords.push('효율추구');
+                    } else {
+                      keywords.push('유연함');
+                    }
+                    
+                    // 공통 키워드
+                    keywords.push('자연주의');
+                    
+                    return keywords.map((keyword, idx) => (
+                      <span 
+                        key={idx}
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700"
+                      >
+                        #{keyword}
+                      </span>
+                    ));
+                  })()}
                 </div>
+                
+                {/* 짧은 설명 1-2줄만 */}
+                {personalityDescription && (
+                  <div className="mt-4">
+                    <p className="text-stone-600 text-sm leading-relaxed max-w-md mx-auto">
+                      {personalityDescription.text.split('\n\n')[0]}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             
-            {/* 구분선 */}
-            <div className="border-t border-stone-200 my-6"></div>
-            
-            {/* 비건 유형 결과 */}
-            <div className="text-center mb-6">
-              <h3 className="text-xl font-bold text-stone-800 mb-2">
-                {result.name}
-              </h3>
-              <p className="text-stone-500 text-sm">
-                {result.description}
-              </p>
-            </div>
-            
-            {/* 나의 특징 - 이솝 스타일 잔잔한 문장형 */}
-            {(() => {
-              const description = generatePersonalityDescription(answers, result);
-              return (
-                <div className="mb-6">
-                  <div className="bg-stone-50 rounded-none p-6">
-                    {description.text.split('\n\n').map((paragraph, index) => (
-                      <p 
-                        key={index} 
-                        className={`text-stone-700 text-[15px] leading-[1.8] ${
-                          index < description.text.split('\n\n').length - 1 ? 'mb-5' : ''
-                        }`}
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </div>
-              );
-            })()}
-            
-            {/* 프로필로 저장 버튼 */}
+            {/* Primary CTA - 공유 버튼 */}
             <button
               onClick={() => {
-                if (onSaveProfile && !profileSaved) {
-                  // 몬스터 이미지 또는 첫 번째 선택한 야채 이미지를 프로필로 저장
-                  const profileImage = monsterImageUrl || selectedItems[0]?.imageUrl || '';
-                  onSaveProfile(profileImage, result.name);
-                  setProfileSaved(true);
+                if (!result) {
+                  alert('결과를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+                  return;
                 }
+                setShowShareModal(true);
               }}
-              disabled={profileSaved}
-              className={`w-full py-4 mb-4 rounded-none font-semibold transition-all flex items-center justify-center gap-2 ${
-                profileSaved 
-                  ? 'bg-emerald-100 text-emerald-600 cursor-default'
-                  : 'text-white hover:opacity-90'
-              }`}
-              style={!profileSaved ? { backgroundColor: '#292624' } : { borderRadius: 0 }}
+              className="w-full py-5 mb-4 rounded-none font-bold text-lg transition-all flex items-center justify-center gap-2 text-white hover:opacity-90 shadow-lg"
+              style={{ backgroundColor: '#292624' }}
+              aria-label="내 스피릿 공유하기"
             >
-              {profileSaved ? (
-                <>
-                  <Check className="w-5 h-5" />
-                  프로필에 저장됨
-                </>
-              ) : (
-                <>
-                  <UserCircle className="w-5 h-5" />
-                  이 결과를 내 프로필로 저장
-                </>
-              )}
+              <Share2 className="w-6 h-6" aria-hidden="true" />
+              <span aria-hidden="true">🔮</span> 내 스피릿 공유하기
             </button>
             
-            {/* 액션 버튼들 */}
+            {/* 커스텀 공유 모달 */}
+            {showShareModal && result && (
+              <div 
+                className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+                onClick={() => {
+                  setShowShareModal(false);
+                  if (shareCardPreview) {
+                    URL.revokeObjectURL(shareCardPreview);
+                    setShareCardPreview(null);
+                  }
+                }}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="share-modal-title"
+              >
+                {/* 반투명 배경 오버레이 */}
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
+                
+                {/* 모달 컨텐츠 */}
+                <div 
+                  className="relative bg-white rounded-none shadow-2xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto"
+                  onClick={(e) => e.stopPropagation()}
+                  role="document"
+                >
+                  {/* 헤더 */}
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 id="share-modal-title" className="text-xl font-bold text-stone-800">
+                      공유하기
+                    </h3>
+                    <button
+                      onClick={() => {
+                        setShowShareModal(false);
+                        if (shareCardPreview) {
+                          URL.revokeObjectURL(shareCardPreview);
+                          setShareCardPreview(null);
+                        }
+                      }}
+                      className="p-2 hover:bg-stone-100 transition-colors"
+                      aria-label="공유 모달 닫기"
+                    >
+                      <X className="w-5 h-5 text-stone-400" aria-hidden="true" />
+                    </button>
+                  </div>
+                  
+                  {/* 카드 이미지 미리보기 */}
+                  {shareCardPreview && (
+                    <div className="mb-6 border-2 border-stone-200 rounded-none overflow-hidden">
+                      <img 
+                        src={shareCardPreview} 
+                        alt="공유 카드 미리보기"
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
+                  
+                  {/* 공유 멘트 입력창 */}
+                  <div className="mb-4">
+                    <label className="block text-sm font-medium text-stone-700 mb-2">
+                      공유 멘트
+                    </label>
+                    <textarea
+                      value={shareMessage}
+                      onChange={(e) => {
+                        const text = e.target.value;
+                        // 트위터 글자수 제한 (280자)
+                        if (text.length <= 280) {
+                          setShareMessage(text);
+                        }
+                      }}
+                      className="w-full p-3 border-2 border-stone-200 rounded-none resize-none focus:outline-none focus:border-stone-400 text-sm"
+                      rows={6}
+                      placeholder="공유할 멘트를 입력하세요"
+                    />
+                    <div className="flex items-center justify-between mt-2">
+                      <button
+                        onClick={() => {
+                          const defaultMessage = `나의 테이스트 스피릿은 ✦${result.name}✦
+
+${result.description}
+
+너도 테스트해봐 👉 ${window.location.href}
+
+#테이스트스피릿 #슬런치`;
+                          setShareMessage(defaultMessage);
+                        }}
+                        className="text-xs text-stone-500 hover:text-stone-700 underline"
+                      >
+                        기본 멘트로 되돌리기
+                      </button>
+                      <span className={`text-xs ${shareMessage.length > 280 ? 'text-red-500' : 'text-stone-400'}`}>
+                        {shareMessage.length}/280
+                      </span>
+                    </div>
+                  </div>
+                  
+                  {/* 공유 채널 버튼 - 한 줄로 아이콘만 */}
+                  <div className="flex items-center justify-center gap-6 mb-4">
+                    {/* 카카오톡 */}
+                    <button
+                      onClick={async () => {
+                        try {
+                          // 카카오톡 공유 API 사용 (카드 이미지 + 멘트 + 링크)
+                          // 실제 카카오톡 API 연동이 필요하지만, 현재는 링크 공유로 대체
+                          const shareUrl = `https://story.kakao.com/share?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(shareMessage)}`;
+                          window.open(shareUrl, '_blank', 'width=600,height=600');
+                          setShowShareModal(false);
+                        } catch (error) {
+                          if (import.meta.env.DEV) {
+                            console.error('카카오톡 공유 실패:', error);
+                          }
+                        }
+                      }}
+                      className="w-14 h-14 flex items-center justify-center bg-yellow-100 hover:bg-yellow-200 transition-colors rounded-none"
+                      title="카카오톡"
+                      aria-label="카카오톡으로 공유하기"
+                    >
+                      <span className="text-3xl" aria-hidden="true">💬</span>
+                    </button>
+                    
+                    {/* 인스타 스토리 */}
+                    <button
+                      onClick={async () => {
+                        try {
+                          // 인스타 스토리는 이미지 저장 후 앱으로 이동 유도
+                          if (shareCardPreview) {
+                            const link = document.createElement('a');
+                            link.download = `테이스트스피릿-${result.name}.png`;
+                            link.href = shareCardPreview;
+                            link.click();
+                            
+                            // 인스타 앱 열기 시도 (모바일)
+                            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                              setTimeout(() => {
+                                window.open('instagram://story-camera', '_blank');
+                              }, 500);
+                            }
+                            
+                            alert('이미지가 저장되었습니다. 인스타그램 앱에서 스토리를 업로드해주세요!');
+                            setShowShareModal(false);
+                          }
+                        } catch (error) {
+                          if (import.meta.env.DEV) {
+                            console.error('인스타 스토리 공유 실패:', error);
+                          }
+                        }
+                      }}
+                      className="w-14 h-14 flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-colors rounded-none"
+                      title="인스타 스토리"
+                      aria-label="인스타그램 스토리로 공유하기"
+                    >
+                      <span className="text-3xl" aria-hidden="true">📷</span>
+                    </button>
+                    
+                    {/* X(트위터) */}
+                    <button
+                      onClick={() => {
+                        // 트위터: 멘트 + 링크 자동 입력된 상태로 열기
+                        const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(window.location.href)}`;
+                        window.open(shareUrl, '_blank', 'width=600,height=600');
+                        setShowShareModal(false);
+                      }}
+                      className="w-14 h-14 flex items-center justify-center bg-black hover:bg-stone-800 transition-colors rounded-none"
+                      title="X (트위터)"
+                      aria-label="X(트위터)로 공유하기"
+                    >
+                      <span className="text-2xl font-bold text-white" aria-hidden="true">𝕏</span>
+                    </button>
+                    
+                    {/* 링크 복사 */}
+                    <button
+                      onClick={async () => {
+                        try {
+                          // 멘트 + 링크 함께 클립보드에 복사
+                          await navigator.clipboard.writeText(`${shareMessage}\n\n${window.location.href}`);
+                          setCopyToast(true);
+                          setTimeout(() => setCopyToast(false), 2000);
+                        } catch (e) {
+                          alert('링크 복사에 실패했습니다.');
+                        }
+                      }}
+                      className="w-14 h-14 flex items-center justify-center bg-stone-100 hover:bg-stone-200 transition-colors rounded-none"
+                      title="링크 복사"
+                      aria-label="링크 복사하기"
+                    >
+                      <Link2 className="w-6 h-6 text-stone-700" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* 복사 완료 토스트 */}
+            {copyToast && (
+              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[101] bg-stone-800 text-white px-6 py-3 rounded-none shadow-lg animate-fadeIn">
+                복사됨!
+              </div>
+            )}
+            
+            {/* Secondary CTA - 이미지 저장 & 프로필 저장 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
-              <button className="py-3 px-4 bg-stone-800 text-white rounded-none font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
-                <Calendar className="w-5 h-5" />
-                식단 추천받기
+              <button
+                onClick={async () => {
+                  if (!result) {
+                    alert('결과를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+                    return;
+                  }
+                  try {
+                    const cardImageUrl = await generateShareCard(result);
+                    
+                    // 이미지 다운로드
+                    const link = document.createElement('a');
+                    link.download = `테이스트스피릿-${result.name}.png`;
+                    link.href = cardImageUrl;
+                    link.click();
+                    
+                    // 메모리 정리
+                    setTimeout(() => URL.revokeObjectURL(cardImageUrl), 100);
+                  } catch (error) {
+                    if (import.meta.env.DEV) {
+                      console.error('이미지 저장 실패:', error);
+                    }
+                    alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
+                  }
+                }}
+                className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2"
+                aria-label="이미지 저장하기"
+              >
+                <Download className="w-5 h-5" aria-hidden="true" />
+                이미지 저장
               </button>
-              <button className="py-3 px-4 bg-stone-800 text-white rounded-none font-semibold hover:bg-stone-700 transition-colors flex items-center justify-center gap-2">
-                <FileText className="w-5 h-5" />
-                레시피 보기
+              <button
+                onClick={() => {
+                  if (onSaveProfile && !profileSaved) {
+                    const profileImage = monsterImageUrl || selectedItems[0]?.imageUrl || '';
+                    onSaveProfile(profileImage, result.name);
+                    setProfileSaved(true);
+                  }
+                }}
+                aria-label="프로필에 저장하기"
+                disabled={profileSaved}
+                className={`py-3 px-4 border-2 rounded-none font-semibold transition-all flex items-center justify-center gap-2 ${
+                  profileSaved 
+                    ? 'border-emerald-200 bg-emerald-50 text-emerald-600 cursor-default'
+                    : 'border-stone-200 text-stone-600 hover:bg-stone-50'
+                }`}
+              >
+                {profileSaved ? (
+                  <>
+                    <Check className="w-5 h-5" aria-hidden="true" />
+                    저장됨
+                  </>
+                ) : (
+                  <>
+                    <UserCircle className="w-5 h-5" aria-hidden="true" />
+                    프로필에 저장
+                  </>
+                )}
               </button>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
-              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
-                <Share2 className="w-5 h-5" />
-                공유하기
-              </button>
-              <button className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2">
-                <Download className="w-5 h-5" />
-                이미지 저장
+            {/* 텍스트 링크 - 식단 추천받기 */}
+            <div className="text-center mb-4">
+              <button 
+                className="text-stone-600 hover:text-stone-800 transition-colors text-sm flex items-center justify-center gap-1 mx-auto"
+                aria-label="이 스피릿에 맞는 식단 추천받기"
+              >
+                이 스피릿에 맞는 식단 추천받기
+                <span className="text-xs" aria-hidden="true">→</span>
               </button>
             </div>
             
@@ -907,8 +1425,9 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
                 setProfileSaved(false);
               }}
               className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors rounded-none"
+              aria-label="다시 테스트하기"
             >
-              처음부터 다시하기
+              다시 테스트하기
             </button>
           </div>
         </div>
@@ -917,8 +1436,47 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
   }
 
   // 질문 화면
-  const currentQuestion = QUESTIONS[currentStep];
-  const progress = ((currentStep + 1) / QUESTIONS.length) * 100;
+  if (currentStep >= availableQuestions.length || currentStep < 0) {
+    // 잘못된 currentStep인 경우 첫 번째 질문으로 리셋
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+        <div className="text-center">
+          <p className="text-stone-500 mb-4">질문을 불러오는 중...</p>
+          <button
+            onClick={() => {
+              setCurrentStep(0);
+              setStarted(true);
+            }}
+            className="px-6 py-3 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
+          >
+            다시 시작하기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const currentQuestion = availableQuestions[currentStep];
+  if (!currentQuestion) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+        <div className="text-center">
+          <p className="text-stone-500 mb-4">질문을 찾을 수 없습니다.</p>
+          <button
+            onClick={() => {
+              setCurrentStep(0);
+              setStarted(true);
+            }}
+            className="px-6 py-3 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
+          >
+            다시 시작하기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const progress = ((currentStep + 1) / availableQuestions.length) * 100;
 
   return (
     <div className="min-h-screen bg-transparent">
@@ -1061,7 +1619,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems, onSavePro
               }`}
               style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#292624', borderRadius: 0 } : { borderRadius: 0 }}
             >
-              {currentStep < QUESTIONS.length - 1 ? '다음' : '결과 보기'}
+              {currentStep < availableQuestions.length - 1 ? '다음' : '결과 보기'}
             </button>
           </div>
         </div>

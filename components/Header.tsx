@@ -46,10 +46,10 @@ export const Header: React.FC<HeaderProps> = ({
       className="fixed left-0 right-0 z-[9999] bg-white"
       style={{ top: offsetTop }}
     >
-      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-6 xl:px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
         <Link 
-          to="/shop" 
+          to="/" 
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
         >
           <img 
@@ -60,7 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
         </Link>
         
         {/* 가운데 메뉴 - 데스크톱 */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-shrink-0">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || 
               (item.path === '/store' && location.pathname.startsWith('/store')) ||
@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap ${
                     isActive 
                       ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                       : 'text-stone-700 font-bold hover:text-stone-900'
@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap ${
                     isActive 
                       ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                       : 'text-stone-700 font-bold hover:text-stone-900'
@@ -104,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
                   }}
                 >
                   {item.name}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${openMenu === 'store' ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-3 h-3 transition-transform flex-shrink-0 ${openMenu === 'store' ? 'rotate-180' : ''}`} />
                 </Link>
 
                 {isStore && openMenu === 'store' && (
@@ -144,7 +144,12 @@ export const Header: React.FC<HeaderProps> = ({
                               onClick={() => {
                                 setOpenMenu(null);
                                 setIsMobileMenuOpen(false);
-                                navigate(`/store?category=${encodeURIComponent(cat)}`);
+                                // 슬런치 위클리는 상품 상세 페이지로 바로 이동
+                                if (cat === '슬런치 위클리') {
+                                  navigate('/store/product/15');
+                                } else {
+                                  navigate(`/store?category=${encodeURIComponent(cat)}`);
+                                }
                               }}
                             >
                               {cat}
@@ -280,6 +285,9 @@ export const Header: React.FC<HeaderProps> = ({
                             setIsMobileMenuOpen(false);
                             if (cat === 'ALL') {
                               navigate('/store');
+                            } else if (cat === '슬런치 위클리') {
+                              // 슬런치 위클리는 상품 상세 페이지로 바로 이동
+                              navigate('/store/product/15');
                             } else {
                               navigate(`/store?category=${encodeURIComponent(cat)}`);
                             }
