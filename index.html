@@ -1,9 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>VeggieVerse</title>
+    <meta name="description" content="슬런치 팩토리의 비건 푸드 플랫폼. 건강한 식단, 레시피, 뉴스레터를 만나보세요." />
+    <meta name="keywords" content="비건, 채식, 슬런치, 레시피, 건강식단" />
+    <meta property="og:title" content="VeggieVerse - 슬런치 팩토리" />
+    <meta property="og:description" content="슬런치 팩토리의 비건 푸드 플랫폼" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://slunch.co.kr/veggieverse" />
+    <meta property="og:image" content="/veggieverse/common/logo.png" />
+    <link rel="icon" type="image/png" href="/veggieverse/common/logo.png" />
+    <title>VeggieVerse - 슬런치 팩토리</title>
+    <!-- Tailwind CSS CDN - 개발 환경용 -->
+    <script>
+      // 개발 환경에서만 Tailwind CDN 경고 무시
+      if (typeof window !== 'undefined') {
+        const originalWarn = console.warn;
+        console.warn = function(...args) {
+          if (args[0] && typeof args[0] === 'string' && args[0].includes('cdn.tailwindcss.com')) {
+            return; // Tailwind CDN 경고 무시
+          }
+          originalWarn.apply(console, args);
+        };
+      }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       /* 기본 스타일은 index.css에서 관리 */
@@ -20,8 +41,8 @@
   }
 }
 </script>
-  <script type="module" crossorigin src="/veggieverse/assets/index-BDV8920q.js"></script>
-  <link rel="stylesheet" crossorigin href="/veggieverse/assets/index-DVTLTONJ.css">
+  <script type="module" crossorigin src="/veggieverse/assets/index-Vj-7oul0.js"></script>
+  <link rel="stylesheet" crossorigin href="/veggieverse/assets/index-B-IlgspH.css">
 </head>
   <body>
     <div id="root"></div>
