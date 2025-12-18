@@ -1,6 +1,8 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import { ChevronUp, Calendar, FileText, Sparkles, Share2, Download, UserCircle, Check, X, Link2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { VegetableItem } from '../types';
+import { useUser } from '../contexts/UserContext';
 
 interface SurveyPageProps {
   selectedItems: VegetableItem[];
@@ -174,6 +176,30 @@ const VEGAN_TYPES = [
   { mbti: 'ISTP', name: 'Craftbean', emoji: '🫘', description: '손끝 감각으로 직접 실험하며 구현하는 제작자형', color: '#8D8570' },
   { mbti: 'ESTP', name: 'Wildgrain', emoji: '🌵', description: '즉흥적, 모험적이며 현장에서 비건을 즐기는 사람', color: '#C19F7B' },
 ];
+
+// 스피릿별 맞춤 큐레이션 메시지
+const getSpiritCurationMessage = (spiritName: string, spiritDescription: string): string => {
+  const messages: Record<string, string> = {
+    'Groundtype': '명확한 원칙을 중시하는 Groundtype님을 위해, 영양 밸런스가 완벽히 설계된 커뮤니티 인기 레시피를 모았어요!',
+    'Bloomist': '새로운 식물성 실험을 즐기는 Bloomist님을 위해, 창의적이고 맛있는 퓨전 레시피를 준비했어요!',
+    'Mindgrower': '윤리와 감정의 조화를 중시하는 Mindgrower님을 위해, 자연스럽고 건강한 레시피를 선별했어요!',
+    'Quiet Root': '가치관을 실천하는 Quiet Root님을 위해, 깊이 있고 의미 있는 레시피를 모았어요!',
+    'Lightgiver': '따뜻한 에너지를 전파하는 Lightgiver님을 위해, 함께 나누기 좋은 레시피를 준비했어요!',
+    'Forger': '구조를 재정립하는 Forger님을 위해, 효율적이고 체계적인 레시피를 선별했어요!',
+    'Planter': '계획적으로 루틴을 실천하는 Planter님을 위해, 안정적이고 검증된 레시피를 모았어요!',
+    'Strategreen': '지속가능한 미래를 설계하는 Strategreen님을 위해, 데이터 기반 최적화 레시피를 준비했어요!',
+    'Floret': '예술적으로 비건을 표현하는 Floret님을 위해, 아름답고 감각적인 레시피를 선별했어요!',
+    'Joybean': '즐거운 미식을 사랑하는 Joybean님을 위해, 재미있고 맛있는 레시피를 모았어요!',
+    'Careleaf': '공동체적 조화를 이루는 Careleaf님을 위해, 함께 나누기 좋은 레시피를 준비했어요!',
+    'Nurturer': '배려로 실천하는 Nurturer님을 위해, 따뜻하고 건강한 레시피를 선별했어요!',
+    'Thinkroot': '구조와 원리를 탐구하는 Thinkroot님을 위해, 논리적이고 체계적인 레시피를 모았어요!',
+    'Sparknut': '새로운 관점으로 재해석하는 Sparknut님을 위해, 창의적이고 독특한 레시피를 준비했어요!',
+    'Craftbean': '직접 실험하며 구현하는 Craftbean님을 위해, 손쉽게 만들 수 있는 레시피를 선별했어요!',
+    'Wildgrain': '모험적으로 비건을 즐기는 Wildgrain님을 위해, 즉흥적이고 재미있는 레시피를 모았어요!',
+  };
+  
+  return messages[spiritName] || `${spiritDescription} ${spiritName}님을 위해, 특별히 선별한 레시피를 준비했어요!`;
+};
 
 // 몬스터 이름 생성 함수
 const generateMonsterName = (items: VegetableItem[]): string => {
@@ -527,6 +553,8 @@ const generatePersonalityDescription = (
 };
 
 export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSaveProfile, showScrollToTop = false, onScrollToTop }) => {
+  const navigate = useNavigate();
+  const { login, user } = useUser();
   const [started, setStarted] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
@@ -538,6 +566,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
   const [shareCardPreview, setShareCardPreview] = useState<string | null>(null);
   const [copyToast, setCopyToast] = useState(false);
   const resultCardRef = useRef<HTMLDivElement>(null);
+  const [showRecipeCurationModal, setShowRecipeCurationModal] = useState(false);
   
   // AI 몬스터 이미지 관련 상태
   const [monsterImageUrl, setMonsterImageUrl] = useState<string | null>(null);
@@ -889,6 +918,15 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
       return VEGAN_TYPES[0];
     }
   }, [showResult, calculateResult]);
+
+  // 결과 표시 시 자동 로그인
+  useEffect(() => {
+    if (showResult && result && !user) {
+      // 유저명 생성 (스피릿 이름 기반)
+      const username = `${result.name}${Math.floor(Math.random() * 1000)}`;
+      login(username, result.mbti, result.name);
+    }
+  }, [showResult, result, user, login]);
   
   const personalityDescription = useMemo(() => {
     if (!showResult || !result) return null;
@@ -1140,6 +1178,20 @@ ${result.description}
               <Share2 className="w-6 h-6" aria-hidden="true" />
               <span aria-hidden="true">🔮</span> 내 스피릿 공유하기
             </button>
+            
+            {/* 식단 추천받기 버튼 */}
+            <div className="mb-4">
+              <button 
+                onClick={() => {
+                  setShowRecipeCurationModal(true);
+                }}
+                className="w-full py-4 rounded-none font-semibold text-base transition-all flex items-center justify-center gap-2 text-stone-700 hover:text-stone-900 border-2 border-stone-300 hover:border-stone-400 bg-white"
+                aria-label="이 스피릿에 맞는 식단 추천받기"
+              >
+                <span>이 스피릿에 맞는 식단 추천받기</span>
+                <span className="text-sm" aria-hidden="true">→</span>
+              </button>
+            </div>
             
             {/* 커스텀 공유 모달 */}
             {showShareModal && result && (
@@ -1401,16 +1453,72 @@ ${result.description}
               </button>
             </div>
             
-            {/* 텍스트 링크 - 식단 추천받기 */}
-            <div className="text-center mb-4">
-              <button 
-                className="text-stone-600 hover:text-stone-800 transition-colors text-sm flex items-center justify-center gap-1 mx-auto"
-                aria-label="이 스피릿에 맞는 식단 추천받기"
+            {/* 스피릿 맞춤 큐레이션 팝업 */}
+            {showRecipeCurationModal && result && (
+              <div 
+                className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+                onClick={() => setShowRecipeCurationModal(false)}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="curation-modal-title"
               >
-                이 스피릿에 맞는 식단 추천받기
-                <span className="text-xs" aria-hidden="true">→</span>
-              </button>
-            </div>
+                {/* 반투명 배경 오버레이 */}
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
+                
+                {/* 모달 컨텐츠 */}
+                <div 
+                  className="relative bg-white rounded-none shadow-2xl max-w-md w-full p-8"
+                  onClick={(e) => e.stopPropagation()}
+                  role="document"
+                >
+                  {/* 닫기 버튼 */}
+                  <button
+                    onClick={() => setShowRecipeCurationModal(false)}
+                    className="absolute top-4 right-4 p-2 hover:bg-stone-100 transition-colors"
+                    aria-label="모달 닫기"
+                  >
+                    <X className="w-5 h-5 text-stone-400" aria-hidden="true" />
+                  </button>
+                  
+                  {/* 스피릿 캐릭터 일러스트 (요리사 모자) */}
+                  <div className="flex flex-col items-center mb-6">
+                    <div className="relative mb-4">
+                      {/* 요리사 모자 */}
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-4xl z-10">
+                        👨‍🍳
+                      </div>
+                      {/* 스피릿 이모지 */}
+                      <div 
+                        className="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg"
+                        style={{ backgroundColor: `${result.color}20` }}
+                      >
+                        {result.emoji}
+                      </div>
+                    </div>
+                    
+                    {/* 맞춤 메시지 */}
+                    <h3 id="curation-modal-title" className="text-xl font-bold text-stone-900 mb-2 text-center">
+                      {result.name}님을 위한 맞춤 식단
+                    </h3>
+                    <p className="text-stone-600 text-center leading-relaxed">
+                      {getSpiritCurationMessage(result.name, result.description)}
+                    </p>
+                  </div>
+                  
+                  {/* 레시피 보러가기 버튼 */}
+                  <button
+                    onClick={() => {
+                      setShowRecipeCurationModal(false);
+                      navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
+                    }}
+                    className="w-full py-4 bg-emerald-600 text-white rounded-none font-semibold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
+                  >
+                    <span>레시피 보러가기</span>
+                    <span className="text-lg" aria-hidden="true">→</span>
+                  </button>
+                </div>
+              </div>
+            )}
             
             {/* 다시하기 */}
             <button

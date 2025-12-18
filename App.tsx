@@ -11,9 +11,13 @@ import { VeganTestPage } from './pages/VeganTestPage';
 import RecipePage from './pages/RecipePage';
 import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
+import ProfilePage from './pages/ProfilePage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import { ChatWidget, ChatTrigger, ChatPanel } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';
+import { ScrollToTop } from './components/ScrollToTop';
+import { UserProvider } from './contexts/UserContext';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 // 유저 프로필 타입
 interface UserProfile {
@@ -99,24 +103,7 @@ const AppContent: React.FC = () => {
     }
   }, []);
 
-  // 페이지 이동 시 스크롤을 최상단으로 이동
-  useEffect(() => {
-    const scrollToTop = () => {
-      const mainContainer = document.querySelector('main');
-      if (mainContainer) {
-        mainContainer.scrollTop = 0;
-      }
-      window.scrollTo(0, 0);
-    };
-
-    // 즉시 실행
-    scrollToTop();
-    
-    // requestAnimationFrame으로 한 번 더 실행 (렌더링 후)
-    requestAnimationFrame(() => {
-      requestAnimationFrame(scrollToTop);
-    });
-  }, [location.pathname]);
+  // ScrollToTop 컴포넌트에서 처리하므로 여기서는 제거
 
   // 프로필 저장 함수
   const saveProfile = useCallback((profileImage: string, veganType: string) => {
@@ -162,7 +149,9 @@ const AppContent: React.FC = () => {
   }, []);
 
   return (
-    <Layout 
+    <>
+      <ScrollToTop />
+      <Layout 
       userProfile={userProfile}
       showProfileMenu={showProfileMenu}
       onProfileMenuToggle={toggleProfileMenu}
@@ -185,13 +174,22 @@ const AppContent: React.FC = () => {
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/recipe" element={<RecipePage />} />
         <Route path="/recipe/hall-of-fame" element={<RecipeHallOfFamePage />} />
-        <Route path="/recipe/:id" element={<RecipeDetailPage />} />
+        <Route 
+          path="/recipe/:id" 
+          element={
+            <ErrorBoundary>
+              <RecipeDetailPage />
+            </ErrorBoundary>
+          } 
+        />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="/event" element={<ComingSoonPage title="이벤트" />} />
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
-        <Route path="/mypage" element={<ComingSoonPage title="마이페이지" />} />
+        <Route path="/mypage" element={<ProfilePage />} />
       </Routes>
       <ChatTrigger isOpen={isChatOpen} onToggle={toggleChat} />
     </Layout>
+    </>
   );
 };
 
@@ -208,9 +206,11 @@ const ComingSoonPage: React.FC<{ title: string }> = ({ title }) => (
 // 최상위 App 컴포넌트
 const App: React.FC = () => {
   return (
-    <BrowserRouter basename="/veggieverse">
-      <AppContent />
-    </BrowserRouter>
+    <UserProvider>
+      <BrowserRouter basename="/veggieverse">
+        <AppContent />
+      </BrowserRouter>
+    </UserProvider>
   );
 };
 

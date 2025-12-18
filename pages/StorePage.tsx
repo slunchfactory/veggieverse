@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
 import { getProductThumbnailImages } from '../utils/productImages';
 
@@ -430,7 +430,7 @@ export const StorePage: React.FC = () => {
               
               {/* 모바일/태블릿: 가로형 카드 2열 그리드 */}
               <div className="lg:hidden p-4 sm:p-5">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-3">
                   {algorithmRecommended.slice(0, 4).map((product, idx) => (
                     <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
                       {/* 카드 영상 (왼쪽) */}
@@ -773,7 +773,7 @@ export const StorePage: React.FC = () => {
             </div>
 
             {/* 상품 그리드 */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-10">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
               {sortedProducts.map((product) => (
                 <ProductCard 
                   key={product.id} 
@@ -878,7 +878,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         {/* Sold Out 오버레이 */}
         {product.soldOut && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-            <span className="text-white text-sm font-medium">Sold out</span>
+            <span className="text-white text-sm font-medium font-accent">Sold out</span>
           </div>
         )}
         
@@ -920,20 +920,30 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         </h3>
         
         {/* 가격 */}
-        <div className="flex items-center gap-2">
-          <p className="text-[13px] text-stone-800 font-medium">
-            KRW {product.price.toLocaleString()}
-          </p>
+        <div className="flex flex-col gap-1">
           {product.originalPrice && (
-            <p className="text-[11px] text-stone-400 line-through">
-              {product.originalPrice.toLocaleString()}
-            </p>
+            <div className="flex items-baseline gap-2">
+              <span className="text-[11px] text-stone-400 line-through font-accent">
+                {product.originalPrice.toLocaleString()}원
+              </span>
+              {(() => {
+                const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                return discountRate > 0 ? (
+                  <span className="text-[15px] font-bold text-orange-500 font-accent">
+                    {discountRate}%
+                  </span>
+                ) : null;
+              })()}
+            </div>
           )}
+          <p className="text-[16px] text-stone-900 font-bold font-accent">
+            {product.price.toLocaleString()}원
+          </p>
         </div>
         
         {/* BEST 뱃지 */}
         {product.isBest && !isAlgorithmMode && (
-          <p className="text-[10px] text-stone-400 mt-1 tracking-wide">BEST</p>
+          <p className="text-[10px] text-stone-400 mt-1 tracking-wide font-accent">BEST</p>
         )}
       </div>
     </div>

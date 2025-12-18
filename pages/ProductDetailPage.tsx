@@ -486,7 +486,7 @@ export const ProductDetailPage: React.FC = () => {
               {/* Sold Out 오버레이 */}
               {product.soldOut && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                  <span className="text-white text-2xl font-medium">Sold out</span>
+                  <span className="text-white text-2xl font-medium font-accent">Sold out</span>
                 </div>
               )}
 
@@ -540,7 +540,7 @@ export const ProductDetailPage: React.FC = () => {
           <div className="lg:w-1/2">
             {/* BEST 뱃지 */}
             {product.isBest && (
-              <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 text-xs mb-4">
+              <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 text-xs mb-4 font-accent">
                 BEST
               </span>
             )}
@@ -551,15 +551,25 @@ export const ProductDetailPage: React.FC = () => {
             </h1>
 
             {/* 가격 */}
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-stone-900">
+            <div className="mb-6">
+              {product.originalPrice && (
+                <div className="flex items-baseline gap-3 mb-2">
+                  <span className="text-lg text-stone-400 line-through font-accent">
+                    {product.originalPrice.toLocaleString()}원
+                  </span>
+                  {(() => {
+                    const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                    return discountRate > 0 ? (
+                      <span className="text-2xl font-bold text-orange-500 font-accent">
+                        {discountRate}%
+                      </span>
+                    ) : null;
+                  })()}
+                </div>
+              )}
+              <span className="text-3xl font-bold text-stone-900 font-accent">
                 {product.price.toLocaleString()}원
               </span>
-              {product.originalPrice && (
-                <span className="text-xl text-stone-400 line-through">
-                  {product.originalPrice.toLocaleString()}원
-                </span>
-              )}
             </div>
 
             {/* 짧은 설명 */}
@@ -602,7 +612,9 @@ export const ProductDetailPage: React.FC = () => {
               {/* 배송비 */}
               <div className="flex items-center gap-2 text-xs text-stone-600">
                 <span>배송비</span>
-                <span className="font-medium">3,500원 (55,000원 이상 무료배송)</span>
+                <span className="font-medium">
+                  <span className="font-accent">3,500</span>원 (<span className="font-accent">55,000</span>원 이상 무료배송)
+                </span>
                 <span className="text-stone-400">|</span>
                 <span className="text-stone-500">도서산간 배송비 추가</span>
                 <button className="text-stone-400 hover:text-stone-600" aria-label="배송비 안내">
@@ -652,7 +664,7 @@ export const ProductDetailPage: React.FC = () => {
             {/* 총 금액 */}
             <div className="flex items-center justify-between mb-8">
               <span className="text-sm text-stone-600 font-medium">총 금액</span>
-              <span className="text-2xl font-bold text-stone-900">
+              <span className="text-2xl font-bold text-stone-900 font-accent">
                 {totalPrice.toLocaleString()}원
               </span>
             </div>

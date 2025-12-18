@@ -340,8 +340,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </div>
 
       {/* 뉴스레터 섹션 */}
-      <div className="bg-white border-t border-stone-200">
-        <div className="page-container py-8">
+      <div className="bg-white">
+        <div className="page-container p-8">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
             <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>

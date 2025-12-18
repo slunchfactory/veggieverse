@@ -1,11 +1,23 @@
 /* VeggieVerse Global Styles */
 
-/* Custom Font Import - Noto Sans KR + Jost (Futura style) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Jost:wght@400;500;600;700&display=swap');
+/* Custom Font Import - Noto Sans KR + Montserrat (Futura style) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Montserrat:wght@500;700;800&display=swap');
 
-/* Futura 스타일 폰트 (스티커용) */
+/* 기본 폰트: Noto Sans KR */
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 가격 및 영문 포인트 폰트 (Montserrat - Futura 스타일) */
+.font-accent {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Futura 스타일 폰트 (기존 호환성 유지) */
 .font-futura {
-  font-family: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  font-family: 'Montserrat', 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  letter-spacing: -0.02em;
 }
 
 * {
@@ -26,7 +38,6 @@ html {
 }
 
 body {
-  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
@@ -251,4 +262,45 @@ a:focus-visible {
 /* 탭바 요소에 적용할 CSS */
 .tab-menu {
   background-color: #ffffff;
+}
+
+/* Toast 애니메이션 */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* 스크롤바 숨김 (크로스 브라우저) */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
 }

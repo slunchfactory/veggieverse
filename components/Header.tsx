@@ -74,7 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap ${
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
                     isActive 
                       ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                       : 'text-stone-700 font-bold hover:text-stone-900'
@@ -93,7 +93,7 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap ${
+                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
                     isActive 
                       ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                       : 'text-stone-700 font-bold hover:text-stone-900'
@@ -199,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <p className="text-sm font-semibold text-stone-800">{userProfile.veganType}</p>
                     </div>
                     <Link 
-                      to="/mypage"
+                      to="/profile"
                       className="block w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50"
                     >
                       마이페이지

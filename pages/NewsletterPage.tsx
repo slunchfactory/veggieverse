@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Footer } from '../components/Footer';
 
 interface Article {
@@ -13,8 +13,8 @@ interface Article {
   quote?: string; // 본문 상단 인용구
   contentBeforeImages?: React.ReactNode; // 이미지 전 본문
   images?: {
-    large?: string; // 큰 이미지 1개
-    small?: string[]; // 작은 이미지 2개 (좌우 배치)
+    large?: string | { url: string; caption?: string }; // 큰 이미지 1개 (문자열 또는 객체)
+    small?: Array<string | { url: string; caption?: string }>; // 작은 이미지 2개 (좌우 배치)
   };
   contentAfterImages?: React.ReactNode; // 큰 이미지 후 본문
   contentAfterSmallImages?: React.ReactNode; // 작은 이미지 후 본문
@@ -293,6 +293,12 @@ const ARTICLES: Article[] = [
 
 export const NewsletterPage: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  
+  // 이전/다음 아티클 찾기
+  const currentArticleId = selectedArticle?.id || 0;
+  const currentIndex = ARTICLES.findIndex(a => a.id === currentArticleId);
+  const prevArticle = currentIndex > 0 ? ARTICLES[currentIndex - 1] : null;
+  const nextArticle = currentIndex >= 0 && currentIndex < ARTICLES.length - 1 ? ARTICLES[currentIndex + 1] : null;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
@@ -372,6 +378,12 @@ export const NewsletterPage: React.FC = () => {
                   <div className="w-full aspect-[4/3] bg-gradient-to-br from-amber-200 via-rose-200 to-pink-200 flex items-center justify-center">
                     <span className="text-stone-500 text-sm">이미지 1</span>
                   </div>
+                  {/* 이미지 설명 (있는 경우) */}
+                  {typeof selectedArticle.images.large === 'object' && selectedArticle.images.large.caption && (
+                    <p className="text-xs text-stone-500 mt-3 text-center px-6" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
+                      {selectedArticle.images.large.caption}
+                    </p>
+                  )}
                 </div>
               )}
               
@@ -382,11 +394,23 @@ export const NewsletterPage: React.FC = () => {
               {selectedArticle.images?.small && selectedArticle.images.small.length > 0 && (
                 <div className="my-12 -mx-6">
                   <div className="grid grid-cols-2 gap-0">
-                    {selectedArticle.images.small.slice(0, 2).map((img, idx) => (
-                      <div key={idx} className="w-full aspect-square bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
-                        <span className="text-stone-500 text-sm">이미지 {idx + 2}</span>
-                      </div>
-                    ))}
+                    {selectedArticle.images.small.slice(0, 2).map((img, idx) => {
+                      const imgUrl = typeof img === 'string' ? img : img.url;
+                      const imgCaption = typeof img === 'object' ? img.caption : undefined;
+                      return (
+                        <div key={idx} className="relative">
+                          <div className="w-full aspect-square bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
+                            <span className="text-stone-500 text-sm">이미지 {idx + 2}</span>
+                          </div>
+                          {/* 이미지 설명 (있는 경우) */}
+                          {imgCaption && (
+                            <p className="text-xs text-stone-500 mt-2 text-center px-3" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
+                              {imgCaption}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -408,14 +432,50 @@ export const NewsletterPage: React.FC = () => {
               </p>
             </div>
 
-            {/* 닫기 버튼 */}
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={() => setSelectedArticle(null)}
-                className="px-8 py-3 border border-stone-300 text-stone-700 hover:bg-stone-50 transition-colors"
-              >
-                목록으로 돌아가기
-              </button>
+            {/* 네비게이션 (이전글/다음글/목록) */}
+            <div className="mt-12 pt-8 border-t border-stone-200">
+              <div className="flex items-center justify-between gap-4">
+                {/* 이전글 */}
+                {prevArticle ? (
+                  <button
+                    onClick={() => setSelectedArticle(prevArticle)}
+                    className="flex items-center gap-2 px-4 py-2 text-stone-600 hover:text-stone-900 transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                    <div className="text-left">
+                      <p className="text-xs text-stone-500">이전글</p>
+                      <p className="text-sm font-medium truncate max-w-[120px]">{prevArticle.title}</p>
+                    </div>
+                  </button>
+                ) : (
+                  <div className="flex-1" />
+                )}
+
+                {/* 목록으로 */}
+                <button
+                  onClick={() => setSelectedArticle(null)}
+                  className="px-6 py-2 bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium transition-colors"
+                  style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
+                >
+                  목록으로
+                </button>
+
+                {/* 다음글 */}
+                {nextArticle ? (
+                  <button
+                    onClick={() => setSelectedArticle(nextArticle)}
+                    className="flex items-center gap-2 px-4 py-2 text-stone-600 hover:text-stone-900 transition-colors"
+                  >
+                    <div className="text-right">
+                      <p className="text-xs text-stone-500">다음글</p>
+                      <p className="text-sm font-medium truncate max-w-[120px]">{nextArticle.title}</p>
+                    </div>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                ) : (
+                  <div className="flex-1" />
+                )}
+              </div>
             </div>
           </div>
           
@@ -430,6 +490,24 @@ export const NewsletterPage: React.FC = () => {
         <p className="text-stone-600 mb-8">
           슬런치 팩토리 에디터가 발행하는 아티클
         </p>
+
+        {/* 뉴스레터 구독 섹션 */}
+        <div className="bg-stone-50 border border-stone-200 rounded-none p-8 mb-12">
+          <div className="text-center max-w-md mx-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900">뉴스레터 구독</h3>
+            <p className="text-sm text-stone-600 mb-4">슬런치의 최신 소식과 레시피를 받아보세요</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="email"
+                placeholder="이메일 주소를 입력하세요"
+                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 text-stone-900 placeholder-stone-500 text-sm focus:outline-none focus:border-stone-500"
+              />
+              <button className="px-6 py-2.5 bg-stone-900 text-white text-sm font-medium hover:bg-stone-800 transition-colors whitespace-nowrap">
+                구독하기
+              </button>
+            </div>
+          </div>
+        </div>
 
         {/* 아티클 그리드 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
