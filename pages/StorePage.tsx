@@ -436,7 +436,7 @@ export const StorePage: React.FC = () => {
                       {/* 카드 영상 (왼쪽) */}
                       <div 
                         className="relative w-[45%] flex-shrink-0 overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '4/5' }}
+                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
                       >
                         <iframe
                           className="absolute w-full h-full"
@@ -494,7 +494,7 @@ export const StorePage: React.FC = () => {
                     <div key={product.id} className="cursor-pointer group flex flex-col">
                       <div 
                         className="relative w-full overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '4/5' }}
+                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
                       >
                         <iframe
                           className="absolute w-full h-full"
@@ -546,7 +546,7 @@ export const StorePage: React.FC = () => {
                     <div key={product.id} className="cursor-pointer group flex flex-col">
                       <div 
                         className="relative w-full overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '4/5' }}
+                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
                       >
                         <iframe
                           className="absolute w-full h-full"
@@ -772,7 +772,7 @@ export const StorePage: React.FC = () => {
               </div>
             </div>
 
-            {/* 상품 그리드 */}
+            {/* 상품 그리드 - 모바일 2열 고정 */}
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
               {sortedProducts.map((product) => (
                 <ProductCard 
@@ -826,12 +826,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
 
   return (
     <div className="group cursor-pointer" onClick={onClick}>
-      {/* 썸네일 - 5:6 비율 */}
+      {/* 썸네일 - 3:4 비율 */}
       <div 
         className={`relative w-full mb-3 overflow-hidden ${isAlgorithmMode && product.isBest ? 'ring-2 ring-[#E54B1A]' : ''}`}
         style={{ 
-          aspectRatio: '5/6',
-          backgroundColor: '#54271d' 
+          aspectRatio: '3/4',
+          backgroundColor: '#54271d',
+          borderRadius: '4px'
         }}
       >
         {/* 이미지 슬라이드 */}

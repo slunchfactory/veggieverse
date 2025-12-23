@@ -530,8 +530,8 @@ export const NewsletterPage: React.FC = () => {
           슬런치 팩토리 에디터가 발행하는 아티클
         </p>
 
-        {/* 아티클 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        {/* 아티클 그리드 - 모바일 2열 */}
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {ARTICLES.map((article) => (
             <div
               key={article.id}
@@ -542,7 +542,7 @@ export const NewsletterPage: React.FC = () => {
                 {/* 썸네일 */}
                 <div
                   className="w-full overflow-hidden"
-                  style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}
+                  style={{ aspectRatio: '3/4', backgroundColor: '#e5ded8', borderRadius: '4px' }}
                 >
                   <img
                     src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}

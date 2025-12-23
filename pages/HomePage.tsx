@@ -373,8 +373,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   return (
                     <div key={product.id} className="cursor-pointer group">
                       <div 
-                        className="w-full mb-2 overflow-hidden rounded-none relative"
-                        style={{ aspectRatio: '4/5', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a' }}
+                        className="w-full mb-2 overflow-hidden relative"
+                        style={{ aspectRatio: '3/4', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a', borderRadius: '4px' }}
                       >
                         {imageUrl ? (
                           <img 
@@ -433,7 +433,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
                 <div 
                   className="relative w-full overflow-hidden"
-                  style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}
+                  style={{ aspectRatio: '3/4', backgroundColor: '#e5ded8', borderRadius: '4px' }}
                 >
                   {/* 썸네일 자리 */}
                   {article.isNew && (
