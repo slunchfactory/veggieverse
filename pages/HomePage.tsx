@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getHomeProductImage } from '../utils/productImages';
 
 // 히어로 슬라이드 데이터
@@ -76,6 +76,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
+  const [currentStoreIndex, setCurrentStoreIndex] = useState(0);
 
   // 드래그 중이 아닐 때만 자동 슬라이드
   useEffect(() => {
@@ -146,40 +147,64 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             aria-labelledby="test-modal-title"
           >
             <div 
-              className="relative bg-[#292624] p-8 pointer-events-auto animate-fadeIn"
+              className="relative bg-[#292624] pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
               style={{ 
                 width: '90%',
                 maxWidth: '380px',
-                aspectRatio: '3/4',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)'
               }}
             >
               {/* 닫기 버튼 */}
               <button 
                 onClick={dismissToast}
-                className="absolute top-4 right-4 p-1 transition-opacity hover:opacity-80"
-                style={{ backgroundColor: 'transparent', color: '#ffffff' }}
+                className="absolute top-4 right-4 z-10 p-1 transition-opacity hover:opacity-80"
                 aria-label="모달 닫기"
               >
                 <X className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
               
-              {/* 중앙 텍스트 - 세로 정렬 */}
-              <div className="flex flex-col items-center text-center gap-3">
-                <h2 id="test-modal-title" className="text-[18px] font-semibold text-white">
-                  <span aria-hidden="true">🥗</span> 나의 비건 유형은?
-                </h2>
-                <span className="text-[14px] text-stone-400 leading-relaxed">
-                  좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
-                </span>
-                <Link 
-                  to="/"
-                  onClick={dismissToast}
-                  className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
-                  style={{ backgroundColor: '#E54B1A', color: '#292624' }}
+              <div className="flex flex-col">
+                {/* 이미지 섹션 (1:1 비율) - 위쪽 */}
+                <div 
+                  className="relative w-full overflow-hidden bg-[#292624] rounded-t-2xl"
+                  style={{ 
+                    aspectRatio: '1/1',
+                    isolation: 'isolate'
+                  }}
                 >
-                  테스트 시작
-                </Link>
+                  <img
+                    src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800"
+                    alt="비건 음식"
+                    className="w-full h-full object-cover"
+                    style={{ 
+                      transform: 'translateZ(0) scale(1.05)',
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      width: '100%',
+                      height: '100%'
+                    }}
+                  />
+                </div>
+                
+                {/* 텍스트 섹션 - 아래쪽 */}
+                <div className="w-full bg-[#292624] p-8 flex flex-col justify-center rounded-b-2xl">
+                  <div className="flex flex-col items-center text-center gap-3">
+                    <h2 id="test-modal-title" className="text-[18px] font-semibold text-white flex items-center gap-2">
+                      <span aria-hidden="true">🥗</span> 나의 스피릿 찾기
+                    </h2>
+                    <span className="text-[14px] text-stone-400 leading-relaxed">
+                      좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
+                    </span>
+                    <Link 
+                      to="/"
+                      onClick={dismissToast}
+                      className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
+                      style={{ backgroundColor: '#E54B1A', color: '#292624' }}
+                    >
+                      테스트 시작
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -200,7 +225,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
 
       {/* 히어로 배너 슬라이더 */}
       <div 
-        className="relative h-[500px] overflow-hidden cursor-grab active:cursor-grabbing select-none"
+        className="scroll-snap-section relative h-[500px] overflow-hidden cursor-grab active:cursor-grabbing select-none"
         onMouseDown={handleDragStart}
         onMouseMove={handleDragMove}
         onMouseUp={handleDragEnd}
@@ -256,38 +281,44 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         </div>
       </div>
       
-      {/* 매거진 스타일 레이아웃 */}
-      <div className="bg-white">
-        <div className="page-container">
-          <div className="flex flex-col lg:flex-row">
-            {/* 왼쪽 컬럼 - 텍스트 + 상품 그리드 */}
-            <div className="lg:w-[55%] p-8">
+      {/* 매거진 스타일 레이아웃 - Full-width Split Screen */}
+      <div 
+        className="scroll-snap-section relative w-full lg:h-[calc(100vh-500px)] lg:min-h-[600px] overflow-hidden"
+      >
+        <div className="h-full flex flex-col lg:flex-row relative items-stretch">
+          {/* 왼쪽 컬럼 - 텍스트 + 상품 그리드 (Black 배경) */}
+          <div 
+            className="w-full lg:w-[50%] relative z-10 bg-black flex flex-col"
+            style={{ minHeight: '100%' }}
+          >
+            {/* 내부 콘텐츠 패딩 */}
+            <div className="w-full h-full p-6 sm:p-8 lg:p-12">
               {/* 텍스트 헤더 */}
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {/* 타이틀 - 첫번째 이미지 위치 */}
-                <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
+                <h2 className="text-[20px] font-bold text-white leading-snug">
                   건강한 비건식으로 삶의 균형 맞추기
                 </h2>
                 
                 {/* 설명 - 두번째 이미지 위치 */}
                 <div>
-                  <p className="text-[12px] text-stone-600 leading-relaxed">
+                  <p className="text-[12px] text-stone-300 leading-relaxed">
                     매장에서만 즐겼던 맛있고 건강한 비건요리를
                   </p>
-                  <p className="text-[12px] text-stone-600 mb-3">
+                  <p className="text-[12px] text-stone-300 mb-3">
                     이제 집에서도 간편하게 즐겨보세요.
                   </p>
-                  <p className="text-[12px] text-stone-500 leading-relaxed">
+                  <p className="text-[12px] text-stone-400 leading-relaxed">
                     비건 채식주의자들과 일반인들 모두 맛있게 즐길 수 있는
                   </p>
-                  <p className="text-[12px] text-stone-500">
+                  <p className="text-[12px] text-stone-400">
                     다채로운 비건 요리를 매장에서도 즐겨보세요
                   </p>
                 </div>
               </div>
               
               {/* 상품 그리드 2열 x 3행 (총 6개) */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 pb-8">
                 {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => {
                   const imageUrl = getHomeProductImage(idx);
                   return (
@@ -313,34 +344,31 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                           </div>
                         )}
                       </div>
-                      <p className="text-[12px] text-stone-700 group-hover:text-stone-900">{product.name}</p>
-                      <p className="text-[11px] text-stone-500">KRW {product.price.toLocaleString()}</p>
+                      <p className="text-[12px] text-stone-200 group-hover:text-white">{product.name}</p>
+                      <p className="text-[11px] text-stone-400">KRW {product.price.toLocaleString()}</p>
                     </div>
                   );
                 })}
               </div>
             </div>
-            
-            {/* 오른쪽 컬럼 - 대형 이미지 1개 (960x1200 제한) */}
-            <div className="lg:w-[45%] flex justify-center items-start">
-              <div 
-                className="w-full"
-                style={{ 
-                  aspectRatio: '4/5', 
-                  backgroundColor: '#3d1c12',
-                  maxWidth: '960px',
-                  maxHeight: '1200px'
-                }}
-              >
-                {/* 이미지 자리 */}
-              </div>
+          </div>
+          
+          {/* 오른쪽 컬럼 - 대형 이미지/비디오 영역 (Orange 배경) */}
+          <div 
+            className="w-full lg:w-[50%] flex justify-center items-center lg:sticky lg:top-0 relative z-0 bg-[#E54B1A]"
+            style={{ minHeight: '100%' }}
+          >
+            <div 
+              className="w-full h-full flex items-center justify-center p-6 sm:p-8 lg:p-12"
+            >
+              {/* 이미지/비디오 자리 */}
             </div>
           </div>
         </div>
       </div>
 
       {/* 뉴스레터 섹션 */}
-      <div className="bg-white">
+      <div className="scroll-snap-section-flex bg-white min-h-screen">
         <div className="page-container p-8">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
@@ -377,6 +405,150 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 </p>
               </Link>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 지점 정보 섹션 */}
+      <div className="scroll-snap-section-flex bg-white min-h-screen">
+        <div className="relative">
+          <div className="relative overflow-hidden">
+            <div 
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentStoreIndex * 100}%)` }}
+            >
+              {/* 홍대점 */}
+              <div className="flex-shrink-0 w-full">
+                <div className="page-container">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* 왼쪽 컬럼 - 텍스트 헤더만 (상품 그리드 없음) */}
+                    <div className="lg:w-[55%] p-8">
+                      {/* 텍스트 헤더 */}
+                      <div className="grid grid-cols-2 gap-4 mb-8">
+                        {/* 타이틀 */}
+                        <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
+                          SLUNCH FACTORY<br />HONGDAE STORE
+                        </h2>
+                        
+                        {/* 설명 */}
+                        <div>
+                          <p className="text-[12px] text-stone-600 leading-relaxed">
+                            홍대의 활기찬 거리에서 만나볼 수 있는 슬런치 팩토리.
+                          </p>
+                          <p className="text-[12px] text-stone-600 mb-3">
+                            다양한 비건 메뉴와 함께 일상 속에서 발견하는 새로운 맛의 경험을 제공합니다.
+                          </p>
+                          <p className="text-[12px] text-stone-500 leading-relaxed">
+                            이곳을 방문하는 모든 분들이 세상에 존재하는 수많은 맛의 관점을 발견하고,
+                          </p>
+                          <p className="text-[12px] text-stone-500">
+                            자신만의 이야기를 만들어가길 바랍니다.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* 지점 상세 정보 */}
+                      <div className="space-y-2">
+                        <p className="text-[12px] font-medium text-stone-800">주소</p>
+                        <p className="text-[11px] text-stone-600">서울특별시 마포구 홍대로</p>
+                        <p className="text-[12px] font-medium text-stone-800 mt-4">운영시간</p>
+                        <p className="text-[11px] text-stone-600">월-일 11:00 - 22:00</p>
+                      </div>
+                    </div>
+                    
+                    {/* 오른쪽 컬럼 - 단색 배경 */}
+                    <div className="lg:w-[45%] flex justify-center items-start">
+                      <div 
+                        className="w-full"
+                        style={{ 
+                          aspectRatio: '4/5', 
+                          backgroundColor: '#54271d',
+                          maxWidth: '960px',
+                          maxHeight: '1200px'
+                        }}
+                      >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 더현대 삼성무역센터점 */}
+              <div className="flex-shrink-0 w-full">
+                <div className="page-container">
+                  <div className="flex flex-col lg:flex-row">
+                    {/* 왼쪽 컬럼 - 텍스트 헤더만 (상품 그리드 없음) */}
+                    <div className="lg:w-[55%] p-8">
+                      {/* 텍스트 헤더 */}
+                      <div className="grid grid-cols-2 gap-4 mb-8">
+                        {/* 타이틀 */}
+                        <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
+                          SLUNCH FACTORY<br />THE HYUNDAI<br />SAMSUNG TRADE CENTER STORE
+                        </h2>
+                        
+                        {/* 설명 */}
+                        <div>
+                          <p className="text-[12px] text-stone-600 leading-relaxed">
+                            삼성무역센터 더현대에 위치한 슬런치 팩토리.
+                          </p>
+                          <p className="text-[12px] text-stone-600 mb-3">
+                            오고 가는 사람들의 다양한 관점을 만날 수 있는 공간입니다.
+                          </p>
+                          <p className="text-[12px] text-stone-500 leading-relaxed">
+                            이곳을 방문하는 모든 분들이 세상에 존재하는 수많은 관점을 발견하고,
+                          </p>
+                          <p className="text-[12px] text-stone-500">
+                            자신만의 이야기를 만들어가길 바랍니다.
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* 지점 상세 정보 */}
+                      <div className="space-y-2">
+                        <p className="text-[12px] font-medium text-stone-800">주소</p>
+                        <p className="text-[11px] text-stone-600">서울특별시 강남구 테헤란로</p>
+                        <p className="text-[12px] font-medium text-stone-800 mt-4">운영시간</p>
+                        <p className="text-[11px] text-stone-600">월-일 10:00 - 21:00</p>
+                      </div>
+                    </div>
+                    
+                    {/* 오른쪽 컬럼 - 단색 배경 */}
+                    <div className="lg:w-[45%] flex justify-center items-start">
+                      <div 
+                        className="w-full"
+                        style={{ 
+                          aspectRatio: '4/5', 
+                          backgroundColor: '#54271d',
+                          maxWidth: '960px',
+                          maxHeight: '1200px'
+                        }}
+                      >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 좌우 화살표 버튼 */}
+            {currentStoreIndex > 0 && (
+              <button
+                onClick={() => setCurrentStoreIndex(currentStoreIndex - 1)}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-stone-300 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
+                aria-label="이전 지점"
+              >
+                <ChevronLeft className="w-5 h-5 text-stone-700" />
+              </button>
+            )}
+            {currentStoreIndex < 1 && (
+              <button
+                onClick={() => setCurrentStoreIndex(currentStoreIndex + 1)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-stone-300 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
+                aria-label="다음 지점"
+              >
+                <ChevronRight className="w-5 h-5 text-stone-700" />
+              </button>
+            )}
           </div>
         </div>
       </div>

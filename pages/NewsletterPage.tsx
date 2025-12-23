@@ -10,6 +10,7 @@ interface Article {
   author: string;
   date: string;
   thumbnail: string;
+  authorBio?: string; // 작성자 소개
   quote?: string; // 본문 상단 인용구
   contentBeforeImages?: React.ReactNode; // 이미지 전 본문
   images?: {
@@ -20,6 +21,22 @@ interface Article {
   contentAfterSmallImages?: React.ReactNode; // 작은 이미지 후 본문
   content?: React.ReactNode; // 기존 content (하위 호환성)
 }
+
+// 작성자 정보 매핑
+const AUTHOR_BIO: Record<string, string> = {
+  'Huna': '슬런치팩토리의 대표. 맛있는 것 앞에서는 누구보다 솔직해진다.\n먹는 것에 진심인 사람들과 함께 이 공간을 만들어가고 있다.',
+  'Josin': '12년 차가 넘어가는 슬런치팩토리의 기둥. 오래 머물고 싶은 맛을 고민한다.\n묵묵히 주방을 지키며 팀의 중심을 잡아주는 사람.',
+  'ChaCha': '작고 동그랗고 귀여운 것을 좋아하는 디자이너. 사소한 것에서 영감을 얻는 편이다.',
+  'Jin': '뭐든지 다 잘하는 듬직한 막내 직원. 없으면 안 되는 존재가 되어가는 중.',
+};
+
+// 작성자 프로필 이미지 매핑
+const AUTHOR_AVATAR: Record<string, string> = {
+  'Huna': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces',
+  'Josin': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces',
+  'ChaCha': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=faces',
+  'Jin': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces',
+};
 
 const ARTICLES: Article[] = [
   {
@@ -423,18 +440,38 @@ export const NewsletterPage: React.FC = () => {
             </article>
 
             {/* 하단 정보 */}
-            <div className="border-t border-stone-200 mt-12 pt-8">
-              <p className="text-center text-xl font-bold text-stone-900 mb-2">
-                {selectedArticle.title}
+            <div className="border-t border-stone-200 mt-12 pt-6 pb-4">
+              <p className="text-left text-sm font-bold text-stone-900 mb-4">
+                About Author
               </p>
-              <p className="text-center text-sm text-stone-500">
-                {selectedArticle.author}
-              </p>
+              <div className="flex items-center gap-4">
+                {/* 원형 썸네일 */}
+                {AUTHOR_AVATAR[selectedArticle.author] && (
+                  <div className="flex-shrink-0">
+                    <img
+                      src={AUTHOR_AVATAR[selectedArticle.author]}
+                      alt={selectedArticle.author}
+                      className="w-20 h-20 rounded-full object-cover"
+                    />
+                  </div>
+                )}
+                {/* 작성자 이름 및 소개 */}
+                <div className="flex-1">
+                  <p className="text-left text-sm font-bold text-stone-900 mb-2 underline">
+                    {selectedArticle.author}
+                  </p>
+                  {AUTHOR_BIO[selectedArticle.author] && (
+                    <p className="text-left text-sm text-stone-700 leading-relaxed whitespace-pre-line">
+                      {AUTHOR_BIO[selectedArticle.author]}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* 네비게이션 (이전글/다음글/목록) */}
-            <div className="mt-12 pt-8 border-t border-stone-200">
-              <div className="flex items-center justify-between gap-4">
+            <div className="mt-12 pt-8">
+              <div className="flex items-center gap-4">
                 {/* 이전글 */}
                 {prevArticle ? (
                   <button
@@ -451,14 +488,16 @@ export const NewsletterPage: React.FC = () => {
                   <div className="flex-1" />
                 )}
 
-                {/* 목록으로 */}
-                <button
-                  onClick={() => setSelectedArticle(null)}
-                  className="px-6 py-2 bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium transition-colors"
-                  style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
-                >
-                  목록으로
-                </button>
+                {/* 목록으로 - 중앙 정렬 */}
+                <div className="flex-1 flex items-center justify-center">
+                  <button
+                    onClick={() => setSelectedArticle(null)}
+                    className="px-6 py-2 bg-stone-900 hover:bg-stone-800 text-white text-sm font-medium transition-colors"
+                    style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
+                  >
+                    목록으로
+                  </button>
+                </div>
 
                 {/* 다음글 */}
                 {nextArticle ? (
@@ -491,26 +530,8 @@ export const NewsletterPage: React.FC = () => {
           슬런치 팩토리 에디터가 발행하는 아티클
         </p>
 
-        {/* 뉴스레터 구독 섹션 */}
-        <div className="bg-stone-50 border border-stone-200 rounded-none p-8 mb-12">
-          <div className="text-center max-w-md mx-auto">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900">뉴스레터 구독</h3>
-            <p className="text-sm text-stone-600 mb-4">슬런치의 최신 소식과 레시피를 받아보세요</p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder="이메일 주소를 입력하세요"
-                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 text-stone-900 placeholder-stone-500 text-sm focus:outline-none focus:border-stone-500"
-              />
-              <button className="px-6 py-2.5 bg-stone-900 text-white text-sm font-medium hover:bg-stone-800 transition-colors whitespace-nowrap">
-                구독하기
-              </button>
-            </div>
-          </div>
-        </div>
-
         {/* 아티클 그리드 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {ARTICLES.map((article) => (
             <div
               key={article.id}
@@ -555,7 +576,26 @@ export const NewsletterPage: React.FC = () => {
             </div>
           ))}
         </div>
+
+        {/* 뉴스레터 구독 섹션 */}
+        <div className="bg-stone-50 border border-stone-200 rounded-none p-8">
+          <div className="text-center max-w-md mx-auto">
+            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900">뉴스레터 구독</h3>
+            <p className="text-sm text-stone-600 mb-4">슬런치의 최신 소식과 레시피를 받아보세요</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="email"
+                placeholder="이메일 주소를 입력하세요"
+                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 text-stone-900 placeholder-stone-500 text-sm focus:outline-none focus:border-stone-500"
+              />
+              <button className="px-6 py-2.5 bg-stone-900 text-white text-sm font-medium hover:bg-stone-800 transition-colors whitespace-nowrap">
+                구독하기
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   );
 };
