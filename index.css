@@ -3,162 +3,161 @@
 /* Custom Font Import - Noto Sans KR + Montserrat (Futura style) */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Montserrat:wght@500;700;800&display=swap');
 
-/* 기본 폰트: Noto Sans KR */
-body {
-  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
+/* ============================================
+   1. RESET & FULL LAYOUT (최우선)
+   ============================================ */
 
-/* 가격 및 영문 포인트 폰트 (Montserrat - Futura 스타일) */
-.font-accent {
-  font-family: 'Montserrat', sans-serif;
-  letter-spacing: -0.02em;
-}
-
-/* Futura 스타일 폰트 (기존 호환성 유지) */
-.font-futura {
-  font-family: 'Montserrat', 'Jost', 'Futura', 'Century Gothic', sans-serif;
-  letter-spacing: -0.02em;
-}
-
+/* Universal Reset */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body {
+/* HTML & Body - 완전 초기화 및 Full-width */
+html {
+  width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  width: 100%;
-  max-width: 100%;
   overflow-x: hidden !important;
-}
-
-html {
-  overflow-x: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 body {
+  width: 100%;
+  height: 100vh; /* 화면 꽉 차게 */
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden !important;
+  overflow-y: scroll; /* 스크롤 활성화 */
+  scroll-snap-type: y mandatory; /* 스냅 필수 속성 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
   color: #1A1A1A;
-  overflow-y: auto;
-  overflow-x: hidden !important;
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: relative;
+}
+
+/* React Root - 완전 초기화 */
+#root {
   width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* 모든 버튼 모서리를 직각으로 통일 (특수 버튼 제외) */
-button:not(.chatbot-trigger):not(.rounded-btn) {
-  border-radius: 0 !important;
+#root > div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  isolation: isolate;
 }
 
-/* 비건 테스트 페이지에서만 body 스크롤 비활성화 */
-body.no-scroll {
-  overflow: hidden;
-}
+/* ============================================
+   2. SCROLL SNAP (섹션 단위 스크롤)
+   ============================================ */
 
-/* Serif Font for Headings */
-.font-serif {
-  font-family: 'Noto Sans KR', sans-serif;
-}
-
-/* Fade In 애니메이션 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-/* 부드러운 펄스 */
-@keyframes pulse-soft {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-.animate-pulse-soft {
-  animation: pulse-soft 4s ease-in-out infinite;
-}
-
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* CSS Scroll Snap - Parent Container */
-html {
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch; /* iOS 부드러운 스크롤 */
-}
-
-body {
-  scroll-snap-type: y mandatory;
-}
-
-/* Scroll Snap Section - 각 섹션에 적용 */
+/* Scroll Snap Section - 고정 높이 섹션 */
 .scroll-snap-section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
   min-height: 100vh;
+  width: 100%;
+  position: relative;
 }
 
-/* Scroll Snap Section (Flexible Height) - 콘텐츠에 맞춰 높이 조절 */
+/* Scroll Snap Section - 유연한 높이 */
 .scroll-snap-section-flex {
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  width: 100%;
+  position: relative;
 }
 
-/* Focus Styles */
-button:focus-visible,
-a:focus-visible {
-  outline: 2px solid #a8a29e;
-  outline-offset: 2px;
+/* ============================================
+   3. HERO SECTION (스플릿 레이아웃)
+   ============================================ */
+
+/* Hero Split Layout - 50:50 정확한 분할 */
+.hero-split-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
-/* Selection Color */
-::selection {
-  background-color: #fde68a;
-  color: #1c1917;
+.hero-split-left,
+.hero-split-right {
+  flex: 1;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
-/* 스크롤바 스타일 */
-::-webkit-scrollbar {
-  width: 6px;
+/* Hero 텍스트 영역 - 레이아웃 방해 방지 */
+.hero-text-container {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-::-webkit-scrollbar-track {
-  background: #f5f5f4;
+.hero-text-title {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #d6d3d1;
-  border-radius: 0;
+.hero-text-content {
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e;
+/* Hero 오버레이 텍스트 (이미지 위에 겹치는 경우) */
+.hero-overlay-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
+/* ============================================
+   4. FULL-WIDTH LAYOUT
+   ============================================ */
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* Full-width 컨테이너 - 여백 완전 제거 */
+.full-width-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
 /* 공통 페이지 좌우 여백 - Full-width (Fluid) 레이아웃 */
@@ -206,10 +205,15 @@ a:focus-visible {
   margin-right: auto;
 }
 
-/* 이미지가 부모 너비를 초과하지 않도록 (기본 반응형 처리) */
+/* ============================================
+   5. IMAGE & MEDIA
+   ============================================ */
+
+/* 이미지가 부모 너비를 초과하지 않도록 */
 img {
   max-width: 100%;
   height: auto;
+  display: block;
 }
 
 /* 이미지 비율 유지 및 반응형 처리 */
@@ -234,6 +238,202 @@ img[style*="aspect-ratio"],
   object-fit: cover;
   object-position: center;
 }
+
+/* ============================================
+   6. TYPOGRAPHY
+   ============================================ */
+
+/* 가격 및 영문 포인트 폰트 (Montserrat - Futura 스타일) */
+.font-accent {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Futura 스타일 폰트 (기존 호환성 유지) */
+.font-futura {
+  font-family: 'Montserrat', 'Jost', 'Futura', 'Century Gothic', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Serif Font for Headings */
+.font-serif {
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* ============================================
+   7. COMPONENTS
+   ============================================ */
+
+/* 모든 버튼 모서리를 직각으로 통일 (특수 버튼 제외) */
+button:not(.chatbot-trigger):not(.rounded-btn) {
+  border-radius: 0 !important;
+}
+
+/* 비건 테스트 페이지에서만 body 스크롤 비활성화 */
+body.no-scroll {
+  overflow: hidden;
+}
+
+/* Focus Styles */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #a8a29e;
+  outline-offset: 2px;
+}
+
+/* Selection Color */
+::selection {
+  background-color: #fde68a;
+  color: #1c1917;
+}
+
+/* 탭바 요소에 적용할 CSS */
+.tab-menu {
+  background-color: #ffffff;
+}
+
+/* ============================================
+   8. SCROLLBAR
+   ============================================ */
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f4;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* ============================================
+   9. ANIMATIONS
+   ============================================ */
+
+/* Fade In 애니메이션 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* 부드러운 펄스 */
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 4s ease-in-out infinite;
+}
+
+/* Toast 애니메이션 */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideInUp {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* 부드러운 회전 애니메이션 */
+@keyframes rotate-gentle {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: rotate-gentle linear infinite;
+}
+
+/* 새 아이템 등장 애니메이션 */
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.floating-item {
+  will-change: transform;
+  animation-fill-mode: both;
+}
+
+/* ============================================
+   10. UTILITIES
+   ============================================ */
 
 /* 모바일에서 여백 없이 꽉 채우는 풀블리드 유틸리티 */
 .full-bleed {
@@ -299,109 +499,10 @@ img[style*="aspect-ratio"],
   transform: translateY(-15px) scale(1.05);
 }
 
-/* 플로팅 아이템 - CSS 애니메이션으로 부드럽게 */
-.floating-item {
-  will-change: transform;
-}
-
-/* 부드러운 회전 애니메이션 */
-@keyframes rotate-gentle {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* 느린 회전 */
-.animate-spin-slow {
-  animation: rotate-gentle linear infinite;
-}
-
-/* 새 아이템 등장 애니메이션 */
-@keyframes pop-in {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-.floating-item {
-  animation-fill-mode: both;
-}
-
 /* 헤더 텍스트 blend 효과 - 배경에 따라 색상 반전 */
 .blend-text {
   color: white !important;
   mix-blend-mode: difference;
   position: relative;
   z-index: 1;
-}
-
-/* 메인 콘텐츠 isolation - blend가 올바르게 작동하도록 */
-#root > div {
-  isolation: isolate;
-  overflow-x: hidden;
-  width: 100%;
-  max-width: 100%;
-}
-
-/* 모든 페이지 컨테이너에 overflow-x 방지 */
-#root {
-  overflow-x: hidden;
-  width: 100%;
-}
-
-/* 탭바 요소에 적용할 CSS */
-.tab-menu {
-  background-color: #ffffff;
-}
-
-/* Toast 애니메이션 */
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.animate-slideInRight {
-  animation: slideInRight 0.3s ease-out;
-}
-
-@keyframes slideInUp {
-  from {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.animate-slideInUp {
-  animation: slideInUp 0.3s ease-out;
-}
-
-/* 스크롤바 숨김 (크로스 브라우저) */
-.scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari, Opera */
 }

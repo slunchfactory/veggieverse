@@ -130,7 +130,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const dragOffset = isDragging ? currentX - startX : 0;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen w-full" style={{ backgroundColor: '#ffffff', width: '100%' }}>
       {/* 비건 테스트 모달 팝업 */}
       {showToast && (
         <>
@@ -255,10 +255,24 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* 텍스트 오버레이 - 하단 섹션과 동일한 여백 */}
               <div className="absolute bottom-20 left-0 w-full">
                 <div className="page-container px-6 sm:px-8 text-left">
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] leading-relaxed drop-shadow-lg">
+                  <p 
+                    className="font-medium text-[#E54B1A] leading-relaxed drop-shadow-lg"
+                    style={{ 
+                      fontSize: 'clamp(1.25rem, 3vw, 2rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     {slide.title}
                   </p>
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] drop-shadow-lg">
+                  <p 
+                    className="font-medium text-[#E54B1A] drop-shadow-lg mt-2"
+                    style={{ 
+                      fontSize: 'clamp(1.25rem, 3vw, 2rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     {slide.subtitle}
                   </p>
                 </div>
@@ -296,22 +310,57 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* 텍스트 헤더 */}
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {/* 타이틀 - 첫번째 이미지 위치 */}
-                <h2 className="text-[20px] font-bold text-white leading-snug">
+                <h2 
+                  className="font-bold text-white leading-snug"
+                  style={{ 
+                    fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                    wordBreak: 'keep-all',
+                    overflowWrap: 'break-word'
+                  }}
+                >
                   건강한 비건식으로 삶의 균형 맞추기
                 </h2>
                 
                 {/* 설명 - 두번째 이미지 위치 */}
                 <div>
-                  <p className="text-[12px] text-stone-300 leading-relaxed">
+                  <p 
+                    className="text-stone-300 leading-relaxed"
+                    style={{ 
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     매장에서만 즐겼던 맛있고 건강한 비건요리를
                   </p>
-                  <p className="text-[12px] text-stone-300 mb-3">
+                  <p 
+                    className="text-stone-300 mb-3"
+                    style={{ 
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     이제 집에서도 간편하게 즐겨보세요.
                   </p>
-                  <p className="text-[12px] text-stone-400 leading-relaxed">
+                  <p 
+                    className="text-stone-400 leading-relaxed"
+                    style={{ 
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     비건 채식주의자들과 일반인들 모두 맛있게 즐길 수 있는
                   </p>
-                  <p className="text-[12px] text-stone-400">
+                  <p 
+                    className="text-stone-400"
+                    style={{ 
+                      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+                      wordBreak: 'keep-all',
+                      overflowWrap: 'break-word'
+                    }}
+                  >
                     다채로운 비건 요리를 매장에서도 즐겨보세요
                   </p>
                 </div>
