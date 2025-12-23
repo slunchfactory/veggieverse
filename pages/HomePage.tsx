@@ -270,29 +270,37 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </section>
 
       {/* ============================================
-          SLUNCH WEEKLY - Dedicated Feature Section
+          SLUNCH WEEKLY - Dedicated Feature Section (Lofa Style)
           ============================================ */}
-      <section className="scroll-snap-section-flex section-spacing relative overflow-hidden" style={{ backgroundColor: '#fef9e7' }}>
+      <section 
+        className="scroll-snap-section-flex section-spacing relative overflow-visible bg-white"
+        style={{ 
+          borderTop: '1px solid #111111',
+          borderBottom: '1px solid #111111'
+        }}
+      >
         <div className="page-container">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+          <div className="flex flex-col lg:flex-row border border-[#111111]">
             {/* 왼쪽 영역 (60%) - 이미지 */}
-            <div className="w-full lg:w-[60%] relative">
+            <div 
+              className="w-full lg:w-[60%] relative border-r-0 lg:border-r border-[#111111]"
+              style={{ borderRight: '1px solid #111111' }}
+            >
               <div 
                 className="w-full overflow-hidden relative"
                 style={{ 
                   aspectRatio: '3/4', 
-                  backgroundColor: '#e5ded8',
-                  borderRadius: '4px'
+                  backgroundColor: '#f5f5f5'
                 }}
               >
                 {/* 도시락/패키지 이미지 자리 */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-stone-400 text-sm">슬런치 위클리 패키지 이미지</span>
+                  <span className="text-[#111111] text-sm font-medium">슬런치 위클리 패키지 이미지</span>
                 </div>
                 
-                {/* 배달 모자 캐릭터 (Absolute Position) */}
+                {/* 배달 모자 캐릭터 (Absolute Position - 모서리에 걸치도록) */}
                 <div 
-                  className="absolute -bottom-4 -right-4 w-24 h-24 lg:w-32 lg:h-32 z-10"
+                  className="absolute -bottom-6 -right-6 w-20 h-20 lg:w-28 lg:h-28 z-10"
                   style={{
                     transform: `translateY(${scrollY * 0.15}px)`,
                     transition: 'transform 0.1s ease-out'
@@ -301,74 +309,119 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <img 
                     src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
                     alt="슬런치 캐릭터"
-                    className="w-full h-full object-contain drop-shadow-lg"
+                    className="w-full h-full object-contain"
+                    style={{ filter: 'none' }}
                   />
                 </div>
               </div>
             </div>
             
             {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
-            <div className="w-full lg:w-[40%] flex flex-col justify-center">
+            <div className="w-full lg:w-[40%] flex flex-col justify-center p-6 lg:p-12">
               <h2 
-                className="text-stone-900 font-bold mb-4 leading-tight"
-                style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)' }}
+                className="text-[#111111] font-bold mb-6 leading-tight"
+                style={{ 
+                  fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+                  letterSpacing: '-0.02em',
+                  fontWeight: 700
+                }}
               >
                 고민 없는 건강한 일주일,<br />
-                <span style={{ color: '#E54B1A' }}>Slunch Weekly</span>
+                Slunch Weekly
               </h2>
               
               <p 
-                className="text-stone-700 mb-8 leading-relaxed"
-                style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)' }}
+                className="text-[#111111] mb-10 leading-relaxed"
+                style={{ 
+                  fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                  fontWeight: 400
+                }}
               >
                 하루 2끼, 균형 잡힌 비건 식단을 문 앞까지.<br />
                 내 몸을 위한 가장 쉬운 선택.
               </p>
               
               {/* Key Points */}
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">🥗</span>
+              <div className="space-y-5 mb-10">
+                <div className="flex items-start gap-4 border-b border-[#111111] pb-4">
+                  <span className="text-2xl leading-none">🥗</span>
                   <div>
-                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                    <p 
+                      className="text-[#111111] font-bold mb-1" 
+                      style={{ 
+                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                        letterSpacing: '-0.01em',
+                        fontWeight: 700
+                      }}
+                    >
                       주 14끼 식단
                     </p>
-                    <p className="text-stone-600 text-sm">하루 2끼, 일주일치 완벽한 식단</p>
+                    <p 
+                      className="text-[#111111] text-xs"
+                      style={{ fontWeight: 400 }}
+                    >
+                      하루 2끼, 일주일치 완벽한 식단
+                    </p>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">🚚</span>
+                <div className="flex items-start gap-4 border-b border-[#111111] pb-4">
+                  <span className="text-2xl leading-none">🚚</span>
                   <div>
-                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                    <p 
+                      className="text-[#111111] font-bold mb-1" 
+                      style={{ 
+                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                        letterSpacing: '-0.01em',
+                        fontWeight: 700
+                      }}
+                    >
                       신선 새벽 배송
                     </p>
-                    <p className="text-stone-600 text-sm">매주 아침, 문 앞까지 신선하게</p>
+                    <p 
+                      className="text-[#111111] text-xs"
+                      style={{ fontWeight: 400 }}
+                    >
+                      매주 아침, 문 앞까지 신선하게
+                    </p>
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-3">
-                  <span className="text-2xl">🌱</span>
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl leading-none">🌱</span>
                   <div>
-                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                    <p 
+                      className="text-[#111111] font-bold mb-1" 
+                      style={{ 
+                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
+                        letterSpacing: '-0.01em',
+                        fontWeight: 700
+                      }}
+                    >
                       영양 밸런스 완벽 설계
                     </p>
-                    <p className="text-stone-600 text-sm">전문가가 설계한 균형 잡힌 식단</p>
+                    <p 
+                      className="text-[#111111] text-xs"
+                      style={{ fontWeight: 400 }}
+                    >
+                      전문가가 설계한 균형 잡힌 식단
+                    </p>
                   </div>
                 </div>
               </div>
               
-              {/* CTA Button */}
+              {/* CTA Button - Outline Style */}
               <Link
                 to="/store"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white transition-all hover:scale-105 hover:shadow-xl w-full lg:w-auto"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold text-[#111111] transition-all w-full lg:w-auto border-2 border-[#111111] hover:bg-[#111111] hover:text-white"
                 style={{ 
-                  backgroundColor: '#E54B1A',
-                  borderRadius: '0'
+                  borderRadius: '0',
+                  fontWeight: 700,
+                  letterSpacing: '-0.01em'
                 }}
               >
                 이번 주 식단 보러가기
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
