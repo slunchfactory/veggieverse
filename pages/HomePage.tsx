@@ -76,7 +76,6 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [currentX, setCurrentX] = useState(0);
-  const [currentStoreIndex, setCurrentStoreIndex] = useState(0);
 
   // 드래그 중이 아닐 때만 자동 슬라이드
   useEffect(() => {
@@ -297,7 +296,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       
       {/* 매거진 스타일 레이아웃 - Full-width Split Screen */}
       <div 
-        className="scroll-snap-section relative w-full lg:h-[calc(100vh-500px)] lg:min-h-[600px] overflow-hidden"
+        className="scroll-snap-section-flex relative w-full overflow-hidden section-spacing"
       >
         <div className="h-full flex flex-col lg:flex-row relative items-stretch">
           {/* 왼쪽 컬럼 - 텍스트 + 상품 그리드 (Black 배경) */}
@@ -417,8 +416,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </div>
 
       {/* 뉴스레터 섹션 */}
-      <div className="scroll-snap-section-flex bg-white min-h-screen">
-        <div className="page-container p-8">
+      <div className="scroll-snap-section-flex bg-white section-spacing">
+        <div className="page-container px-8">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
             <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>
@@ -458,146 +457,69 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         </div>
       </div>
 
-      {/* 지점 정보 섹션 */}
-      <div className="scroll-snap-section-flex bg-white min-h-screen">
-        <div className="relative">
-          <div className="relative overflow-hidden">
-            <div 
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${currentStoreIndex * 100}%)` }}
-            >
-              {/* 홍대점 */}
-              <div className="flex-shrink-0 w-full">
-                <div className="page-container">
-                  <div className="flex flex-col lg:flex-row">
-                    {/* 왼쪽 컬럼 - 텍스트 헤더만 (상품 그리드 없음) */}
-                    <div className="lg:w-[55%] p-8">
-                      {/* 텍스트 헤더 */}
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        {/* 타이틀 */}
-                        <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
-                          SLUNCH FACTORY<br />HONGDAE STORE
-                        </h2>
-                        
-                        {/* 설명 */}
-                        <div>
-                          <p className="text-[12px] text-stone-600 leading-relaxed">
-                            홍대의 활기찬 거리에서 만나볼 수 있는 슬런치 팩토리.
-                          </p>
-                          <p className="text-[12px] text-stone-600 mb-3">
-                            다양한 비건 메뉴와 함께 일상 속에서 발견하는 새로운 맛의 경험을 제공합니다.
-                          </p>
-                          <p className="text-[12px] text-stone-500 leading-relaxed">
-                            이곳을 방문하는 모든 분들이 세상에 존재하는 수많은 맛의 관점을 발견하고,
-                          </p>
-                          <p className="text-[12px] text-stone-500">
-                            자신만의 이야기를 만들어가길 바랍니다.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {/* 지점 상세 정보 */}
-                      <div className="space-y-2">
-                        <p className="text-[12px] font-medium text-stone-800">주소</p>
-                        <p className="text-[11px] text-stone-600">서울특별시 마포구 홍대로</p>
-                        <p className="text-[12px] font-medium text-stone-800 mt-4">운영시간</p>
-                        <p className="text-[11px] text-stone-600">월-일 11:00 - 22:00</p>
-                      </div>
-                    </div>
-                    
-                    {/* 오른쪽 컬럼 - 단색 배경 */}
-                    <div className="lg:w-[45%] flex justify-center items-start">
-                      <div 
-                        className="w-full"
-                        style={{ 
-                          aspectRatio: '4/5', 
-                          backgroundColor: '#54271d',
-                          maxWidth: '960px',
-                          maxHeight: '1200px'
-                        }}
-                      >
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      {/* 지점 정보 섹션 - CSS Grid 레이아웃 */}
+      <div className="scroll-snap-section-flex bg-white section-spacing">
+        <div className="page-container">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+            {/* 홍대점 */}
+            <div className="group cursor-pointer">
+              <div 
+                className="w-full mb-4 overflow-hidden relative"
+                style={{ 
+                  aspectRatio: '3/4', 
+                  backgroundColor: '#54271d',
+                  borderRadius: '4px'
+                }}
+              >
+                {/* 이미지 자리 - hover 시 확대 */}
+                <div 
+                  className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
+                  style={{ backgroundColor: '#54271d' }}
+                />
               </div>
-
-              {/* 더현대 삼성무역센터점 */}
-              <div className="flex-shrink-0 w-full">
-                <div className="page-container">
-                  <div className="flex flex-col lg:flex-row">
-                    {/* 왼쪽 컬럼 - 텍스트 헤더만 (상품 그리드 없음) */}
-                    <div className="lg:w-[55%] p-8">
-                      {/* 텍스트 헤더 */}
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                        {/* 타이틀 */}
-                        <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
-                          SLUNCH FACTORY<br />THE HYUNDAI<br />SAMSUNG TRADE CENTER STORE
-                        </h2>
-                        
-                        {/* 설명 */}
-                        <div>
-                          <p className="text-[12px] text-stone-600 leading-relaxed">
-                            삼성무역센터 더현대에 위치한 슬런치 팩토리.
-                          </p>
-                          <p className="text-[12px] text-stone-600 mb-3">
-                            오고 가는 사람들의 다양한 관점을 만날 수 있는 공간입니다.
-                          </p>
-                          <p className="text-[12px] text-stone-500 leading-relaxed">
-                            이곳을 방문하는 모든 분들이 세상에 존재하는 수많은 관점을 발견하고,
-                          </p>
-                          <p className="text-[12px] text-stone-500">
-                            자신만의 이야기를 만들어가길 바랍니다.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      {/* 지점 상세 정보 */}
-                      <div className="space-y-2">
-                        <p className="text-[12px] font-medium text-stone-800">주소</p>
-                        <p className="text-[11px] text-stone-600">서울특별시 강남구 테헤란로</p>
-                        <p className="text-[12px] font-medium text-stone-800 mt-4">운영시간</p>
-                        <p className="text-[11px] text-stone-600">월-일 10:00 - 21:00</p>
-                      </div>
-                    </div>
-                    
-                    {/* 오른쪽 컬럼 - 단색 배경 */}
-                    <div className="lg:w-[45%] flex justify-center items-start">
-                      <div 
-                        className="w-full"
-                        style={{ 
-                          aspectRatio: '4/5', 
-                          backgroundColor: '#54271d',
-                          maxWidth: '960px',
-                          maxHeight: '1200px'
-                        }}
-                      >
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <h3 className="text-[16px] font-bold text-stone-800 mb-2 leading-snug">
+                SLUNCH FACTORY<br />HONGDAE STORE
+              </h3>
+              <p className="text-[12px] text-stone-600 mb-3 leading-relaxed">
+                홍대의 활기찬 거리에서 만나볼 수 있는 슬런치 팩토리.
+              </p>
+              <div className="space-y-1">
+                <p className="text-[11px] font-medium text-stone-800">주소</p>
+                <p className="text-[10px] text-stone-600">서울특별시 마포구 홍대로</p>
+                <p className="text-[11px] font-medium text-stone-800 mt-3">운영시간</p>
+                <p className="text-[10px] text-stone-600">월-일 11:00 - 22:00</p>
               </div>
             </div>
 
-            {/* 좌우 화살표 버튼 */}
-            {currentStoreIndex > 0 && (
-              <button
-                onClick={() => setCurrentStoreIndex(currentStoreIndex - 1)}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-stone-300 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
-                aria-label="이전 지점"
+            {/* 더현대 삼성무역센터점 */}
+            <div className="group cursor-pointer">
+              <div 
+                className="w-full mb-4 overflow-hidden relative"
+                style={{ 
+                  aspectRatio: '3/4', 
+                  backgroundColor: '#54271d',
+                  borderRadius: '4px'
+                }}
               >
-                <ChevronLeft className="w-5 h-5 text-stone-700" />
-              </button>
-            )}
-            {currentStoreIndex < 1 && (
-              <button
-                onClick={() => setCurrentStoreIndex(currentStoreIndex + 1)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/80 hover:bg-white border border-stone-300 rounded-full flex items-center justify-center transition-colors shadow-lg z-10"
-                aria-label="다음 지점"
-              >
-                <ChevronRight className="w-5 h-5 text-stone-700" />
-              </button>
-            )}
+                {/* 이미지 자리 - hover 시 확대 */}
+                <div 
+                  className="absolute inset-0 transition-transform duration-300 group-hover:scale-105"
+                  style={{ backgroundColor: '#54271d' }}
+                />
+              </div>
+              <h3 className="text-[16px] font-bold text-stone-800 mb-2 leading-snug">
+                SLUNCH FACTORY<br />THE HYUNDAI<br />SAMSUNG TRADE CENTER STORE
+              </h3>
+              <p className="text-[12px] text-stone-600 mb-3 leading-relaxed">
+                삼성무역센터 더현대에 위치한 슬런치 팩토리.
+              </p>
+              <div className="space-y-1">
+                <p className="text-[11px] font-medium text-stone-800">주소</p>
+                <p className="text-[10px] text-stone-600">서울특별시 강남구 테헤란로</p>
+                <p className="text-[11px] font-medium text-stone-800 mt-3">운영시간</p>
+                <p className="text-[10px] text-stone-600">월-일 10:00 - 21:00</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

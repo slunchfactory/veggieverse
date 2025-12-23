@@ -42,7 +42,7 @@ const Layout: React.FC<{
   const bannerHeight = showTopBanner ? 32 : 0;
   
   return (
-    <div className="min-h-screen min-w-[360px] flex flex-col overflow-hidden">
+    <div className="min-h-screen min-w-[360px] flex flex-col">
       {/* 최상단 가입유도 배너 */}
       {showTopBanner && <TopBanner onClose={onCloseBanner} />}
       <Header 
@@ -53,13 +53,11 @@ const Layout: React.FC<{
         offsetTop={bannerHeight}
       />
       {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
-      <div className="flex-1 flex overflow-hidden" style={{ paddingTop: 64 + bannerHeight }}>
+      <div className="flex-1 flex" style={{ paddingTop: 64 + bannerHeight }}>
         {/* 좌측 메인 콘텐츠 */}
-        <div className="flex-1 flex flex-col overflow-hidden" style={{ zIndex: 0 }}>
-          <div className="flex-1 overflow-auto">
-            {children}
-          </div>
-        </div>
+        <main className="flex-1 flex flex-col" style={{ zIndex: 0 }}>
+          {children}
+        </main>
         {/* 우측 챗봇 패널 */}
         <div 
           className={`h-full overflow-hidden transition-all duration-300 ease-in-out ${
@@ -74,7 +72,7 @@ const Layout: React.FC<{
           )}
         </div>
       </div>
-      {/* Footer - 2열 레이아웃 밖에 배치 (VeganTestPage 제외) */}
+      {/* Footer - Sticky Footer 패턴 (VeganTestPage 제외) */}
       {shouldShowFooter && <Footer />}
     </div>
   );

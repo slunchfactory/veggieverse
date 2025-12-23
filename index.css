@@ -82,6 +82,23 @@ body {
 }
 
 /* ============================================
+   2-1. SECTION SPACING (섹션 간격)
+   ============================================ */
+
+/* 섹션 간격 - 모바일 60px, 데스크톱 100px */
+.section-spacing {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+@media (min-width: 1024px) {
+  .section-spacing {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
+
+/* ============================================
    3. HERO SECTION (스플릿 레이아웃)
    ============================================ */
 
