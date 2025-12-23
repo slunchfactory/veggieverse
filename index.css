@@ -85,17 +85,22 @@ body {
    2-1. SECTION SPACING (섹션 간격)
    ============================================ */
 
-/* 섹션 간격 - 모바일 60px, 데스크톱 100px */
+/* 섹션 간격 - 통일된 120px */
 .section-spacing {
-  padding-top: 60px;
-  padding-bottom: 60px;
+  padding-top: 120px;
+  padding-bottom: 120px;
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 768px) {
   .section-spacing {
-    padding-top: 100px;
-    padding-bottom: 100px;
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
+}
+
+/* 섹션 배경색 교차 (Warm Ivory) */
+.section-alt-bg {
+  background-color: #faf9f7;
 }
 
 /* ============================================
@@ -505,7 +510,41 @@ a:focus-visible {
 }
 
 /* ============================================
-   10. UTILITIES
+   10. PARALLAX & FLOATING EFFECTS
+   ============================================ */
+
+/* Parallax 효과를 위한 유틸리티 */
+.parallax-slow {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.parallax-medium {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.parallax-fast {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* 플로팅 애니메이션 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.float-animation {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ============================================
+   11. UTILITIES
    ============================================ */
 
 /* 모바일에서 여백 없이 꽉 채우는 풀블리드 유틸리티 */
