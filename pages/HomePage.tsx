@@ -270,6 +270,112 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </section>
 
       {/* ============================================
+          SLUNCH WEEKLY - Dedicated Feature Section
+          ============================================ */}
+      <section className="scroll-snap-section-flex section-spacing relative overflow-hidden" style={{ backgroundColor: '#fef9e7' }}>
+        <div className="page-container">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
+            {/* 왼쪽 영역 (60%) - 이미지 */}
+            <div className="w-full lg:w-[60%] relative">
+              <div 
+                className="w-full overflow-hidden relative"
+                style={{ 
+                  aspectRatio: '3/4', 
+                  backgroundColor: '#e5ded8',
+                  borderRadius: '4px'
+                }}
+              >
+                {/* 도시락/패키지 이미지 자리 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-stone-400 text-sm">슬런치 위클리 패키지 이미지</span>
+                </div>
+                
+                {/* 배달 모자 캐릭터 (Absolute Position) */}
+                <div 
+                  className="absolute -bottom-4 -right-4 w-24 h-24 lg:w-32 lg:h-32 z-10"
+                  style={{
+                    transform: `translateY(${scrollY * 0.15}px)`,
+                    transition: 'transform 0.1s ease-out'
+                  }}
+                >
+                  <img 
+                    src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
+                    alt="슬런치 캐릭터"
+                    className="w-full h-full object-contain drop-shadow-lg"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
+            <div className="w-full lg:w-[40%] flex flex-col justify-center">
+              <h2 
+                className="text-stone-900 font-bold mb-4 leading-tight"
+                style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)' }}
+              >
+                고민 없는 건강한 일주일,<br />
+                <span style={{ color: '#E54B1A' }}>Slunch Weekly</span>
+              </h2>
+              
+              <p 
+                className="text-stone-700 mb-8 leading-relaxed"
+                style={{ fontSize: 'clamp(1rem, 1.5vw, 1.125rem)' }}
+              >
+                하루 2끼, 균형 잡힌 비건 식단을 문 앞까지.<br />
+                내 몸을 위한 가장 쉬운 선택.
+              </p>
+              
+              {/* Key Points */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🥗</span>
+                  <div>
+                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                      주 14끼 식단
+                    </p>
+                    <p className="text-stone-600 text-sm">하루 2끼, 일주일치 완벽한 식단</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🚚</span>
+                  <div>
+                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                      신선 새벽 배송
+                    </p>
+                    <p className="text-stone-600 text-sm">매주 아침, 문 앞까지 신선하게</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🌱</span>
+                  <div>
+                    <p className="text-stone-900 font-semibold mb-1" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}>
+                      영양 밸런스 완벽 설계
+                    </p>
+                    <p className="text-stone-600 text-sm">전문가가 설계한 균형 잡힌 식단</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* CTA Button */}
+              <Link
+                to="/store"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-base font-bold text-white transition-all hover:scale-105 hover:shadow-xl w-full lg:w-auto"
+                style={{ 
+                  backgroundColor: '#E54B1A',
+                  borderRadius: '0'
+                }}
+              >
+                이번 주 식단 보러가기
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================
           SECTION 2: Best Menu/Goods (3:4 Grid)
           ============================================ */}
       <section className="scroll-snap-section-flex bg-white section-spacing">
