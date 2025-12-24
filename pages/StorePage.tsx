@@ -657,12 +657,11 @@ export const StorePage: React.FC = () => {
                     <button
                       key={tab}
                       onClick={() => handleTabClick(tab)}
-                      className={`w-full text-left py-3 transition-colors ${
+                      className={`w-full text-left py-3 transition-colors font-sans ${
                         activeTab === tab
-                          ? 'font-bold'
-                          : 'hover:opacity-70'
+                          ? 'font-bold text-slunch-black'
+                          : 'text-slunch-gray hover:opacity-70'
                       }`}
-                      className={`font-sans ${activeTab === tab ? 'text-slunch-black font-bold' : 'text-slunch-gray'}`}
                       style={{ fontSize: 'var(--font-size-ui)' }}
                     >
                       <span>{tab}</span>
@@ -737,8 +736,7 @@ export const StorePage: React.FC = () => {
                     return (
                       <label
                         key={c}
-                        className="flex items-center cursor-pointer hover:opacity-70"
-                        className="font-sans text-slunch-gray"
+                        className="flex items-center cursor-pointer hover:opacity-70 font-sans text-slunch-gray"
                         style={{ fontSize: 'var(--font-size-ui)',
                           letterSpacing: 'var(--letter-spacing-tight)',
                           gap: '12px',

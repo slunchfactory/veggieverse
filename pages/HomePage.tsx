@@ -449,12 +449,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 to="/store"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#111111] transition-all w-full lg:w-auto border-2 border-[#111111] hover:bg-[#111111] hover:text-white"
                 style={{ 
-                  fontSize: 'var(--font-size-ui)',
-                  fontWeight: 'var(--font-weight-ui)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
-                }}
-                style={{ 
                   borderRadius: '0',
+                  fontSize: 'var(--font-size-ui)',
                   fontWeight: 700,
                   letterSpacing: '-0.01em'
                 }}
