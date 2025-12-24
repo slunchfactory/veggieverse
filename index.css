@@ -1,7 +1,7 @@
-/* VeggieVerse Global Styles */
+/* VeggieVerse Global Styles - Grunge Punch Design System */
 
-/* Custom Font Import - Noto Sans KR + Montserrat (Futura style) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Montserrat:wght@500;700;800&display=swap');
+/* Font Import - Inter & Space Mono (md guide: Inter 400-800, Space Mono 400/700) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 /* ============================================
    EDITORIAL MINIMALIST DESIGN TOKENS
@@ -26,28 +26,45 @@
   --line-height-body: 1.6;
   --line-height-ui: 1.5;
   
-  /* Font Family - Clean Sans-serif */
-  --font-primary: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-accent: 'Montserrat', sans-serif;
+  /* Font Family - Grunge Punch */
+  --font-primary: 'Inter', sans-serif;
+  --font-accent: 'Space Mono', monospace;
   
-  /* Color Palette - Monotone (Grayscale) */
-  /* Background Colors */
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F5F5F5;
+  /* Color Palette - Grunge Punch (md guide compliant) */
+  /* Core Colors */
+  --color-black: #0D0D0D;
+  --color-gray: #6B6B6B;
+  --color-white: #FAF9F6;
+  --color-lime: #BFFF00;
+  --color-olive: #3D4A3A;
   
-  /* Text Colors - Monotone */
-  --color-text-primary: #000000;    /* Black for Headings */
-  --color-text-secondary: #333333;  /* Dark Gray for Body */
-  --color-text-muted: #888888;      /* Medium Gray for Metadata */
-  --color-text-inverse: #FFFFFF;    /* White for dark backgrounds */
+  /* Extended Colors */
+  --color-gray-light: #9A9A9A;
+  --color-gray-dark: #3A3A3A;
+  --color-lime-dark: #9ACC00;
+  --color-lime-light: #D4FF4D;
+  --color-white-pure: #FFFFFF;
   
-  /* Accent Colors - Black for CTAs */
-  --color-accent-primary: #000000;   /* Black */
-  --color-accent-hover: #333333;     /* Dark Gray on hover */
+  /* Semantic Colors */
+  --color-success: #BFFF00;
+  --color-error: #FF4444;
+  --color-warning: #FFB800;
+  --color-info: #6B6B6B;
   
-  /* Border Colors - Light Gray */
-  --color-border: #E0E0E0;          /* Light Gray 1px solid */
-  --color-border-active: #000000;   /* Black for active states */
+  /* Overlay */
+  --overlay-dark: rgba(13, 13, 13, 0.7);
+  --overlay-light: rgba(250, 249, 246, 0.9);
+  
+  /* Legacy aliases for compatibility */
+  --color-bg-primary: #FAF9F6;
+  --color-bg-secondary: #FFFFFF;
+  --color-text-primary: #0D0D0D;
+  --color-text-secondary: #6B6B6B;
+  --color-text-muted: #9A9A9A;
+  --color-text-inverse: #FAF9F6;
+  --color-accent-primary: #BFFF00;
+  --color-accent-hover: #9ACC00;
+  --color-accent-olive: #3D4A3A;
   
   /* Borders */
   --border-width: 1px;
@@ -102,9 +119,9 @@ body {
   overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
-  color: #1A1A1A;
-  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #FAF9F6; /* Slunch White - Raw White */
+  color: #0D0D0D; /* Slunch Black - True Black */
+  font-family: 'Inter', sans-serif;
   position: relative;
 }
 
@@ -433,10 +450,7 @@ a:focus-visible {
 }
 
 /* Selection Color */
-::selection {
-  background-color: #fde68a;
-  color: #1c1917;
-}
+/* Selection style is defined in GRUNGE PUNCH UTILITY CLASSES section */
 
 /* 탭바 요소에 적용할 CSS */
 .tab-menu {
@@ -447,23 +461,7 @@ a:focus-visible {
    8. SCROLLBAR
    ============================================ */
 
-/* 스크롤바 스타일 */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f5f5f4;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d6d3d1;
-  border-radius: 0;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #a8a29e;
-}
+/* 스크롤바 스타일 (md guide compliant) - 아래 GRUNGE PUNCH UTILITY CLASSES 섹션에 정의됨 */
 
 .no-scrollbar {
   -ms-overflow-style: none; /* IE and Edge */
@@ -675,15 +673,6 @@ a:focus-visible {
   filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.12));
 }
 
-/* 호버 시 부드러운 상승 효과 */
-.hover-lift {
-  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hover-lift:hover {
-  transform: translateY(-15px) scale(1.05);
-}
-
 /* 헤더 텍스트 blend 효과 - 배경에 따라 색상 반전 */
 .blend-text {
   color: white !important;
@@ -700,5 +689,75 @@ a:focus-visible {
   100% {
     transform: translate3d(-50%, 0, 0);
   }
+}
+
+/* ============================================
+   GRUNGE PUNCH UTILITY CLASSES
+   ============================================ */
+
+/* Selection Style */
+::selection {
+  background: #BFFF00;
+  color: #0D0D0D;
+}
+
+/* Hover Lift Effect */
+.hover-lift {
+  transition: transform 0.15s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Hover Shadow Effect */
+.hover-shadow {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 8px 8px 0 #0D0D0D;
+  transform: translateY(-4px);
+}
+
+/* Focus Lime State */
+.focus-lime:focus {
+  outline: none;
+  border-color: #BFFF00 !important;
+  box-shadow: 4px 4px 0 #BFFF00;
+}
+
+/* Hover Lime Effect */
+.hover-lime:hover {
+  background: #BFFF00 !important;
+  color: #0D0D0D !important;
+}
+
+/* Hover Text Lime Effect */
+.hover-text-lime:hover {
+  color: #BFFF00 !important;
+}
+
+/* Nav Hover Effect */
+.nav-hover:hover {
+  background: #0D0D0D !important;
+  color: #BFFF00 !important;
+}
+
+/* Scrollbar Styles (md guide compliant) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAF9F6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6B6B6B;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0D0D0D;
 }
 

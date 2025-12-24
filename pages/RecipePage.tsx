@@ -80,14 +80,14 @@ const popularRecipes: Recipe[] = [
   },
 ];
 
-// 카테고리별 색상 매핑 (모노톤)
+// 카테고리별 색상 매핑 (Grunge Punch - no longer used, kept for compatibility)
 const categoryColors: Record<string, { text: string; bg: string }> = {
-  new: { text: '#000000', bg: '#F5F5F5' },
-  lunch: { text: '#000000', bg: '#E0E0E0' },
-  dessert: { text: '#000000', bg: '#F5F5F5' },
-  korean: { text: '#000000', bg: '#E0E0E0' },
-  drink: { text: '#000000', bg: '#F5F5F5' },
-  date: { text: '#000000', bg: '#F5F5F5' },
+  new: { text: '#0D0D0D', bg: '#FAF9F6' },
+  lunch: { text: '#0D0D0D', bg: '#FFFFFF' },
+  dessert: { text: '#0D0D0D', bg: '#FAF9F6' },
+  korean: { text: '#0D0D0D', bg: '#FFFFFF' },
+  drink: { text: '#0D0D0D', bg: '#FAF9F6' },
+  date: { text: '#0D0D0D', bg: '#FAF9F6' },
 };
 
 // 스피릿 타입별 태그 매핑
@@ -263,19 +263,11 @@ const HallOfFameMarquee: React.FC = () => {
   const duplicatedRecipes = [...hallOfFameRecipes, ...hallOfFameRecipes];
 
   return (
-    <section className="relative w-full" style={{ backgroundColor: '#111111' }}>
+    <section className="relative w-full" style={{ backgroundColor: '#0D0D0D' }}>
       {/* Layer 1: Top Static Title */}
       <div className="relative z-20 w-full text-center py-12">
         <div className="container mx-auto px-4 md:px-8 max-w-screen-xl">
-          <h2 
-            className="text-white font-bold"
-            style={{ 
-              fontSize: '48px',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              lineHeight: '1.2'
-            }}
-          >
+          <h2 className="font-mono font-bold text-5xl" style={{ color: '#FFFFFF' }}>
             Most Popular Meals and Recipes
           </h2>
         </div>
@@ -333,16 +325,7 @@ const HallOfFameMarquee: React.FC = () => {
                 />
                 {/* Recipe Name - Center */}
                 <div className="absolute inset-0 flex items-center justify-center p-4">
-                  <h3 
-                    className="text-white font-bold text-center"
-                    style={{ 
-                      fontSize: '15px',
-                      fontWeight: 700,
-                      letterSpacing: '-0.02em',
-                      lineHeight: '1.4',
-                      textShadow: '0 2px 8px rgba(0,0,0,0.5)'
-                    }}
-                  >
+                  <h3 className="font-sans font-bold text-center text-sm" style={{ color: '#FFFFFF' }}>
                     {recipe.title}
                   </h3>
                 </div>
@@ -357,15 +340,38 @@ const HallOfFameMarquee: React.FC = () => {
         <div className="container mx-auto px-4 md:px-8 max-w-screen-xl flex justify-center gap-4">
           <Link 
             to="/recipe/hall-of-fame" 
-            className="inline-flex items-center gap-2 px-6 py-3 font-medium transition-all hover:opacity-90 text-white border-2 border-white"
-            style={{ backgroundColor: 'transparent' }}
+            className="inline-flex items-center gap-2 px-6 py-3 font-sans font-bold transition-all hover-lift border-2"
+            style={{ 
+              color: '#FFFFFF', 
+              borderColor: '#FFFFFF',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.color = '#0D0D0D';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#FFFFFF';
+            }}
           >
             <Trophy className="w-4 h-4" />
             <span>명예의 전당</span>
           </Link>
           <button 
-            className="inline-flex items-center gap-2 px-6 py-3 border-2 font-medium transition-all hover:opacity-80 text-white"
-            style={{ borderColor: '#FFFFFF', color: '#FFFFFF', backgroundColor: 'transparent' }}
+            className="inline-flex items-center gap-2 px-6 py-3 border-2 font-sans font-bold transition-all hover-lift"
+            style={{ 
+              color: '#FFFFFF', 
+              borderColor: '#FFFFFF',
+              backgroundColor: 'transparent',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#FFFFFF';
+              e.currentTarget.style.color = '#0D0D0D';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
+              e.currentTarget.style.color = '#FFFFFF';
+            }}
           >
             <Upload className="w-4 h-4" />
             <span>레시피 작성</span>
@@ -388,23 +394,29 @@ const HallOfFameMarquee: React.FC = () => {
   );
 };
 
-// Recipe Card Component (Grid)
+// Recipe Card Component (Grid) - Grunge Punch Style
 const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
   return (
     <Link
       to={`/recipe/${recipe.id}`}
-      className="group block border border-[#E0E0E0] hover:border-black transition-colors"
-      style={{ borderWidth: '1px', borderStyle: 'solid' }}
+      className="block border-2 hover-shadow"
+      style={{ 
+        backgroundColor: '#FFFFFF',
+        borderColor: '#0D0D0D'
+      }}
     >
       {/* Thumbnail - 4:3 Aspect Ratio */}
       <div 
         className="relative w-full overflow-hidden"
-        style={{ aspectRatio: '4/3', backgroundColor: '#F5F5F5' }}
+        style={{ 
+          aspectRatio: '4/3',
+          backgroundColor: '#FAF9F6'
+        }}
       >
         <img
           src={getRecipeThumbnailImage(recipe.id)}
           alt={recipe.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover"
           loading="lazy"
           decoding="async"
           onError={(e) => {
@@ -416,32 +428,17 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
       
       {/* Card Content */}
       <div className="p-4">
-        <h3 
-          className="font-medium mb-2"
-          style={{ 
-            fontSize: '18px',
-            fontWeight: 500,
-            letterSpacing: '-0.02em',
-            lineHeight: '1.4',
-            color: '#000000'
-          }}
-        >
+        <h3 className="font-mono font-bold mb-2 text-lg" style={{ color: '#0D0D0D' }}>
           {recipe.title}
         </h3>
-        <p 
-          className="text-[#888888] mb-2"
-          style={{ 
-            fontSize: '15px',
-            fontWeight: 400,
-            letterSpacing: '-0.02em',
-            lineHeight: '1.6'
-          }}
-        >
-          {recipe.description}
-        </p>
+        {recipe.description && (
+          <p className="font-sans text-sm mb-2" style={{ color: '#6B6B6B' }}>
+            {recipe.description}
+          </p>
+        )}
         {recipe.likes !== undefined && (
-          <div className="flex items-center gap-1 text-[#888888]" style={{ fontSize: '15px' }}>
-            <Heart className="w-3.5 h-3.5 fill-black text-black" />
+          <div className="flex items-center gap-1 font-sans text-sm" style={{ color: '#6B6B6B' }}>
+            <Heart className="w-3.5 h-3.5" style={{ fill: '#0D0D0D', color: '#0D0D0D' }} />
             <span>{recipe.likes.toLocaleString()}</span>
           </div>
         )}
@@ -501,20 +498,11 @@ const RecipePage: React.FC = () => {
   }, [spiritType]);
 
   return (
-    <main className="w-full min-h-screen bg-white">
+    <main className="w-full min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
       {/* Hero Section */}
       <section className="w-full py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-8 max-w-screen-xl text-center">
-          <h1 
-            className="font-bold"
-            style={{ 
-              fontSize: '48px',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              lineHeight: '1.2',
-              color: '#000000'
-            }}
-          >
+          <h1 className="font-mono font-bold text-5xl md:text-6xl" style={{ color: '#0D0D0D' }}>
             슬런치가 추천하는 겨울 비건 레시피
           </h1>
         </div>
@@ -524,17 +512,29 @@ const RecipePage: React.FC = () => {
       <HallOfFameMarquee />
 
       {/* Category Filter */}
-      <section className="w-full py-8 border-b" style={{ borderColor: '#E0E0E0', borderWidth: '1px' }}>
+      <section className="w-full py-8 border-b-2" style={{ borderColor: '#0D0D0D' }}>
         <div className="container mx-auto px-4 md:px-8 max-w-screen-xl">
           <div className="flex flex-wrap gap-4">
             <button
               onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 font-medium transition-colors ${
+              className={`px-4 py-2 font-sans font-medium transition-colors ${
                 selectedCategory === 'all' 
-                  ? 'font-bold underline underline-offset-4 text-black' 
-                  : 'text-[#888888] hover:text-black'
+                  ? 'font-bold underline underline-offset-4' 
+                  : ''
               }`}
-              style={{ fontSize: '15px', letterSpacing: '-0.02em' }}
+              style={{ 
+                color: selectedCategory === 'all' ? '#0D0D0D' : '#6B6B6B' 
+              }}
+              onMouseEnter={(e) => {
+                if (selectedCategory !== 'all') {
+                  e.currentTarget.style.color = '#0D0D0D';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (selectedCategory !== 'all') {
+                  e.currentTarget.style.color = '#6B6B6B';
+                }
+              }}
             >
               전체
             </button>
@@ -542,12 +542,24 @@ const RecipePage: React.FC = () => {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 font-medium transition-colors ${
+                className={`px-4 py-2 font-sans font-medium transition-colors ${
                   selectedCategory === category.id 
-                    ? 'font-bold underline underline-offset-4 text-black' 
-                    : 'text-[#888888] hover:text-black'
+                    ? 'font-bold underline underline-offset-4' 
+                    : ''
                 }`}
-                style={{ fontSize: '15px', letterSpacing: '-0.02em' }}
+                style={{ 
+                  color: selectedCategory === category.id ? '#0D0D0D' : '#6B6B6B' 
+                }}
+                onMouseEnter={(e) => {
+                  if (selectedCategory !== category.id) {
+                    e.currentTarget.style.color = '#0D0D0D';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedCategory !== category.id) {
+                    e.currentTarget.style.color = '#6B6B6B';
+                  }
+                }}
               >
                 {category.title}
               </button>
@@ -562,16 +574,7 @@ const RecipePage: React.FC = () => {
           {/* 스피릿 Pick 섹션 */}
           {spiritType && spiritPickRecipes.length > 0 && (
             <div className="mb-16">
-              <h2 
-                className="font-bold mb-8"
-                style={{ 
-                  fontSize: '48px',
-                  fontWeight: 700,
-                  letterSpacing: '-0.02em',
-                  lineHeight: '1.2',
-                  color: '#000000'
-                }}
-              >
+              <h2 className="font-mono font-bold mb-8 text-5xl" style={{ color: '#0D0D0D' }}>
                 {spiritName}님과 같은 스피릿들이 가장 많이 좋아한 레시피
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -591,7 +594,7 @@ const RecipePage: React.FC = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-[#888888]" style={{ fontSize: '16px' }}>
+              <p className="font-sans text-base" style={{ color: '#6B6B6B' }}>
                 선택한 카테고리에 해당하는 레시피가 없습니다.
               </p>
             </div>

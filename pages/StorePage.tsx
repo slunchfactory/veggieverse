@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
 import { getProductThumbnailImages } from '../utils/productImages';
+import { Badge } from '../components/ui/Badge';
 
 // 상품 타입 정의
 interface Product {
@@ -17,6 +18,7 @@ interface Product {
   description?: string;
   externalUrl?: string;
   soldOut?: boolean;
+  statusBadge?: 'NEW' | 'BEST' | 'LIMITED' | 'SEASONAL' | 'SOLD_OUT';
 }
 
 // 슬런치 공식 사이트 기반 상품 데이터
@@ -97,6 +99,7 @@ const PRODUCTS: Product[] = [
     category: '밀키트',
     description: '슬런치 팩토리의 베스트 셀러',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 7,
@@ -110,6 +113,7 @@ const PRODUCTS: Product[] = [
     category: '베이커리',
     description: '상큼한 자두를 올린 프리미엄 비건 타르트',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 8,
@@ -194,6 +198,7 @@ const PRODUCTS: Product[] = [
     category: '밀키트',
     description: '비건 페퍼로니와 신선한 채소를 올린 비건 피자',
     externalUrl: 'https://slunch.co.kr/category/%EC%8A%A4%ED%86%A0%EC%96%B4/24/',
+    soldOut: true,
   },
   {
     id: 15,
@@ -294,9 +299,15 @@ export const StorePage: React.FC = () => {
   // 현재 선택된 정렬 옵션 라벨
   const currentSortLabel = SORT_OPTIONS.find(opt => opt.value === sortType)?.label || '기본 정렬';
 
-  // 정렬된 상품 목록
+  // 정렬된 상품 목록 (각 상품에 랜덤 상태 뱃지 할당)
   const sortedProducts = useMemo(() => {
-    const products = [...PRODUCTS].filter((p) => {
+    const statusBadges: Array<'NEW' | 'BEST' | 'LIMITED' | 'SEASONAL'> = ['NEW', 'BEST', 'LIMITED', 'SEASONAL'];
+    
+    const products = [...PRODUCTS].map((p, index) => ({
+      ...p,
+      // 상품 ID를 기반으로 일관된 랜덤 뱃지 할당 (페이지 새로고침 시에도 동일하게 유지)
+      statusBadge: p.soldOut ? 'SOLD_OUT' as const : (p.statusBadge || statusBadges[p.id % statusBadges.length]),
+    })).filter((p) => {
       const matchCuisine = selectedCuisines.length === 0 || selectedCuisines.includes(p.cuisine);
       const matchSpectrum = spectrum === '전체' || p.spectrum === spectrum;
       const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(p.category);
@@ -397,14 +408,14 @@ export const StorePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen bg-slunch-white">
       {/* Hero Section - Split Grid Layout (60-70% Main Video, 30-40% 2x2 Grid) */}
       {activeTab === 'ALL' && (
-        <div className="w-full border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+        <div className="w-full border-b-2 border-slunch-black">
           {/* Desktop: Flex Row Layout */}
           <div className="hidden lg:flex lg:flex-row">
             {/* Left Column - Main Video (50%) */}
-            <div className="w-1/2 relative overflow-hidden border-r" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+            <div className="w-1/2 relative overflow-hidden border-r-2 border-slunch-black">
               <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
                 <iframe
                   className="absolute inset-0 w-full h-full"
@@ -424,7 +435,7 @@ export const StorePage: React.FC = () => {
             </div>
             
             {/* Right Column - 추천 콘텐츠 영역 (50%) */}
-            <div className="w-1/2 bg-[#F5F5F5] flex-shrink-0">
+            <div className="w-1/2 bg-slunch-white flex-shrink-0">
               {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
               <div className="hidden lg:flex p-5 pb-8 gap-4 h-full overflow-y-auto">
                 {/* 왼쪽 열 */}
@@ -432,8 +443,8 @@ export const StorePage: React.FC = () => {
                   {algorithmRecommended.slice(0, 2).map((product, idx) => (
                     <div key={product.id} className="cursor-pointer group flex flex-col">
                       <div 
-                        className="relative w-full overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
+                        className="relative w-full overflow-hidden bg-slunch-black"
+                        style={{ aspectRatio: '3/4' }}
                       >
                         <iframe
                           className="absolute w-full h-full"
@@ -445,16 +456,16 @@ export const StorePage: React.FC = () => {
                         />
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-black" />
+                          <div className="w-8 h-8 bg-slunch-lime flex items-center justify-center">
+                            <Sparkles className="w-3.5 h-3.5 text-slunch-black" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-black">
-                        <h4 className="text-[17px] font-bold text-white leading-tight group-hover:underline">
+                      <div className="pt-3 bg-slunch-black">
+                        <h4 className="font-mono font-bold text-slunch-white-pure leading-tight group-hover:underline text-base">
                           {product.name}
                         </h4>
-                        <p className="text-[12px] text-white/70 mt-2 line-clamp-2">
+                        <p className="font-sans text-slunch-gray-light mt-2 line-clamp-2 text-xs">
                           {product.spectrum} 식단에 어울리는 메뉴
                         </p>
                         <div className="flex items-center mt-3">
@@ -465,11 +476,11 @@ export const StorePage: React.FC = () => {
                             <Heart 
                               className={`w-4 h-4 transition-colors ${
                                 likedItems.has(product.id) 
-                                  ? 'fill-red-500 text-red-500' 
-                                  : 'text-stone-500 hover:text-red-400'
+                                  ? 'fill-slunch-lime text-slunch-lime' 
+                                  : 'text-slunch-gray hover:text-slunch-lime'
                               }`} 
                             />
-                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
+                            <span className={`font-sans text-xs ${likedItems.has(product.id) ? 'text-slunch-white-pure font-medium' : 'text-slunch-gray'}`}>
                               {formatLikeCount(likeCounts[product.id] || 0)}
                             </span>
                           </button>
@@ -484,8 +495,8 @@ export const StorePage: React.FC = () => {
                   {algorithmRecommended.slice(2, 4).map((product, idx) => (
                     <div key={product.id} className="cursor-pointer group flex flex-col">
                       <div 
-                        className="relative w-full overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
+                        className="relative w-full overflow-hidden bg-slunch-black"
+                        style={{ aspectRatio: '3/4' }}
                       >
                         <iframe
                           className="absolute w-full h-full"
@@ -497,16 +508,16 @@ export const StorePage: React.FC = () => {
                         />
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-black" />
+                          <div className="w-8 h-8 bg-slunch-lime flex items-center justify-center">
+                            <Sparkles className="w-3.5 h-3.5 text-slunch-black" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-black">
-                        <h4 className="text-[17px] font-bold text-white leading-tight group-hover:underline">
+                      <div className="pt-3 bg-slunch-black">
+                        <h4 className="font-mono font-bold text-slunch-white-pure leading-tight group-hover:underline text-base">
                           {product.name}
                         </h4>
-                        <p className="text-[12px] text-white/70 mt-2 line-clamp-2">
+                        <p className="font-sans text-slunch-gray-light mt-2 line-clamp-2 text-xs">
                           {product.spectrum} 식단에 어울리는 메뉴
                         </p>
                         <div className="flex items-center mt-3">
@@ -517,11 +528,11 @@ export const StorePage: React.FC = () => {
                             <Heart 
                               className={`w-4 h-4 transition-colors ${
                                 likedItems.has(product.id) 
-                                  ? 'fill-red-500 text-red-500' 
-                                  : 'text-stone-500 hover:text-red-400'
+                                  ? 'fill-slunch-lime text-slunch-lime' 
+                                  : 'text-slunch-gray hover:text-slunch-lime'
                               }`} 
                             />
-                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
+                            <span className={`font-sans text-xs ${likedItems.has(product.id) ? 'text-slunch-white-pure font-medium' : 'text-slunch-gray'}`}>
                               {formatLikeCount(likeCounts[product.id] || 0)}
                             </span>
                           </button>
@@ -537,7 +548,7 @@ export const StorePage: React.FC = () => {
           {/* Mobile: Stack Vertically */}
           <div className="flex flex-col lg:hidden">
             {/* Main Video on Top */}
-            <div className="relative w-full overflow-hidden border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+            <div className="relative w-full overflow-hidden border-b-2 border-slunch-black">
               <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
                 <iframe
                   className="absolute inset-0 w-full h-full"
@@ -557,14 +568,14 @@ export const StorePage: React.FC = () => {
             </div>
             
             {/* 추천 콘텐츠 영역 Below (Mobile) */}
-            <div className="lg:hidden p-4 sm:p-5 bg-[#F5F5F5]">
+            <div className="lg:hidden p-4 sm:p-5 bg-slunch-white">
               <div className="grid grid-cols-2 gap-3">
                 {algorithmRecommended.slice(0, 4).map((product, idx) => (
                   <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
                     {/* 카드 영상 (왼쪽) */}
                     <div 
-                      className="relative w-[45%] flex-shrink-0 overflow-hidden bg-stone-900"
-                      style={{ aspectRatio: '3/4', borderRadius: '4px' }}
+                      className="relative w-[45%] flex-shrink-0 overflow-hidden bg-slunch-black"
+                      style={{ aspectRatio: '3/4' }}
                     >
                       <iframe
                         className="absolute w-full h-full"
@@ -576,18 +587,18 @@ export const StorePage: React.FC = () => {
                       />
                       {/* 추천 아이콘 (좌측 상단) */}
                       <div className="absolute top-2 left-2 z-10">
-                        <div className="w-6 h-6 rounded-none bg-stone-800 flex items-center justify-center">
-                          <Sparkles className="w-3 h-3 text-black" />
+                        <div className="w-6 h-6 bg-slunch-lime flex items-center justify-center">
+                          <Sparkles className="w-3 h-3 text-slunch-black" />
                         </div>
                       </div>
                     </div>
                     {/* 카드 정보 (오른쪽) */}
                     <div className="flex-1 flex flex-col justify-between py-1">
                       <div>
-                        <h4 className="text-[13px] font-bold text-stone-900 leading-tight line-clamp-2 group-hover:underline">
+                        <h4 className="font-mono font-bold text-slunch-black leading-tight line-clamp-2 group-hover:underline text-xs">
                           {product.name}
                         </h4>
-                        <p className="text-[10px] text-stone-600 mt-1 line-clamp-2">
+                        <p className="font-sans text-slunch-gray mt-1 line-clamp-2 text-[10px]">
                           {product.spectrum} 식단에 어울리는 메뉴
                         </p>
                       </div>
@@ -599,11 +610,11 @@ export const StorePage: React.FC = () => {
                           <Heart 
                             className={`w-3.5 h-3.5 transition-colors ${
                               likedItems.has(product.id) 
-                                ? 'fill-black text-black' 
-                                : 'text-stone-500 hover:text-black'
+                                ? 'fill-slunch-lime text-slunch-lime' 
+                                : 'text-slunch-gray hover:text-slunch-lime'
                             }`} 
                           />
-                          <span className={`text-[10px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
+                          <span className={`font-sans text-[10px] ${likedItems.has(product.id) ? 'text-slunch-black font-medium' : 'text-slunch-gray'}`}>
                             {formatLikeCount(likeCounts[product.id] || 0)}
                           </span>
                         </button>
@@ -628,19 +639,16 @@ export const StorePage: React.FC = () => {
               position: 'sticky',
               top: 'calc(var(--header-height) + var(--spacing-md))',
               alignSelf: 'flex-start',
-              borderRight: 'var(--border-width) var(--border-style) var(--color-border)',
+              borderRight: '2px solid #0D0D0D',
               paddingRight: 'var(--spacing-lg)'
             }}
           >
-            <div className="space-y-8" style={{ color: 'var(--color-text-primary)' }}>
+            <div className="space-y-8 text-slunch-black">
               {/* 카테고리 탭 (세로형) */}
               <div>
                 <div 
-                  className="mb-3 pb-2 font-semibold"
-                  style={{ 
-                    fontSize: 'var(--font-size-ui)',
-                    borderBottom: 'var(--border-width) var(--border-style) var(--color-border-active)'
-                  }}
+                  className="mb-3 pb-2 font-sans font-semibold border-b-2 border-slunch-black"
+                  style={{ fontSize: 'var(--font-size-ui)' }}
                 >
                   카테고리
                 </div>
@@ -654,20 +662,12 @@ export const StorePage: React.FC = () => {
                           ? 'font-bold'
                           : 'hover:opacity-70'
                       }`}
-                      style={{ 
-                        fontSize: 'var(--font-size-ui)',
-                        color: activeTab === tab 
-                          ? 'var(--color-text-primary)' 
-                          : 'var(--color-text-secondary)'
-                      }}
+                      className={`font-sans ${activeTab === tab ? 'text-slunch-black font-bold' : 'text-slunch-gray'}`}
+                      style={{ fontSize: 'var(--font-size-ui)' }}
                     >
                       <span>{tab}</span>
-                      <span 
-                        className="ml-1"
-                        style={{ 
-                          fontSize: 'var(--font-size-body)',
-                          color: 'var(--color-text-muted)'
-                        }}
+                      <span className="ml-1 font-sans text-slunch-gray-light"
+                        style={{ fontSize: 'var(--font-size-body)' }}
                       >
                         {getCategoryCount(tab)}
                       </span>
@@ -709,10 +709,10 @@ export const StorePage: React.FC = () => {
                         className="hidden"
                       />
                       <span
-                        className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
                           spectrum === opt
-                            ? 'border-black bg-black'
-                            : 'border-stone-300 hover:border-stone-400'
+                            ? 'border-slunch-black bg-slunch-black'
+                            : 'border-slunch-gray hover:border-slunch-black'
                         }`}
                       >
                         {spectrum === opt && <span className="w-2 h-2 rounded-full bg-white"></span>}
@@ -738,9 +738,8 @@ export const StorePage: React.FC = () => {
                       <label
                         key={c}
                         className="flex items-center cursor-pointer hover:opacity-70"
-                        style={{ 
-                          fontSize: 'var(--font-size-ui)',
-                          color: 'var(--color-text-secondary)',
+                        className="font-sans text-slunch-gray"
+                        style={{ fontSize: 'var(--font-size-ui)',
                           letterSpacing: 'var(--letter-spacing-tight)',
                           gap: '12px',
                           paddingTop: '4px',
@@ -754,11 +753,11 @@ export const StorePage: React.FC = () => {
                           className="hidden"
                         />
                         <span
-                          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                            checked
-                              ? 'border-black bg-black'
-                              : 'border-stone-300 hover:border-stone-400'
-                          }`}
+                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                          checked
+                            ? 'border-slunch-black bg-slunch-black'
+                            : 'border-slunch-gray hover:border-slunch-black'
+                        }`}
                         >
                           {checked && <Check className="w-2.5 h-2.5 text-white" />}
                         </span>
@@ -808,11 +807,11 @@ export const StorePage: React.FC = () => {
                             className="hidden"
                           />
                           <span
-                            className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                              checked
-                                ? 'border-black bg-black'
-                                : 'border-stone-300 hover:border-stone-400'
-                            }`}
+                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                          checked
+                            ? 'border-slunch-black bg-slunch-black'
+                            : 'border-slunch-gray hover:border-slunch-black'
+                        }`}
                           >
                             {checked && <Check className="w-2.5 h-2.5 text-white" />}
                           </span>
@@ -833,13 +832,8 @@ export const StorePage: React.FC = () => {
               <div className="relative inline-block">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-between gap-8 px-4 py-2.5 bg-white transition-colors min-w-[180px] hover:bg-black hover:text-white"
-                  style={{ 
-                    fontSize: 'var(--font-size-ui)',
-                    color: 'var(--color-text-primary)',
-                    border: 'var(--border-width) var(--border-style) var(--color-border)',
-                    borderRadius: 'var(--border-radius)'
-                  }}
+                  className="flex items-center justify-between gap-8 px-4 py-2.5 bg-slunch-white-pure border-2 border-slunch-black transition-colors min-w-[180px] hover-lift hover:bg-slunch-black hover:text-slunch-white-pure font-sans"
+                  style={{ fontSize: 'var(--font-size-ui)' }}
                 >
                   <span className="flex items-center gap-1.5">
                     {sortType === 'algorithm' && <Sparkles className="w-3 h-3" />}
@@ -855,27 +849,17 @@ export const StorePage: React.FC = () => {
                       onClick={() => setIsDropdownOpen(false)}
                     />
                     
-                    <div 
-                      className="absolute top-full left-0 mt-1 bg-white z-20 min-w-[180px]"
-                      style={{
-                        border: 'var(--border-width) var(--border-style) var(--color-border)'
-                      }}
-                    >
+                    <div className="absolute top-full left-0 mt-1 bg-slunch-white-pure border-2 border-slunch-black z-20 min-w-[180px]">
                       {SORT_OPTIONS.map((option) => (
                         <button
                           key={option.value}
                           onClick={() => handleSortChange(option.value as SortType)}
-                          className={`w-full text-left px-4 py-2.5 transition-colors flex items-center gap-1.5 ${
+                          className={`w-full text-left px-4 py-2.5 transition-colors flex items-center gap-1.5 font-sans ${
                             sortType === option.value
-                              ? 'font-bold'
-                              : 'hover:bg-black hover:text-white'
+                              ? 'font-bold text-slunch-black'
+                              : 'text-slunch-gray hover:bg-slunch-black hover:text-slunch-white-pure'
                           }`}
-                          style={{ 
-                            fontSize: 'var(--font-size-ui)',
-                            color: sortType === option.value 
-                              ? 'var(--color-text-primary)' 
-                              : 'var(--color-text-secondary)'
-                          }}
+                          style={{ fontSize: 'var(--font-size-ui)' }}
                         >
                           {option.icon && <Sparkles className="w-3 h-3" />}
                           {option.label}
@@ -887,14 +871,10 @@ export const StorePage: React.FC = () => {
               </div>
             </div>
 
-            {/* 상품 그리드 - Editorial Minimalist Grid with proper border overlap handling */}
+            {/* 상품 그리드 - Grunge Punch Grid */}
             <div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-              style={{ 
-                gap: 0,
-                borderRight: 'var(--border-width) var(--border-style) var(--color-border)',
-                borderBottom: 'var(--border-width) var(--border-style) var(--color-border)'
-              }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-r-2 border-b-2 border-slunch-black"
+              style={{ gap: 0 }}
             >
               {sortedProducts.map((product, index) => (
                 <ProductCard 
@@ -948,20 +928,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
 
   return (
     <div 
-      className="group cursor-pointer"
+      className="group cursor-pointer border-t-2 border-l-2 border-slunch-black hover-shadow bg-slunch-white-pure"
       onClick={onClick}
-      style={{
-        borderTop: 'var(--border-width) var(--border-style) var(--color-border)',
-        borderLeft: 'var(--border-width) var(--border-style) var(--color-border)'
-      }}
     >
       {/* 썸네일 - Portrait Aspect Ratio 2:3 */}
       <div 
-        className={`relative w-full overflow-hidden ${isAlgorithmMode && product.isBest ? '' : ''}`}
+        className="relative w-full overflow-hidden border-b-2 border-slunch-black"
         style={{ 
           aspectRatio: '2/3',
-          backgroundColor: '#f5f5f5',
-          borderBottom: 'var(--border-width) var(--border-style) var(--color-border)'
+          backgroundColor: '#FAF9F6'
         }}
       >
         {/* 이미지 슬라이드 */}
@@ -1006,16 +981,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           </div>
         )}
         
-        {/* Sold Out 오버레이 */}
+        {/* Sold Out 뱃지 - 썸네일 좌측 상단 */}
         {product.soldOut && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-            <span className="text-white text-sm font-medium font-accent">Sold out</span>
+          <div className="absolute top-2 left-2 z-20">
+            <Badge variant="SOLD_OUT" />
           </div>
         )}
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && !product.soldOut && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-black rounded-none text-[10px] font-medium text-white flex items-center gap-1 z-10">
+          <div className="absolute top-2 left-2 px-2 py-1 bg-slunch-lime text-slunch-black text-[10px] font-mono font-bold flex items-center gap-1 z-10">
             <Sparkles className="w-3 h-3" />
             추천
           </div>
@@ -1044,79 +1019,78 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
       </div>
       
       {/* 상품 정보 - 30% 텍스트 영역 */}
-      <div style={{ padding: 'var(--spacing-md)' }}>
+      <div className="relative" style={{ padding: 'var(--spacing-md)' }}>
+        {/* 상태 뱃지 - 메뉴명 위에 위치 (NEW, BEST, LIMITED, SEASONAL) */}
+        {product.statusBadge && product.statusBadge !== 'SOLD_OUT' && !isAlgorithmMode && (
+          <div className="absolute top-1 left-4 z-10">
+            <Badge variant={product.statusBadge} />
+          </div>
+        )}
+        
         {/* 상품명 - H2: 18px */}
-        <h3 
-          className="mb-2 leading-snug group-hover:underline"
+        <h3 className="mb-2 leading-snug group-hover:underline font-mono font-bold text-slunch-black"
           style={{ 
             fontSize: 'var(--font-size-h2)',
-            color: 'var(--color-text-primary)',
-            fontWeight: 'var(--font-weight-h2)',
-            letterSpacing: 'var(--letter-spacing-tight)',
-            lineHeight: 'var(--line-height-h2)',
-            marginTop: '12px'
+            marginTop: product.statusBadge && product.statusBadge !== 'SOLD_OUT' && !isAlgorithmMode ? '24px' : '12px'
           }}
         >
           {product.name}
         </h3>
         
-        {/* 가격 - UI: 15px - 순서: 원래 가격(취소선) → 할인율 → 할인된 가격 */}
+        {/* 가격 - 구조: 원래가격(위) | 할인율 | 할인된 가격(아래) */}
         <div className="flex flex-col gap-1" style={{ marginTop: '4px' }}>
-          {product.originalPrice && (
+          {product.originalPrice && product.originalPrice > product.price ? (
             <>
-              <span 
-                className="line-through"
+              {/* 원래 가격 - 14px, 더 연한 gray, line-through (위) */}
+              <span className="line-through font-sans"
                 style={{ 
-                  fontSize: 'var(--font-size-body)',
-                  color: 'var(--color-text-muted)',
-                  fontWeight: 'var(--font-weight-ui)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
+                  fontSize: '14px',
+                  color: '#CCCCCC' // 더 연한 회색
                 }}
               >
                 {product.originalPrice.toLocaleString()}원
               </span>
-              {(() => {
-                const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
-                return discountRate > 0 ? (
-                  <span 
-                    className="font-bold"
-                    style={{ 
-                      fontSize: 'var(--font-size-ui)',
-                      color: 'var(--color-text-primary)',
-                      letterSpacing: 'var(--letter-spacing-tight)'
-                    }}
-                  >
-                    {discountRate}%
-                  </span>
-                ) : null;
-              })()}
+              {/* 할인율 | 할인된 가격 (아래, 가로 배치, 높이 맞춤) */}
+              <div className="flex items-center gap-2">
+                {/* 할인율 뱃지 - 11px, lime 배경, black 텍스트, 높이 맞춤 */}
+                {(() => {
+                  const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+                  return discountRate > 0 ? (
+                    <span className="inline-flex items-center justify-center font-bold font-mono"
+                      style={{ 
+                        fontSize: '11px', 
+                        padding: '2px 8px',
+                        backgroundColor: '#BFFF00',
+                        color: '#0D0D0D',
+                        lineHeight: '1.2',
+                        height: '20px' // 할인된 가격과 높이 맞춤
+                      }}
+                    >
+                      {discountRate}%
+                    </span>
+                  ) : null;
+                })()}
+                {/* 할인된 가격 - 18px, bold, black */}
+                <span className="font-mono font-bold text-slunch-black"
+                  style={{ 
+                    fontSize: '18px', 
+                    fontWeight: 700,
+                    lineHeight: '1.2'
+                  }}
+                >
+                  {product.price.toLocaleString()}원
+                </span>
+              </div>
             </>
+          ) : (
+            /* 할인이 없을 때 - 현재 가격만 18px, bold, black */
+            <span className="font-mono font-bold text-slunch-black"
+              style={{ fontSize: '18px', fontWeight: 700 }}
+            >
+              {product.price.toLocaleString()}원
+            </span>
           )}
-          <span 
-            className="font-bold"
-            style={{ 
-              fontSize: 'var(--font-size-ui)',
-              color: 'var(--color-text-primary)',
-              fontWeight: 700,
-              letterSpacing: 'var(--letter-spacing-tight)'
-            }}
-          >
-            {product.price.toLocaleString()}원
-          </span>
         </div>
-        
-        {/* BEST 뱃지 */}
-        {product.isBest && !isAlgorithmMode && (
-          <p 
-            className="mt-2 tracking-wide font-accent"
-            style={{ 
-              fontSize: 'var(--font-size-ui)',
-              color: 'var(--color-text-muted)'
-            }}
-          >
-            BEST
-          </p>
-        )}
       </div>
     </div>
   );
