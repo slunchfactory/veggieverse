@@ -398,12 +398,19 @@ export const StorePage: React.FC = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-      {/* Store Hero Section - Video Presentation */}
+      {/* Store Hero Section - Video Presentation (Vertical/Portrait) */}
       {activeTab === 'ALL' && (
         <div className="w-full border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
-          <div className="relative w-full" style={{ aspectRatio: '21/9' }}>
+          <div 
+            className="relative w-full mx-auto"
+            style={{ 
+              aspectRatio: '3/4',
+              maxWidth: '100%',
+              maxHeight: '80vh'
+            }}
+          >
             {/* Video Background */}
-            <div className="absolute inset-0 bg-black">
+            <div className="absolute inset-0 bg-black overflow-hidden">
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
@@ -411,7 +418,12 @@ export const StorePage: React.FC = () => {
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                style={{ pointerEvents: 'none' }}
+                style={{ 
+                  pointerEvents: 'none',
+                  objectFit: 'cover',
+                  width: '100%',
+                  height: '100%'
+                }}
               />
             </div>
             {/* Dark Overlay for text contrast */}
@@ -691,15 +703,18 @@ export const StorePage: React.FC = () => {
                 >
                   비건 스펙트럼
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col" style={{ gap: '12px' }}>
                   {spectrumOptions.map((opt) => (
                     <label
                       key={opt}
-                      className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                      className="flex items-center cursor-pointer hover:opacity-70"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
                         color: 'var(--color-text-secondary)',
-                        letterSpacing: 'var(--letter-spacing-tight)'
+                        letterSpacing: 'var(--letter-spacing-tight)',
+                        gap: '12px',
+                        paddingTop: '4px',
+                        paddingBottom: '4px'
                       }}
                     >
                       <input
@@ -732,16 +747,20 @@ export const StorePage: React.FC = () => {
                 >
                   제품 유형
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col" style={{ gap: '12px' }}>
                   {cuisineOptions.map((c) => {
                     const checked = selectedCuisines.includes(c);
                     return (
                       <label
                         key={c}
-                        className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                        className="flex items-center cursor-pointer hover:opacity-70"
                         style={{ 
                           fontSize: 'var(--font-size-ui)',
-                          color: 'var(--color-text-secondary)'
+                          color: 'var(--color-text-secondary)',
+                          letterSpacing: 'var(--letter-spacing-tight)',
+                          gap: '12px',
+                          paddingTop: '4px',
+                          paddingBottom: '4px'
                         }}
                       >
                         <input
@@ -778,17 +797,20 @@ export const StorePage: React.FC = () => {
                   >
                     기획전
                   </div>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col" style={{ gap: '12px' }}>
                     {promotionOptions.map((opt) => {
                       const checked = selectedCategories.includes(opt);
                       return (
                         <label
                           key={opt}
-                          className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                          className="flex items-center cursor-pointer hover:opacity-70"
                           style={{ 
                             fontSize: 'var(--font-size-ui)',
                             color: 'var(--color-text-secondary)',
-                            letterSpacing: 'var(--letter-spacing-tight)'
+                            letterSpacing: 'var(--letter-spacing-tight)',
+                            gap: '12px',
+                            paddingTop: '4px',
+                            paddingBottom: '4px'
                           }}
                         >
                           <input
@@ -949,11 +971,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         borderLeft: 'var(--border-width) var(--border-style) var(--color-border)'
       }}
     >
-      {/* 썸네일 - 70% 이미지 영역 */}
+      {/* 썸네일 - Portrait Aspect Ratio 2:3 */}
       <div 
         className={`relative w-full overflow-hidden ${isAlgorithmMode && product.isBest ? '' : ''}`}
         style={{ 
-          aspectRatio: '7/3',
+          aspectRatio: '2/3',
           backgroundColor: '#f5f5f5',
           borderBottom: 'var(--border-width) var(--border-style) var(--color-border)'
         }}
@@ -961,14 +983,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         {/* 이미지 슬라이드 */}
         {images.length > 0 ? (
           <div className="relative w-full h-full">
-            {images.map((img, idx) => (
+                {images.map((img, idx) => (
               <img
                 key={`${product.id}-${idx}`}
                 src={img}
                 alt={product.name}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
                   idx === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
                 }`}
+                style={{ objectFit: 'cover' }}
                 onClick={handleImageClick}
                 loading="lazy"
                 onLoad={() => {
