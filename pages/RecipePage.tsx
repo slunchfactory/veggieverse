@@ -85,24 +85,68 @@ const categoryColors: Record<string, { text: string; bg: string }> = {
   date: COLORS.pink,
 };
 
+// 16가지 비건 유형 (스피릿 정보)
+const VEGAN_TYPES = [
+  { mbti: 'ENFP', name: 'Bloomist', emoji: '🌻', description: '새로운 거 시도하고 나누는 거 좋아해요', color: '#F3B562' },
+  { mbti: 'INFP', name: 'Mindgrower', emoji: '🌿', description: '내 기준이 확실해요. 조용히 생각 많은 편', color: '#A3C585' },
+  { mbti: 'INFJ', name: 'Quiet Root', emoji: '🌱', description: '말보다 행동으로 보여주는 타입이에요', color: '#6A8A6B' },
+  { mbti: 'ENFJ', name: 'Lightgiver', emoji: '🌼', description: '주변 사람들 챙기는 거 좋아해요. 리더 기질', color: '#F4C97E' },
+  { mbti: 'ENTJ', name: 'Forger', emoji: '🔥', description: '효율 중시. 뭐든 체계적으로 해요', color: '#8B7055' },
+  { mbti: 'ESTJ', name: 'Groundtype', emoji: '🥦', description: '원칙대로 하는 게 편해요. 현실적인 편', color: '#BCA97E' },
+  { mbti: 'ISTJ', name: 'Planter', emoji: '🌰', description: '계획 세워두는 거 좋아해요. 루틴형', color: '#9E8961' },
+  { mbti: 'INTJ', name: 'Strategreen', emoji: '🌲', description: '분석하고 설계하는 게 재밌어요', color: '#5D7264' },
+  { mbti: 'ISFP', name: 'Floret', emoji: '🌸', description: '예쁜 거, 감각적인 거 좋아해요', color: '#E6B7C1' },
+  { mbti: 'ESFP', name: 'Joybean', emoji: '🍑', description: '재밌는 게 최고예요. 분위기 메이커', color: '#F6A880' },
+  { mbti: 'ESFJ', name: 'Careleaf', emoji: '🌺', description: '다 같이 잘 먹어야 해요. 배려형', color: '#F2D68A' },
+  { mbti: 'ISFJ', name: 'Nurturer', emoji: '🌾', description: '티 안 내고 챙기는 타입이에요', color: '#D6C6A5' },
+  { mbti: 'INTP', name: 'Thinkroot', emoji: '🌴', description: '왜 그런지 알아야 해요. 탐구형', color: '#7F9B8A' },
+  { mbti: 'ENTP', name: 'Sparknut', emoji: '🍋', description: '다르게 생각하는 거 좋아해요. 아이디어형', color: '#E8D26E' },
+  { mbti: 'ISTP', name: 'Craftbean', emoji: '🫘', description: '직접 만들어봐야 알아요. 실험형', color: '#8D8570' },
+  { mbti: 'ESTP', name: 'Wildgrain', emoji: '🌶️', description: '일단 해보는 타입. 현장에서 즐겨요', color: '#C19F7B' },
+];
+
+// 스피릿별 맞춤 큐레이션 메시지
+const getSpiritCurationMessage = (spiritName: string): string => {
+  const messages: Record<string, string> = {
+    'Bloomist': '새로운 조합 좋아할 것 같아요',
+    'Mindgrower': '깔끔하고 건강한 거 모았어요',
+    'Quiet Root': '정성 들어간 레시피예요',
+    'Lightgiver': '같이 먹으면 더 좋은 거예요',
+    'Forger': '빠르고 효율적인 거 모았어요',
+    'Groundtype': '영양 밸런스 좋은 거예요',
+    'Planter': '검증된 레시피만 모았어요',
+    'Strategreen': '효율 좋은 레시피예요',
+    'Floret': '예쁘고 감각적인 거예요',
+    'Joybean': '만들면서 재밌는 거예요',
+    'Careleaf': '푸짐하게 나눠 먹기 좋아요',
+    'Nurturer': '속 편하고 건강한 거예요',
+    'Thinkroot': '원리 이해하면 쉬운 거예요',
+    'Sparknut': '독특한 조합이에요',
+    'Craftbean': '직접 만들기 좋은 거예요',
+    'Wildgrain': '일단 해보기 좋은 거예요',
+  };
+  
+  return messages[spiritName] || `${spiritName}에게 어울리는 레시피 모아봤어요.`;
+};
+
 // 스피릿 타입별 태그 매핑
 const spiritTagMapping: Record<string, string[]> = {
-  'ENFP': ['효율적', '자연주의', '새로운시도', '퓨전'],
-  'INFP': ['감성적', '자연주의', '미니멀', '건강'],
-  'INFJ': ['효율적', '자연주의', '전통', '건강'],
-  'ENFJ': ['효율적', '자연주의', '함께', '건강'],
-  'ENTJ': ['효율적', '논리적', '고단백', '간편조리'],
-  'ESTJ': ['효율적', '논리적', '간편조리', '원팟요리'],
-  'ISTJ': ['효율적', '논리적', '전통', '계획형'],
-  'INTJ': ['효율적', '논리적', '고단백', '지속가능'],
-  'ISFP': ['감성적', '자연주의', '미니멀', '예술적'],
-  'ESFP': ['효율적', '자연주의', '즉흥형', '즐거움'],
-  'ESFJ': ['효율적', '자연주의', '함께', '배려'],
-  'ISFJ': ['효율적', '자연주의', '전통', '배려'],
-  'INTP': ['효율적', '논리적', '새로운시도', '탐구'],
-  'ENTP': ['효율적', '자연주의', '새로운시도', '퓨전'],
-  'ISTP': ['효율적', '논리적', '간편조리', '직접만들기'],
-  'ESTP': ['효율적', '자연주의', '즉흥형', '모험'],
+  'ENFP': ['새로운시도', '퓨전', '나눔'],
+  'INFP': ['건강', '미니멀', '감성'],
+  'INFJ': ['건강', '깊은맛', '전통'],
+  'ENFJ': ['함께', '푸짐한', '파티'],
+  'ENTJ': ['고단백', '효율', '간편'],
+  'ESTJ': ['영양균형', '간편', '원팟'],
+  'ISTJ': ['전통', '검증된', '루틴'],
+  'INTJ': ['고단백', '지속가능', '분석'],
+  'ISFP': ['예쁜플레이팅', '감각', '미니멀'],
+  'ESFP': ['재밌는', '즉흥', '파티'],
+  'ESFJ': ['함께', '푸짐한', '배려'],
+  'ISFJ': ['건강', '전통', '배려'],
+  'INTP': ['새로운시도', '탐구', '분석'],
+  'ENTP': ['퓨전', '독특한', '창의'],
+  'ISTP': ['직접만들기', '간편', '실험'],
+  'ESTP': ['즉흥', '모험', '현장'],
 };
 
 // 레시피에 태그 추가 헬퍼 함수
@@ -565,31 +609,195 @@ const RecipePage: React.FC = () => {
 
   const displayCategories = spiritType ? filteredRecipes : recipeCategories;
 
-  return (
-    <div className="min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
-      {/* 스피릿 맞춤 배너 */}
-      {spiritName && spiritType && (
-        <div className="sticky top-16 z-50 bg-gradient-to-r from-emerald-50 via-green-50 to-lime-50 border-b border-emerald-200 py-4 px-6">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">✨</span>
-              <p className="text-stone-800 font-medium">
-                <span className="font-bold text-emerald-700">{spiritName}</span>을 위한 오늘의 추천 메뉴
+  // 스피릿에서 진입했는지 확인
+  const fromSpirit = spiritName && spiritType;
+  
+  // 스피릿 타입 정보 가져오기
+  const spiritInfo = fromSpirit ? VEGAN_TYPES.find(type => type.mbti === spiritType) : null;
+
+  // 스피릿 진입 시 스크롤 애니메이션
+  useEffect(() => {
+    if (fromSpirit) {
+      setTimeout(() => {
+        document.getElementById('spirit-pick')?.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 300);
+    }
+  }, [fromSpirit]);
+
+  // 스피릿 진입 시 레이아웃
+  if (fromSpirit && spiritInfo) {
+    return (
+      <div className="min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
+        {/* 스피릿 전체 섹션 래퍼 (하나의 큰 섹션) */}
+        <div 
+          className="mb-16"
+          style={{
+            background: '#EEF2EB',
+            padding: '60px 0 80px 0',
+          }}
+        >
+          <div className="max-w-7xl mx-auto px-4 md:px-8">
+            {/* 히어로 섹션 */}
+            <section className="text-center" style={{ paddingBottom: '48px' }}>
+              <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
+              <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2" style={{ fontSize: '32px', fontWeight: 800 }}>
+                {spiritName} 추천 레시피
+              </h1>
+              <p className="text-stone-600" style={{ fontSize: '15px', color: '#6B6B6B' }}>
+                "{spiritInfo.description}"
               </p>
-            </div>
-            <button
-              onClick={() => {
-                setSearchParams({});
+            </section>
+
+            {/* 스피릿 PICK 섹션 */}
+            {spiritPickRecipes.length > 0 && (
+              <section 
+                id="spirit-pick"
+                style={{
+                  padding: '40px 0',
+                  borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                }}
+              >
+                <div className="max-w-7xl mx-auto">
+                  <span 
+                    className="inline-block px-4 py-1.5 text-xs font-bold tracking-wide uppercase mb-3 rounded-none"
+                    style={{ backgroundColor: '#3D4A3A', color: '#FFFFFF' }}
+                  >
+                    스피릿 PICK
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2" style={{ fontSize: '24px', fontWeight: 800 }}>
+                    {spiritName} 스피릿이 좋아하는 레시피
+                  </h2>
+                  <p className="text-stone-600 mb-8" style={{ fontSize: '14px', color: '#6B6B6B' }}>
+                    {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
+                  </p>
+                  <div className="mt-6">
+                    <RecipeCarousel recipes={spiritPickRecipes} showAuthor categoryColor={COLORS.green} />
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 큐레이션 섹션 */}
+            {displayCategories.length > 0 && (
+              <section 
+                style={{
+                  padding: '40px 0',
+                  borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                }}
+              >
+                <div className="max-w-7xl mx-auto">
+                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2">
+                    {spiritName}에게 어울리는 레시피
+                  </h2>
+                  <p className="text-stone-600 mb-8">
+                    {getSpiritCurationMessage(spiritName)}
+                  </p>
+                  <div className="space-y-12">
+                    {displayCategories.map((category) => {
+                      const colors = categoryColors[category.id] || COLORS.lincolnGreen;
+                      return (
+                        <div key={category.id}>
+                          <div className="flex items-start justify-between mb-2">
+                            <div>
+                              <span 
+                                className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-none"
+                                style={{ backgroundColor: colors.bg, color: colors.text }}
+                              >
+                                {category.subtitle}
+                              </span>
+                              <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
+                                {category.title}
+                              </h3>
+                            </div>
+                            <button className="text-stone-600 hover:text-stone-900 underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
+                              See all
+                            </button>
+                          </div>
+                          <div className="mt-6">
+                            <RecipeCarousel recipes={category.recipes} showAuthor categoryColor={colors} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            )}
+
+            {/* 스피릿 미션 섹션 */}
+            <section 
+              style={{
+                padding: '40px 0',
+                borderTop: '1px solid rgba(0, 0, 0, 0.06)',
               }}
-              className="p-2 hover:bg-white/50 rounded-none transition-colors"
-              aria-label="필터 제거"
             >
-              <X className="w-5 h-5 text-stone-600" />
-            </button>
+              <div className="text-center max-w-2xl mx-auto">
+                <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-100 rounded-none mb-6">
+                  <Trophy className="w-5 h-5 text-emerald-700" />
+                  <span className="text-emerald-700 font-semibold">스피릿 미션</span>
+                </div>
+                <h3 className="text-2xl font-bold text-stone-900 mb-3">
+                  이 레시피를 만들어보고 후기를 남겨주시면
+                </h3>
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <span className="text-4xl">{spiritInfo.emoji}</span>
+                  <span className="text-2xl font-bold text-emerald-700">{spiritName}</span>
+                  <span className="text-4xl">배지를 드려요!</span>
+                </div>
+                <p className="text-stone-600 mb-8">
+                  레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
+                  <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
+                </p>
+              </div>
+            </section>
           </div>
         </div>
-      )}
 
+        {/* 일반 레시피 섹션들 (흰 배경) */}
+        <>
+          {/* 인기 레시피 섹션 - 원형 캐러셀 히어로 (아래로 이동) */}
+          <CircularCarouselHero />
+
+          <div className="page-container py-10">
+            {/* 일반 카테고리 섹션들 */}
+            {recipeCategories.map((category) => {
+                const colors = categoryColors[category.id] || COLORS.lincolnGreen;
+                return (
+                  <section key={category.id} className="mb-14">
+                    <div className="flex items-start justify-between mb-2">
+                      <div>
+                        <span 
+                          className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-none"
+                          style={{ backgroundColor: colors.bg, color: colors.text }}
+                        >
+                          {category.subtitle}
+                        </span>
+                        <h2 className="text-xl sm:text-2xl font-bold text-stone-900">
+                          {category.title}
+                        </h2>
+                      </div>
+                      <button className="text-stone-600 hover:text-stone-900 underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
+                        See all
+                      </button>
+                    </div>
+                    <div className="mt-6">
+                      <RecipeCarousel recipes={category.recipes} showAuthor categoryColor={colors} />
+                    </div>
+                  </section>
+                );
+              })}
+          </div>
+        </>
+      </div>
+    );
+  }
+
+  // 일반 진입 시 (기존 구조 유지)
+  return (
+    <div className="min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
       {/* 인기 레시피 섹션 - 원형 캐러셀 히어로 */}
       <CircularCarouselHero />
 
@@ -643,38 +851,6 @@ const RecipePage: React.FC = () => {
             </section>
           );
         })}
-
-        {/* 스피릿 미션 섹션 */}
-        {spiritName && spiritType && (
-          <section className="py-16 border-t border-stone-200 bg-gradient-to-br from-emerald-50/50 to-green-50/50">
-            <div className="text-center max-w-2xl mx-auto">
-              <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-100 rounded-none mb-6">
-                <Trophy className="w-5 h-5 text-emerald-700" />
-                <span className="text-emerald-700 font-semibold">스피릿 미션</span>
-              </div>
-              <h3 className="text-2xl font-bold text-stone-900 mb-3">
-                이 레시피를 만들어보고 후기를 남겨주시면
-              </h3>
-              <div className="flex items-center justify-center gap-3 mb-6">
-                <span className="text-4xl">{(() => {
-                  const spiritEmojis: Record<string, string> = {
-                    'ENFP': '🌻', 'INFP': '🌿', 'INFJ': '🌱', 'ENFJ': '🌼',
-                    'ENTJ': '🍎', 'ESTJ': '🥦', 'ISTJ': '🌰', 'INTJ': '🌵',
-                    'ISFP': '🌸', 'ESFP': '🍑', 'ESFJ': '🌺', 'ISFJ': '🌾',
-                    'INTP': '🌴', 'ENTP': '🍋', 'ISTP': '🫘', 'ESTP': '🌵',
-                  };
-                  return spiritEmojis[spiritType] || '✨';
-                })()}</span>
-                <span className="text-2xl font-bold text-emerald-700">{spiritName}</span>
-                <span className="text-4xl">배지를 드려요!</span>
-              </div>
-              <p className="text-stone-600 mb-8">
-                레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
-                <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
-              </p>
-            </div>
-          </section>
-        )}
 
         {/* 레시피 작성 CTA */}
         <section className={`py-16 ${spiritName ? 'border-t border-stone-200' : 'border-t border-stone-200'}`}>

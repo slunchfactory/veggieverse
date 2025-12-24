@@ -28,33 +28,33 @@ const DIET_CATEGORIES: DietCategory[] = [
   {
     category: '기본 옵션',
     options: [
-      { label: '제한 없음 / 일반 식단', description: '특별한 제한이 없습니다', value: 'none' },
+      { label: '일반', description: '특별히 가리는 거 없어요', value: 'none' },
     ]
   },
   {
     category: '채식 관련',
     options: [
-      { label: '완전비건', description: '모든 동물성 식품을 피합니다', value: 'vegan' },
-      { label: '락토비건', description: '유제품은 허용하지만 알류와 육류는 피합니다', value: 'lacto' },
-      { label: '오보 베지테리언', description: '달걀은 허용하지만 유제품과 육류는 피합니다', value: 'ovo' },
-      { label: '락토오보 베지테리언', description: '유제품과 달걀은 허용하지만 육류는 피합니다 (가장 흔한 채식 유형)', value: 'lacto-ovo' },
-      { label: '플렉시테리언', description: '가끔 육류나 생선을 먹을 수 있습니다', value: 'flexitarian' },
-      { label: '페스케테리언', description: '생선은 허용하지만 육류는 피합니다', value: 'pescatarian' },
-      { label: '폴로테리언', description: '가금류(닭, 오리)는 먹지만 적색육은 피합니다', value: 'pollo' },
+      { label: '비건', description: '동물성은 안 먹어요', value: 'vegan' },
+      { label: '락토비건', description: '유제품만 OK', value: 'lacto' },
+      { label: '오보', description: '달걀만 OK', value: 'ovo' },
+      { label: '락토오보', description: '유제품, 달걀 OK', value: 'lacto-ovo' },
+      { label: '플렉시', description: '가끔은 먹어요', value: 'flexitarian' },
+      { label: '페스코', description: '생선은 OK', value: 'pescatarian' },
+      { label: '폴로', description: '닭고기는 OK', value: 'pollo' },
     ]
   },
   {
     category: '건강/알레르기 관련',
     options: [
-      { label: '글루텐 프리', description: '글루텐을 피합니다', value: 'gluten-free' },
-      { label: '유당불내증', description: '유제품을 피합니다', value: 'lactose-free' },
+      { label: '글루텐 프리', description: '', value: 'gluten-free' },
+      { label: '유당 프리', description: '', value: 'lactose-free' },
     ]
   },
   {
     category: '종교/문화적 식단',
     options: [
-      { label: '할랄', description: '이슬람 율법에 따른 식단', value: 'halal' },
-      { label: '코셔', description: '유대교 율법에 따른 식단', value: 'kosher' },
+      { label: '할랄', description: '', value: 'halal' },
+      { label: '코셔', description: '', value: 'kosher' },
     ]
   },
 ];
@@ -78,7 +78,7 @@ const checkDietConflict = (selections: string[]): string | null => {
 const QUESTIONS = [
   {
     id: 1,
-    question: '어떤 식단을 선호하시나요?',
+    question: '평소 어떻게 먹어요?',
     hasDietCategories: true, // 카테고리가 있는 특별한 질문
     options: [] // 옵션은 DIET_CATEGORIES에서 가져옴
   },
@@ -104,9 +104,9 @@ const QUESTIONS = [
   },
   {
     id: 4,
-    question: '식사 시간, 당신에게 어떤 의미?',
+    question: '식사 시간, 어떤 의미예요?',
     options: [
-      { label: '함께', description: '소중한 사람과의 시간', value: 'family' },
+      { label: '함께', description: '같이 먹는 시간', value: 'family' },
       { label: '웰니스', description: '건강한 한 끼', value: 'health' },
       { label: '효율', description: '시간 절약이 우선', value: 'quick' },
       { label: '탐험', description: '새로운 맛의 발견', value: 'experience' },
@@ -159,46 +159,46 @@ const getAvailableQuestions = (answers: Record<number, string | string[]>): type
 
 // 16가지 비건 유형
 const VEGAN_TYPES = [
-  { mbti: 'ENFP', name: 'Bloomist', emoji: '🌻', description: '새로운 식물성 실험을 즐기며 사람들과 나누는 생기형', color: '#F3B562' },
-  { mbti: 'INFP', name: 'Mindgrower', emoji: '🌿', description: '윤리와 감정의 조화를 중시하는 사색가', color: '#A3C585' },
-  { mbti: 'INFJ', name: 'Quiet Root', emoji: '🌱', description: '조용히 가치관을 실천하며 깊게 뿌리내리는 사람', color: '#6A8A6B' },
-  { mbti: 'ENFJ', name: 'Lightgiver', emoji: '🌼', description: '사람들에게 따뜻한 에너지를 전파하는 리더형', color: '#F4C97E' },
-  { mbti: 'ENTJ', name: 'Forger', emoji: '🍎', description: '비건의 구조를 재정립하는 강한 개혁가', color: '#8B7055' },
-  { mbti: 'ESTJ', name: 'Groundtype', emoji: '🥦', description: '명확한 원칙으로 일상을 유지하는 현실주의자', color: '#BCA97E' },
-  { mbti: 'ISTJ', name: 'Planter', emoji: '🌰', description: '계획적으로 루틴을 실천하며 안정감 있는 사람', color: '#9E8961' },
-  { mbti: 'INTJ', name: 'Strategreen', emoji: '🌵', description: '데이터와 구조로 지속가능한 미래를 설계하는 자', color: '#5D7264' },
-  { mbti: 'ISFP', name: 'Floret', emoji: '🌸', description: '예술적으로 비건을 표현하고 감각을 나누는 사람', color: '#E6B7C1' },
-  { mbti: 'ESFP', name: 'Joybean', emoji: '🍑', description: '즉흥적이고 즐거운 미식과 유머를 사랑하는 사람', color: '#F6A880' },
-  { mbti: 'ESFJ', name: 'Careleaf', emoji: '🌺', description: '주위를 돌보며 공동체적 조화를 이루는 사람', color: '#F2D68A' },
-  { mbti: 'ISFJ', name: 'Nurturer', emoji: '🌾', description: '조용히 주변을 돕고 배려로 실천하는 사람', color: '#D6C6A5' },
-  { mbti: 'INTP', name: 'Thinkroot', emoji: '🌴', description: '구조와 원리를 탐구하는 철저한 분석가형', color: '#7F9B8A' },
-  { mbti: 'ENTP', name: 'Sparknut', emoji: '🍋', description: '새로운 관점으로 식문화를 재해석하는 발상가형', color: '#E8D26E' },
-  { mbti: 'ISTP', name: 'Craftbean', emoji: '🫘', description: '손끝 감각으로 직접 실험하며 구현하는 제작자형', color: '#8D8570' },
-  { mbti: 'ESTP', name: 'Wildgrain', emoji: '🌵', description: '즉흥적, 모험적이며 현장에서 비건을 즐기는 사람', color: '#C19F7B' },
+  { mbti: 'ENFP', name: 'Bloomist', emoji: '🌻', description: '새로운 거 시도하고 나누는 거 좋아해요', color: '#F3B562' },
+  { mbti: 'INFP', name: 'Mindgrower', emoji: '🌿', description: '내 기준이 확실해요. 조용히 생각 많은 편', color: '#A3C585' },
+  { mbti: 'INFJ', name: 'Quiet Root', emoji: '🌱', description: '말보다 행동으로 보여주는 타입이에요', color: '#6A8A6B' },
+  { mbti: 'ENFJ', name: 'Lightgiver', emoji: '🌼', description: '주변 사람들 챙기는 거 좋아해요. 리더 기질', color: '#F4C97E' },
+  { mbti: 'ENTJ', name: 'Forger', emoji: '🔥', description: '효율 중시. 뭐든 체계적으로 해요', color: '#8B7055' },
+  { mbti: 'ESTJ', name: 'Groundtype', emoji: '🥦', description: '원칙대로 하는 게 편해요. 현실적인 편', color: '#BCA97E' },
+  { mbti: 'ISTJ', name: 'Planter', emoji: '🌰', description: '계획 세워두는 거 좋아해요. 루틴형', color: '#9E8961' },
+  { mbti: 'INTJ', name: 'Strategreen', emoji: '🌲', description: '분석하고 설계하는 게 재밌어요', color: '#5D7264' },
+  { mbti: 'ISFP', name: 'Floret', emoji: '🌸', description: '예쁜 거, 감각적인 거 좋아해요', color: '#E6B7C1' },
+  { mbti: 'ESFP', name: 'Joybean', emoji: '🍑', description: '재밌는 게 최고예요. 분위기 메이커', color: '#F6A880' },
+  { mbti: 'ESFJ', name: 'Careleaf', emoji: '🌺', description: '다 같이 잘 먹어야 해요. 배려형', color: '#F2D68A' },
+  { mbti: 'ISFJ', name: 'Nurturer', emoji: '🌾', description: '티 안 내고 챙기는 타입이에요', color: '#D6C6A5' },
+  { mbti: 'INTP', name: 'Thinkroot', emoji: '🌴', description: '왜 그런지 알아야 해요. 탐구형', color: '#7F9B8A' },
+  { mbti: 'ENTP', name: 'Sparknut', emoji: '🍋', description: '다르게 생각하는 거 좋아해요. 아이디어형', color: '#E8D26E' },
+  { mbti: 'ISTP', name: 'Craftbean', emoji: '🫘', description: '직접 만들어봐야 알아요. 실험형', color: '#8D8570' },
+  { mbti: 'ESTP', name: 'Wildgrain', emoji: '🌶️', description: '일단 해보는 타입. 현장에서 즐겨요', color: '#C19F7B' },
 ];
 
 // 스피릿별 맞춤 큐레이션 메시지
-const getSpiritCurationMessage = (spiritName: string, spiritDescription: string): string => {
+const getSpiritCurationMessage = (spiritName: string): string => {
   const messages: Record<string, string> = {
-    'Groundtype': '명확한 원칙을 중시하는 Groundtype님을 위해, 영양 밸런스가 완벽히 설계된 커뮤니티 인기 레시피를 모았어요!',
-    'Bloomist': '새로운 식물성 실험을 즐기는 Bloomist님을 위해, 창의적이고 맛있는 퓨전 레시피를 준비했어요!',
-    'Mindgrower': '윤리와 감정의 조화를 중시하는 Mindgrower님을 위해, 자연스럽고 건강한 레시피를 선별했어요!',
-    'Quiet Root': '가치관을 실천하는 Quiet Root님을 위해, 깊이 있고 의미 있는 레시피를 모았어요!',
-    'Lightgiver': '따뜻한 에너지를 전파하는 Lightgiver님을 위해, 함께 나누기 좋은 레시피를 준비했어요!',
-    'Forger': '구조를 재정립하는 Forger님을 위해, 효율적이고 체계적인 레시피를 선별했어요!',
-    'Planter': '계획적으로 루틴을 실천하는 Planter님을 위해, 안정적이고 검증된 레시피를 모았어요!',
-    'Strategreen': '지속가능한 미래를 설계하는 Strategreen님을 위해, 데이터 기반 최적화 레시피를 준비했어요!',
-    'Floret': '예술적으로 비건을 표현하는 Floret님을 위해, 아름답고 감각적인 레시피를 선별했어요!',
-    'Joybean': '즐거운 미식을 사랑하는 Joybean님을 위해, 재미있고 맛있는 레시피를 모았어요!',
-    'Careleaf': '공동체적 조화를 이루는 Careleaf님을 위해, 함께 나누기 좋은 레시피를 준비했어요!',
-    'Nurturer': '배려로 실천하는 Nurturer님을 위해, 따뜻하고 건강한 레시피를 선별했어요!',
-    'Thinkroot': '구조와 원리를 탐구하는 Thinkroot님을 위해, 논리적이고 체계적인 레시피를 모았어요!',
-    'Sparknut': '새로운 관점으로 재해석하는 Sparknut님을 위해, 창의적이고 독특한 레시피를 준비했어요!',
-    'Craftbean': '직접 실험하며 구현하는 Craftbean님을 위해, 손쉽게 만들 수 있는 레시피를 선별했어요!',
-    'Wildgrain': '모험적으로 비건을 즐기는 Wildgrain님을 위해, 즉흥적이고 재미있는 레시피를 모았어요!',
+    'Bloomist': '새로운 조합 좋아할 것 같아요',
+    'Mindgrower': '깔끔하고 건강한 거 모았어요',
+    'Quiet Root': '정성 들어간 레시피예요',
+    'Lightgiver': '같이 먹으면 더 좋은 거예요',
+    'Forger': '빠르고 효율적인 거 모았어요',
+    'Groundtype': '영양 밸런스 좋은 거예요',
+    'Planter': '검증된 레시피만 모았어요',
+    'Strategreen': '효율 좋은 레시피예요',
+    'Floret': '예쁘고 감각적인 거예요',
+    'Joybean': '만들면서 재밌는 거예요',
+    'Careleaf': '푸짐하게 나눠 먹기 좋아요',
+    'Nurturer': '속 편하고 건강한 거예요',
+    'Thinkroot': '원리 이해하면 쉬운 거예요',
+    'Sparknut': '독특한 조합이에요',
+    'Craftbean': '직접 만들기 좋은 거예요',
+    'Wildgrain': '일단 해보기 좋은 거예요',
   };
   
-  return messages[spiritName] || `${spiritDescription} ${spiritName}님을 위해, 특별히 선별한 레시피를 준비했어요!`;
+  return messages[spiritName] || `${spiritName}에게 어울리는 레시피 모아봤어요.`;
 };
 
 // 몬스터 이름 생성 함수
@@ -825,7 +825,7 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
           ctx.fillStyle = '#1c1917';
           ctx.font = 'bold 64px Arial';
           ctx.textAlign = 'left';
-          ctx.fillText(`✦ ${spiritResult.name} ✦`, textX, textY - 100);
+          ctx.fillText(spiritResult.name, textX, textY - 100);
 
           // 설명
           ctx.fillStyle = '#78716c';
@@ -894,6 +894,24 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
       if (answers[5] === 'health' || answers[5] === 'environment') { t++; j++; }
       else if (answers[5]) { f++; p++; }
       
+      // 식사 패턴 (질문6 - 일반 식단 선택자만)
+      if (answers[6]) {
+        switch (answers[6]) {
+          case 'regular':    // 규칙적
+            j++; s++;
+            break;
+          case 'flexible':   // 자유로움
+            p++; f++;
+            break;
+          case 'planned':    // 계획형
+            j++; t++;
+            break;
+          case 'spontaneous': // 즉흥형
+            p++; n++;
+            break;
+        }
+      }
+      
       const mbti = `${e >= i ? 'E' : 'I'}${n >= s ? 'N' : 'S'}${f >= t ? 'F' : 'T'}${p >= j ? 'P' : 'J'}`;
       
       const result = VEGAN_TYPES.find(type => type.mbti === mbti) || VEGAN_TYPES[0];
@@ -944,11 +962,11 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
   useEffect(() => {
     if (showShareModal && result) {
       // 기본 공유 멘트 생성
-      const defaultMessage = `나의 테이스트 스피릿은 ✦${result.name}✦
+      const defaultMessage = `나의 테이스트 스피릿은 ${result.name}
 
 ${result.description}
 
-너도 테스트해봐 👉 ${window.location.href}
+너도 해봐 → ${window.location.href}
 
 #테이스트스피릿 #슬런치`;
       setShareMessage(defaultMessage);
@@ -995,7 +1013,7 @@ ${result.description}
               마이 테이스트 스피릿
             </h2>
             <p className="text-stone-500 mb-8">
-              5가지 질문에 답하고 당신의 테이스트 스피릿을 깨워보세요.
+              5가지만 골라보세요.
             </p>
             
             {selectedItems.length > 0 && (
@@ -1020,9 +1038,10 @@ ${result.description}
                   setStarted(true); // 에러가 발생해도 시작은 진행
                 }
               }}
-              className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
+              className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-lime hover:text-black transition-colors"
+              style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
             >
-              스피릿 깨우기
+              시작하기
             </button>
           </div>
         </div>
@@ -1105,11 +1124,10 @@ ${result.description}
               {/* 스피릿 정보 */}
               <div className="text-center">
                 {/* 라벨 */}
-                <p className="text-xs text-stone-400 mb-2">당신의 테이스트 스피릿</p>
                 
                 {/* 스피릿 이름 - 가장 크게 */}
                 <h2 className="text-4xl font-bold text-stone-800 mb-2">
-                  ✦ {result.name} ✦
+                  {result.name}
                 </h2>
                 
                 {/* 한 줄 설명 */}
@@ -1150,46 +1168,37 @@ ${result.description}
                     ));
                   })()}
                 </div>
-                
-                {/* 짧은 설명 1-2줄만 */}
-                {personalityDescription && (
-                  <div className="mt-4">
-                    <p className="text-stone-600 text-sm leading-relaxed max-w-md mx-auto">
-                      {personalityDescription.text.split('\n\n')[0]}
-                    </p>
-                  </div>
-                )}
               </div>
             </div>
             
             {/* Primary CTA - 공유 버튼 */}
-            <button
-              onClick={() => {
-                if (!result) {
-                  alert('결과를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
-                  return;
-                }
-                setShowShareModal(true);
-              }}
-              className="w-full py-5 mb-4 rounded-none font-bold text-lg transition-all flex items-center justify-center gap-2 text-white hover:opacity-90 shadow-lg"
-              style={{ backgroundColor: '#000000' }}
-              aria-label="내 스피릿 공유하기"
-            >
-              <Share2 className="w-6 h-6" aria-hidden="true" />
-              <span aria-hidden="true">🔮</span> 내 스피릿 공유하기
-            </button>
-            
-            {/* 식단 추천받기 버튼 */}
-            <div className="mb-4">
+            <div className="flex gap-4 mb-4">
+              <button
+                onClick={() => {
+                  if (!result) {
+                    alert('결과를 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+                    return;
+                  }
+                  setShowShareModal(true);
+                }}
+                className="flex-1 py-4 rounded-none font-bold text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
+                aria-label="공유하기"
+              >
+                <Share2 className="w-5 h-5" aria-hidden="true" />
+                공유하기
+              </button>
+              
+              {/* 레시피 보기 버튼 */}
               <button 
                 onClick={() => {
                   setShowRecipeCurationModal(true);
                 }}
-                className="w-full py-4 rounded-none font-semibold text-base transition-all flex items-center justify-center gap-2 text-stone-700 hover:text-stone-900 border-2 border-stone-300 hover:border-stone-400 bg-white"
-                aria-label="이 스피릿에 맞는 식단 추천받기"
+                className="flex-1 py-4 rounded-none font-bold text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
+                aria-label="레시피 보기"
               >
-                <span>이 스피릿에 맞는 식단 추천받기</span>
-                <span className="text-sm" aria-hidden="true">→</span>
+                레시피 보기
               </button>
             </div>
             
@@ -1269,11 +1278,11 @@ ${result.description}
                     <div className="flex items-center justify-between mt-2">
                       <button
                         onClick={() => {
-                          const defaultMessage = `나의 테이스트 스피릿은 ✦${result.name}✦
+                          const defaultMessage = `나의 테이스트 스피릿은 ${result.name}
 
 ${result.description}
 
-너도 테스트해봐 👉 ${window.location.href}
+너도 해봐 → ${window.location.href}
 
 #테이스트스피릿 #슬런치`;
                           setShareMessage(defaultMessage);
@@ -1456,66 +1465,79 @@ ${result.description}
             {/* 스피릿 맞춤 큐레이션 팝업 */}
             {showRecipeCurationModal && result && (
               <div 
-                className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+                className="sl-modal-overlay"
                 onClick={() => setShowRecipeCurationModal(false)}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="curation-modal-title"
               >
-                {/* 반투명 배경 오버레이 */}
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
-                
                 {/* 모달 컨텐츠 */}
                 <div 
-                  className="relative bg-white rounded-none shadow-2xl max-w-md w-full p-8"
+                  className="sl-modal"
                   onClick={(e) => e.stopPropagation()}
                   role="document"
                 >
-                  {/* 닫기 버튼 */}
-                  <button
-                    onClick={() => setShowRecipeCurationModal(false)}
-                    className="absolute top-4 right-4 p-2 hover:bg-stone-100 transition-colors"
-                    aria-label="모달 닫기"
-                  >
-                    <X className="w-5 h-5 text-stone-400" aria-hidden="true" />
-                  </button>
-                  
-                  {/* 스피릿 캐릭터 일러스트 (요리사 모자) */}
-                  <div className="flex flex-col items-center mb-6">
-                    <div className="relative mb-4">
-                      {/* 요리사 모자 */}
-                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-4xl z-10">
-                        👨‍🍳
-                      </div>
-                      {/* 스피릿 이모지 */}
-                      <div 
-                        className="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg"
-                        style={{ backgroundColor: `${result.color}20` }}
+                  {/* 모달 헤더 */}
+                  <div className="sl-modal-header">
+                    <div className="sl-modal-close-area">
+                      <span 
+                        className="sl-modal-dismiss"
+                        onClick={() => {
+                          const today = new Date().toDateString();
+                          localStorage.setItem('tasteSpirit_dismiss', today);
+                          setShowRecipeCurationModal(false);
+                        }}
                       >
-                        {result.emoji}
-                      </div>
+                        오늘 하루 보지않기
+                      </span>
+                      <button 
+                        className="sl-modal-close"
+                        onClick={() => setShowRecipeCurationModal(false)}
+                        aria-label="모달 닫기"
+                      >
+                        ✕
+                      </button>
                     </div>
-                    
-                    {/* 맞춤 메시지 */}
-                    <h3 id="curation-modal-title" className="text-xl font-bold text-stone-900 mb-2 text-center">
-                      {result.name}님을 위한 맞춤 식단
-                    </h3>
-                    <p className="text-stone-600 text-center leading-relaxed">
-                      {getSpiritCurationMessage(result.name, result.description)}
-                    </p>
                   </div>
                   
-                  {/* 레시피 보러가기 버튼 */}
-                  <button
-                    onClick={() => {
-                      setShowRecipeCurationModal(false);
-                      navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
-                    }}
-                    className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-[#333333] transition-colors flex items-center justify-center gap-2"
-                  >
-                    <span>레시피 보러가기</span>
-                    <span className="text-lg" aria-hidden="true">→</span>
-                  </button>
+                  <div className="sl-modal-content">
+                    {/* 스피릿 캐릭터 일러스트 (요리사 모자) */}
+                    <div className="flex flex-col items-center mb-6">
+                      <div className="relative mb-4">
+                        {/* 요리사 모자 */}
+                        <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-4xl z-10">
+                          👨‍🍳
+                        </div>
+                        {/* 스피릿 이모지 */}
+                        <div 
+                          className="w-24 h-24 rounded-full flex items-center justify-center text-5xl shadow-lg"
+                          style={{ backgroundColor: `${result.color}20` }}
+                        >
+                          {result.emoji}
+                        </div>
+                      </div>
+                      
+                      {/* 맞춤 메시지 */}
+                      <h3 id="curation-modal-title" className="text-xl font-bold text-stone-900 mb-2 text-center">
+                        {result.name}를 위한 레시피
+                      </h3>
+                      <p className="text-stone-600 text-center leading-relaxed">
+                        {getSpiritCurationMessage(result.name)}
+                      </p>
+                    </div>
+                    
+                    {/* 레시피 보기 버튼 */}
+                    <button
+                      onClick={() => {
+                        setShowRecipeCurationModal(false);
+                        navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
+                      }}
+                      className="w-full py-4 rounded-none font-bold transition-colors flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                      style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
+                    >
+                      레시피 보기
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -1533,9 +1555,9 @@ ${result.description}
                 setProfileSaved(false);
               }}
               className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors rounded-none"
-              aria-label="다시 테스트하기"
+              aria-label="다시 해볼래요?"
             >
-              다시 테스트하기
+              다시 해볼래요?
             </button>
           </div>
         </div>
@@ -1637,15 +1659,18 @@ ${result.description}
                               onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
                               className={`w-full p-4 rounded-none border-2 text-left transition-all ${
                                 isSelected
-                                  ? 'border-black bg-stone-50'
+                                  ? 'border-black'
                                   : 'border-stone-200 hover:border-stone-300'
                               }`}
+                              style={isSelected ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
                             >
                               <div className="flex items-center gap-3">
                                 {/* 체크박스/라디오 인디케이터 */}
-                                <div className={`flex-shrink-0 w-5 h-5 rounded-${isAdditional ? 'md' : 'full'} border-2 flex items-center justify-center ${
-                                  isSelected ? 'border-black bg-black' : 'border-stone-300'
-                                }`}>
+                                <div className={`flex-shrink-0 w-5 h-5 ${isAdditional ? 'rounded-md' : 'rounded-full'} border-2 flex items-center justify-center ${
+                                  isSelected ? 'border-black' : 'border-stone-300'
+                                }`}
+                                style={isSelected ? { backgroundColor: '#0D0D0D' } : {}}
+                                >
                                   {isSelected && (
                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
                                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -1686,9 +1711,10 @@ ${result.description}
                     onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
                     className={`w-full p-4 rounded-none border-2 text-left transition-all ${
                       answers[currentQuestion.id] === option.value
-                        ? 'border-black bg-stone-50'
+                        ? 'border-black'
                         : 'border-stone-200 hover:border-stone-300'
                     }`}
+                    style={answers[currentQuestion.id] === option.value ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
                   >
                     <div className="font-semibold text-stone-800">{option.label}</div>
                     <div className="text-sm text-stone-500">{option.description}</div>

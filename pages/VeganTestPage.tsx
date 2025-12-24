@@ -405,23 +405,26 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <div
                 className="w-full h-full"
                 style={{
-                  animation: draggingId === item.id ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
-                  animationDelay: draggingId === item.id ? '0s' : `${item.animationDelay}s`,
+                  animation: (draggingId === item.id || isSelected) ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
+                  animationDelay: (draggingId === item.id || isSelected) ? '0s' : `${item.animationDelay}s`,
                   backfaceVisibility: 'hidden',
                   willChange: 'transform',
-                  transform: 'translateZ(0)',
+                  transform: isSelected ? `rotate(${item.rotation}deg) scale(1.2)` : 'translateZ(0)',
+                  transformOrigin: 'center center',
                 }}
               >
                 {/* 중앙 라벨 - 호버 시 노출 (최상단 z-index) */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ zIndex: 30 }}>
                   <span
-                    className="px-3 py-1.5 rounded-none text-xs font-semibold shadow-sm"
+                    className="text-xs font-semibold shadow-sm"
                     style={{
                       fontFamily: 'Jost, sans-serif',
                       fontSize: '13px',
                       backgroundColor: `${item.labelColor}dd`,
                       color: isLightColor(item.labelColor) ? '#1a1a1a' : '#ffffff',
-                      transform: 'scale(1)',
+                      padding: '8px 20px',
+                      borderRadius: '9999px',
+                      transform: 'rotate(0deg)',
                       backdropFilter: 'blur(4px)',
                       border: '1px solid rgba(255,255,255,0.35)',
                     }}
@@ -444,6 +447,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       maskSize: 'contain',
                       maskRepeat: 'no-repeat',
                       maskPosition: 'center',
+                      borderRadius: '50%',
                       zIndex: 10,
                       backfaceVisibility: 'hidden',
                       transform: 'translateZ(0)',
