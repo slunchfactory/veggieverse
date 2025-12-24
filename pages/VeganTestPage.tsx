@@ -369,12 +369,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               key={item.id}
               className="absolute cursor-pointer group touch-none"
               style={{
-                left: item.x,
-                top: item.y,
+                left: 0,
+                top: 0,
                 width: item.size * item.scale,
                 height: item.size * item.scale,
-                transform: 'translate(-50%, -50%)',
+                transform: `translate3d(${item.x}px, ${item.y}px, 0) translate(-50%, -50%)`,
                 zIndex: item.zIndex,
+                backfaceVisibility: 'hidden',
+                willChange: 'transform',
               }}
               onPointerDown={(e) => startDrag(item, e)}
             >
@@ -382,19 +384,19 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <style>{`
                 @keyframes float-${itemId} {
                   0% { 
-                    transform: translate(0px, 0px) rotate(0deg);
+                    transform: translate3d(0px, 0px, 0) rotate(0deg);
                   }
                   20% { 
-                    transform: translate(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px) rotate(${90 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px, 0) rotate(${90 * item.rotateDirection}deg);
                   }
                   50% { 
-                    transform: translate(${item.driftX}px, ${item.driftY}px) rotate(${180 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX}px, ${item.driftY}px, 0) rotate(${180 * item.rotateDirection}deg);
                   }
                   80% { 
-                    transform: translate(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px) rotate(${270 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px, 0) rotate(${270 * item.rotateDirection}deg);
                   }
                   100% { 
-                    transform: translate(0px, 0px) rotate(${360 * item.rotateDirection}deg);
+                    transform: translate3d(0px, 0px, 0) rotate(${360 * item.rotateDirection}deg);
                   }
                 }
               `}</style>
@@ -403,8 +405,11 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <div
                 className="w-full h-full"
                 style={{
-                  animation: `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
-                  animationDelay: `${item.animationDelay}s`,
+                  animation: draggingId === item.id ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
+                  animationDelay: draggingId === item.id ? '0s' : `${item.animationDelay}s`,
+                  backfaceVisibility: 'hidden',
+                  willChange: 'transform',
+                  transform: 'translateZ(0)',
                 }}
               >
                 {/* 중앙 라벨 - 호버 시 노출 (최상단 z-index) */}
@@ -440,6 +445,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       maskRepeat: 'no-repeat',
                       maskPosition: 'center',
                       zIndex: 10,
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
                     }}
                   />
                 )}
@@ -456,6 +463,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                   style={{
                     position: 'relative',
                     zIndex: 20,
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)',
                   }}
                   draggable={false}
                 />

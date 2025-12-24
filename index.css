@@ -4,6 +4,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Montserrat:wght@500;700;800&display=swap');
 
 /* ============================================
+   EDITORIAL MINIMALIST DESIGN TOKENS
+   ============================================ */
+
+:root {
+  /* Typography Scale */
+  --font-size-h1: 48px;
+  --font-size-body: 16px;
+  --font-size-ui: 15px;
+  
+  /* Font Family - Clean Sans-serif */
+  --font-primary: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Montserrat', sans-serif;
+  
+  /* Color Palette - Earthy/Minimalist tones with accessibility compliance */
+  /* Background Colors */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #FAF9F7;
+  
+  /* Text Colors - High contrast (9:1 for headings, 4.5:1 for body) */
+  --color-text-primary: #1A1A1A;    /* 9:1 contrast on white */
+  --color-text-secondary: #4A4A4A;  /* 4.5:1 contrast on white */
+  --color-text-muted: #6B6B6B;      /* 3:1 contrast for large text */
+  --color-text-inverse: #FFFFFF;    /* For dark backgrounds */
+  
+  /* Accent Colors - High contrast (9:1 for CTAs) */
+  --color-accent-primary: #1A1A1A;   /* 9:1 contrast on white */
+  --color-accent-hover: #2D2D2D;
+  
+  /* Border Colors - 3:1 contrast */
+  --color-border: #D4D4D4;          /* 3:1 contrast for borders */
+  --color-border-active: #1A1A1A;   /* Active states */
+  
+  /* Borders */
+  --border-width: 1px;
+  --border-style: solid;
+  --border-radius: 2px;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  
+  /* Layout */
+  --header-height: 64px;
+  --sidebar-width: 240px;
+  
+  /* Typography adjustments */
+  --letter-spacing-tight: -0.02em;
+}
+
+/* ============================================
    1. RESET & FULL LAYOUT (최우선)
    ============================================ */
 

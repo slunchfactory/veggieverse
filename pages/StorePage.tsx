@@ -398,32 +398,57 @@ export const StorePage: React.FC = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-      {/* ALL 페이지 전용 - 영상 + 추천 메뉴 섹션 (전체 너비) */}
+      {/* Store Hero Section - Video Presentation */}
       {activeTab === 'ALL' && (
-        <div className="w-full max-w-[1200px] mx-auto">
-          <div className="flex flex-col lg:flex-row lg:items-stretch">
-            {/* 좌측 - 세로형 영상 영역 (sticky로 고정) */}
-            <div className="lg:w-1/2 h-[50vh] lg:h-auto lg:self-stretch lg:sticky lg:top-24 flex-shrink-0">
-              <div className="relative w-full h-full overflow-hidden bg-stone-900">
-                {/* YouTube 영상 자동재생 */}
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  title="슬런치 비건 레시피"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ pointerEvents: 'none' }}
-                />
-                {/* 영상 위 텍스트 오버레이 */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 lg:p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent z-10" style={{ paddingBottom: '2rem' }}>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight break-keep">
-                    슬런치가 추천하는<br/>겨울 비건 레시피
-                  </h3>
-                  <p className="text-[12px] sm:text-[14px] lg:text-[15px] text-white/70 mt-3">따뜻한 겨울을 위한 건강한 한 끼</p>
-                </div>
-              </div>
+        <div className="w-full border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+          <div className="relative w-full" style={{ aspectRatio: '21/9' }}>
+            {/* Video Background */}
+            <div className="absolute inset-0 bg-black">
+              <iframe
+                className="absolute inset-0 w-full h-full"
+                src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                title="슬런치 비건 레시피"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                style={{ pointerEvents: 'none' }}
+              />
             </div>
+            {/* Dark Overlay for text contrast */}
+            <div className="absolute inset-0 bg-black/50 z-10"></div>
+            {/* Text Overlay - Bottom Left */}
+            <div className="absolute bottom-0 left-0 z-20 p-8 lg:p-12" style={{ maxWidth: '60%' }}>
+              <h1 
+                className="text-white mb-4 font-medium"
+                style={{ 
+                  fontSize: 'var(--font-size-h1)', 
+                  lineHeight: '1.2',
+                  letterSpacing: 'var(--letter-spacing-tight)',
+                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
+                }}
+              >
+                슬런치가 추천하는<br/>겨울 비건 레시피
+              </h1>
+              <Link
+                to="/recipe"
+                className="inline-block bg-white text-black px-6 py-2 font-medium hover:bg-black hover:text-white transition-colors"
+                style={{ 
+                  fontSize: 'var(--font-size-ui)',
+                  border: 'none',
+                  borderRadius: 'var(--border-radius)'
+                }}
+              >
+                View Recipe →
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      {/* ALL 페이지 전용 - 추천 메뉴 섹션 (기존 코드 유지하되 수정) */}
+      {activeTab === 'ALL' && (
+        <div className="w-full max-w-[1200px] mx-auto border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+          <div className="flex flex-col lg:flex-row lg:items-stretch">
 
             {/* 우측 - 추천 콘텐츠 영역 */}
             <div className="lg:w-1/2 bg-[#E54B1A] flex-shrink-0">
@@ -598,26 +623,58 @@ export const StorePage: React.FC = () => {
       )}
 
       <div className="page-container pt-8 pb-6">
-        <div className="flex gap-10">
-          {/* 좌측 필터 */}
-          <aside className="w-[240px] flex-shrink-0 hidden md:block">
-            <div className="space-y-8 text-stone-800">
+        <div className="flex" style={{ gap: 'var(--spacing-xl)', alignItems: 'flex-start' }}>
+          {/* 좌측 필터 - Sticky Sidebar */}
+          <aside 
+            className="flex-shrink-0 hidden md:block"
+            style={{ 
+              width: 'var(--sidebar-width)',
+              position: 'sticky',
+              top: 'calc(var(--header-height) + var(--spacing-md))',
+              alignSelf: 'flex-start',
+              borderRight: 'var(--border-width) var(--border-style) var(--color-border)',
+              paddingRight: 'var(--spacing-lg)'
+            }}
+          >
+            <div className="space-y-8" style={{ color: 'var(--color-text-primary)' }}>
               {/* 카테고리 탭 (세로형) */}
               <div>
-                <div className="text-[13px] font-semibold mb-3 pb-2 border-b-2 border-stone-900">카테고리</div>
+                <div 
+                  className="mb-3 pb-2 font-semibold"
+                  style={{ 
+                    fontSize: 'var(--font-size-ui)',
+                    borderBottom: 'var(--border-width) var(--border-style) var(--color-border-active)'
+                  }}
+                >
+                  카테고리
+                </div>
                 <div className="flex flex-col">
                   {categoryTabs.map((tab) => (
                     <button
                       key={tab}
                       onClick={() => handleTabClick(tab)}
-                      className={`w-full text-left py-2 text-[13px] transition-colors ${
+                      className={`w-full text-left py-3 transition-colors ${
                         activeTab === tab
-                          ? 'text-stone-900 font-semibold'
-                          : 'text-stone-500 hover:text-stone-700'
+                          ? 'font-bold'
+                          : 'hover:opacity-70'
                       }`}
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        color: activeTab === tab 
+                          ? 'var(--color-text-primary)' 
+                          : 'var(--color-text-secondary)'
+                      }}
                     >
                       <span>{tab}</span>
-                      <span className="text-[12px] text-stone-400 ml-1">{getCategoryCount(tab)}</span>
+                      <span 
+                        className="ml-1"
+                        style={{ 
+                          fontSize: 'var(--font-size-body)',
+                          color: 'var(--color-text-muted)'
+                        }}
+                      >
+                        {getCategoryCount(tab)}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -625,12 +682,25 @@ export const StorePage: React.FC = () => {
 
               {/* 비건 스펙트럼 */}
               <div>
-                <div className="text-[13px] font-semibold mb-3">비건 스펙트럼</div>
+                <div 
+                  className="font-semibold mb-3"
+                  style={{ 
+                    fontSize: 'var(--font-size-ui)',
+                    letterSpacing: 'var(--letter-spacing-tight)'
+                  }}
+                >
+                  비건 스펙트럼
+                </div>
                 <div className="flex flex-col gap-2">
                   {spectrumOptions.map((opt) => (
                     <label
                       key={opt}
-                      className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
+                      className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        color: 'var(--color-text-secondary)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
                     >
                       <input
                         type="radio"
@@ -656,14 +726,23 @@ export const StorePage: React.FC = () => {
 
               {/* 제품 유형 */}
               <div>
-                <div className="text-[13px] font-semibold mb-3">제품 유형</div>
+                <div 
+                  className="font-semibold mb-3"
+                  style={{ fontSize: 'var(--font-size-ui)' }}
+                >
+                  제품 유형
+                </div>
                 <div className="flex flex-col gap-2">
                   {cuisineOptions.map((c) => {
                     const checked = selectedCuisines.includes(c);
                     return (
                       <label
                         key={c}
-                        className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
+                        className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                        style={{ 
+                          fontSize: 'var(--font-size-ui)',
+                          color: 'var(--color-text-secondary)'
+                        }}
                       >
                         <input
                           type="checkbox"
@@ -680,7 +759,7 @@ export const StorePage: React.FC = () => {
                         >
                           {checked && <Check className="w-2.5 h-2.5 text-white" />}
                         </span>
-                        <span>{c}</span>
+                        <span style={{ letterSpacing: 'var(--letter-spacing-tight)' }}>{c}</span>
                       </label>
                     );
                   })}
@@ -690,14 +769,27 @@ export const StorePage: React.FC = () => {
               {/* 기획전 필터 */}
               {promotionOptions.length > 0 && (
                 <div>
-                  <div className="text-[13px] font-semibold mb-3">기획전</div>
+                  <div 
+                    className="font-semibold mb-3"
+                    style={{ 
+                      fontSize: 'var(--font-size-ui)',
+                      letterSpacing: 'var(--letter-spacing-tight)'
+                    }}
+                  >
+                    기획전
+                  </div>
                   <div className="flex flex-col gap-2">
                     {promotionOptions.map((opt) => {
                       const checked = selectedCategories.includes(opt);
                       return (
                         <label
                           key={opt}
-                          className="flex items-center gap-2 cursor-pointer text-[12px] text-stone-700 hover:text-stone-900"
+                          className="flex items-center gap-2 cursor-pointer hover:opacity-70"
+                          style={{ 
+                            fontSize: 'var(--font-size-ui)',
+                            color: 'var(--color-text-secondary)',
+                            letterSpacing: 'var(--letter-spacing-tight)'
+                          }}
                         >
                           <input
                             type="checkbox"
@@ -730,18 +822,24 @@ export const StorePage: React.FC = () => {
 
           {/* 우측 콘텐츠 */}
           <div className="flex-1">
-            {/* 정렬 드롭다운 */}
+            {/* 정렬 드롭다운 - Flat Design */}
             <div className="flex justify-end mb-6">
               <div className="relative inline-block">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-between gap-8 px-4 py-2.5 border border-stone-300 bg-white text-[12px] text-stone-700 hover:border-stone-400 transition-colors min-w-[180px]"
+                  className="flex items-center justify-between gap-8 px-4 py-2.5 bg-white transition-colors min-w-[180px] hover:bg-black hover:text-white"
+                  style={{ 
+                    fontSize: 'var(--font-size-ui)',
+                    color: 'var(--color-text-primary)',
+                    border: 'var(--border-width) var(--border-style) var(--color-border)',
+                    borderRadius: 'var(--border-radius)'
+                  }}
                 >
                   <span className="flex items-center gap-1.5">
-                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3 text-[#E54B1A]" />}
+                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3" />}
                     {currentSortLabel}
                   </span>
-                  <ChevronDown className={`w-4 h-4 text-stone-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
                 </button>
 
                 {isDropdownOpen && (
@@ -751,18 +849,29 @@ export const StorePage: React.FC = () => {
                       onClick={() => setIsDropdownOpen(false)}
                     />
                     
-                    <div className="absolute top-full left-0 mt-1 bg-white border border-stone-200 shadow-lg z-20 min-w-[180px]">
+                    <div 
+                      className="absolute top-full left-0 mt-1 bg-white z-20 min-w-[180px]"
+                      style={{
+                        border: 'var(--border-width) var(--border-style) var(--color-border)'
+                      }}
+                    >
                       {SORT_OPTIONS.map((option) => (
                         <button
                           key={option.value}
                           onClick={() => handleSortChange(option.value as SortType)}
-                          className={`w-full text-left px-4 py-2.5 text-[12px] transition-colors flex items-center gap-1.5 ${
+                          className={`w-full text-left px-4 py-2.5 transition-colors flex items-center gap-1.5 ${
                             sortType === option.value
-                              ? 'bg-stone-100 text-stone-900 font-medium'
-                              : 'text-stone-600 hover:bg-stone-50'
+                              ? 'font-bold'
+                              : 'hover:bg-black hover:text-white'
                           }`}
+                          style={{ 
+                            fontSize: 'var(--font-size-ui)',
+                            color: sortType === option.value 
+                              ? 'var(--color-text-primary)' 
+                              : 'var(--color-text-secondary)'
+                          }}
                         >
-                          {option.icon && <Sparkles className="w-3 h-3 text-[#E54B1A]" />}
+                          {option.icon && <Sparkles className="w-3 h-3" />}
                           {option.label}
                         </button>
                       ))}
@@ -772,13 +881,20 @@ export const StorePage: React.FC = () => {
               </div>
             </div>
 
-            {/* 상품 그리드 - 모바일 2열 고정 */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2">
-              {sortedProducts.map((product) => (
+            {/* 상품 그리드 - Editorial Minimalist Grid with proper border overlap handling */}
+            <div 
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              style={{ 
+                gap: 0,
+                borderRight: 'var(--border-width) var(--border-style) var(--color-border)',
+                borderBottom: 'var(--border-width) var(--border-style) var(--color-border)'
+              }}
+            >
+              {sortedProducts.map((product, index) => (
                 <ProductCard 
                   key={product.id} 
                   product={product} 
-                  isAlgorithmMode={sortType === 'algorithm'} 
+                  isAlgorithmMode={sortType === 'algorithm'}
                   onClick={() => navigate(`/store/product/${product.id}`)}
                 />
               ))}
@@ -825,14 +941,21 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
   };
 
   return (
-    <div className="group cursor-pointer" onClick={onClick}>
-      {/* 썸네일 - 3:4 비율 */}
+    <div 
+      className="group cursor-pointer"
+      onClick={onClick}
+      style={{
+        borderTop: 'var(--border-width) var(--border-style) var(--color-border)',
+        borderLeft: 'var(--border-width) var(--border-style) var(--color-border)'
+      }}
+    >
+      {/* 썸네일 - 70% 이미지 영역 */}
       <div 
-        className={`relative w-full mb-3 overflow-hidden ${isAlgorithmMode && product.isBest ? 'ring-2 ring-[#E54B1A]' : ''}`}
+        className={`relative w-full overflow-hidden ${isAlgorithmMode && product.isBest ? '' : ''}`}
         style={{ 
-          aspectRatio: '3/4',
-          backgroundColor: '#54271d',
-          borderRadius: '4px'
+          aspectRatio: '7/3',
+          backgroundColor: '#f5f5f5',
+          borderBottom: 'var(--border-width) var(--border-style) var(--color-border)'
         }}
       >
         {/* 이미지 슬라이드 */}
@@ -913,10 +1036,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         )}
       </div>
       
-      {/* 상품 정보 */}
-      <div>
+      {/* 상품 정보 - 30% 텍스트 영역 */}
+      <div style={{ padding: 'var(--spacing-md)' }}>
         {/* 상품명 */}
-        <h3 className="text-[13px] text-stone-700 mb-1 leading-snug group-hover:text-stone-900 group-hover:underline">
+        <h3 
+          className="mb-2 leading-snug group-hover:underline"
+          style={{ 
+            fontSize: 'var(--font-size-ui)',
+            color: 'var(--color-text-primary)',
+            fontWeight: 500,
+            letterSpacing: 'var(--letter-spacing-tight)'
+          }}
+        >
           {product.name}
         </h3>
         
@@ -924,27 +1055,56 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         <div className="flex flex-col gap-1">
           {product.originalPrice && (
             <div className="flex items-baseline gap-2">
-              <span className="text-[11px] text-stone-400 line-through font-accent">
+              <span 
+                className="line-through font-accent"
+                style={{ 
+                  fontSize: 'var(--font-size-body)',
+                  color: 'var(--color-text-muted)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
                 {product.originalPrice.toLocaleString()}원
               </span>
               {(() => {
                 const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                 return discountRate > 0 ? (
-                  <span className="text-[15px] font-bold text-orange-500 font-accent">
+                  <span 
+                    className="font-bold font-accent"
+                    style={{ 
+                      fontSize: 'var(--font-size-ui)',
+                      color: 'var(--color-text-primary)',
+                      letterSpacing: 'var(--letter-spacing-tight)'
+                    }}
+                  >
                     {discountRate}%
                   </span>
                 ) : null;
               })()}
             </div>
           )}
-          <p className="text-[16px] text-stone-900 font-bold font-accent">
+          <p 
+            className="font-bold font-accent"
+            style={{ 
+              fontSize: 'var(--font-size-body)',
+              color: 'var(--color-text-primary)',
+              letterSpacing: 'var(--letter-spacing-tight)'
+            }}
+          >
             {product.price.toLocaleString()}원
           </p>
         </div>
         
         {/* BEST 뱃지 */}
         {product.isBest && !isAlgorithmMode && (
-          <p className="text-[10px] text-stone-400 mt-1 tracking-wide font-accent">BEST</p>
+          <p 
+            className="mt-2 tracking-wide font-accent"
+            style={{ 
+              fontSize: 'var(--font-size-ui)',
+              color: 'var(--color-text-muted)'
+            }}
+          >
+            BEST
+          </p>
         )}
       </div>
     </div>

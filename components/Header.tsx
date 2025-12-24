@@ -44,9 +44,13 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header
       className="fixed left-0 right-0 z-[9999] bg-white"
-      style={{ top: offsetTop }}
+      style={{ 
+        top: offsetTop,
+        borderBottom: '1px solid var(--color-border)',
+        height: 'var(--header-height)'
+      }}
     >
-      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-6 xl:px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="h-full flex items-center justify-between px-4 sm:px-6 lg:px-6 xl:px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
         <Link 
           to="/" 
@@ -74,11 +78,12 @@ export const Header: React.FC<HeaderProps> = ({
                 <Link 
                   key={item.path}
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
+                  className={`transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
                     isActive 
-                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
-                      : 'text-stone-700 font-bold hover:text-stone-900'
+                      ? 'text-[var(--color-text-primary)] font-bold' 
+                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                   }`}
+                  style={{ fontSize: 'var(--font-size-ui)' }}
                   onClick={() => setOpenMenu(null)}
                 >
                   {item.name}
@@ -93,11 +98,12 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Link 
                   to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
+                  className={`transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
                     isActive 
-                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
-                      : 'text-stone-700 font-bold hover:text-stone-900'
+                      ? 'text-[var(--color-text-primary)] font-bold' 
+                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                   }`}
+                  style={{ fontSize: 'var(--font-size-ui)' }}
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
