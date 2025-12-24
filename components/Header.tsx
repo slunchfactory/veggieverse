@@ -43,14 +43,15 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="fixed left-0 right-0 z-[9999] bg-white"
+      className="fixed left-0 right-0 z-[9999]"
       style={{ 
         top: offsetTop,
-        borderBottom: '1px solid var(--color-border)',
-        height: 'var(--header-height)'
+        backgroundColor: 'var(--white-pure)',
+        borderBottom: '1px solid var(--gray-lighter)',
+        height: 'auto'
       }}
     >
-      <nav className="h-full flex items-center justify-between px-4 sm:px-6 lg:px-6 xl:px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="h-full flex items-center justify-between px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
         <Link 
           to="/" 
@@ -64,7 +65,7 @@ export const Header: React.FC<HeaderProps> = ({
         </Link>
         
         {/* 가운데 메뉴 - 데스크톱 */}
-        <div className="hidden lg:flex items-center gap-4 xl:gap-6 flex-shrink-0">
+        <div className="hidden lg:flex items-center h-full flex-shrink-0">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || 
               (item.path === '/store' && location.pathname.startsWith('/store')) ||
@@ -75,19 +76,33 @@ export const Header: React.FC<HeaderProps> = ({
             const isStore = item.hasDropdown;
             if (!isStore) {
               return (
-                <Link 
+                <button
                   key={item.path}
-                  to={item.path} 
-                  className={`transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
-                    isActive 
-                      ? 'text-[var(--color-text-primary)] font-bold' 
-                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
-                  }`}
-                  style={{ fontSize: 'var(--font-size-ui)' }}
-                  onClick={() => setOpenMenu(null)}
+                  className="bg-transparent border-none p-0"
+                  style={{
+                    padding: '24px 16px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: 'var(--black)',
+                  }}
                 >
-                  {item.name}
-                </Link>
+                  <Link 
+                    to={item.path} 
+                    className={`nav-item-text ${isActive ? 'active' : ''}`}
+                    style={{
+                      textDecoration: isActive ? 'underline' : 'none',
+                      textUnderlineOffset: '4px',
+                      color: 'inherit',
+                    }}
+                    onClick={() => setOpenMenu(null)}
+                  >
+                    {item.name}
+                  </Link>
+                </button>
               );
             }
 
@@ -96,73 +111,131 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.path}
                 className="relative"
               >
-                <Link 
-                  to={item.path} 
-                  className={`transition-colors uppercase flex items-center gap-1 whitespace-nowrap font-accent ${
-                    isActive 
-                      ? 'text-[var(--color-text-primary)] font-bold' 
-                      : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
-                  }`}
-                  style={{ fontSize: 'var(--font-size-ui)' }}
+                <button
+                  className="bg-transparent border-none p-0"
+                  style={{
+                    padding: '24px 16px',
+                    fontSize: '13px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: 'var(--black)',
+                  }}
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
                   }}
                 >
-                  {item.name}
-                  <ChevronDown className={`w-3 h-3 transition-transform flex-shrink-0 ${openMenu === 'store' ? 'rotate-180' : ''}`} />
-                </Link>
+                  <Link 
+                    to={item.path} 
+                    className={`nav-item-text ${isActive || openMenu === 'store' ? 'active' : ''}`}
+                    style={{
+                      textDecoration: isActive || openMenu === 'store' ? 'underline' : 'none',
+                      textUnderlineOffset: '4px',
+                      color: 'inherit',
+                      pointerEvents: 'none',
+                    }}
+                  >
+                    {item.name}
+                  </Link>
+                  <span 
+                    className="nav-item-arrow"
+                    style={{
+                      fontSize: '8px',
+                      transform: openMenu === 'store' ? 'rotate(180deg)' : 'none',
+                      transition: 'none',
+                    }}
+                  >
+                    ▼
+                  </span>
+                </button>
 
                 {isStore && openMenu === 'store' && (
                   <div 
-                    className="fixed left-0 right-0 bg-white border-b border-stone-200 shadow-[0_20px_40px_-24px_rgba(0,0,0,0.25)] z-50"
-                    style={{ top: 64 + offsetTop }}
+                    className="fixed left-0 right-0 z-50"
+                    style={{ 
+                      top: (64 + offsetTop) + 'px',
+                      backgroundColor: 'var(--white-pure)',
+                      borderTop: '1px solid var(--gray-lighter)',
+                      padding: '24px 32px',
+                      paddingLeft: '200px',
+                      display: 'flex',
+                      gap: '80px',
+                    }}
                   >
-                    <div className="max-w-[900px] mx-auto px-6 py-5">
-                      <div className="flex flex-wrap gap-8 text-sm text-stone-800">
-                        <div className="flex flex-col gap-3 min-w-[140px]">
-                          {primaryCategories.map((cat) => (
-                            <button
-                              key={cat}
-                              className="text-left text-[13px] text-stone-800 pb-[2px] border-b border-transparent hover:border-stone-900 transition-colors w-fit"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => {
-                                setOpenMenu(null);
-                                setIsMobileMenuOpen(false);
-                                // ALL은 전체 상품, 나머지는 카테고리 필터
-                                if (cat === 'ALL') {
-                                  navigate('/store');
-                                } else {
-                                  navigate(`/store?category=${encodeURIComponent(cat)}`);
-                                }
-                              }}
-                            >
-                              {cat}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex flex-col gap-3 min-w-[180px]">
-                          {secondaryCategories.map((cat) => (
-                            <button
-                              key={cat}
-                              className="text-left text-[13px] text-stone-800 pb-[2px] border-b border-transparent hover:border-stone-900 transition-colors w-fit"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => {
-                                setOpenMenu(null);
-                                setIsMobileMenuOpen(false);
-                                // 슬런치 위클리는 상품 상세 페이지로 바로 이동
-                                if (cat === '슬런치 위클리') {
-                                  navigate('/store/product/15');
-                                } else {
-                                  navigate(`/store?category=${encodeURIComponent(cat)}`);
-                                }
-                              }}
-                            >
-                              {cat}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                    <div className="flex flex-col gap-4">
+                      {primaryCategories.map((cat) => (
+                        <a
+                          key={cat}
+                          href="#"
+                          className="dropdown-item category"
+                          style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: 'var(--black)',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                          }}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenMenu(null);
+                            setIsMobileMenuOpen(false);
+                            if (cat === 'ALL') {
+                              navigate('/store');
+                            } else {
+                              navigate(`/store?category=${encodeURIComponent(cat)}`);
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.textDecoration = 'underline';
+                            e.currentTarget.style.textUnderlineOffset = '4px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.textDecoration = 'none';
+                          }}
+                        >
+                          {cat}
+                        </a>
+                      ))}
+                    </div>
+                    <div className="flex flex-col gap-4">
+                      {secondaryCategories.map((cat) => (
+                        <a
+                          key={cat}
+                          href="#"
+                          className="dropdown-item"
+                          style={{
+                            fontSize: '13px',
+                            fontWeight: 400,
+                            color: 'var(--black)',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                          }}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenMenu(null);
+                            setIsMobileMenuOpen(false);
+                            if (cat === '슬런치 위클리') {
+                              navigate('/store/product/15');
+                            } else {
+                              navigate(`/store?category=${encodeURIComponent(cat)}`);
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.textDecoration = 'underline';
+                            e.currentTarget.style.textUnderlineOffset = '4px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.textDecoration = 'none';
+                          }}
+                        >
+                          {cat}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}

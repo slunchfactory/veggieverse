@@ -8,89 +8,409 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
   return (
-    <footer className="bg-stone-50 text-stone-900 overflow-x-hidden">
-      {/* 상단 섹션 - 6개 컬럼 레이아웃 */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 overflow-x-hidden">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
-          {/* ABOUT */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">ABOUT</p>
-            <Link to="/brand" className="block text-xs text-stone-700 hover:text-stone-900 underline">OUR STORY</Link>
-            <Link to="/store" className="block text-xs text-stone-700 hover:text-stone-900 underline">OUR STORE</Link>
-          </div>
-          
-          {/* PAPER */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">PAPER</p>
-            <Link to="/newsletter" className="block text-xs text-stone-700 hover:text-stone-900 underline">NEWSLETTER</Link>
-          </div>
-          
-          {/* CONTACT */}
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">CONTACT</p>
-            <div className="mb-2">
-              <p className="text-xs text-stone-700 underline mb-0">일반문의</p>
-              <a href="mailto:slunch@slunch.co.kr" className="text-xs text-stone-600 hover:text-stone-900 leading-tight block">slunch@slunch.co.kr</a>
-            </div>
-            <div className="mb-2">
-              <p className="text-xs text-stone-700 underline mb-0">B2B</p>
-              <a href="mailto:export@slunch.co.kr" className="text-xs text-stone-600 hover:text-stone-900 leading-tight block">export@slunch.co.kr</a>
-            </div>
-            <div>
-              <p className="text-xs text-stone-700 underline mb-0">프레스 문의</p>
-              <a href="mailto:design@slunch.co.kr" className="text-xs text-stone-600 hover:text-stone-900 leading-tight block">design@slunch.co.kr</a>
-            </div>
-          </div>
-          
-          {/* SOCIAL */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">SOCIAL</p>
+    <footer 
+      style={{
+        background: 'var(--white)',
+        padding: '60px 48px',
+        borderTop: '1px solid var(--black)',
+      }}
+    >
+      {/* 메인 영역 - 1단 가로 배치 */}
+      <div 
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          gap: '40px',
+          marginBottom: '48px',
+          flexWrap: 'wrap',
+        }}
+      >
+        {/* ABOUT */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            ABOUT
+          </p>
+          <Link 
+            to="/brand" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            OUR STORY
+          </Link>
+          <Link 
+            to="/store" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            OUR STORE
+          </Link>
+        </div>
+
+        {/* NEWSLETTER */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            NEWSLETTER
+          </p>
+          <Link 
+            to="/newsletter" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            NEWSLETTER
+          </Link>
+        </div>
+
+        {/* HELP */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            HELP
+          </p>
+          <Link 
+            to="/contact" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            1:1 INQUIRY
+          </Link>
+          <Link 
+            to="/faq" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            FAQ
+          </Link>
+          <Link 
+            to="/notice" 
+            className="footer-link"
+            style={{
+              display: 'block',
+              fontSize: '13px',
+              color: 'var(--gray)',
+              textDecoration: 'none',
+              marginBottom: '8px',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            NOTICE
+          </Link>
+        </div>
+
+        {/* CONTACT */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            CONTACT
+          </p>
+          <div style={{ marginBottom: '8px' }}>
+            <p className="footer-label" style={{
+              fontSize: '11px',
+              color: 'var(--gray)',
+              marginBottom: '2px',
+            }}>
+              일반문의
+            </p>
             <a 
-              href="https://instagram.com/slunch_factory" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="inline-flex items-center gap-2 text-xs text-stone-700 hover:text-stone-900"
+              href="mailto:slunch@slunch.co.kr" 
+              className="footer-email"
+              style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--black)',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.textDecoration = 'underline';
+                e.currentTarget.style.textUnderlineOffset = '4px';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.textDecoration = 'none';
+              }}
             >
-              <Instagram className="w-4 h-4" />
+              slunch@slunch.co.kr
             </a>
           </div>
-          
-          {/* BANK ACCOUNT */}
-          <div>
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">BANK ACCOUNT</p>
-            <p className="text-xs text-stone-700 leading-tight mb-0">1005-504-450570</p>
-            <p className="text-xs text-stone-700 leading-tight">주식회사 슬런치팩토리</p>
+          <div style={{ marginBottom: '8px' }}>
+            <p className="footer-label" style={{
+              fontSize: '11px',
+              color: 'var(--gray)',
+              marginBottom: '2px',
+            }}>
+              B2B
+            </p>
+            <a 
+              href="mailto:export@slunch.co.kr" 
+              className="footer-email"
+              style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--black)',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.textDecoration = 'underline';
+                e.currentTarget.style.textUnderlineOffset = '4px';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.textDecoration = 'none';
+              }}
+            >
+              export@slunch.co.kr
+            </a>
           </div>
-          
-          {/* HELP */}
-          <div className="space-y-2">
-            <p className="text-sm font-bold uppercase tracking-wider mb-3">HELP</p>
-            <Link to="/contact" className="block text-xs text-stone-700 hover:text-stone-900 underline">1:1 INQUIRY</Link>
-            <Link to="/faq" className="block text-xs text-stone-700 hover:text-stone-900 underline">FAQ</Link>
-            <Link to="/notice" className="block text-xs text-stone-700 hover:text-stone-900 underline">NOTICE</Link>
+          <div>
+            <p className="footer-label" style={{
+              fontSize: '11px',
+              color: 'var(--gray)',
+              marginBottom: '2px',
+            }}>
+              프레스 문의
+            </p>
+            <a 
+              href="mailto:design@slunch.co.kr" 
+              className="footer-email"
+              style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--black)',
+                textDecoration: 'none',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.textDecoration = 'underline';
+                e.currentTarget.style.textUnderlineOffset = '4px';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.textDecoration = 'none';
+              }}
+            >
+              design@slunch.co.kr
+            </a>
           </div>
         </div>
-      </div>
-      
-      {/* 하단 회사 정보 - 한 줄로 */}
-      <div className="border-t border-stone-200 overflow-x-hidden">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <p className="text-[10px] text-stone-600 leading-relaxed break-keep">
-            대표자 | 이현아 · 상호명 | 주식회사 슬런치팩토리 · 사업자번호 | 288-86-02863 · 통신판매업신고번호 | 제2023-경기부천-0868호 · md@slunch.co.kr · 주소 | 경기 부천시 소사로160번길 23-8 · 고객센터 | 032-224-6525 · *유선 상담을 진행하지 않습니다. 카카오톡 채널로 문의해 주세요.
+
+        {/* SOCIAL */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            SOCIAL
+          </p>
+          <a 
+            href="https://instagram.com/slunch_factory" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="footer-social"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              color: 'var(--black)',
+              textDecoration: 'none',
+              fontSize: '13px',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.textDecoration = 'none';
+            }}
+          >
+            <Instagram className="w-4 h-4" />
+            @slunchfactory
+          </a>
+        </div>
+
+        {/* BANK ACCOUNT */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            BANK ACCOUNT
+          </p>
+          <p className="footer-bank-name" style={{
+            fontSize: '11px',
+            color: 'var(--gray)',
+            marginBottom: '2px',
+          }}>
+            우리은행
+          </p>
+          <p className="footer-account" style={{
+            fontSize: '16px',
+            fontWeight: 700,
+            marginBottom: '2px',
+            color: 'var(--black)',
+          }}>
+            1005-504-450570
+          </p>
+          <p className="footer-account-holder" style={{
+            fontSize: '12px',
+            color: 'var(--gray)',
+          }}>
+            주식회사 슬런치팩토리
+          </p>
+        </div>
+
+        {/* CS CENTER */}
+        <div className="footer-section">
+          <p className="footer-title" style={{
+            fontSize: '11px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            marginBottom: '16px',
+            color: 'var(--black)',
+          }}>
+            CS CENTER
+          </p>
+          <p className="footer-cs-number" style={{
+            fontSize: '20px',
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
+            marginBottom: '6px',
+            color: 'var(--black)',
+          }}>
+            032-224-6525
+          </p>
+          <p className="footer-cs-notice" style={{
+            fontSize: '11px',
+            color: 'var(--gray)',
+            lineHeight: 1.5,
+          }}>
+            *유선 상담 미진행,<br />카카오톡 채널 문의
           </p>
         </div>
       </div>
-      
-      {/* 맨 위로 버튼 - 검은 원형 */}
-      <button 
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-6 right-6 w-11 h-11 bg-black rounded-full flex items-center justify-center hover:bg-stone-800 transition-colors shadow-lg"
-        style={{ zIndex: scrollButtonZIndex }}
-      >
-        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-      </button>
+
+      {/* 사업자 정보 */}
+      <p className="footer-business" style={{
+        fontSize: '11px',
+        color: 'var(--gray)',
+        lineHeight: 1.8,
+        paddingTop: '24px',
+        borderTop: '1px solid var(--gray-lighter)',
+        marginBottom: '20px',
+      }}>
+        대표자 | 이현아 · 상호명 | 주식회사 슬런치팩토리 · 사업자번호 | 288-86-02863 · 통신판매업신고번호 | 제2023-경기부천-0868호 · 주소 | 경기 부천시 소사로160번길 23-8
+      </p>
+
+      {/* Copyright */}
+      <p className="footer-copyright" style={{
+        fontSize: '10px',
+        color: 'var(--gray-light)',
+        letterSpacing: '0.05em',
+      }}>
+        © 2024 SLUNCH FACTORY. ALL RIGHTS RESERVED.
+      </p>
     </footer>
   );
 };

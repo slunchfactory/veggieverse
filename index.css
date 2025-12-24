@@ -1,7 +1,8 @@
-/* VeggieVerse Global Styles - Grunge Punch Design System */
+/* VeggieVerse Global Styles - Slunch Factory Design System */
 
-/* Font Import - Inter & Space Mono (md guide: Inter 400-800, Space Mono 400/700) */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+/* Font Import - Plus Jakarta Sans & Pretendard */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 /* ============================================
    EDITORIAL MINIMALIST DESIGN TOKENS
@@ -26,24 +27,33 @@
   --line-height-body: 1.6;
   --line-height-ui: 1.5;
   
-  /* Font Family - Grunge Punch */
-  --font-primary: 'Inter', sans-serif;
-  --font-accent: 'Space Mono', monospace;
+  /* Font Family - Slunch Factory */
+  --font-family: 'Plus Jakarta Sans', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: var(--font-family);
+  --font-accent: var(--font-family);
   
-  /* Color Palette - Grunge Punch (md guide compliant) */
+  /* Color Palette - Slunch Factory */
   /* Core Colors */
-  --color-black: #0D0D0D;
-  --color-gray: #6B6B6B;
-  --color-white: #FAF9F6;
-  --color-lime: #BFFF00;
-  --color-olive: #3D4A3A;
+  --black: #0D0D0D;
+  --gray: #6B6B6B;
+  --gray-light: #9A9A9A;
+  --gray-lighter: #CCCCCC;
+  --white: #FAF9F6;
+  --white-pure: #FFFFFF;
+  --lime: #BFFF00;
+  --lime-dark: #9ACC00;
+  --olive: #3D4A3A;
   
-  /* Extended Colors */
-  --color-gray-light: #9A9A9A;
-  --color-gray-dark: #3A3A3A;
-  --color-lime-dark: #9ACC00;
-  --color-lime-light: #D4FF4D;
-  --color-white-pure: #FFFFFF;
+  /* Legacy aliases for compatibility */
+  --color-black: var(--black);
+  --color-gray: var(--gray);
+  --color-gray-light: var(--gray-light);
+  --color-white: var(--white);
+  --color-lime: var(--lime);
+  --color-lime-dark: var(--lime-dark);
+  --color-olive: var(--olive);
+  --color-white-pure: var(--white-pure);
+  --color-gray-lighter: var(--gray-lighter);
   
   /* Semantic Colors */
   --color-success: #BFFF00;
@@ -119,10 +129,16 @@ body {
   overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #FAF9F6; /* Slunch White - Raw White */
-  color: #0D0D0D; /* Slunch Black - True Black */
-  font-family: 'Inter', sans-serif;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-family);
   position: relative;
+}
+
+/* Selection */
+::selection {
+  background: var(--lime);
+  color: var(--black);
 }
 
 /* React Root - 완전 초기화 */
@@ -695,11 +711,7 @@ a:focus-visible {
    GRUNGE PUNCH UTILITY CLASSES
    ============================================ */
 
-/* Selection Style */
-::selection {
-  background: #BFFF00;
-  color: #0D0D0D;
-}
+/* Selection Style - 위에 이미 정의됨 */
 
 /* Hover Lift Effect */
 .hover-lift {
@@ -759,5 +771,67 @@ a:focus-visible {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0D0D0D;
+}
+
+/* ============================================
+   MENU CARD STYLES (Slunch Factory Guide)
+   ============================================ */
+
+.menu-card {
+  background: var(--white-pure);
+  border: 1px solid var(--black);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.menu-card:hover .menu-card-img {
+  transform: scale(1.05);
+}
+
+.menu-card:hover .menu-card-title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.menu-card:hover .menu-card-desc {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.menu-card.soldout {
+  cursor: default;
+}
+
+.menu-card.soldout .menu-card-img-wrapper {
+  position: relative;
+}
+
+.menu-card.soldout .menu-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 13, 13, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white-pure);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.menu-card.soldout .menu-card-content {
+  opacity: 0.5;
+}
+
+.menu-card.soldout:hover .menu-card-img {
+  transform: none;
+}
+
+.menu-card.soldout:hover .menu-card-title,
+.menu-card.soldout:hover .menu-card-desc {
+  text-decoration: none;
 }
 

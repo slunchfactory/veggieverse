@@ -13,8 +13,26 @@ export const OutlineTag: React.FC<OutlineTagProps> = ({
 }) => {
   return (
     <span
-      className={`inline-block px-3.5 py-1.5 bg-transparent border border-slunch-black text-slunch-black font-sans text-xs cursor-pointer transition-all duration-150 ${className}`}
+      className={className}
+      style={{
+        display: 'inline-block',
+        padding: '6px 14px',
+        background: 'transparent',
+        border: '1px solid var(--black)',
+        color: 'var(--black)',
+        fontSize: '12px',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+      }}
       onClick={onClick}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'var(--lime)';
+        e.currentTarget.style.color = 'var(--black)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'transparent';
+        e.currentTarget.style.color = 'var(--black)';
+      }}
     >
       {children}
     </span>

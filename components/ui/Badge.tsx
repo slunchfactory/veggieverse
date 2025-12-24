@@ -11,29 +11,26 @@ export const Badge: React.FC<BadgeProps> = ({
   children,
   className = '',
 }) => {
-  const baseClasses = 'inline-block px-2 py-0.5 text-[10px] font-bold uppercase';
-  
-  const variantClasses = {
-    NEW: '', // 인라인 스타일로 적용
-    BEST: '', // 인라인 스타일로 적용
-    SOLD_OUT: '', // 인라인 스타일로 적용
-    LIMITED: '', // 인라인 스타일로 적용
-    SEASONAL: '', // 인라인 스타일로 적용
+  const baseStyles: React.CSSProperties = {
+    display: 'inline-block',
+    padding: '2px 8px',
+    fontSize: '11px',
+    fontWeight: 700,
   };
-
-  const variantStyles = {
-    NEW: { backgroundColor: '#BFFF00', color: '#0D0D0D' }, // lime 배경, black 텍스트
-    BEST: { backgroundColor: '#3D4A3A', color: '#FAF9F6' }, // olive 배경, white 텍스트
-    SOLD_OUT: { backgroundColor: '#6B6B6B', color: '#FAF9F6' }, // gray 배경, white 텍스트
-    LIMITED: { backgroundColor: '#0D0D0D', color: '#BFFF00' }, // black 배경, lime 텍스트
-    SEASONAL: { backgroundColor: '#3D4A3A', color: '#BFFF00' }, // olive 배경, lime 텍스트
+  
+  const variantStyles: Record<string, React.CSSProperties> = {
+    NEW: { ...baseStyles, backgroundColor: 'var(--lime)', color: 'var(--black)' },
+    BEST: { ...baseStyles, backgroundColor: 'var(--olive)', color: 'var(--white-pure)' },
+    SOLD_OUT: { ...baseStyles, backgroundColor: 'var(--gray)', color: 'var(--white-pure)' },
+    LIMITED: { ...baseStyles, backgroundColor: 'var(--black)', color: 'var(--lime)' },
+    SEASONAL: { ...baseStyles, backgroundColor: 'var(--olive)', color: 'var(--lime)' },
   };
 
   const label = children || (variant === 'SOLD_OUT' ? 'SOLD OUT' : variant);
 
   return (
     <span 
-      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      className={className}
       style={variantStyles[variant]}
     >
       {label}

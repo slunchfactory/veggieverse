@@ -266,23 +266,37 @@ const RecipeCarousel: React.FC<{
           <Link
             key={recipe.id}
             to={`/recipe/${recipe.id}`}
-            className="flex-shrink-0 w-[260px] cursor-pointer group/card"
-            style={{ scrollSnapAlign: 'start' }}
+            className="menu-card flex-shrink-0 w-[260px]"
+            style={{ 
+              scrollSnapAlign: 'start',
+              background: 'var(--white-pure)',
+              border: '1px solid var(--black)',
+              cursor: 'pointer',
+              overflow: 'hidden',
+            }}
           >
             <div 
-              className="relative w-full aspect-square rounded-none overflow-hidden mb-3"
-              style={{ 
-                backgroundColor: categoryColor ? categoryColor.bg : 
-                  idx % 4 === 0 ? COLORS.green.bg :
-                  idx % 4 === 1 ? COLORS.purple.bg :
-                  idx % 4 === 2 ? COLORS.pink.bg :
-                  COLORS.orange.bg
+              className="menu-card-img-wrapper"
+              style={{
+                overflow: 'hidden',
               }}
             >
               <img
                 src={getRecipeThumbnailImage(recipe.id)}
                 alt={recipe.title}
-                className="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300"
+                className="menu-card-img"
+                style={{
+                  width: '100%',
+                  height: '180px',
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
                 loading="lazy"
                 decoding="async"
                 onError={(e) => {
@@ -290,20 +304,37 @@ const RecipeCarousel: React.FC<{
                   target.src = getFallbackRecipeImage(recipe.id);
                 }}
               />
-              <div className="absolute inset-0 bg-black/0 group-hover/card:bg-black/10 transition-colors duration-300 rounded-none" />
             </div>
-            <h3 className="font-bold text-stone-900 text-base mb-1 group-hover/card:text-green-700 transition-colors">
-              {recipe.title}
-            </h3>
-            <p className="text-stone-700 text-sm leading-relaxed line-clamp-1">
-              {recipe.description}
-            </p>
-            {showAuthor && recipe.author && (
-              <div className="flex items-center justify-between mt-2">
-                <span className="text-xs text-stone-700">by {recipe.author}</span>
-                <span className="text-xs text-stone-700">❤️ {recipe.likes?.toLocaleString()}</span>
-              </div>
-            )}
+            <div className="menu-card-content" style={{ padding: '20px' }}>
+              <h3 
+                className="menu-card-title" 
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  margin: 0,
+                  marginBottom: '4px',
+                  color: 'var(--black)',
+                }}
+              >
+                {recipe.title}
+              </h3>
+              <p 
+                className="menu-card-desc" 
+                style={{
+                  fontSize: '13px',
+                  color: 'var(--gray)',
+                  marginBottom: '10px',
+                }}
+              >
+                {recipe.description}
+              </p>
+              {showAuthor && recipe.author && (
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-xs text-stone-700">by {recipe.author}</span>
+                  <span className="text-xs text-stone-700">❤️ {recipe.likes?.toLocaleString()}</span>
+                </div>
+              )}
+            </div>
           </Link>
         ))}
       </div>

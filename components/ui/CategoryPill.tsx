@@ -13,15 +13,21 @@ export const CategoryPill: React.FC<CategoryPillProps> = ({
   className = '',
   onClick,
 }) => {
-  const baseClasses = 'inline-block px-5 py-2.5 rounded-full font-sans text-sm font-medium cursor-pointer transition-all duration-150';
-  
-  const activeClasses = active
-    ? 'bg-slunch-black text-slunch-lime'
-    : 'bg-transparent border border-slunch-gray-light text-slunch-black';
-
   return (
     <span
-      className={`${baseClasses} ${activeClasses} ${className}`}
+      className={className}
+      style={{
+        display: 'inline-block',
+        padding: '10px 20px',
+        borderRadius: '100px',
+        fontSize: '13px',
+        fontWeight: 500,
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+        backgroundColor: active ? 'var(--black)' : 'transparent',
+        color: active ? 'var(--lime)' : 'var(--black)',
+        border: active ? 'none' : '1px solid var(--gray-light)',
+      }}
       onClick={onClick}
     >
       {children}

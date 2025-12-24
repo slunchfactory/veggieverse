@@ -869,10 +869,10 @@ export const StorePage: React.FC = () => {
               </div>
             </div>
 
-            {/* 상품 그리드 - Grunge Punch Grid */}
+            {/* 상품 그리드 */}
             <div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-r-2 border-b-2 border-slunch-black"
-              style={{ gap: 0 }}
+              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              style={{ gap: '16px' }}
             >
               {sortedProducts.map((product, index) => (
                 <ProductCard 
@@ -926,29 +926,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
 
   return (
     <div 
-      className="group cursor-pointer border-t-2 border-l-2 border-slunch-black hover-shadow bg-slunch-white-pure"
-      onClick={onClick}
+      className={`menu-card ${product.soldOut ? 'soldout' : ''}`}
+      style={{
+        background: 'var(--white-pure)',
+        border: '1px solid var(--black)',
+        cursor: product.soldOut ? 'default' : 'pointer',
+        overflow: 'hidden',
+      }}
+      onClick={product.soldOut ? undefined : onClick}
     >
-      {/* 썸네일 - Portrait Aspect Ratio 2:3 */}
+      {/* 썸네일 이미지 */}
       <div 
-        className="relative w-full overflow-hidden border-b-2 border-slunch-black"
-        style={{ 
-          aspectRatio: '2/3',
-          backgroundColor: '#FAF9F6'
+        className="menu-card-img-wrapper"
+        style={{
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
         {/* 이미지 슬라이드 */}
         {images.length > 0 ? (
-          <div className="relative w-full h-full">
-                {images.map((img, idx) => (
+          <div style={{ position: 'relative', width: '100%', height: '180px' }}>
+            {images.map((img, idx) => (
               <img
                 key={`${product.id}-${idx}`}
                 src={img}
                 alt={product.name}
-                className={`absolute inset-0 w-full h-full transition-opacity duration-500 ${
-                  idx === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                }`}
-                style={{ objectFit: 'cover' }}
+                className="menu-card-img"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '180px',
+                  objectFit: 'cover',
+                  transition: 'transform 0.3s ease, opacity 0.5s ease',
+                  opacity: idx === currentImageIndex ? 1 : 0,
+                  zIndex: idx === currentImageIndex ? 10 : 0,
+                }}
                 onClick={handleImageClick}
                 loading="lazy"
                 onLoad={() => {
@@ -957,7 +971,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   }
                 }}
                 onError={(e) => {
-                  // 이미지 로드 실패 시 로그
                   if (import.meta.env.DEV) {
                     console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
                   }
@@ -968,35 +981,74 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             ))}
             {/* 모든 이미지 로드 실패 시 기본 배경 */}
             {loadedImages.length === 0 && images.length > 0 && (
-              <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                <span className="text-white/30 text-xs">이미지 로딩 중...</span>
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 20,
+                pointerEvents: 'none',
+              }}>
+                <span style={{ color: 'var(--gray-lighter)', fontSize: '13px' }}>이미지 로딩 중...</span>
               </div>
             )}
           </div>
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="text-white/30 text-xs">IMG</span>
+          <div style={{
+            width: '100%',
+            height: '180px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: 'var(--white)',
+          }}>
+            <span style={{ color: 'var(--gray-lighter)', fontSize: '13px' }}>IMG</span>
           </div>
         )}
         
-        {/* Sold Out 뱃지 - 썸네일 좌측 상단 */}
-        {product.soldOut && (
-          <div className="absolute top-2 left-2 z-20">
-            <Badge variant="SOLD_OUT" />
+        {/* 뱃지 - 이미지 좌측 상단 */}
+        {product.statusBadge && !isAlgorithmMode && (
+          <div style={{ position: 'absolute', top: '8px', left: '8px', zIndex: 20 }}>
+            <Badge variant={product.statusBadge} />
           </div>
         )}
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && !product.soldOut && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-slunch-lime text-slunch-black text-[10px] font-mono font-bold flex items-center gap-1 z-10">
-            <Sparkles className="w-3 h-3" />
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            zIndex: 20,
+            padding: '2px 8px',
+            backgroundColor: 'var(--lime)',
+            color: 'var(--black)',
+            fontSize: '11px',
+            fontWeight: 700,
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+          }}>
+            <Sparkles style={{ width: '12px', height: '12px' }} />
             추천
           </div>
         )}
 
         {/* 이미지 인디케이터 (하단 중앙) */}
         {hasMultipleImages && !product.soldOut && (
-          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+          <div style={{
+            position: 'absolute',
+            bottom: '8px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            gap: '4px',
+            zIndex: 10,
+          }}>
             {images.map((_, idx) => (
               <button
                 key={idx}
@@ -1004,87 +1056,130 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   e.stopPropagation();
                   setCurrentImageIndex(idx);
                 }}
-                className={`w-1 h-1 rounded-full transition-all ${
-                  idx === currentImageIndex 
-                    ? 'bg-white w-2' 
-                    : 'bg-white/50 hover:bg-white/75'
-                }`}
+                style={{
+                  width: idx === currentImageIndex ? '8px' : '4px',
+                  height: '4px',
+                  borderRadius: '2px',
+                  backgroundColor: idx === currentImageIndex ? 'var(--white-pure)' : 'rgba(255, 255, 255, 0.5)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                }}
                 aria-label={`이미지 ${idx + 1}`}
               />
             ))}
           </div>
         )}
-      </div>
-      
-      {/* 상품 정보 - 30% 텍스트 영역 */}
-      <div className="relative" style={{ padding: 'var(--spacing-md)' }}>
-        {/* 상태 뱃지 - 메뉴명 위에 위치 (NEW, BEST, LIMITED, SEASONAL) */}
-        {product.statusBadge && product.statusBadge !== 'SOLD_OUT' && !isAlgorithmMode && (
-          <div className="absolute top-1 left-4 z-10">
-            <Badge variant={product.statusBadge} />
+
+        {/* SOLD OUT 오버레이 */}
+        {product.soldOut && (
+          <div className="menu-card-overlay" style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(13, 13, 13, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'var(--white-pure)',
+            fontSize: '14px',
+            fontWeight: 700,
+            letterSpacing: '0.1em',
+            zIndex: 15,
+          }}>
+            SOLD OUT
           </div>
         )}
+      </div>
+      
+      {/* 상품 정보 */}
+      <div className="menu-card-content" style={{ padding: '20px' }}>
+        {/* 태그 + 메뉴명 행 */}
+        <div className="menu-card-title-row" style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginBottom: '4px',
+        }}>
+          {/* 뱃지가 이미지 위에 있으므로 여기서는 제거 */}
+          <h3 className="menu-card-title" style={{
+            fontSize: '16px',
+            fontWeight: 700,
+            margin: 0,
+            color: 'var(--black)',
+          }}>
+            {product.name}
+          </h3>
+        </div>
         
-        {/* 상품명 - H2: 18px */}
-        <h3 className="mb-2 leading-snug group-hover:underline font-mono font-bold text-slunch-black"
-          style={{ 
-            fontSize: 'var(--font-size-h2)',
-            marginTop: product.statusBadge && product.statusBadge !== 'SOLD_OUT' && !isAlgorithmMode ? '24px' : '12px'
-          }}
-        >
-          {product.name}
-        </h3>
+        {/* 설명 */}
+        {product.description && (
+          <p className="menu-card-desc" style={{
+            fontSize: '13px',
+            color: 'var(--gray)',
+            marginBottom: '10px',
+            margin: 0,
+          }}>
+            {product.description}
+          </p>
+        )}
         
-        {/* 가격 - 구조: 원래가격(위) | 할인율 | 할인된 가격(아래) */}
-        <div className="flex flex-col gap-1" style={{ marginTop: '4px' }}>
+        {/* 가격 정보 */}
+        <div style={{ marginTop: '10px' }}>
           {product.originalPrice && product.originalPrice > product.price ? (
             <>
-              {/* 원래 가격 - 14px, 더 연한 gray, line-through (위) */}
-              <span className="line-through font-sans"
-                style={{ 
-                  fontSize: '14px',
-                  color: '#CCCCCC' // 더 연한 회색
-                }}
-              >
+              {/* 원래 가격 - 취소선 */}
+              <p className="menu-card-price-original" style={{
+                fontSize: '13px',
+                color: 'var(--gray-light)',
+                textDecoration: 'line-through',
+                marginBottom: '4px',
+                margin: 0,
+              }}>
                 {product.originalPrice.toLocaleString()}원
-              </span>
-              {/* 할인율 | 할인된 가격 (아래, 가로 배치, 높이 맞춤) */}
-              <div className="flex items-center gap-2">
-                {/* 할인율 뱃지 - 11px, lime 배경, black 텍스트, 높이 맞춤 */}
+              </p>
+              {/* 할인가 행 */}
+              <div className="menu-card-price-row" style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+              }}>
+                {/* 할인율 뱃지 */}
                 {(() => {
                   const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                   return discountRate > 0 ? (
-                    <span className="inline-flex items-center justify-center font-bold font-mono"
-                      style={{ 
-                        fontSize: '11px', 
-                        padding: '2px 8px',
-                        backgroundColor: '#BFFF00',
-                        color: '#0D0D0D',
-                        lineHeight: '1.2',
-                        height: '20px' // 할인된 가격과 높이 맞춤
-                      }}
-                    >
+                    <span style={{
+                      display: 'inline-block',
+                      padding: '2px 8px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      backgroundColor: 'var(--lime)',
+                      color: 'var(--black)',
+                      lineHeight: '1.2',
+                    }}>
                       {discountRate}%
                     </span>
                   ) : null;
                 })()}
-                {/* 할인된 가격 - 18px, bold, black */}
-                <span className="font-mono font-bold text-slunch-black"
-                  style={{ 
-                    fontSize: '18px', 
-                    fontWeight: 700,
-                    lineHeight: '1.2'
-                  }}
-                >
+                {/* 할인된 가격 */}
+                <span className="menu-card-price" style={{
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  color: 'var(--black)',
+                }}>
                   {product.price.toLocaleString()}원
                 </span>
               </div>
             </>
           ) : (
-            /* 할인이 없을 때 - 현재 가격만 18px, bold, black */
-            <span className="font-mono font-bold text-slunch-black"
-              style={{ fontSize: '18px', fontWeight: 700 }}
-            >
+            /* 할인이 없을 때 - 현재 가격만 */
+            <span className="menu-card-price" style={{
+              fontSize: '16px',
+              fontWeight: 700,
+              color: 'var(--black)',
+            }}>
               {product.price.toLocaleString()}원
             </span>
           )}

@@ -13,8 +13,24 @@ export const Hashtag: React.FC<HashtagProps> = ({
 }) => {
   return (
     <span
-      className={`inline-block px-4 py-2 bg-slunch-black text-slunch-white-pure font-sans text-sm hover-lime cursor-pointer transition-all duration-150 ${className}`}
+      className={className}
+      style={{
+        padding: '10px 18px',
+        background: 'var(--black)',
+        color: 'var(--white-pure)',
+        fontSize: '13px',
+        cursor: 'pointer',
+        transition: 'all 0.15s ease',
+      }}
       onClick={onClick}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'var(--lime)';
+        e.currentTarget.style.color = 'var(--black)';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'var(--black)';
+        e.currentTarget.style.color = 'var(--white-pure)';
+      }}
     >
       {children}
     </span>
