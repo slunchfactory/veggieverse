@@ -392,7 +392,7 @@ export const NewsletterPage: React.FC = () => {
               {/* 큰 이미지 1개 - "열심히의 함정" 위에 배치 */}
               {selectedArticle.images?.large && (
                 <div className="my-12 -mx-6">
-                  <div className="w-full aspect-[4/3] bg-gradient-to-br from-amber-200 via-rose-200 to-pink-200 flex items-center justify-center">
+                  <div className="w-full aspect-[4/3] bg-[#E0E0E0] flex items-center justify-center">
                     <span className="text-stone-500 text-sm">이미지 1</span>
                   </div>
                   {/* 이미지 설명 (있는 경우) */}
@@ -416,7 +416,7 @@ export const NewsletterPage: React.FC = () => {
                       const imgCaption = typeof img === 'object' ? img.caption : undefined;
                       return (
                         <div key={idx} className="relative">
-                          <div className="w-full aspect-square bg-gradient-to-br from-blue-200 via-indigo-200 to-purple-200 flex items-center justify-center">
+                          <div className="w-full aspect-square bg-[#E0E0E0] flex items-center justify-center">
                             <span className="text-stone-500 text-sm">이미지 {idx + 2}</span>
                           </div>
                           {/* 이미지 설명 (있는 경우) */}

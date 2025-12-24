@@ -232,7 +232,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="transition-colors relative text-stone-700 hover:text-stone-900"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center">0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-full flex items-center justify-center">0</span>
           </Link>
           <button className="transition-colors text-stone-700 hover:text-stone-900">
             <Search className="w-5 h-5" />

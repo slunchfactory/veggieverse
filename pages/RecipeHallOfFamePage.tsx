@@ -30,16 +30,16 @@ const hallOfFameRecipes = [
 
 // 카드별 색상 배열
 const cardColors = [
-  COLORS.orange,  // 1등
-  COLORS.green,   // 2등
-  COLORS.purple,  // 3등
-  COLORS.pink,
-  COLORS.maroon,
-  COLORS.black,
-  COLORS.green,
-  COLORS.purple,
-  COLORS.orange,
-  COLORS.pink,
+  { bg: '#000000', text: '#FFFFFF' },  // 1등
+  { bg: '#333333', text: '#FFFFFF' },   // 2등
+  { bg: '#666666', text: '#FFFFFF' },  // 3등
+  { bg: '#E0E0E0', text: '#000000' },
+  { bg: '#333333', text: '#FFFFFF' },
+  { bg: '#000000', text: '#FFFFFF' },
+  { bg: '#333333', text: '#FFFFFF' },
+  { bg: '#666666', text: '#FFFFFF' },
+  { bg: '#000000', text: '#FFFFFF' },
+  { bg: '#E0E0E0', text: '#000000' },
 ];
 
 const RecipeHallOfFamePage: React.FC = () => {
@@ -48,7 +48,7 @@ const RecipeHallOfFamePage: React.FC = () => {
       {/* 히어로 헤더 */}
       <div 
         className="relative overflow-hidden py-16 sm:py-20"
-        style={{ backgroundColor: '#E54B1A' }}
+        style={{ backgroundColor: '#000000' }}
       >
         {/* 배경 장식 */}
         <div className="absolute inset-0 opacity-20">
@@ -70,7 +70,7 @@ const RecipeHallOfFamePage: React.FC = () => {
           <div className="text-center">
             <div 
               className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg bg-white"
-              style={{ color: '#E54B1A' }}
+              style={{ color: '#000000' }}
             >
               <Trophy className="w-10 h-10" />
             </div>
@@ -137,7 +137,7 @@ const RecipeHallOfFamePage: React.FC = () => {
                 
                 {/* 텍스트 영역 */}
                 <div className="p-4">
-                  <h3 className={`font-bold text-stone-900 mb-1 group-hover:text-orange-600 transition-colors ${
+                  <h3 className={`font-bold text-stone-900 mb-1 group-hover:text-black transition-colors ${
                     recipe.rank <= 3 ? 'text-xl' : 'text-base'
                   }`}>
                     {recipe.title}

@@ -398,133 +398,35 @@ export const StorePage: React.FC = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-      {/* Store Hero Section - Video Presentation (Vertical/Portrait) */}
+      {/* Hero Section - Split Grid Layout (60-70% Main Video, 30-40% 2x2 Grid) */}
       {activeTab === 'ALL' && (
         <div className="w-full border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
-          <div 
-            className="relative w-full mx-auto"
-            style={{ 
-              aspectRatio: '3/4',
-              maxWidth: '100%',
-              maxHeight: '80vh'
-            }}
-          >
-            {/* Video Background */}
-            <div className="absolute inset-0 bg-black overflow-hidden">
-              <iframe
-                className="absolute inset-0 w-full h-full"
-                src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                title="슬런치 비건 레시피"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                style={{ 
-                  pointerEvents: 'none',
-                  objectFit: 'cover',
-                  width: '100%',
-                  height: '100%'
-                }}
-              />
-            </div>
-            {/* Dark Overlay for text contrast */}
-            <div className="absolute inset-0 bg-black/50 z-10"></div>
-            {/* Text Overlay - Bottom Left */}
-            <div className="absolute bottom-0 left-0 z-20 p-8 lg:p-12" style={{ maxWidth: '60%' }}>
-              <h1 
-                className="text-white mb-4 font-medium"
-                style={{ 
-                  fontSize: 'var(--font-size-h1)', 
-                  lineHeight: '1.2',
-                  letterSpacing: 'var(--letter-spacing-tight)',
-                  textShadow: '0 2px 10px rgba(0, 0, 0, 0.3)'
-                }}
-              >
-                슬런치가 추천하는<br/>겨울 비건 레시피
-              </h1>
-              <Link
-                to="/recipe"
-                className="inline-block bg-white text-black px-6 py-2 font-medium hover:bg-black hover:text-white transition-colors"
-                style={{ 
-                  fontSize: 'var(--font-size-ui)',
-                  border: 'none',
-                  borderRadius: 'var(--border-radius)'
-                }}
-              >
-                View Recipe →
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* ALL 페이지 전용 - 추천 메뉴 섹션 (기존 코드 유지하되 수정) */}
-      {activeTab === 'ALL' && (
-        <div className="w-full max-w-[1200px] mx-auto border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
-          <div className="flex flex-col lg:flex-row lg:items-stretch">
-
-            {/* 우측 - 추천 콘텐츠 영역 */}
-            <div className="lg:w-1/2 bg-[#E54B1A] flex-shrink-0">
-              
-              {/* 모바일/태블릿: 가로형 카드 2열 그리드 */}
-              <div className="lg:hidden p-4 sm:p-5">
-                <div className="grid grid-cols-2 gap-3">
-                  {algorithmRecommended.slice(0, 4).map((product, idx) => (
-                    <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
-                      {/* 카드 영상 (왼쪽) */}
-                      <div 
-                        className="relative w-[45%] flex-shrink-0 overflow-hidden bg-stone-900"
-                        style={{ aspectRatio: '3/4', borderRadius: '4px' }}
-                      >
-                        <iframe
-                          className="absolute w-full h-full"
-                          src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-                          title={product.name}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center', top: 0, left: 0 }}
-                        />
-                        {/* 추천 아이콘 (좌측 상단) */}
-                        <div className="absolute top-2 left-2 z-10">
-                          <div className="w-6 h-6 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3 h-3 text-[#E54B1A]" />
-                          </div>
-                        </div>
-                      </div>
-                      {/* 카드 정보 (오른쪽) */}
-                      <div className="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                          <h4 className="text-[13px] font-bold text-stone-900 leading-tight line-clamp-2 group-hover:underline">
-                            {product.name}
-                          </h4>
-                          <p className="text-[10px] text-stone-600 mt-1 line-clamp-2">
-                            {product.spectrum} 식단에 어울리는 메뉴
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between mt-2">
-                          <button 
-                            onClick={(e) => toggleLike(product.id, e)}
-                            className="flex items-center gap-1 hover:scale-105 transition-transform"
-                          >
-                            <Heart 
-                              className={`w-3.5 h-3.5 transition-colors ${
-                                likedItems.has(product.id) 
-                                  ? 'fill-red-500 text-red-500' 
-                                  : 'text-stone-500 hover:text-red-400'
-                              }`} 
-                            />
-                            <span className={`text-[10px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
-                              {formatLikeCount(likeCounts[product.id] || 0)}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+          {/* Desktop: Flex Row Layout */}
+          <div className="hidden lg:flex lg:flex-row">
+            {/* Left Column - Main Video (50%) */}
+            <div className="w-1/2 relative overflow-hidden border-r" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+              <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                  title="슬런치 비건 레시피"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ 
+                    pointerEvents: 'none',
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
               </div>
-
+            </div>
+            
+            {/* Right Column - 추천 콘텐츠 영역 (50%) */}
+            <div className="w-1/2 bg-[#F5F5F5] flex-shrink-0">
               {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
-              <div className="hidden lg:flex p-5 pb-8 gap-4">
+              <div className="hidden lg:flex p-5 pb-8 gap-4 h-full overflow-y-auto">
                 {/* 왼쪽 열 */}
                 <div className="flex-1 flex flex-col gap-4">
                   {algorithmRecommended.slice(0, 2).map((product, idx) => (
@@ -544,15 +446,15 @@ export const StorePage: React.FC = () => {
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
                           <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-[#E54B1A]" />
+                            <Sparkles className="w-3.5 h-3.5 text-black" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-[#E54B1A]">
-                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight group-hover:underline">
+                      <div className="pt-3 bg-black">
+                        <h4 className="text-[17px] font-bold text-white leading-tight group-hover:underline">
                           {product.name}
                         </h4>
-                        <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
+                        <p className="text-[12px] text-white/70 mt-2 line-clamp-2">
                           {product.spectrum} 식단에 어울리는 메뉴
                         </p>
                         <div className="flex items-center mt-3">
@@ -567,7 +469,7 @@ export const StorePage: React.FC = () => {
                                   : 'text-stone-500 hover:text-red-400'
                               }`} 
                             />
-                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
+                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
                               {formatLikeCount(likeCounts[product.id] || 0)}
                             </span>
                           </button>
@@ -596,15 +498,15 @@ export const StorePage: React.FC = () => {
                         {/* 추천 아이콘 (좌측 상단) */}
                         <div className="absolute top-3 left-3 z-10">
                           <div className="w-8 h-8 rounded-none bg-stone-800 flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-[#E54B1A]" />
+                            <Sparkles className="w-3.5 h-3.5 text-black" />
                           </div>
                         </div>
                       </div>
-                      <div className="pt-3 bg-[#E54B1A]">
-                        <h4 className="text-[17px] font-bold text-stone-900 leading-tight group-hover:underline">
+                      <div className="pt-3 bg-black">
+                        <h4 className="text-[17px] font-bold text-white leading-tight group-hover:underline">
                           {product.name}
                         </h4>
-                        <p className="text-[12px] text-stone-600 mt-2 line-clamp-2">
+                        <p className="text-[12px] text-white/70 mt-2 line-clamp-2">
                           {product.spectrum} 식단에 어울리는 메뉴
                         </p>
                         <div className="flex items-center mt-3">
@@ -619,7 +521,7 @@ export const StorePage: React.FC = () => {
                                   : 'text-stone-500 hover:text-red-400'
                               }`} 
                             />
-                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-red-500 font-medium' : 'text-stone-500'}`}>
+                            <span className={`text-[12px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
                               {formatLikeCount(likeCounts[product.id] || 0)}
                             </span>
                           </button>
@@ -631,8 +533,90 @@ export const StorePage: React.FC = () => {
               </div>
             </div>
           </div>
+          
+          {/* Mobile: Stack Vertically */}
+          <div className="flex flex-col lg:hidden">
+            {/* Main Video on Top */}
+            <div className="relative w-full overflow-hidden border-b" style={{ borderWidth: 'var(--border-width)', borderStyle: 'var(--border-style)', borderColor: 'var(--color-border)' }}>
+              <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                  title="슬런치 비건 레시피"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  style={{ 
+                    pointerEvents: 'none',
+                    objectFit: 'cover',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* 추천 콘텐츠 영역 Below (Mobile) */}
+            <div className="lg:hidden p-4 sm:p-5 bg-[#F5F5F5]">
+              <div className="grid grid-cols-2 gap-3">
+                {algorithmRecommended.slice(0, 4).map((product, idx) => (
+                  <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
+                    {/* 카드 영상 (왼쪽) */}
+                    <div 
+                      className="relative w-[45%] flex-shrink-0 overflow-hidden bg-stone-900"
+                      style={{ aspectRatio: '3/4', borderRadius: '4px' }}
+                    >
+                      <iframe
+                        className="absolute w-full h-full"
+                        src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                        title={product.name}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center', top: 0, left: 0 }}
+                      />
+                      {/* 추천 아이콘 (좌측 상단) */}
+                      <div className="absolute top-2 left-2 z-10">
+                        <div className="w-6 h-6 rounded-none bg-stone-800 flex items-center justify-center">
+                          <Sparkles className="w-3 h-3 text-black" />
+                        </div>
+                      </div>
+                    </div>
+                    {/* 카드 정보 (오른쪽) */}
+                    <div className="flex-1 flex flex-col justify-between py-1">
+                      <div>
+                        <h4 className="text-[13px] font-bold text-stone-900 leading-tight line-clamp-2 group-hover:underline">
+                          {product.name}
+                        </h4>
+                        <p className="text-[10px] text-stone-600 mt-1 line-clamp-2">
+                          {product.spectrum} 식단에 어울리는 메뉴
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between mt-2">
+                        <button 
+                          onClick={(e) => toggleLike(product.id, e)}
+                          className="flex items-center gap-1 hover:scale-105 transition-transform"
+                        >
+                          <Heart 
+                            className={`w-3.5 h-3.5 transition-colors ${
+                              likedItems.has(product.id) 
+                                ? 'fill-black text-black' 
+                                : 'text-stone-500 hover:text-black'
+                            }`} 
+                          />
+                          <span className={`text-[10px] ${likedItems.has(product.id) ? 'text-black font-medium' : 'text-stone-500'}`}>
+                            {formatLikeCount(likeCounts[product.id] || 0)}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       )}
+      
 
       <div className="page-container pt-8 pb-6">
         <div className="flex" style={{ gap: 'var(--spacing-xl)', alignItems: 'flex-start' }}>
@@ -1031,7 +1015,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         
         {/* 알고리즘 추천 뱃지 */}
         {isAlgorithmMode && product.isBest && !product.soldOut && (
-          <div className="absolute top-2 left-2 px-2 py-1 bg-[#E54B1A] rounded-none text-[10px] font-medium text-stone-800 flex items-center gap-1 z-10">
+          <div className="absolute top-2 left-2 px-2 py-1 bg-black rounded-none text-[10px] font-medium text-white flex items-center gap-1 z-10">
             <Sparkles className="w-3 h-3" />
             추천
           </div>
@@ -1061,28 +1045,31 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
       
       {/* 상품 정보 - 30% 텍스트 영역 */}
       <div style={{ padding: 'var(--spacing-md)' }}>
-        {/* 상품명 */}
+        {/* 상품명 - H2: 18px */}
         <h3 
           className="mb-2 leading-snug group-hover:underline"
           style={{ 
-            fontSize: 'var(--font-size-ui)',
+            fontSize: 'var(--font-size-h2)',
             color: 'var(--color-text-primary)',
-            fontWeight: 500,
-            letterSpacing: 'var(--letter-spacing-tight)'
+            fontWeight: 'var(--font-weight-h2)',
+            letterSpacing: 'var(--letter-spacing-tight)',
+            lineHeight: 'var(--line-height-h2)',
+            marginTop: '12px'
           }}
         >
           {product.name}
         </h3>
         
-        {/* 가격 */}
-        <div className="flex flex-col gap-1">
+        {/* 가격 - UI: 15px - 순서: 원래 가격(취소선) → 할인율 → 할인된 가격 */}
+        <div className="flex flex-col gap-1" style={{ marginTop: '4px' }}>
           {product.originalPrice && (
-            <div className="flex items-baseline gap-2">
+            <>
               <span 
-                className="line-through font-accent"
+                className="line-through"
                 style={{ 
                   fontSize: 'var(--font-size-body)',
                   color: 'var(--color-text-muted)',
+                  fontWeight: 'var(--font-weight-ui)',
                   letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
@@ -1092,7 +1079,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                 return discountRate > 0 ? (
                   <span 
-                    className="font-bold font-accent"
+                    className="font-bold"
                     style={{ 
                       fontSize: 'var(--font-size-ui)',
                       color: 'var(--color-text-primary)',
@@ -1103,18 +1090,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   </span>
                 ) : null;
               })()}
-            </div>
+            </>
           )}
-          <p 
-            className="font-bold font-accent"
+          <span 
+            className="font-bold"
             style={{ 
-              fontSize: 'var(--font-size-body)',
+              fontSize: 'var(--font-size-ui)',
               color: 'var(--color-text-primary)',
+              fontWeight: 700,
               letterSpacing: 'var(--letter-spacing-tight)'
             }}
           >
             {product.price.toLocaleString()}원
-          </p>
+          </span>
         </div>
         
         {/* BEST 뱃지 */}

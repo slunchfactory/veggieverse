@@ -4,7 +4,7 @@ export const BrandPage: React.FC = () => {
   return (
     <div className="min-h-screen pt-16" style={{ backgroundColor: '#ffffff' }}>
       {/* 히어로 이미지 */}
-      <div className="relative h-[400px] bg-emerald-800 overflow-hidden">
+      <div className="relative h-[400px] bg-[#333333] overflow-hidden">
         <img 
           src="/brand-hero.jpg" 
           alt="SLUNCH FACTORY 브랜드 히어로 이미지"

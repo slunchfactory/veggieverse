@@ -1,70 +1,70 @@
-// 새로운 컬러 팔레트
+// 모노톤 컬러 팔레트
 
 export const COLORS = {
-  // 메인 그린 (메뉴바, 주요 버튼)
+  // 그린 → 다크 그레이
   green: {
     name: 'Green',
-    bg: '#3D9E3D',
+    bg: '#333333',
     text: '#FFFFFF',
   },
-  // 블랙 (텍스트, 강조)
+  // 블랙
   black: {
     name: 'Black',
-    bg: '#1A1A1A',
-    text: '#ffffff',
+    bg: '#000000',
+    text: '#FFFFFF',
   },
-  // 다크 브라운/마룬
+  // 마룬 → 다크 그레이
   maroon: {
     name: 'Maroon',
-    bg: '#5C1A1A',
+    bg: '#333333',
     text: '#FFFFFF',
   },
-  // 퍼플
+  // 퍼플 → 미디엄 그레이
   purple: {
     name: 'Purple',
-    bg: '#6B3FA0',
+    bg: '#666666',
     text: '#FFFFFF',
   },
-  // 핑크
+  // 핑크 → 라이트 그레이
   pink: {
     name: 'Pink',
-    bg: '#F5A0C0',
-    text: '#1A1A1A',
+    bg: '#E0E0E0',
+    text: '#000000',
   },
-  // 오렌지 (포인트 컬러)
+  // 오렌지 → 블랙
   orange: {
     name: 'Orange',
-    bg: '#E54B1A',
+    bg: '#000000',
     text: '#FFFFFF',
   },
-  // 배경 미색
+  // 배경 미색 → 라이트 그레이
   cream: {
     name: 'Cream',
-    bg: '#F5F0E6',
-    text: '#1A1A1A',
+    bg: '#F5F5F5',
+    text: '#000000',
   },
 } as const;
 
-// 카테고리별 컬러 매핑
+// 카테고리별 컬러 매핑 (모노톤)
 export const CATEGORY_COLORS = {
-  recipe: COLORS.green,
-  store: COLORS.purple,
-  brand: COLORS.maroon,
-  community: COLORS.pink,
-  newsletter: COLORS.orange,
-  new: COLORS.green,
-  dessert: COLORS.pink,
-  korean: COLORS.maroon,
-  lunch: COLORS.orange,
-  drink: COLORS.purple,
-  date: COLORS.pink,
+  recipe: { bg: '#333333', text: '#FFFFFF' },
+  store: { bg: '#666666', text: '#FFFFFF' },
+  brand: { bg: '#333333', text: '#FFFFFF' },
+  community: { bg: '#E0E0E0', text: '#000000' },
+  newsletter: { bg: '#000000', text: '#FFFFFF' },
+  new: { bg: '#333333', text: '#FFFFFF' },
+  dessert: { bg: '#E0E0E0', text: '#000000' },
+  korean: { bg: '#333333', text: '#FFFFFF' },
+  lunch: { bg: '#000000', text: '#FFFFFF' },
+  drink: { bg: '#666666', text: '#FFFFFF' },
+  date: { bg: '#E0E0E0', text: '#000000' },
 } as const;
 
 // 배경색
-export const BG_COLOR = COLORS.cream.bg;
+export const BG_COLOR = '#F5F5F5';
 
 // 메뉴 컬러
-export const MENU_COLOR = COLORS.green;
+export const MENU_COLOR = { bg: '#333333', text: '#FFFFFF' };
 
 // 포인트 컬러
-export const ACCENT_COLOR = COLORS.orange;
+export const ACCENT_COLOR = { bg: '#000000', text: '#FFFFFF' };

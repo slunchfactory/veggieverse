@@ -8,33 +8,46 @@
    ============================================ */
 
 :root {
-  /* Typography Scale */
-  --font-size-h1: 48px;
-  --font-size-body: 16px;
-  --font-size-ui: 15px;
+  /* Typography Scale - Strict Design System */
+  --font-size-h1: 48px;           /* H1 / Page Titles / Hero Headlines */
+  --font-size-h2: 18px;           /* H2 / Card Titles / Product Names in Grid */
+  --font-size-body: 16px;         /* Body Text / Descriptions */
+  --font-size-ui: 15px;           /* Metadata / Buttons / Categories / Prices */
+  
+  /* Typography Weights */
+  --font-weight-h1: 700;          /* Bold for H1 (can also use 500 for Medium) */
+  --font-weight-h2: 500;          /* Medium for H2 */
+  --font-weight-body: 400;        /* Regular for Body */
+  --font-weight-ui: 400;          /* Regular for UI elements */
+  
+  /* Typography Line Heights */
+  --line-height-h1: 1.2;
+  --line-height-h2: 1.4;
+  --line-height-body: 1.6;
+  --line-height-ui: 1.5;
   
   /* Font Family - Clean Sans-serif */
   --font-primary: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-accent: 'Montserrat', sans-serif;
   
-  /* Color Palette - Earthy/Minimalist tones with accessibility compliance */
+  /* Color Palette - Monotone (Grayscale) */
   /* Background Colors */
   --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #FAF9F7;
+  --color-bg-secondary: #F5F5F5;
   
-  /* Text Colors - High contrast (9:1 for headings, 4.5:1 for body) */
-  --color-text-primary: #1A1A1A;    /* 9:1 contrast on white */
-  --color-text-secondary: #4A4A4A;  /* 4.5:1 contrast on white */
-  --color-text-muted: #6B6B6B;      /* 3:1 contrast for large text */
-  --color-text-inverse: #FFFFFF;    /* For dark backgrounds */
+  /* Text Colors - Monotone */
+  --color-text-primary: #000000;    /* Black for Headings */
+  --color-text-secondary: #333333;  /* Dark Gray for Body */
+  --color-text-muted: #888888;      /* Medium Gray for Metadata */
+  --color-text-inverse: #FFFFFF;    /* White for dark backgrounds */
   
-  /* Accent Colors - High contrast (9:1 for CTAs) */
-  --color-accent-primary: #1A1A1A;   /* 9:1 contrast on white */
-  --color-accent-hover: #2D2D2D;
+  /* Accent Colors - Black for CTAs */
+  --color-accent-primary: #000000;   /* Black */
+  --color-accent-hover: #333333;     /* Dark Gray on hover */
   
-  /* Border Colors - 3:1 contrast */
-  --color-border: #D4D4D4;          /* 3:1 contrast for borders */
-  --color-border-active: #1A1A1A;   /* Active states */
+  /* Border Colors - Light Gray */
+  --color-border: #E0E0E0;          /* Light Gray 1px solid */
+  --color-border-active: #000000;   /* Black for active states */
   
   /* Borders */
   --border-width: 1px;
@@ -74,19 +87,19 @@ html {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow-x: hidden !important;
+  overflow-x: hidden;
+  overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
 body {
   width: 100%;
-  height: 100vh; /* 화면 꽉 차게 */
+  height: auto; /* 내용에 따라 자동으로 늘어남 */
   margin: 0;
   padding: 0;
-  overflow-x: hidden !important;
-  overflow-y: scroll; /* 스크롤 활성화 */
-  scroll-snap-type: y mandatory; /* 스냅 필수 속성 */
+  overflow-x: hidden;
+  overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #ffffff;
@@ -98,19 +111,25 @@ body {
 /* React Root - 완전 초기화 */
 #root {
   width: 100%;
-  height: 100%;
+  min-height: 100vh; /* 최소 높이는 화면 전체, 내용에 따라 늘어남 */
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* overflow-y를 여기서 설정하지 않음 - 브라우저 창이 처리 */
   position: relative;
 }
 
 #root > div {
   width: 100%;
-  height: 100%;
+  min-height: 100vh; /* 최소 높이는 화면 전체, 내용에 따라 늘어남 */
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  /* overflow-y를 여기서 설정하지 않음 */
   isolation: isolate;
 }
 
@@ -672,3 +691,14 @@ a:focus-visible {
   position: relative;
   z-index: 1;
 }
+
+/* Hall of Fame Infinite Marquee Animation */
+@keyframes marquee-slide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+

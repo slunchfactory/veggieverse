@@ -61,7 +61,7 @@ const RecipeDetailPage: React.FC = () => {
           </p>
           <Link
             to="/recipe"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-600 text-white rounded-none font-medium hover:bg-emerald-700 transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-none font-medium hover:bg-[#333333] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             레시피 목록으로 돌아가기
@@ -206,7 +206,7 @@ const RecipeDetailPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* 커버 이미지 영역 (표지 페이지) */}
-      <div className="relative h-[70vh] min-h-[600px] bg-gradient-to-br from-amber-100 to-orange-100">
+      <div className="relative h-[70vh] min-h-[600px] bg-[#F5F5F5]">
         <img
           src={getImageUrl(recipe.heroImage || recipe.image || getRecipeHeroImage(Number(id) || 1))}
           alt={`${recipe.title} - 레시피 커버 이미지`}
@@ -272,18 +272,18 @@ const RecipeDetailPage: React.FC = () => {
               <div className="flex items-center gap-3 flex-shrink-0">
                 <button
                   onClick={() => setIsLiked(!isLiked)}
-                  className="flex items-center gap-1.5 text-white hover:text-red-300 transition-colors"
+                  className="flex items-center gap-1.5 text-white hover:text-white/70 transition-colors"
                   title="좋아요"
                 >
-                  <Heart className={`w-5 h-5 ${isLiked ? 'fill-red-400 text-red-400' : ''}`} />
+                  <Heart className={`w-5 h-5 ${isLiked ? 'fill-white text-white' : ''}`} />
                   <span className="text-sm font-medium">
                     {((recipe.likes || 0) + (isLiked ? 1 : 0)).toLocaleString()}
                   </span>
                 </button>
                 <button
                   onClick={() => setIsSaved(!isSaved)}
-                  className={`text-white hover:text-amber-300 transition-colors ${
-                    isSaved ? 'text-amber-300' : ''
+                  className={`text-white hover:text-white/70 transition-colors ${
+                    isSaved ? 'text-white' : ''
                   }`}
                   title="저장"
                 >

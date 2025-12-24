@@ -194,7 +194,7 @@ export const SpiritChatbotPopup: React.FC<SpiritChatbotPopupProps> = ({
               <div className="flex flex-col gap-2">
                 <button
                   onClick={handleUploadPhoto}
-                  className="w-full py-2.5 px-4 bg-[#3D9E3D] hover:opacity-90 text-white rounded-none font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="w-full py-2.5 px-4 bg-black hover:opacity-90 text-white rounded-none font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2"
                   style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
                 >
                   <Camera className="w-4 h-4" />

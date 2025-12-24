@@ -14,7 +14,7 @@ const ProfilePage: React.FC = () => {
           <p className="text-stone-500 mb-4">로그인이 필요합니다.</p>
           <Link
             to="/"
-            className="inline-block px-6 py-3 bg-emerald-600 text-white rounded-none font-medium hover:bg-emerald-700 transition-colors"
+            className="inline-block px-6 py-3 bg-black text-white rounded-none font-medium hover:bg-[#333333] transition-colors"
           >
             테스트 시작하기
           </Link>
@@ -45,8 +45,8 @@ const ProfilePage: React.FC = () => {
         {/* 프로필 정보 카드 */}
         <div className="bg-white border-2 border-stone-200 rounded-none p-8 mb-8">
           <div className="flex items-center gap-6 mb-6">
-            <div className="w-20 h-20 bg-emerald-100 rounded-none flex items-center justify-center">
-              <User className="w-10 h-10 text-emerald-600" />
+            <div className="w-20 h-20 bg-[#E0E0E0] rounded-none flex items-center justify-center">
+              <User className="w-10 h-10 text-black" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-stone-900 mb-1">{user.username}</h2>
@@ -91,7 +91,7 @@ const ProfilePage: React.FC = () => {
         {/* 배지 진열대 */}
         <div className="bg-white border-2 border-stone-200 rounded-none p-8 mb-8">
           <div className="flex items-center gap-2 mb-6">
-            <Trophy className="w-6 h-6 text-emerald-600" />
+            <Trophy className="w-6 h-6 text-black" />
             <h2 className="text-2xl font-bold text-stone-900">배지 진열대</h2>
             <span className="text-stone-500">({user.badges.length}개)</span>
           </div>
@@ -104,7 +104,7 @@ const ProfilePage: React.FC = () => {
                 {spiritBadges.map((badge) => (
                   <div
                     key={badge.id}
-                    className="flex flex-col items-center gap-2 p-4 bg-emerald-50 rounded-none border-2 border-emerald-200"
+                    className="flex flex-col items-center gap-2 p-4 bg-[#F5F5F5] rounded-none border-2 border-[#E0E0E0]"
                   >
                     <span className="text-4xl">{badge.icon}</span>
                     <p className="text-xs font-medium text-stone-700 text-center">{badge.name}</p>
@@ -122,7 +122,7 @@ const ProfilePage: React.FC = () => {
                 {activityBadges.map((badge) => (
                   <div
                     key={badge.id}
-                    className="flex flex-col items-center gap-2 p-4 bg-amber-50 rounded-none border-2 border-amber-200"
+                    className="flex flex-col items-center gap-2 p-4 bg-[#F5F5F5] rounded-none border-2 border-[#E0E0E0]"
                   >
                     <span className="text-4xl">{badge.icon}</span>
                     <p className="text-xs font-medium text-stone-700 text-center">{badge.name}</p>
@@ -157,7 +157,7 @@ const ProfilePage: React.FC = () => {
         {unusedCoupons.length > 0 && (
           <div className="bg-white border-2 border-stone-200 rounded-none p-8">
             <div className="flex items-center gap-2 mb-6">
-              <Gift className="w-6 h-6 text-amber-600" />
+              <Gift className="w-6 h-6 text-black" />
               <h2 className="text-2xl font-bold text-stone-900">보유 쿠폰</h2>
               <span className="text-stone-500">({unusedCoupons.length}개)</span>
             </div>
@@ -165,7 +165,7 @@ const ProfilePage: React.FC = () => {
               {unusedCoupons.map((coupon) => (
                 <div
                   key={coupon.id}
-                  className="p-4 bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-none"
+                  className="p-4 bg-[#F5F5F5] border-2 border-[#E0E0E0] rounded-none"
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-semibold text-stone-900">

@@ -510,7 +510,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                         <button
                           onClick={() => removeSelection(item.id)}
                           className="absolute -top-1 -right-1 w-5 h-5 text-white rounded-none flex items-center justify-center transition-colors z-10 shadow-sm"
-                          style={{ backgroundColor: '#292624' }}
+                          style={{ backgroundColor: '#000000' }}
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -529,7 +529,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 disabled={selectedItems.length < 3}
                 className="px-5 py-2 rounded-none font-semibold text-sm flex items-center gap-1.5 transition-all"
                 style={{
-                  backgroundColor: selectedItems.length === 3 ? '#292624' : '#e5e5e5',
+                  backgroundColor: selectedItems.length === 3 ? '#000000' : '#e5e5e5',
                   color: selectedItems.length === 3 ? '#fff' : '#a3a3a3',
                   cursor: selectedItems.length === 3 ? 'pointer' : 'not-allowed',
                 }}

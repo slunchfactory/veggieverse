@@ -115,7 +115,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                 <label className="flex items-center gap-2 text-[12px] text-stone-500 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="accent-[#3D9E3D]"
+                    className="accent-black"
                     checked={contextTasteOn}
                     onChange={() => setContextTasteOn(!contextTasteOn)}
                   />
@@ -183,7 +183,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                 placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
                 className="flex-1 resize-none rounded-none border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
               />
-              <button className="px-4 py-2 bg-[#3D9E3D] text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
+              <button className="px-4 py-2 bg-black text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
                 전송
               </button>
             </div>

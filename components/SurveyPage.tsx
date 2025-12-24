@@ -1056,10 +1056,10 @@ ${result.description}
                   // 로딩 상태
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="relative">
-                      <div className="w-20 h-20 border-4 border-emerald-200 rounded-none animate-spin border-t-emerald-500"></div>
-                      <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-emerald-500 animate-pulse" />
+                      <div className="w-20 h-20 border-4 border-[#E0E0E0] rounded-none animate-spin border-t-black"></div>
+                      <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-black animate-pulse" />
                     </div>
-                    <p className="mt-4 text-emerald-600 font-medium">스피릿 소환 중...</p>
+                    <p className="mt-4 text-black font-medium">스피릿 소환 중...</p>
                   </div>
                 ) : monsterImageUrl ? (
                   // 실제 AI 생성 이미지
@@ -1172,7 +1172,7 @@ ${result.description}
                 setShowShareModal(true);
               }}
               className="w-full py-5 mb-4 rounded-none font-bold text-lg transition-all flex items-center justify-center gap-2 text-white hover:opacity-90 shadow-lg"
-              style={{ backgroundColor: '#292624' }}
+              style={{ backgroundColor: '#000000' }}
               aria-label="내 스피릿 공유하기"
             >
               <Share2 className="w-6 h-6" aria-hidden="true" />
@@ -1282,7 +1282,7 @@ ${result.description}
                       >
                         기본 멘트로 되돌리기
                       </button>
-                      <span className={`text-xs ${shareMessage.length > 280 ? 'text-red-500' : 'text-stone-400'}`}>
+                      <span className={`text-xs ${shareMessage.length > 280 ? 'text-black' : 'text-stone-400'}`}>
                         {shareMessage.length}/280
                       </span>
                     </div>
@@ -1435,7 +1435,7 @@ ${result.description}
                 disabled={profileSaved}
                 className={`py-3 px-4 border-2 rounded-none font-semibold transition-all flex items-center justify-center gap-2 ${
                   profileSaved 
-                    ? 'border-emerald-200 bg-emerald-50 text-emerald-600 cursor-default'
+                    ? 'border-[#E0E0E0] bg-[#F5F5F5] text-black cursor-default'
                     : 'border-stone-200 text-stone-600 hover:bg-stone-50'
                 }`}
               >
@@ -1511,7 +1511,7 @@ ${result.description}
                       setShowRecipeCurationModal(false);
                       navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
                     }}
-                    className="w-full py-4 bg-emerald-600 text-white rounded-none font-semibold hover:bg-emerald-700 transition-colors flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-[#333333] transition-colors flex items-center justify-center gap-2"
                   >
                     <span>레시피 보러가기</span>
                     <span className="text-lg" aria-hidden="true">→</span>
@@ -1725,7 +1725,7 @@ ${result.description}
                   ? 'text-white hover:opacity-90'
                   : 'bg-stone-200 text-stone-400 cursor-not-allowed'
               }`}
-              style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#292624', borderRadius: 0 } : { borderRadius: 0 }}
+              style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#000000', borderRadius: 0 } : { borderRadius: 0 }}
             >
               {currentStep < availableQuestions.length - 1 ? '다음' : '결과 보기'}
             </button>

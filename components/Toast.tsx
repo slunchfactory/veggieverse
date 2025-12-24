@@ -33,11 +33,11 @@ export const Toast: React.FC<ToastProps> = ({
   const getIcon = () => {
     switch (type) {
       case 'badge':
-        return <Trophy className="w-5 h-5 text-amber-500" />;
+        return <Trophy className="w-5 h-5 text-black" />;
       case 'coupon':
-        return <Gift className="w-5 h-5 text-pink-500" />;
+        return <Gift className="w-5 h-5 text-black" />;
       case 'success':
-        return <CheckCircle className="w-5 h-5 text-emerald-500" />;
+        return <CheckCircle className="w-5 h-5 text-black" />;
       default:
         return null;
     }
@@ -46,11 +46,11 @@ export const Toast: React.FC<ToastProps> = ({
   const getBgColor = () => {
     switch (type) {
       case 'badge':
-        return 'bg-amber-50 border-amber-200';
+        return 'bg-[#F5F5F5] border-[#E0E0E0]';
       case 'coupon':
-        return 'bg-pink-50 border-pink-200';
+        return 'bg-[#F5F5F5] border-[#E0E0E0]';
       case 'success':
-        return 'bg-emerald-50 border-emerald-200';
+        return 'bg-[#F5F5F5] border-[#E0E0E0]';
       default:
         return 'bg-stone-50 border-stone-200';
     }

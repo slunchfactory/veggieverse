@@ -456,7 +456,7 @@ export const ProductDetailPage: React.FC = () => {
           <div className="lg:w-1/2">
             {/* 메인 이미지 */}
             <div 
-              className="w-full aspect-square bg-[#54271d] mb-4 relative overflow-hidden"
+              className="w-full aspect-square bg-[#333333] mb-4 relative overflow-hidden"
             >
               {images.length > 0 ? (
                 <div className="relative w-full h-full">
@@ -545,36 +545,75 @@ export const ProductDetailPage: React.FC = () => {
               </span>
             )}
 
-            {/* 상품명 */}
-            <h1 className="text-2xl lg:text-3xl font-bold text-stone-900 mb-4">
+            {/* 상품명 - H1: 48px */}
+            <h1 
+              className="text-stone-900 mb-4"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
+            >
               {product.name}
             </h1>
 
-            {/* 가격 */}
-            <div className="mb-6">
+            {/* 가격 - UI: 15px - 순서: 원래 가격(취소선) → 할인율 → 할인된 가격 */}
+            <div className="mb-6 flex flex-col gap-1">
               {product.originalPrice && (
-                <div className="flex items-baseline gap-3 mb-2">
-                  <span className="text-lg text-stone-400 line-through font-accent">
+                <>
+                  <span 
+                    className="line-through"
+                    style={{ 
+                      fontSize: 'var(--font-size-body)',
+                      color: 'var(--color-text-muted)',
+                      fontWeight: 'var(--font-weight-ui)',
+                      letterSpacing: 'var(--letter-spacing-tight)'
+                    }}
+                  >
                     {product.originalPrice.toLocaleString()}원
                   </span>
                   {(() => {
                     const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                     return discountRate > 0 ? (
-                      <span className="text-2xl font-bold text-orange-500 font-accent">
+                      <span 
+                        className="font-bold"
+                        style={{ 
+                          fontSize: 'var(--font-size-ui)',
+                          color: 'var(--color-text-primary)',
+                          letterSpacing: 'var(--letter-spacing-tight)'
+                        }}
+                      >
                         {discountRate}%
                       </span>
                     ) : null;
                   })()}
-                </div>
+                </>
               )}
-              <span className="text-3xl font-bold text-stone-900 font-accent">
+              <span 
+                className="font-bold"
+                style={{ 
+                  fontSize: 'var(--font-size-ui)',
+                  color: 'var(--color-text-primary)',
+                  fontWeight: 700,
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
                 {product.price.toLocaleString()}원
               </span>
             </div>
 
-            {/* 짧은 설명 */}
+            {/* 짧은 설명 - Body: 16px */}
             {product.description && (
-              <p className="text-stone-600 mb-6 leading-relaxed">
+              <p 
+                className="text-stone-600 mb-6"
+                style={{ 
+                  fontSize: 'var(--font-size-body)',
+                  fontWeight: 'var(--font-weight-body)',
+                  lineHeight: 'var(--line-height-body)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
                 {product.description}
               </p>
             )}
@@ -674,10 +713,10 @@ export const ProductDetailPage: React.FC = () => {
               <button
                 onClick={() => setIsLiked(!isLiked)}
                 className={`p-4 border transition-colors ${
-                  isLiked ? 'border-red-400 bg-red-50' : 'border-stone-300 hover:bg-stone-50'
+                  isLiked ? 'border-black bg-[#F5F5F5]' : 'border-stone-300 hover:bg-stone-50'
                 }`}
               >
-                <Heart className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-stone-600'}`} />
+                <Heart className={`w-5 h-5 ${isLiked ? 'fill-black text-black' : 'text-stone-600'}`} />
               </button>
               <button
                 onClick={handleAddToCart}
@@ -780,9 +819,29 @@ export const ProductDetailPage: React.FC = () => {
           data-section="review" 
           className="scroll-mt-[152px] pt-8"
         >
-          <h2 className="text-xl font-bold text-stone-900 mb-6">리뷰</h2>
+          <h2 
+            className="text-stone-900 mb-6"
+            style={{ 
+              fontSize: 'var(--font-size-h1)',
+              fontWeight: 'var(--font-weight-h1)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              lineHeight: 'var(--line-height-h1)'
+            }}
+          >
+            리뷰
+          </h2>
           {reviews.length === 0 ? (
-            <p className="text-stone-500 text-sm mb-8">아직 등록된 리뷰가 없습니다.</p>
+            <p 
+              className="text-stone-500 mb-8"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
+              아직 등록된 리뷰가 없습니다.
+            </p>
           ) : (
             <div className="space-y-4">
               {reviews.map((review, index) => (
@@ -796,10 +855,18 @@ export const ProductDetailPage: React.FC = () => {
 
         {/* 상세정보 섹션 */}
         <div ref={detailRef} data-section="detail" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8">
-          {/* 상세 설명 텍스트 */}
+          {/* 상세 설명 텍스트 - Body: 16px */}
           {product.detailDescription && (
             <div className="prose prose-stone max-w-none mb-8">
-              <p className="text-stone-600 leading-relaxed whitespace-pre-line">
+              <p 
+                className="text-stone-600 whitespace-pre-line"
+                style={{ 
+                  fontSize: 'var(--font-size-body)',
+                  fontWeight: 'var(--font-weight-body)',
+                  lineHeight: 'var(--line-height-body)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
                 {product.detailDescription}
               </p>
             </div>
@@ -817,15 +884,55 @@ export const ProductDetailPage: React.FC = () => {
 
         {/* 반품/교환정보 섹션 */}
         <div ref={returnRef} data-section="return" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8">
-          <h2 className="text-xl font-bold text-stone-900 mb-6">반품/교환정보</h2>
-          <p className="text-stone-500 text-sm mb-8">반품/교환 정보가 없습니다.</p>
+          <h2 
+            className="text-stone-900 mb-6"
+            style={{ 
+              fontSize: 'var(--font-size-h1)',
+              fontWeight: 'var(--font-weight-h1)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              lineHeight: 'var(--line-height-h1)'
+            }}
+          >
+            반품/교환정보
+          </h2>
+          <p 
+            className="text-stone-500 mb-8"
+            style={{ 
+              fontSize: 'var(--font-size-body)',
+              fontWeight: 'var(--font-weight-body)',
+              lineHeight: 'var(--line-height-body)',
+              letterSpacing: 'var(--letter-spacing-tight)'
+            }}
+          >
+            반품/교환 정보가 없습니다.
+          </p>
         </div>
 
         {/* 상품문의 섹션 */}
         <div ref={qnaRef} data-section="qna" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8 mb-20 lg:mb-8">
-          <h2 className="text-xl font-bold text-stone-900 mb-6">상품문의</h2>
+          <h2 
+            className="text-stone-900 mb-6"
+            style={{ 
+              fontSize: 'var(--font-size-h1)',
+              fontWeight: 'var(--font-weight-h1)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              lineHeight: 'var(--line-height-h1)'
+            }}
+          >
+            상품문의
+          </h2>
           {qnas.length === 0 ? (
-            <p className="text-stone-500 text-sm mb-8">아직 등록된 상품문의가 없습니다.</p>
+            <p 
+              className="text-stone-500 mb-8"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
+              아직 등록된 상품문의가 없습니다.
+            </p>
           ) : (
             <div className="space-y-4">
               {qnas.map((qna, index) => (

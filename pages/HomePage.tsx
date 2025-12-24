@@ -58,7 +58,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             aria-labelledby="test-modal-title"
           >
             <div 
-              className="relative bg-[#292624] pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
+              className="relative bg-black pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
               style={{ 
                 width: '90%',
                 maxWidth: '380px',
@@ -75,7 +75,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               
               <div className="flex flex-col">
                 <div 
-                  className="relative w-full overflow-hidden bg-[#292624] rounded-t-2xl"
+                  className="relative w-full overflow-hidden bg-black rounded-t-2xl"
                   style={{ 
                     aspectRatio: '1/1',
                     isolation: 'isolate'
@@ -95,19 +95,19 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   />
                 </div>
                 
-                <div className="w-full bg-[#292624] p-8 flex flex-col justify-center rounded-b-2xl">
+                <div className="w-full bg-black p-8 flex flex-col justify-center rounded-b-2xl">
                   <div className="flex flex-col items-center text-center gap-3">
                     <h2 id="test-modal-title" className="text-[18px] font-semibold text-white flex items-center gap-2">
                       <span aria-hidden="true">🥗</span> 나의 스피릿 찾기
                     </h2>
-                    <span className="text-[14px] text-stone-400 leading-relaxed">
+                    <span className="text-[14px] text-white/70 leading-relaxed">
                       좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
                     </span>
                     <Link 
                       to="/"
                       onClick={dismissToast}
                       className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
-                      style={{ backgroundColor: '#E54B1A', color: '#292624' }}
+                      style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
                     >
                       테스트 시작
                     </Link>
@@ -125,10 +125,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         className={`fixed right-6 z-30 px-3 py-2 rounded-none shadow-lg transition-all duration-300 flex items-center gap-2 ${
           showToast ? 'opacity-0 pointer-events-none translate-x-4' : 'opacity-100 translate-x-0'
         }`}
-        style={{ backgroundColor: '#292624', top: `${headerOffset + 16}px` }}
+        style={{ backgroundColor: '#000000', top: `${headerOffset + 16}px` }}
       >
         <span className="text-lg">🥗</span>
-        <span className="text-[11px] font-medium text-stone-300">비건 테스트</span>
+        <span className="text-[11px] font-medium text-white">비건 테스트</span>
       </button>
 
       {/* ============================================
@@ -138,7 +138,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         ref={heroRef}
         className="scroll-snap-section relative w-full h-screen overflow-hidden"
         style={{ 
-          background: 'linear-gradient(135deg, #54271d 0%, #3d1c12 100%)'
+          background: '#000000'
         }}
       >
         {/* 배경 이미지 */}
@@ -174,9 +174,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         {/* 메인 카피 & CTA */}
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
           <h1 
-            className="text-white font-bold mb-6 leading-tight"
+            className="text-white mb-6"
             style={{ 
-              fontSize: 'clamp(2rem, 8vw, 5rem)',
+              fontSize: 'var(--font-size-h1)',
+              fontWeight: 'var(--font-weight-h1)',
+              letterSpacing: 'var(--letter-spacing-tight)',
+              lineHeight: 'var(--line-height-h1)',
               textShadow: '0 4px 20px rgba(0,0,0,0.3)',
               wordBreak: 'keep-all',
               overflowWrap: 'break-word'
@@ -184,12 +187,15 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           >
             채소들이 만드는<br />
             맛있는 우주,<br />
-            <span style={{ color: '#E54B1A' }}>Veggieverse</span>
+            <span style={{ color: '#000000' }}>Veggieverse</span>
           </h1>
           <p 
             className="text-white/90 mb-8 max-w-2xl"
             style={{ 
-              fontSize: 'clamp(1rem, 2vw, 1.5rem)',
+              fontSize: 'var(--font-size-body)',
+              fontWeight: 'var(--font-weight-body)',
+              lineHeight: 'var(--line-height-body)',
+              letterSpacing: 'var(--letter-spacing-tight)',
               textShadow: '0 2px 10px rgba(0,0,0,0.2)'
             }}
           >
@@ -197,10 +203,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           </p>
           <Link
             to="/store"
-            className="inline-flex items-center gap-2 px-8 py-4 text-lg font-bold text-stone-900 transition-all hover:scale-105 hover:shadow-xl"
+            className="inline-flex items-center gap-2 px-8 py-4 font-bold text-white transition-all hover:scale-105 hover:shadow-xl"
             style={{ 
-              backgroundColor: '#E54B1A',
-              borderRadius: '0'
+              backgroundColor: '#000000',
+              borderRadius: '0',
+              fontSize: 'var(--font-size-ui)',
+              fontWeight: 'var(--font-weight-ui)',
+              letterSpacing: 'var(--letter-spacing-tight)'
             }}
           >
             지금 구경하기
@@ -234,14 +243,24 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         <div className="page-container relative z-10">
           <div className="max-w-3xl mx-auto text-center">
             <h2 
-              className="text-stone-900 font-bold mb-6"
-              style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}
+              className="text-stone-900 mb-6"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
             >
               We are Slunch Factory
             </h2>
             <p 
-              className="text-stone-700 leading-relaxed mb-8"
-              style={{ fontSize: 'clamp(1rem, 2vw, 1.25rem)' }}
+              className="text-stone-700 mb-8"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
             >
               슬런치 팩토리는 건강한 비건 식단을 통해 일상에 새로운 맛과 경험을 전달합니다.
               <br />
@@ -319,11 +338,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
             <div className="w-full lg:w-[40%] flex flex-col justify-center p-6 lg:p-12">
               <h2 
-                className="text-[#111111] font-bold mb-6 leading-tight"
+                className="text-[#111111] mb-6"
                 style={{ 
-                  fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
-                  letterSpacing: '-0.02em',
-                  fontWeight: 700
+                  fontSize: 'var(--font-size-h1)',
+                  fontWeight: 'var(--font-weight-h1)',
+                  letterSpacing: 'var(--letter-spacing-tight)',
+                  lineHeight: 'var(--line-height-h1)'
                 }}
               >
                 고민 없는 건강한 일주일,<br />
@@ -331,10 +351,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               </h2>
               
               <p 
-                className="text-[#111111] mb-10 leading-relaxed"
+                className="text-[#111111] mb-10"
                 style={{ 
-                  fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-                  fontWeight: 400
+                  fontSize: 'var(--font-size-body)',
+                  fontWeight: 'var(--font-weight-body)',
+                  lineHeight: 'var(--line-height-body)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
                 하루 2끼, 균형 잡힌 비건 식단을 문 앞까지.<br />
@@ -347,18 +369,22 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <span className="text-2xl leading-none">🥗</span>
                   <div>
                     <p 
-                      className="text-[#111111] font-bold mb-1" 
+                      className="text-[#111111] mb-1" 
                       style={{ 
-                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-                        letterSpacing: '-0.01em',
-                        fontWeight: 700
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
                       주 14끼 식단
                     </p>
                     <p 
-                      className="text-[#111111] text-xs"
-                      style={{ fontWeight: 400 }}
+                      className="text-[#111111]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
                     >
                       하루 2끼, 일주일치 완벽한 식단
                     </p>
@@ -369,18 +395,22 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <span className="text-2xl leading-none">🚚</span>
                   <div>
                     <p 
-                      className="text-[#111111] font-bold mb-1" 
+                      className="text-[#111111] mb-1" 
                       style={{ 
-                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-                        letterSpacing: '-0.01em',
-                        fontWeight: 700
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
                       신선 새벽 배송
                     </p>
                     <p 
-                      className="text-[#111111] text-xs"
-                      style={{ fontWeight: 400 }}
+                      className="text-[#111111]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
                     >
                       매주 아침, 문 앞까지 신선하게
                     </p>
@@ -391,18 +421,22 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <span className="text-2xl leading-none">🌱</span>
                   <div>
                     <p 
-                      className="text-[#111111] font-bold mb-1" 
+                      className="text-[#111111] mb-1" 
                       style={{ 
-                        fontSize: 'clamp(0.875rem, 1.5vw, 1rem)',
-                        letterSpacing: '-0.01em',
-                        fontWeight: 700
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
                       영양 밸런스 완벽 설계
                     </p>
                     <p 
-                      className="text-[#111111] text-xs"
-                      style={{ fontWeight: 400 }}
+                      className="text-[#111111]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
                     >
                       전문가가 설계한 균형 잡힌 식단
                     </p>
@@ -413,7 +447,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* CTA Button - Outline Style */}
               <Link
                 to="/store"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 text-sm font-bold text-[#111111] transition-all w-full lg:w-auto border-2 border-[#111111] hover:bg-[#111111] hover:text-white"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#111111] transition-all w-full lg:w-auto border-2 border-[#111111] hover:bg-[#111111] hover:text-white"
+                style={{ 
+                  fontSize: 'var(--font-size-ui)',
+                  fontWeight: 'var(--font-weight-ui)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
                 style={{ 
                   borderRadius: '0',
                   fontWeight: 700,
@@ -435,12 +474,25 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         <div className="page-container">
           <div className="text-center mb-12">
             <h2 
-              className="text-stone-900 font-bold mb-4"
-              style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+              className="text-stone-900 mb-4"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
             >
               오늘의 기분엔 이 메뉴!
             </h2>
-            <p className="text-stone-600" style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}>
+            <p 
+              className="text-stone-600"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
               슬런치 팩토리의 인기 메뉴와 굿즈를 만나보세요
             </p>
           </div>
@@ -459,7 +511,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     className="w-full mb-3 overflow-hidden relative"
                     style={{ 
                       aspectRatio: '3/4', 
-                      backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a',
+                      backgroundColor: idx % 2 === 0 ? '#333333' : '#666666',
                       borderRadius: '4px'
                     }}
                   >
@@ -480,11 +532,43 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       </div>
                     )}
                   </div>
-                  <p className="text-[10px] text-stone-500 mb-1 font-medium">{item.microCopy}</p>
-                  <p className="text-[13px] text-stone-800 group-hover:text-stone-900 font-semibold mb-1 line-clamp-2">
+                  <p 
+                    className="mb-1 font-medium"
+                    style={{ 
+                      fontSize: 'var(--font-size-ui)',
+                      fontWeight: 'var(--font-weight-ui)',
+                      color: 'var(--color-text-muted)',
+                      letterSpacing: 'var(--letter-spacing-tight)',
+                      marginTop: '12px'
+                    }}
+                  >
+                    {item.microCopy}
+                  </p>
+                  <p 
+                    className="group-hover:underline mb-1 line-clamp-2"
+                    style={{ 
+                      fontSize: 'var(--font-size-h2)',
+                      fontWeight: 'var(--font-weight-h2)',
+                      color: 'var(--color-text-primary)',
+                      letterSpacing: 'var(--letter-spacing-tight)',
+                      lineHeight: 'var(--line-height-h2)',
+                      marginTop: '12px'
+                    }}
+                  >
                     {item.name}
                   </p>
-                  <p className="text-[12px] text-stone-600 font-bold">KRW {item.price.toLocaleString()}</p>
+                  <p 
+                    className="font-bold"
+                    style={{ 
+                      fontSize: 'var(--font-size-ui)',
+                      fontWeight: 700,
+                      color: 'var(--color-text-primary)',
+                      letterSpacing: 'var(--letter-spacing-tight)',
+                      marginTop: '4px'
+                    }}
+                  >
+                    {item.price.toLocaleString()}원
+                  </p>
                 </Link>
               );
             })}
@@ -517,17 +601,36 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             
             {/* 텍스트 영역 (우측) */}
             <div className="w-full lg:w-1/2">
-              <p className="text-[12px] text-stone-500 uppercase tracking-wider mb-3">RECIPE</p>
+              <p 
+                className="text-stone-500 uppercase tracking-wider mb-3"
+                style={{ 
+                  fontSize: 'var(--font-size-ui)',
+                  fontWeight: 'var(--font-weight-ui)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
+                RECIPE
+              </p>
               <h2 
-                className="text-stone-900 font-bold mb-4 leading-tight"
-                style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)' }}
+                className="text-stone-900 mb-4"
+                style={{ 
+                  fontSize: 'var(--font-size-h1)',
+                  fontWeight: 'var(--font-weight-h1)',
+                  letterSpacing: 'var(--letter-spacing-tight)',
+                  lineHeight: 'var(--line-height-h1)'
+                }}
               >
                 비건 레시피로 시작하는<br />
                 건강한 하루
               </h2>
               <p 
-                className="text-stone-700 leading-relaxed mb-6"
-                style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1.125rem)' }}
+                className="text-stone-700 mb-6"
+                style={{ 
+                  fontSize: 'var(--font-size-body)',
+                  fontWeight: 'var(--font-weight-body)',
+                  lineHeight: 'var(--line-height-body)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
               >
                 집에서도 쉽게 만들 수 있는 비건 레시피를 공유합니다.
                 <br />
@@ -536,7 +639,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               <Link
                 to="/recipe"
                 className="inline-flex items-center gap-2 text-stone-900 font-semibold hover:underline"
-                style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)' }}
+                style={{ 
+                  fontSize: 'var(--font-size-ui)',
+                  fontWeight: 'var(--font-weight-ui)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
               >
                 레시피 보기
                 <ArrowRight className="w-4 h-4" />
@@ -553,12 +660,25 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         <div className="page-container">
           <div className="flex items-center justify-between mb-8">
             <h2 
-              className="text-stone-900 font-bold"
-              style={{ fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}
+              className="text-stone-900"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
             >
               NEWSLETTER
             </h2>
-            <Link to="/newsletter" className="text-stone-600 hover:text-stone-900 font-medium">
+            <Link 
+              to="/newsletter" 
+              className="text-stone-600 hover:text-stone-900 font-medium"
+              style={{ 
+                fontSize: 'var(--font-size-ui)',
+                fontWeight: 'var(--font-weight-ui)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
               VIEW ALL →
             </Link>
           </div>
@@ -576,18 +696,43 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 >
                   {article.isNew && (
                     <div 
-                      className="absolute top-0 left-0 px-2 py-1 text-[10px] font-bold text-stone-800 z-10"
-                      style={{ backgroundColor: '#E54B1A' }}
+                      className="absolute top-0 left-0 px-2 py-1 text-[10px] font-bold text-white z-10"
+                      style={{ backgroundColor: '#000000' }}
                     >
                       NEW
                     </div>
                   )}
                 </div>
-                <p className="text-[10px] text-stone-500 tracking-wider mb-1">{article.category}</p>
-                <p className="text-sm font-semibold text-stone-800 group-hover:underline line-clamp-2">
+                <p 
+                  className="text-stone-500 tracking-wider mb-1"
+                  style={{ 
+                    fontSize: 'var(--font-size-ui)',
+                    fontWeight: 'var(--font-weight-ui)',
+                    letterSpacing: 'var(--letter-spacing-tight)'
+                  }}
+                >
+                  {article.category}
+                </p>
+                <p 
+                  className="text-stone-800 group-hover:underline line-clamp-2"
+                  style={{ 
+                    fontSize: 'var(--font-size-h2)',
+                    fontWeight: 'var(--font-weight-h2)',
+                    letterSpacing: 'var(--letter-spacing-tight)',
+                    lineHeight: 'var(--line-height-h2)'
+                  }}
+                >
                   {article.title}
                 </p>
-                <p className="text-xs text-stone-500 mt-1 line-clamp-1">
+                <p 
+                  className="text-stone-500 mt-1 line-clamp-1"
+                  style={{ 
+                    fontSize: 'var(--font-size-body)',
+                    fontWeight: 'var(--font-weight-body)',
+                    lineHeight: 'var(--line-height-body)',
+                    letterSpacing: 'var(--letter-spacing-tight)'
+                  }}
+                >
                   {article.subtitle}
                 </p>
               </Link>
