@@ -46,7 +46,7 @@ export const PRODUCE_ITEMS = [
 export const VEGETABLE_NAMES = PRODUCE_ITEMS.map(item => item.name);
 
 export const COLOR_OVERLAYS = [
-  "bg-red-500", "bg-green-500", "bg-orange-500", "bg-yellow-500", "bg-purple-500", "bg-emerald-500"
+  "bg-black", "bg-[#333333]", "bg-[#666666]", "bg-[#999999]", "bg-[#CCCCCC]", "bg-[#E0E0E0]"
 ];
 
 export const ORGANIC_SHAPES = [

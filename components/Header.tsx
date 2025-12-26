@@ -30,26 +30,32 @@ export const Header: React.FC<HeaderProps> = ({
   const [isMobileStoreOpen, setIsMobileStoreOpen] = useState(false);
   
   const navItems = [
-    { name: 'About', path: '/brand' },
+    { name: 'About', path: '/about' },
     { name: 'Store', path: '/store', hasDropdown: true },
     { name: 'Recipe', path: '/recipe' },
     { name: 'Newsletter', path: '/newsletter' },
     { name: 'Event', path: '/event' },
   ];
 
-  // 식품 특화 카테고리 (단일 레벨)
-  const primaryCategories = ['ALL', 'NEW'];
-  const secondaryCategories = ['샐러드', '수프와 메인요리', '소스와 오일', '밀키트', '베이커리'];
+  // 식품 특화 카테고리 (새 구조)
+  const productTypeCategories = ['전체', '밀키트', '베이커리', '소스/오일', '세트', '구독'];
+  const dietCategories = ['전체', '비건', '락토', '오보', '플렉시', '글루텐프리'];
+  const cuisineCategories = ['전체', '한식', '양식', '디저트'];
 
   return (
     <header
-      className="fixed left-0 right-0 z-50 bg-transparent"
-      style={{ top: offsetTop }}
+      className="fixed left-0 right-0 z-[9999]"
+      style={{ 
+        top: offsetTop,
+        backgroundColor: 'var(--white-pure)',
+        borderBottom: '1px solid var(--gray-lighter)',
+        height: 'auto'
+      }}
     >
-      <nav className="h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="h-full flex items-center justify-between px-8 max-w-[1400px] mx-auto min-w-[320px]">
         {/* 왼쪽 로고 */}
         <Link 
-          to="/shop" 
+          to="/" 
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
         >
           <img 
@@ -60,29 +66,40 @@ export const Header: React.FC<HeaderProps> = ({
         </Link>
         
         {/* 가운데 메뉴 - 데스크톱 */}
-        <div className="hidden lg:flex items-center gap-6">
+        <div className="hidden lg:flex items-center h-full flex-shrink-0">
           {navItems.map((item) => {
             const isActive = location.pathname === item.path || 
               (item.path === '/store' && location.pathname.startsWith('/store')) ||
               (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
               (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
               (item.path === '/event' && location.pathname.startsWith('/event')) ||
-              (item.path === '/brand' && location.pathname.startsWith('/brand'));
+              (item.path === '/about' && location.pathname.startsWith('/about'));
             const isStore = item.hasDropdown;
             if (!isStore) {
               return (
-                <Link 
+                <button
                   key={item.path}
-                  to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
-                    isActive 
-                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
-                      : 'text-stone-700 font-bold hover:text-stone-900'
-                  }`}
-                  onClick={() => setOpenMenu(null)}
+                  className="bg-transparent border-none p-0"
+                  style={{
+                    padding: '24px 16px',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: 'var(--black)',
+                  }}
                 >
-                  {item.name}
-                </Link>
+                  <Link 
+                    to={item.path} 
+                    className={`nav-item-text ${isActive ? 'active' : ''}`}
+                    style={{ color: 'inherit' }}
+                    onClick={() => setOpenMenu(null)}
+                  >
+                    {item.name}
+                  </Link>
+                </button>
               );
             }
 
@@ -91,67 +108,91 @@ export const Header: React.FC<HeaderProps> = ({
                 key={item.path}
                 className="relative"
               >
-                <Link 
-                  to={item.path} 
-                  className={`text-xs sm:text-sm transition-colors uppercase flex items-center gap-1 ${
-                    isActive 
-                      ? 'text-stone-900 font-extrabold underline underline-offset-4' 
-                      : 'text-stone-700 font-bold hover:text-stone-900'
-                  }`}
+                <button
+                  className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
+                  style={{
+                    padding: '24px 16px',
+                    fontSize: '15px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    color: 'var(--black)',
+                  }}
                   onClick={(e) => {
                     e.preventDefault();
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
                   }}
                 >
-                  {item.name}
-                  <ChevronDown className={`w-3 h-3 transition-transform ${openMenu === 'store' ? 'rotate-180' : ''}`} />
-                </Link>
+                  <span 
+                    className={`nav-item-text ${isActive || openMenu === 'store' ? 'active' : ''}`}
+                  >
+                    {item.name}
+                  </span>
+                  <span 
+                    className="nav-item-arrow"
+                    style={{
+                      fontSize: '8px',
+                      transform: openMenu === 'store' ? 'rotate(180deg)' : 'none',
+                      transition: 'none',
+                    }}
+                  >
+                    ▼
+                  </span>
+                </button>
 
                 {isStore && openMenu === 'store' && (
                   <div 
-                    className="fixed left-0 right-0 bg-white border-b border-stone-200 shadow-[0_20px_40px_-24px_rgba(0,0,0,0.25)] z-50"
-                    style={{ top: 64 + offsetTop }}
+                    className="absolute z-50"
+                    style={{ 
+                      top: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: 'var(--white-pure)',
+                      border: '1px solid var(--gray-lighter)',
+                      padding: '16px 24px',
+                      minWidth: '120px',
+                    }}
                   >
-                    <div className="max-w-[900px] mx-auto px-6 py-5">
-                      <div className="flex flex-wrap gap-8 text-sm text-stone-800">
-                        <div className="flex flex-col gap-3 min-w-[140px]">
-                          {primaryCategories.map((cat) => (
-                            <button
-                              key={cat}
-                              className="text-left text-[13px] text-stone-800 pb-[2px] border-b border-transparent hover:border-stone-900 transition-colors w-fit"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => {
-                                setOpenMenu(null);
-                                setIsMobileMenuOpen(false);
-                                // ALL은 전체 상품, 나머지는 카테고리 필터
-                                if (cat === 'ALL') {
-                                  navigate('/store');
-                                } else {
-                                  navigate(`/store?category=${encodeURIComponent(cat)}`);
-                                }
-                              }}
-                            >
-                              {cat}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex flex-col gap-3 min-w-[180px]">
-                          {secondaryCategories.map((cat) => (
-                            <button
-                              key={cat}
-                              className="text-left text-[13px] text-stone-800 pb-[2px] border-b border-transparent hover:border-stone-900 transition-colors w-fit"
-                              onMouseDown={(e) => e.preventDefault()}
-                              onClick={() => {
-                                setOpenMenu(null);
-                                setIsMobileMenuOpen(false);
-                                navigate(`/store?category=${encodeURIComponent(cat)}`);
-                              }}
-                            >
-                              {cat}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
+                    {/* 제품 형태만 */}
+                    <div className="flex flex-col gap-1">
+                      {productTypeCategories.map((cat) => (
+                        <a
+                          key={cat}
+                          href="#"
+                          className="dropdown-item"
+                          style={{
+                            fontSize: '13px',
+                            fontWeight: 400,
+                            color: 'var(--black)',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            padding: '6px 0',
+                            whiteSpace: 'nowrap',
+                          }}
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenMenu(null);
+                            setIsMobileMenuOpen(false);
+                            if (cat === '전체') {
+                              navigate('/store');
+                            } else {
+                              navigate(`/store?productType=${encodeURIComponent(cat)}`);
+                            }
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.textDecoration = 'underline';
+                            e.currentTarget.style.textUnderlineOffset = '4px';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.textDecoration = 'none';
+                          }}
+                        >
+                          {cat}
+                        </a>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -194,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
                       <p className="text-sm font-semibold text-stone-800">{userProfile.veganType}</p>
                     </div>
                     <Link 
-                      to="/mypage"
+                      to="/profile"
                       className="block w-full px-4 py-2 text-left text-sm text-stone-600 hover:bg-stone-50"
                     >
                       마이페이지
@@ -221,7 +262,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="transition-colors relative text-stone-700 hover:text-stone-900"
           >
             <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#E54B1A] text-white text-[10px] rounded-full flex items-center justify-center">0</span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-full flex items-center justify-center">0</span>
           </Link>
           <button className="transition-colors text-stone-700 hover:text-stone-900">
             <Search className="w-5 h-5" />
@@ -248,7 +289,7 @@ export const Header: React.FC<HeaderProps> = ({
                 (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
                 (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
                 (item.path === '/event' && location.pathname.startsWith('/event')) ||
-                (item.path === '/brand' && location.pathname.startsWith('/brand'));
+                (item.path === '/about' && location.pathname.startsWith('/about'));
               return (
                 <div key={item.path}>
                   <Link 
@@ -272,16 +313,17 @@ export const Header: React.FC<HeaderProps> = ({
                   </Link>
                   {isStore && isMobileStoreOpen && (
                     <div className="ml-3 mt-1 space-y-1">
-                      {[...primaryCategories, ...secondaryCategories].map((cat) => (
+                      {/* 제품 형태만 */}
+                      {productTypeCategories.map((cat) => (
                         <button
                           key={cat}
                           onClick={() => {
                             setIsMobileStoreOpen(false);
                             setIsMobileMenuOpen(false);
-                            if (cat === 'ALL') {
+                            if (cat === '전체') {
                               navigate('/store');
                             } else {
-                              navigate(`/store?category=${encodeURIComponent(cat)}`);
+                              navigate(`/store?productType=${encodeURIComponent(cat)}`);
                             }
                           }}
                           className="block text-left w-full text-sm text-stone-600 py-1 hover:text-stone-900"

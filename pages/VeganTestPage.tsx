@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { X, ChevronDown } from 'lucide-react';
+import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { VegetableItem } from '../types';
 import { PRODUCE_ITEMS } from '../constants';
@@ -42,6 +42,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
   const [items, setItems] = useState<FloatingItem[]>([]);
   const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
   const [showSelectionBar, setShowSelectionBar] = useState(true);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const dragOffsetRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -64,8 +65,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
     const isMobile = window.innerWidth < 640;
     const sizeMultiplier = isMobile ? 0.78 : 1;
     const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
-      // 랜덤 위치 (약간의 오프스크린 포함, 배너+헤더 높이 제외)
-      const adjustedHeight = window.innerHeight - headerOffset;
+      // 랜덤 위치 (약간의 오프스크린 포함, 배너+헤더 높이 제외, 하단 여유 공간 추가)
+      const adjustedHeight = window.innerHeight - headerOffset + 150;
       const x = Math.random() * (window.innerWidth + 160) - 80;
       const y = Math.random() * (adjustedHeight + 120) - 60;
       
@@ -133,9 +134,21 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
     }
   }, [headerOffset]);
 
+  const scrollToTop = useCallback(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }, []);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // 초기 상태는 명확히 숨김 (스크롤 이벤트가 발생하기 전까지는 항상 false)
+    setShowScrollToTop(false);
 
     const handleScroll = () => {
       const scrollTop = container.scrollTop;
@@ -146,6 +159,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
         setShowSelectionBar(true);
       } else {
         setShowSelectionBar(false);
+      }
+
+      // 스크롤 리모컨 표시 여부: 스크롤을 200px 이상 내렸을 때만 표시
+      // 초기 상태(scrollTop === 0)에서는 절대 표시하지 않음
+      if (scrollTop > 200) {
+        setShowScrollToTop(true);
+      } else {
+        setShowScrollToTop(false);
       }
     };
 
@@ -160,7 +181,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
       const dt = Math.min((time - lastTimeRef.current) / 1000, 0.05); // clamp delta
       lastTimeRef.current = time;
       const width = window.innerWidth;
-      const height = window.innerHeight - headerOffset; // 배너 + 헤더 높이 제외
+      const height = window.innerHeight - headerOffset + 150; // 배너 + 헤더 높이 제외 + 하단 여유 공간
       const wrapMargin = 220; // 오프스크린 이동 허용 범위
       const minSpeed = 10;
       const maxSpeed = 35;
@@ -305,41 +326,35 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
       className="w-screen overflow-y-auto overflow-x-hidden snap-y snap-mandatory relative no-scrollbar"
       style={{ 
         scrollBehavior: 'smooth',
-        backgroundColor: '#5C4033',
+        backgroundColor: '#ffffff',
         width: '100dvw',
         height: `calc(100dvh - ${headerOffset}px)`,
         maxWidth: '100dvw',
         overflowX: 'hidden',
       }}
     >
-      {/* 그레인 텍스처 - 피그마 설정: #744b2f, 모노, 사이즈1, 덴시티100, 컬러#54341f */}
-      <div 
-        className="fixed left-0 right-0 bottom-0 pointer-events-none z-0"
-        style={{
-          backgroundColor: '#744b2f',
-          top: `${headerOffset}px`,
-        }}
-      />
-      {/* 노이즈 오버레이 - 모노, 사이즈1, 덴시티100% */}
-      <div 
-        className="fixed left-0 right-0 bottom-0 pointer-events-none z-[1]"
-        style={{
-          top: `${headerOffset}px`,
-          opacity: 1,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 20 -10'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' fill='%2354341f'/%3E%3C/svg%3E")`,
-          backgroundSize: '50px 50px',
-          mixBlendMode: 'multiply',
-        }}
-      />
       {/* 첫 번째 페이지 - 야채 선택 */}
       <div 
-        className="relative w-screen overflow-hidden select-none snap-start z-[2]"
-        style={{ height: `calc(100dvh - ${headerOffset}px)` }}
+        className="relative w-screen select-none snap-start z-[2]"
+        style={{ 
+          height: `calc(100dvh - ${headerOffset}px)`,
+          overflow: 'visible',
+          paddingBottom: '100px',
+        }}
       >
-        {/* X 버튼 - 스킵 */}
+        {/* 하단 그라데이션 오버레이 */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]"
+          style={{
+            height: '200px',
+            background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 1) 100%)',
+          }}
+        />
+        {/* X 버튼 - 스킵 (헤더 아래에 위치: headerOffset은 배너+헤더 높이이므로 헤더 하단 바로 아래) */}
         <Link
           to="/shop"
-          className="fixed top-4 right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
+          className="fixed right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
+          style={{ top: `${headerOffset + 16}px` }}
         >
           <X className="w-5 h-5 text-stone-800" />
         </Link>
@@ -354,12 +369,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               key={item.id}
               className="absolute cursor-pointer group touch-none"
               style={{
-                left: item.x,
-                top: item.y,
+                left: 0,
+                top: 0,
                 width: item.size * item.scale,
                 height: item.size * item.scale,
-                transform: 'translate(-50%, -50%)',
+                transform: `translate3d(${item.x}px, ${item.y}px, 0) translate(-50%, -50%)`,
                 zIndex: item.zIndex,
+                backfaceVisibility: 'hidden',
+                willChange: 'transform',
               }}
               onPointerDown={(e) => startDrag(item, e)}
             >
@@ -367,19 +384,19 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <style>{`
                 @keyframes float-${itemId} {
                   0% { 
-                    transform: translate(0px, 0px) rotate(0deg);
+                    transform: translate3d(0px, 0px, 0) rotate(0deg);
                   }
                   20% { 
-                    transform: translate(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px) rotate(${90 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px, 0) rotate(${90 * item.rotateDirection}deg);
                   }
                   50% { 
-                    transform: translate(${item.driftX}px, ${item.driftY}px) rotate(${180 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX}px, ${item.driftY}px, 0) rotate(${180 * item.rotateDirection}deg);
                   }
                   80% { 
-                    transform: translate(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px) rotate(${270 * item.rotateDirection}deg);
+                    transform: translate3d(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px, 0) rotate(${270 * item.rotateDirection}deg);
                   }
                   100% { 
-                    transform: translate(0px, 0px) rotate(${360 * item.rotateDirection}deg);
+                    transform: translate3d(0px, 0px, 0) rotate(${360 * item.rotateDirection}deg);
                   }
                 }
               `}</style>
@@ -388,20 +405,26 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               <div
                 className="w-full h-full"
                 style={{
-                  animation: `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
-                  animationDelay: `${item.animationDelay}s`,
+                  animation: (draggingId === item.id || isSelected) ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
+                  animationDelay: (draggingId === item.id || isSelected) ? '0s' : `${item.animationDelay}s`,
+                  backfaceVisibility: 'hidden',
+                  willChange: 'transform',
+                  transform: isSelected ? `rotate(${item.rotation}deg) scale(1.2)` : 'translateZ(0)',
+                  transformOrigin: 'center center',
                 }}
               >
                 {/* 중앙 라벨 - 호버 시 노출 (최상단 z-index) */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-200" style={{ zIndex: 30 }}>
                   <span
-                    className="px-3 py-1.5 rounded-none text-xs font-semibold shadow-sm"
+                    className="text-xs font-semibold shadow-sm"
                     style={{
                       fontFamily: 'Jost, sans-serif',
                       fontSize: '13px',
                       backgroundColor: `${item.labelColor}dd`,
-                      color: isLightColor(item.labelColor) ? '#1a1a1a' : '#ffffff',
-                      transform: 'scale(1)',
+                      color: isLightColor(item.labelColor) ? '#000000' : '#ffffff',
+                      padding: '8px 20px',
+                      borderRadius: '9999px',
+                      transform: 'rotate(0deg)',
                       backdropFilter: 'blur(4px)',
                       border: '1px solid rgba(255,255,255,0.35)',
                     }}
@@ -424,7 +447,10 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       maskSize: 'contain',
                       maskRepeat: 'no-repeat',
                       maskPosition: 'center',
+                      borderRadius: '50%',
                       zIndex: 10,
+                      backfaceVisibility: 'hidden',
+                      transform: 'translateZ(0)',
                     }}
                   />
                 )}
@@ -433,13 +459,16 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 <img
                   src={item.imageUrl}
                   alt={item.name}
+                  loading="lazy"
+                  decoding="async"
                   className={`w-full h-full object-contain transition-all duration-300 ${
                     isSelected ? 'opacity-0' : 'group-hover:scale-105'
                   }`}
                   style={{
-                    filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.15))',
                     position: 'relative',
                     zIndex: 20,
+                    backfaceVisibility: 'hidden',
+                    transform: 'translateZ(0)',
                   }}
                   draggable={false}
                 />
@@ -472,6 +501,8 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                           <img 
                             src={item.imageUrl}
                             alt={item.name}
+                  loading="lazy"
+                  decoding="async"
                             className="w-10 h-10 object-contain"
                           />
                         ) : (
@@ -483,7 +514,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                         <button
                           onClick={() => removeSelection(item.id)}
                           className="absolute -top-1 -right-1 w-5 h-5 text-white rounded-none flex items-center justify-center transition-colors z-10 shadow-sm"
-                          style={{ backgroundColor: '#292624' }}
+                          style={{ backgroundColor: '#000000' }}
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -502,7 +533,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 disabled={selectedItems.length < 3}
                 className="px-5 py-2 rounded-none font-semibold text-sm flex items-center gap-1.5 transition-all"
                 style={{
-                  backgroundColor: selectedItems.length === 3 ? '#292624' : '#e5e5e5',
+                  backgroundColor: selectedItems.length === 3 ? '#000000' : '#e5e5e5',
                   color: selectedItems.length === 3 ? '#fff' : '#a3a3a3',
                   cursor: selectedItems.length === 3 ? 'pointer' : 'not-allowed',
                 }}
@@ -518,7 +549,12 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
 
       {/* 두 번째 페이지 - 설문조사 */}
       <div className="survey-page snap-start min-h-screen relative z-[2]">
-        <SurveyPage selectedItems={selectedItems} onSaveProfile={onSaveProfile} />
+        <SurveyPage 
+          selectedItems={selectedItems} 
+          onSaveProfile={onSaveProfile}
+          showScrollToTop={showScrollToTop}
+          onScrollToTop={scrollToTop}
+        />
       </div>
     </div>
   );

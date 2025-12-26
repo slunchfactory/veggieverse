@@ -1,69 +1,355 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { X, ArrowRight } from 'lucide-react';
 import { getHomeProductImage } from '../utils/productImages';
 
-// 히어로 슬라이드 데이터
-const HERO_SLIDES = [
+// 무드 슬라이더 이미지 데이터
+const MOOD_SLIDES = [
   {
     id: 1,
-    title: '비건 채식주의자들을 위한',
-    subtitle: '레스토랑, 슬런치 팩토리',
-    image: 'main/banner/main-banner-1.png',
+    leftImage: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=800',
   },
   {
     id: 2,
-    title: 'From Nature with Slow',
-    subtitle: '자연에서 온 건강한 비건 푸드',
-    image: 'main/main-banner-2.png',
+    leftImage: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
   },
   {
     id: 3,
-    title: '비건 밀키트 출시',
-    subtitle: '집에서도 슬런치의 맛을 즐기세요',
-    image: 'main/main-banner-3.png',
+    leftImage: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800',
   },
   {
     id: 4,
-    title: 'Slow Lunch',
-    subtitle: 'Full of Abundance',
-    image: 'main/main-banner-4.png',
+    leftImage: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    id: 5,
+    leftImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&q=80&w=800',
   },
 ];
 
-// 추천 상품 데이터
-const FEATURED_PRODUCTS = [
-  {
-    id: 1,
-    name: '슬런치 김치볶음밥 밀키트(2인분)',
-    description: '젓갈이 들어가지 않은 비건 캔김치로 구성한 김치볶음밥 밀키트',
-    price: 12000,
-    originalPrice: 15000,
-  },
-  {
-    id: 2,
-    name: '슬런치 시금치 뇨끼',
-    description: '계란, 우유, 버터를 넣지 않은 비건 뇨끼',
-    price: 18000,
-    originalPrice: 24000,
-  },
-  {
-    id: 3,
-    name: '슬런치 블루베리 타르트',
-    description: '슬런치 팩토리 프리미엄 블루베리 타르트',
-    price: 39000,
-    originalPrice: 44000,
-  },
+// 무드 슬라이더 컴포넌트
+const MoodSlider: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const slidesWithClone = [...MOOD_SLIDES, MOOD_SLIDES[0]]; // 첫 번째 슬라이드 복제
+
+  const startAutoSlide = useCallback(() => {
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => prev + 1);
+    }, 4000); // 4초마다 슬라이드 변경
+  }, []);
+
+  const stopAutoSlide = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    startAutoSlide();
+    return () => stopAutoSlide();
+  }, [startAutoSlide, stopAutoSlide]);
+
+  // 마지막 복제 슬라이드에서 실제 첫 번째로 점프
+  useEffect(() => {
+    if (currentSlide === MOOD_SLIDES.length) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(0);
+      }, 1200); // 전환 애니메이션 완료 후
+      
+      setTimeout(() => {
+        setIsTransitioning(true);
+      }, 1250); // 약간의 딜레이 후 트랜지션 다시 활성화
+    }
+  }, [currentSlide]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    stopAutoSlide();
+    startAutoSlide();
+  };
+
+  return (
+    <section 
+      className="relative w-full overflow-hidden"
+      style={{ height: 'calc(100vh - 96px)' }}
+    >
+      {/* 슬라이드 컨테이너 */}
+      <div 
+        className="flex h-full"
+        style={{ 
+          width: `${slidesWithClone.length * 100}%`,
+          transform: `translateX(-${currentSlide * (100 / slidesWithClone.length)}%)`,
+          transition: isTransitioning ? 'transform 1.2s ease-in-out' : 'none'
+        }}
+      >
+        {slidesWithClone.map((slide, index) => (
+          <div 
+            key={`${slide.id}-${index}`}
+            className="flex h-full"
+            style={{ width: `${100 / slidesWithClone.length}%` }}
+          >
+            {/* 좌측 이미지 */}
+            <div className="w-1/2 h-full overflow-hidden">
+              <img 
+                src={slide.leftImage}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* 우측 이미지 */}
+            <div className="w-1/2 h-full overflow-hidden">
+              <img 
+                src={slide.rightImage}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 인디케이터 */}
+      <div 
+        className="absolute bottom-8 left-8 flex gap-2"
+        style={{ zIndex: 10 }}
+      >
+        {MOOD_SLIDES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className="w-2 h-2 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: (currentSlide === index || (currentSlide === MOOD_SLIDES.length && index === 0)) ? '#FFFFFF' : 'rgba(255,255,255,0.4)',
+              transform: (currentSlide === index || (currentSlide === MOOD_SLIDES.length && index === 0)) ? 'scale(1.2)' : 'scale(1)',
+            }}
+            aria-label={`슬라이드 ${index + 1}로 이동`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// 레시피 비디오 Hero 섹션 (Store에서 이동)
+const RECIPE_VIDEO_ITEMS = [
+  { id: 1, name: '볶음김치', description: '비건 식단에 어울리는 메뉴', likes: 1100, videoId: 'x7pnY0U5yYY' },
+  { id: 2, name: '김치볶음밥', description: '비건 식단에 어울리는 메뉴', likes: 626, videoId: 'LeZQWQ_cXqU' },
+  { id: 3, name: '시금치 뇨끼', description: '비건 식단에 어울리는 메뉴', likes: 850, videoId: '8cVFJrY89SA' },
+  { id: 4, name: '구운 야채 빈앤넛', description: '비건 식단에 어울리는 메뉴', likes: 720, videoId: 'IzNnBZMjbXU' },
 ];
 
-// 메인 섹션 썸네일용 6개 리스트
-const MAIN_THUMB_ITEMS = [
-  { id: 'm1', name: '슬런치 김치볶음밥 밀키트(2인분)', price: 12000 },
-  { id: 'm2', name: '슬런치 시금치 뇨끼', price: 18000 },
-  { id: 'm3', name: '슬런치 블루베리 타르트', price: 39000 },
-  { id: 'm4', name: '슬런치 잠봉뵈르', price: 8000 },
-  { id: 'm5', name: '슬런치 오리엔탈 셀러드(2인분)', price: 24000 },
-  { id: 'm6', name: '슬런치 김치전', price: 13000 },
+const RecipeVideoHero: React.FC = () => {
+  const formatLikeCount = (count: number): string => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return count.toString();
+  };
+
+  return (
+    <div className="w-full border-b border-black">
+      {/* Desktop: Flex Row Layout */}
+      <div className="hidden lg:flex lg:flex-row">
+        {/* Left Column - Main Video (50%) */}
+        <div className="w-1/2 relative overflow-hidden border-r border-black">
+          <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+              title="슬런치 비건 레시피"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ 
+                pointerEvents: 'none',
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%'
+              }}
+            />
+          </div>
+        </div>
+        
+        {/* Right Column - 추천 콘텐츠 영역 (50%) */}
+        <div className="w-1/2 bg-white flex-shrink-0">
+          {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
+          <div className="hidden lg:flex p-5 pb-8 gap-4 h-full overflow-y-auto">
+            {/* 왼쪽 열 */}
+            <div className="flex-1 flex flex-col gap-4">
+              {RECIPE_VIDEO_ITEMS.slice(0, 2).map((item) => (
+                <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-col">
+                  <div 
+                    className="relative w-full overflow-hidden bg-black"
+                    style={{ aspectRatio: '3/4' }}
+                  >
+                    <iframe
+                      className="absolute w-full h-full"
+                      src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                      title={item.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                    />
+                    {/* 추천 아이콘 (좌측 상단) */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                        <span className="text-black text-xs">✦</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-3 bg-black px-3 pb-3">
+                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center mt-3 gap-1.5">
+                      <span className="text-gray-400">♡</span>
+                      <span className="text-gray-400 text-xs">
+                        {formatLikeCount(item.likes)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            {/* 오른쪽 열 (아래로 오프셋) */}
+            <div className="flex-1 flex flex-col gap-4 pt-24">
+              {RECIPE_VIDEO_ITEMS.slice(2, 4).map((item) => (
+                <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-col">
+                  <div 
+                    className="relative w-full overflow-hidden bg-black"
+                    style={{ aspectRatio: '3/4' }}
+                  >
+                    <iframe
+                      className="absolute w-full h-full"
+                      src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                      title={item.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                    />
+                    {/* 추천 아이콘 (좌측 상단) */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                        <span className="text-black text-xs">✦</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-3 bg-black px-3 pb-3">
+                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center mt-3 gap-1.5">
+                      <span className="text-gray-400">♡</span>
+                      <span className="text-gray-400 text-xs">
+                        {formatLikeCount(item.likes)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Mobile: Stack Vertically */}
+      <div className="flex flex-col lg:hidden">
+        {/* Main Video on Top */}
+        <div className="relative w-full overflow-hidden border-b border-black">
+          <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+              title="슬런치 비건 레시피"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ 
+                pointerEvents: 'none',
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%'
+              }}
+            />
+          </div>
+        </div>
+        
+        {/* 추천 콘텐츠 영역 Below (Mobile) */}
+        <div className="lg:hidden p-4 sm:p-5 bg-white">
+          <div className="grid grid-cols-2" style={{ gap: '13px' }}>
+            {RECIPE_VIDEO_ITEMS.map((item) => (
+              <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-row gap-3">
+                {/* 카드 영상 (왼쪽) */}
+                <div 
+                  className="relative w-[45%] flex-shrink-0 overflow-hidden bg-black"
+                  style={{ aspectRatio: '3/4' }}
+                >
+                  <iframe
+                    className="absolute w-full h-full"
+                    src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                    title={item.name}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                  />
+                  {/* 추천 아이콘 (좌측 상단) */}
+                  <div className="absolute top-2 left-2 z-10">
+                    <div className="w-6 h-6 bg-[#BFFF00] flex items-center justify-center">
+                      <span className="text-black text-[10px]">✦</span>
+                    </div>
+                  </div>
+                </div>
+                {/* 카드 정보 (오른쪽) */}
+                <div className="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <h4 className="font-bold text-black leading-tight line-clamp-2 group-hover:underline text-xs">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-500 mt-1 line-clamp-2 text-[10px]">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center mt-2 gap-1">
+                    <span className="text-gray-400 text-xs">♡</span>
+                    <span className="text-gray-400 text-[10px]">
+                      {formatLikeCount(item.likes)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// 인기 메뉴/굿즈 데이터
+const FEATURED_ITEMS = [
+  { id: 'm1', name: '슬런치 김치볶음밥 밀키트(2인분)', price: 12000, microCopy: '오늘의 기분엔 이 메뉴!' },
+  { id: 'm2', name: '슬런치 시금치 뇨끼', price: 18000, microCopy: '부드러운 한 끼' },
+  { id: 'm3', name: '슬런치 블루베리 타르트', price: 39000, microCopy: '달콤한 순간' },
+  { id: 'm4', name: '슬런치 잠봉뵈르', price: 8000, microCopy: '내 책상 위 귀여운 친구' },
+  { id: 'm5', name: '슬런치 오리엔탈 셀러드(2인분)', price: 24000, microCopy: '상쾌한 하루' },
+  { id: 'm6', name: '슬런치 김치전', price: 13000, microCopy: '바삭한 기분' },
+  { id: 'm7', name: '슬런치 비건 쿠키 세트', price: 15000, microCopy: '달콤한 선물' },
+  { id: 'm8', name: '슬런치 그린 샐러드', price: 18000, microCopy: '건강한 선택' },
 ];
 
 interface HomePageProps {
@@ -71,20 +357,19 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [showToast, setShowToast] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [currentX, setCurrentX] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const conceptRef = useRef<HTMLDivElement>(null);
 
-  // 드래그 중이 아닐 때만 자동 슬라이드
+  // 스크롤 위치 추적 (Parallax 효과용)
   useEffect(() => {
-    if (isDragging) return;
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [isDragging]);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const dismissToast = () => {
     setShowToast(false);
@@ -94,284 +379,619 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
     setShowToast(true);
   };
 
-  // 드래그 핸들러
-  const handleDragStart = (e: React.MouseEvent | React.TouchEvent) => {
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    setIsDragging(true);
-    setStartX(clientX);
-    setCurrentX(clientX);
-  };
-
-  const handleDragMove = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    setCurrentX(clientX);
-  };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    
-    const diff = currentX - startX;
-    
-    // 80px 이상 드래그하면 슬라이드 변경
-    if (diff > 80) {
-      setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
-    } else if (diff < -80) {
-      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }
-    
-    setIsDragging(false);
-    setStartX(0);
-    setCurrentX(0);
-  };
-
-  const dragOffset = isDragging ? currentX - startX : 0;
-
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen w-full" style={{ backgroundColor: '#ffffff', width: '100%' }}>
       {/* 비건 테스트 모달 팝업 */}
       {showToast && (
         <>
-          {/* 배경 오버레이 */}
           <div 
             className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
             onClick={dismissToast}
           />
-          {/* 모달 팝업 */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
+          <div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="test-modal-title"
+          >
             <div 
-              className="relative bg-[#292624] p-8 pointer-events-auto animate-fadeIn"
+              className="relative bg-black pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
               style={{ 
                 width: '90%',
                 maxWidth: '380px',
-                aspectRatio: '3/4',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)'
               }}
             >
-              {/* 닫기 버튼 */}
               <button 
                 onClick={dismissToast}
-                className="absolute top-4 right-4 p-1 transition-opacity hover:opacity-80"
-                style={{ backgroundColor: 'transparent', color: '#ffffff' }}
+                className="absolute top-4 right-4 z-10 p-1 transition-opacity hover:opacity-80"
+                aria-label="모달 닫기"
               >
-                <X className="w-5 h-5 text-white" />
+                <X className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
               
-              {/* 중앙 텍스트 - 세로 정렬 */}
-              <div className="flex flex-col items-center text-center gap-3">
-                <span className="text-[18px] font-semibold text-white">
-                  🥗 나의 비건 유형은?
-                </span>
-                <span className="text-[14px] text-stone-400 leading-relaxed">
-                  좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
-                </span>
-                <Link 
-                  to="/"
-                  onClick={dismissToast}
-                  className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
-                  style={{ backgroundColor: '#E54B1A', color: '#292624' }}
+              <div className="flex flex-col">
+                <div 
+                  className="relative w-full overflow-hidden bg-black rounded-t-2xl"
+                  style={{ 
+                    aspectRatio: '1/1',
+                    isolation: 'isolate'
+                  }}
                 >
-                  테스트 시작
-                </Link>
+                  <img
+                    src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800"
+                    alt="비건 음식"
+                    className="w-full h-full object-cover"
+                    style={{ 
+                      transform: 'translateZ(0) scale(1.05)',
+                      backfaceVisibility: 'hidden',
+                      WebkitBackfaceVisibility: 'hidden',
+                      width: '100%',
+                      height: '100%'
+                    }}
+                  />
+                </div>
+                
+                <div className="w-full bg-black p-8 flex flex-col justify-center rounded-b-2xl">
+                  <div className="flex flex-col items-center text-center gap-3">
+                    <h2 id="test-modal-title" className="text-[18px] font-semibold text-white flex items-center gap-2">
+                      <span aria-hidden="true">🥗</span> 나의 스피릿 찾기
+                    </h2>
+                    <span className="text-[14px] text-white/70 leading-relaxed">
+                      좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
+                    </span>
+                    <Link 
+                      to="/"
+                      onClick={dismissToast}
+                      className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
+                      style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+                    >
+                      테스트 시작
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </>
       )}
       
-      {/* 최소화된 플로팅 버튼 - 토스트가 닫혔을 때 표시 */}
+      {/* 최소화된 플로팅 버튼 */}
       <button
         onClick={openToast}
         className={`fixed right-6 z-30 px-3 py-2 rounded-none shadow-lg transition-all duration-300 flex items-center gap-2 ${
           showToast ? 'opacity-0 pointer-events-none translate-x-4' : 'opacity-100 translate-x-0'
         }`}
-        style={{ backgroundColor: '#292624', top: `${headerOffset + 16}px` }}
+        style={{ backgroundColor: '#000000', top: `${headerOffset + 16}px` }}
       >
         <span className="text-lg">🥗</span>
-        <span className="text-[11px] font-medium text-stone-300">비건 테스트</span>
+        <span className="text-[11px] font-medium text-white">비건 테스트</span>
       </button>
 
-      {/* 히어로 배너 슬라이더 */}
-      <div 
-        className="relative h-[500px] overflow-hidden cursor-grab active:cursor-grabbing select-none"
-        onMouseDown={handleDragStart}
-        onMouseMove={handleDragMove}
-        onMouseUp={handleDragEnd}
-        onMouseLeave={handleDragEnd}
-        onTouchStart={handleDragStart}
-        onTouchMove={handleDragMove}
-        onTouchEnd={handleDragEnd}
+      {/* ============================================
+          HERO SECTION - 1:1 Split Mood Image Slider
+          ============================================ */}
+      <MoodSlider />
+
+      {/* ============================================
+          SECTION 1: We are Slunch Factory (Concept)
+          ============================================ */}
+      <section 
+        ref={conceptRef}
+        className="scroll-snap-section-flex bg-[#faf9f7] section-spacing relative overflow-hidden"
       >
-        {/* 슬라이드 컨테이너 */}
+        {/* 배경 캐릭터 (Absolute Position) */}
         <div 
-          className={`flex h-full ${isDragging ? '' : 'transition-transform duration-700 ease-in-out'}`}
-          style={{ transform: `translateX(calc(-${currentSlide * 100}% + ${dragOffset}px))` }}
+          className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 opacity-20 pointer-events-none"
+          style={{
+            transform: `translateY(${scrollY * 0.2}px)`,
+            transition: 'transform 0.1s ease-out'
+          }}
         >
-          {HERO_SLIDES.map((slide, index) => (
-            <div 
-              key={index}
-              className="min-w-full h-full relative flex-shrink-0"
-              style={{ backgroundColor: '#54271d' }}
+          <img 
+            src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
+            alt="슬런치 캐릭터"
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        <div className="page-container relative z-10">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 
+              className="text-stone-900 mb-6"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
             >
-              {/* 배경 이미지 */}
-              <img 
-                src={`${import.meta.env.BASE_URL}${slide.image}`}
-                alt={slide.title}
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                draggable={false}
-              />
-              {/* 텍스트 오버레이 - 하단 섹션과 동일한 여백 */}
-              <div className="absolute bottom-20 left-0 w-full">
-                <div className="page-container px-6 sm:px-8 text-left">
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] leading-relaxed drop-shadow-lg">
-                    {slide.title}
-                  </p>
-                  <p className="text-2xl md:text-3xl font-medium text-[#E54B1A] drop-shadow-lg">
-                    {slide.subtitle}
-                  </p>
+              We are Slunch Factory
+            </h2>
+            <p 
+              className="text-stone-700 mb-8"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
+              슬런치 팩토리는 건강한 비건 식단을 통해 일상에 새로운 맛과 경험을 전달합니다.
+              <br />
+              채소들의 이야기로 만든 특별한 요리와 함께, 당신만의 비건 우주를 만들어가세요.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              {['Potato', 'Tomato', 'Carrot', 'Broccoli'].map((veggie, idx) => (
+                <div 
+                  key={idx}
+                  className="w-16 h-16 relative"
+                  style={{
+                    transform: `translateY(${Math.sin(scrollY * 0.01 + idx) * 5}px)`,
+                    transition: 'transform 0.1s ease-out'
+                  }}
+                >
+                  <img 
+                    src={`${import.meta.env.BASE_URL}vege_flot_img/${veggie.toLowerCase()}.png`}
+                    alt={veggie}
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
-        
-        {/* 슬라이드 인디케이터 - 분리됨, 중앙 배치 */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-          {HERO_SLIDES.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-none transition-colors ${
-                index === currentSlide ? 'bg-white' : 'bg-white/40'
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-      
-      {/* 매거진 스타일 레이아웃 */}
-      <div className="bg-white">
+      </section>
+
+      {/* ============================================
+          SLUNCH WEEKLY - Dedicated Feature Section (Lofa Style)
+          ============================================ */}
+      <section 
+        className="scroll-snap-section-flex section-spacing relative overflow-visible bg-white"
+        style={{ 
+          borderTop: '1px solid #000000',
+          borderBottom: '1px solid #000000'
+        }}
+      >
         <div className="page-container">
-          <div className="flex flex-col lg:flex-row">
-            {/* 왼쪽 컬럼 - 텍스트 + 상품 그리드 */}
-            <div className="lg:w-[55%] p-8">
-              {/* 텍스트 헤더 */}
-              <div className="grid grid-cols-2 gap-4 mb-8">
-                {/* 타이틀 - 첫번째 이미지 위치 */}
-                <h2 className="text-[20px] font-bold text-stone-800 leading-snug">
-                  건강한 비건식으로 삶의 균형 맞추기
-                </h2>
-                
-                {/* 설명 - 두번째 이미지 위치 */}
-                <div>
-                  <p className="text-[12px] text-stone-600 leading-relaxed">
-                    매장에서만 즐겼던 맛있고 건강한 비건요리를
-                  </p>
-                  <p className="text-[12px] text-stone-600 mb-3">
-                    이제 집에서도 간편하게 즐겨보세요.
-                  </p>
-                  <p className="text-[12px] text-stone-500 leading-relaxed">
-                    비건 채식주의자들과 일반인들 모두 맛있게 즐길 수 있는
-                  </p>
-                  <p className="text-[12px] text-stone-500">
-                    다채로운 비건 요리를 매장에서도 즐겨보세요
-                  </p>
+          <div className="flex flex-col lg:flex-row border border-[#000000]">
+            {/* 왼쪽 영역 (60%) - 이미지 */}
+            <div 
+              className="w-full lg:w-[60%] relative border-r-0 lg:border-r border-[#000000]"
+              style={{ borderRight: '1px solid #000000' }}
+            >
+              <div 
+                className="w-full overflow-hidden relative"
+                style={{ 
+                  aspectRatio: '3/4', 
+                  backgroundColor: '#f5f5f5'
+                }}
+              >
+                {/* 도시락/패키지 이미지 자리 */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-[#000000] text-sm font-medium">슬런치 위클리 패키지 이미지</span>
                 </div>
-              </div>
-              
-              {/* 상품 그리드 2열 x 3행 (총 6개) */}
-              <div className="grid grid-cols-2 gap-4">
-                {MAIN_THUMB_ITEMS.slice(0, 6).map((product, idx) => {
-                  const imageUrl = getHomeProductImage(idx);
-                  return (
-                    <div key={product.id} className="cursor-pointer group">
-                      <div 
-                        className="w-full mb-2 overflow-hidden rounded-none relative"
-                        style={{ aspectRatio: '4/5', backgroundColor: idx % 2 === 0 ? '#54271d' : '#6e3d2a' }}
-                      >
-                        {imageUrl ? (
-                          <img 
-                            src={imageUrl}
-                            alt={product.name}
-                            className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                            }}
-                          />
-                        ) : (
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="text-white/30 text-xs">IMG</span>
-                          </div>
-                        )}
-                      </div>
-                      <p className="text-[12px] text-stone-700 group-hover:text-stone-900">{product.name}</p>
-                      <p className="text-[11px] text-stone-500">KRW {product.price.toLocaleString()}</p>
-                    </div>
-                  );
-                })}
+                
+                {/* 배달 모자 캐릭터 (Absolute Position - 모서리에 걸치도록) */}
+                <div 
+                  className="absolute -bottom-6 -right-6 w-20 h-20 lg:w-28 lg:h-28 z-10"
+                  style={{
+                    transform: `translateY(${scrollY * 0.15}px)`,
+                    transition: 'transform 0.1s ease-out'
+                  }}
+                >
+                  <img 
+                    src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
+                    alt="슬런치 캐릭터"
+                    className="w-full h-full object-contain"
+                    style={{ filter: 'none' }}
+                  />
+                </div>
               </div>
             </div>
             
-            {/* 오른쪽 컬럼 - 대형 이미지 1개 (960x1200 제한) */}
-            <div className="lg:w-[45%] flex justify-center items-start">
-              <div 
-                className="w-full"
+            {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
+            <div className="w-full lg:w-[40%] flex flex-col justify-center p-6 lg:p-12">
+              <h2 
+                className="text-[#000000] mb-6"
                 style={{ 
-                  aspectRatio: '4/5', 
-                  backgroundColor: '#3d1c12',
-                  maxWidth: '960px',
-                  maxHeight: '1200px'
+                  fontSize: 'var(--font-size-h1)',
+                  fontWeight: 'var(--font-weight-h1)',
+                  letterSpacing: 'var(--letter-spacing-tight)',
+                  lineHeight: 'var(--line-height-h1)'
                 }}
               >
-                {/* 이미지 자리 */}
+                고민 없는 건강한 일주일,<br />
+                Slunch Weekly
+              </h2>
+              
+              <p 
+                className="text-[#000000] mb-10"
+                style={{ 
+                  fontSize: 'var(--font-size-body)',
+                  fontWeight: 'var(--font-weight-body)',
+                  lineHeight: 'var(--line-height-body)',
+                  letterSpacing: 'var(--letter-spacing-tight)'
+                }}
+              >
+                하루 2끼, 균형 잡힌 비건 식단을 문 앞까지.<br />
+                내 몸을 위한 가장 쉬운 선택.
+              </p>
+              
+              {/* Key Points */}
+              <div className="space-y-5 mb-10">
+                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
+                  <span className="text-2xl leading-none">🥗</span>
+                  <div>
+                    <p 
+                      className="text-[#000000] mb-1" 
+                      style={{ 
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      주 14끼 식단
+                    </p>
+                    <p 
+                      className="text-[#000000]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      하루 2끼, 일주일치 완벽한 식단
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
+                  <span className="text-2xl leading-none">🚚</span>
+                  <div>
+                    <p 
+                      className="text-[#000000] mb-1" 
+                      style={{ 
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      신선 새벽 배송
+                    </p>
+                    <p 
+                      className="text-[#000000]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      매주 아침, 문 앞까지 신선하게
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-2xl leading-none">🌱</span>
+                  <div>
+                    <p 
+                      className="text-[#000000] mb-1" 
+                      style={{ 
+                        fontSize: 'var(--font-size-body)',
+                        fontWeight: 'var(--font-weight-body)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      영양 밸런스 완벽 설계
+                    </p>
+                    <p 
+                      className="text-[#000000]"
+                      style={{ 
+                        fontSize: 'var(--font-size-ui)',
+                        fontWeight: 'var(--font-weight-ui)',
+                        letterSpacing: 'var(--letter-spacing-tight)'
+                      }}
+                    >
+                      전문가가 설계한 균형 잡힌 식단
+                    </p>
+                  </div>
+                </div>
               </div>
+              
+              {/* CTA Button - Outline Style */}
+              <Link
+                to="/store"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
+                style={{ 
+                  borderRadius: '0',
+                  fontSize: 'var(--font-size-ui)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.01em'
+                }}
+              >
+                이번 주 식단 보러가기
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* 뉴스레터 섹션 */}
-      <div className="bg-white border-t border-stone-200">
-        <div className="page-container py-8">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-sm font-bold tracking-wide text-stone-900">NEWSLETTER</h3>
-            <Link to="/newsletter" className="text-sm text-stone-600 hover:text-black">VIEW ALL</Link>
+      {/* ============================================
+          Recipe Video Split Section (from Store)
+          ============================================ */}
+      <RecipeVideoHero />
+
+      {/* ============================================
+          SECTION 2: Best Menu/Goods (4:5 Grid)
+          ============================================ */}
+      <section className="scroll-snap-section-flex bg-white section-spacing">
+        <div className="page-container">
+          <div className="text-center mb-12">
+            <h2 
+              className="text-stone-900 mb-4"
+              style={{ 
+                fontSize: 'var(--font-size-h1)',
+                fontWeight: 'var(--font-weight-h1)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h1)'
+              }}
+            >
+              오늘의 기분엔 이 메뉴!
+            </h2>
+            <p 
+              className="text-stone-600"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 'var(--font-weight-body)',
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)'
+              }}
+            >
+              슬런치 팩토리의 인기 메뉴와 굿즈를 만나보세요
+            </p>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          
+          {/* 4:5 비율 그리드 - 모바일 2열, 데스크톱 4열 */}
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
+            {FEATURED_ITEMS.map((item, idx) => {
+              const imageUrl = getHomeProductImage(idx);
+              // 할인 정보 (예시 데이터)
+              const originalPrice = Math.round(item.price * 1.25);
+              const discountRate = Math.round(((originalPrice - item.price) / originalPrice) * 100);
+              return (
+                <Link 
+                  key={item.id} 
+                  to="/store" 
+                  className="group cursor-pointer"
+                >
+                  <div 
+                    className="w-full overflow-hidden relative"
+                    style={{ 
+                      aspectRatio: '4/5', 
+                      backgroundColor: '#F5F5F5',
+                      borderRadius: '0'
+                    }}
+                  >
+                    {imageUrl ? (
+                      <img 
+                        src={imageUrl}
+                        alt={item.name}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        loading="lazy"
+                        decoding="async"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-stone-400 text-xs">IMG</span>
+                      </div>
+                    )}
+                  </div>
+                  {/* 상품명 */}
+                  <h3 
+                    className="group-hover:underline line-clamp-1"
+                    style={{ 
+                      fontSize: '16px',
+                      fontWeight: 700,
+                      color: '#000000',
+                      marginTop: '16px',
+                      marginBottom: '6px'
+                    }}
+                  >
+                    {item.name.replace('슬런치 ', '')}
+                  </h3>
+                  {/* 설명 */}
+                  <p 
+                    style={{ 
+                      fontSize: '13px',
+                      color: '#6B6B6B',
+                      marginBottom: '10px'
+                    }}
+                  >
+                    {item.microCopy}
+                  </p>
+                  {/* 원래 가격 */}
+                  <p 
+                    style={{ 
+                      fontSize: '13px',
+                      color: '#999999',
+                      textDecoration: 'line-through',
+                      marginBottom: '4px'
+                    }}
+                  >
+                    {originalPrice.toLocaleString()}원
+                  </p>
+                  {/* 할인율 + 할인가 */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span 
+                      style={{ 
+                        display: 'inline-block',
+                        padding: '2px 8px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        backgroundColor: '#BFFF00',
+                        color: '#000000'
+                      }}
+                    >
+                      {discountRate}%
+                    </span>
+                    <span 
+                      style={{ 
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#000000'
+                      }}
+                    >
+                      {item.price.toLocaleString()}원
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* View all 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link 
+              to="/store"
+              style={{
+                display: 'inline-block',
+                padding: '14px 48px',
+                border: '1px solid #000000',
+                color: '#000000',
+                fontSize: '14px',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#000000';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#000000';
+              }}
+            >
+              View all
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          SECTION 4: Newsletter Preview
+          ============================================ */}
+      <section 
+        className="scroll-snap-section-flex"
+        style={{ backgroundColor: '#000000', padding: '80px 0' }}
+      >
+        <div className="page-container">
+          {/* 섹션 제목 */}
+          <h2 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
+              color: '#FFFFFF',
+              marginBottom: '32px'
+            }}
+          >
+            뉴스레터
+          </h2>
+
+          {/* 4열 그리드 */}
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
             {[
-              { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', isNew: true },
-              { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', isNew: true },
+              { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', isNew: false },
+              { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', isNew: false },
               { id: 3, category: 'FOOD', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', isNew: false },
-              { id: 4, category: 'CULTURE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', isNew: false },
+              { id: 4, category: 'LIFE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', isNew: false },
             ].map((article) => (
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
+                {/* 이미지 */}
                 <div 
                   className="relative w-full overflow-hidden"
-                  style={{ aspectRatio: '4/3', backgroundColor: '#e5ded8' }}
+                  style={{ aspectRatio: '1/1', backgroundColor: '#333333', borderRadius: '0', marginBottom: '16px' }}
                 >
-                  {/* 썸네일 자리 */}
-                  {article.isNew && (
-                    <div 
-                      className="absolute top-0 left-0 px-2 py-1 text-[10px] font-bold text-stone-800 z-10"
-                      style={{ backgroundColor: '#E54B1A' }}
-                    >
-                      NEW
-                    </div>
-                  )}
+                  {/* 플레이스홀더 */}
                 </div>
-                <p className="mt-2 text-[10px] text-stone-500 tracking-wider">{article.category}</p>
-                <p className="text-sm font-semibold text-stone-800 group-hover:underline">
-                  {article.title}
+                {/* 카테고리 */}
+                <p 
+                  style={{ 
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                    color: '#6B6B6B',
+                    marginBottom: '8px'
+                  }}
+                >
+                  {article.category}
                 </p>
-                <p className="text-xs text-stone-500 mt-1 line-clamp-1">
+                {/* 제목 - 흰색 */}
+                <h3 
+                  className="group-hover:underline line-clamp-2"
+                  style={{ 
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    lineHeight: 1.4,
+                    color: '#FFFFFF',
+                    marginBottom: '8px'
+                  }}
+                >
+                  {article.title}
+                </h3>
+                {/* 설명 */}
+                <p 
+                  className="line-clamp-2"
+                  style={{ 
+                    fontSize: '13px',
+                    lineHeight: 1.5,
+                    color: '#999999'
+                  }}
+                >
                   {article.subtitle}
                 </p>
               </Link>
             ))}
           </div>
+
+          {/* View all 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link 
+              to="/newsletter"
+              style={{
+                display: 'inline-block',
+                padding: '14px 48px',
+                border: '1px solid #FFFFFF',
+                color: '#FFFFFF',
+                fontSize: '14px',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#BFFF00';
+                e.currentTarget.style.borderColor = '#BFFF00';
+                e.currentTarget.style.color = '#000000';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.borderColor = '#FFFFFF';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+            >
+              View all
+            </Link>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

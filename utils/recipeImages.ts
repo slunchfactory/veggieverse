@@ -116,22 +116,11 @@ export const getRecipeHeroImage = (recipeId: number): string => {
 };
 
 /**
- * 이미지 로드 실패 시 fallback 이미지 반환
+ * 이미지 로드 실패 시 fallback 이미지 반환 (브랜드 로고 포함 Placeholder)
  */
 export const getFallbackRecipeImage = (recipeId: number): string => {
-  // 재료 아이콘을 fallback으로 사용
-  const ingredientIcons = [
-    '/vege_flot_img/mushroom.png',
-    '/vege_flot_img/avocado.png',
-    '/vege_flot_img/lemon.png',
-    '/vege_flot_img/napa cabbage.png',
-    '/vege_flot_img/coconut.png',
-    '/vege_flot_img/blueberry.png',
-    '/vege_flot_img/sweet potato.png',
-    '/vege_flot_img/broccoli.png',
-    '/vege_flot_img/tomato.png',
-    '/vege_flot_img/mango.png',
-  ];
-  return ingredientIcons[recipeId % ingredientIcons.length];
+  // 브랜드 로고가 담긴 깔끔한 Placeholder 이미지
+  const baseUrl = import.meta.env.BASE_URL || '/veggieverse/';
+  return `${baseUrl}common/logo.png`;
 };
 

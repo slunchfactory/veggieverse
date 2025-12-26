@@ -5,46 +5,59 @@ const AVATAR_VIDEO = '/veggieverse/characters/slunch-character-move.mp4';
 type TabKey = 'chat' | 'profile' | 'saved';
 
 
-export const ChatWidget: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+interface ChatWidgetProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+interface ChatPanelProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
+  const [avatarError, setAvatarError] = useState(false);
+  const positionClass = useMemo(() => 'fixed z-[90] right-4 bottom-20 sm:right-6 sm:bottom-24', []);
+
+  // 챗봇이 열렸을 때는 버튼을 숨김
+  if (isOpen) return null;
+
+  return (
+    <button
+      aria-label="챗봇 열기"
+      className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-transparent border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden`}
+      onClick={onToggle}
+      style={{ borderRadius: '24%' }}
+    >
+      {avatarError ? (
+        <div className="w-full h-full flex items-center justify-center text-5xl bg-stone-100">
+          🍉
+        </div>
+      ) : (
+        <video
+          src={AVATAR_VIDEO}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+          onError={() => setAvatarError(true)}
+        />
+      )}
+    </button>
+  );
+};
+
+export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
   const [avatarError, setAvatarError] = useState(false);
   const [tab, setTab] = useState<TabKey>('chat');
   const memoryOn = true;
   const [contextTasteOn, setContextTasteOn] = useState(true);
   const [input, setInput] = useState('');
-
-  const positionClass = useMemo(() => 'fixed z-[90] right-4 bottom-20 sm:right-6 sm:bottom-24', []);
   const quickPrompts = ['오늘 점심 추천', '주간 식단 짜줘', '장보기 리스트 만들어줘', '저염/고단백으로'];
 
   return (
-    <>
-      {/* 트리거 */}
-      <button
-        aria-label="챗봇 열기"
-        className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-transparent border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden`}
-        onClick={() => setIsOpen(prev => !prev)}
-        style={{ borderRadius: '24%' }}
-      >
-        {avatarError ? (
-          <div className="w-full h-full flex items-center justify-center text-5xl bg-stone-100">
-            🍉
-          </div>
-        ) : (
-          <video
-            src={AVATAR_VIDEO}
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-            onError={() => setAvatarError(true)}
-          />
-        )}
-      </button>
-
-      {/* 패널 */}
-      {isOpen && (
-        <div className="fixed inset-y-0 right-0 w-full max-w-[420px] bg-white shadow-2xl border-l border-stone-200 flex flex-col" style={{ zIndex: 80 }}>
+    <div className="h-full w-full bg-white shadow-2xl flex flex-col">
           {/* 헤더 */}
           <div className="h-16 px-4 flex items-center gap-3 border-b border-stone-200">
             {avatarError ? (
@@ -66,7 +79,7 @@ export const ChatWidget: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={onToggle}
                 className="text-stone-400 hover:text-stone-700 text-lg leading-none px-2 py-1"
                 aria-label="챗봇 닫기"
               >
@@ -102,7 +115,7 @@ export const ChatWidget: React.FC = () => {
                 <label className="flex items-center gap-2 text-[12px] text-stone-500 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="accent-[#3D9E3D]"
+                    className="accent-black"
                     checked={contextTasteOn}
                     onChange={() => setContextTasteOn(!contextTasteOn)}
                   />
@@ -170,13 +183,20 @@ export const ChatWidget: React.FC = () => {
                 placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
                 className="flex-1 resize-none rounded-none border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
               />
-              <button className="px-4 py-2 bg-[#3D9E3D] text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
+              <button className="px-4 py-2 bg-black text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
                 전송
               </button>
             </div>
           </div>
         </div>
-      )}
+  );
+};
+
+export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
+  return (
+    <>
+      <ChatTrigger isOpen={isOpen} onToggle={onToggle} />
+      <ChatPanel isOpen={isOpen} onToggle={onToggle} />
     </>
   );
 };
