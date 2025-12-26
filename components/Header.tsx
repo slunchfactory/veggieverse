@@ -30,16 +30,17 @@ export const Header: React.FC<HeaderProps> = ({
   const [isMobileStoreOpen, setIsMobileStoreOpen] = useState(false);
   
   const navItems = [
-    { name: 'About', path: '/brand' },
+    { name: 'About', path: '/about' },
     { name: 'Store', path: '/store', hasDropdown: true },
     { name: 'Recipe', path: '/recipe' },
     { name: 'Newsletter', path: '/newsletter' },
     { name: 'Event', path: '/event' },
   ];
 
-  // 식품 특화 카테고리 (단일 레벨)
-  const primaryCategories = ['ALL', 'NEW'];
-  const secondaryCategories = ['슬런치 위클리', '소스와 오일', '밀키트', '베이커리'];
+  // 식품 특화 카테고리 (새 구조)
+  const productTypeCategories = ['전체', '밀키트', '베이커리', '소스/오일', '세트', '구독'];
+  const dietCategories = ['전체', '비건', '락토', '오보', '플렉시', '글루텐프리'];
+  const cuisineCategories = ['전체', '한식', '양식', '디저트'];
 
   return (
     <header
@@ -72,7 +73,7 @@ export const Header: React.FC<HeaderProps> = ({
               (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
               (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
               (item.path === '/event' && location.pathname.startsWith('/event')) ||
-              (item.path === '/brand' && location.pathname.startsWith('/brand'));
+              (item.path === '/about' && location.pathname.startsWith('/about'));
             const isStore = item.hasDropdown;
             if (!isStore) {
               return (
@@ -81,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
                   className="bg-transparent border-none p-0"
                   style={{
                     padding: '24px 16px',
-                    fontSize: '13px',
+                    fontSize: '15px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -93,11 +94,7 @@ export const Header: React.FC<HeaderProps> = ({
                   <Link 
                     to={item.path} 
                     className={`nav-item-text ${isActive ? 'active' : ''}`}
-                    style={{
-                      textDecoration: isActive ? 'underline' : 'none',
-                      textUnderlineOffset: '4px',
-                      color: 'inherit',
-                    }}
+                    style={{ color: 'inherit' }}
                     onClick={() => setOpenMenu(null)}
                   >
                     {item.name}
@@ -112,10 +109,10 @@ export const Header: React.FC<HeaderProps> = ({
                 className="relative"
               >
                 <button
-                  className="bg-transparent border-none p-0"
+                  className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
                   style={{
                     padding: '24px 16px',
-                    fontSize: '13px',
+                    fontSize: '15px',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -128,18 +125,11 @@ export const Header: React.FC<HeaderProps> = ({
                     setOpenMenu((prev) => (prev === 'store' ? null : 'store'));
                   }}
                 >
-                  <Link 
-                    to={item.path} 
+                  <span 
                     className={`nav-item-text ${isActive || openMenu === 'store' ? 'active' : ''}`}
-                    style={{
-                      textDecoration: isActive || openMenu === 'store' ? 'underline' : 'none',
-                      textUnderlineOffset: '4px',
-                      color: 'inherit',
-                      pointerEvents: 'none',
-                    }}
                   >
                     {item.name}
-                  </Link>
+                  </span>
                   <span 
                     className="nav-item-arrow"
                     style={{
@@ -154,55 +144,20 @@ export const Header: React.FC<HeaderProps> = ({
 
                 {isStore && openMenu === 'store' && (
                   <div 
-                    className="fixed left-0 right-0 z-50"
+                    className="absolute z-50"
                     style={{ 
-                      top: (64 + offsetTop) + 'px',
+                      top: '100%',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
                       backgroundColor: 'var(--white-pure)',
-                      borderTop: '1px solid var(--gray-lighter)',
-                      padding: '24px 32px',
-                      paddingLeft: '200px',
-                      display: 'flex',
-                      gap: '80px',
+                      border: '1px solid var(--gray-lighter)',
+                      padding: '16px 24px',
+                      minWidth: '120px',
                     }}
                   >
-                    <div className="flex flex-col gap-4">
-                      {primaryCategories.map((cat) => (
-                        <a
-                          key={cat}
-                          href="#"
-                          className="dropdown-item category"
-                          style={{
-                            fontSize: '13px',
-                            fontWeight: 500,
-                            color: 'var(--black)',
-                            textDecoration: 'none',
-                            cursor: 'pointer',
-                          }}
-                          onMouseDown={(e) => e.preventDefault()}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setOpenMenu(null);
-                            setIsMobileMenuOpen(false);
-                            if (cat === 'ALL') {
-                              navigate('/store');
-                            } else {
-                              navigate(`/store?category=${encodeURIComponent(cat)}`);
-                            }
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.textDecoration = 'underline';
-                            e.currentTarget.style.textUnderlineOffset = '4px';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.textDecoration = 'none';
-                          }}
-                        >
-                          {cat}
-                        </a>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-4">
-                      {secondaryCategories.map((cat) => (
+                    {/* 제품 형태만 */}
+                    <div className="flex flex-col gap-1">
+                      {productTypeCategories.map((cat) => (
                         <a
                           key={cat}
                           href="#"
@@ -213,16 +168,18 @@ export const Header: React.FC<HeaderProps> = ({
                             color: 'var(--black)',
                             textDecoration: 'none',
                             cursor: 'pointer',
+                            padding: '6px 0',
+                            whiteSpace: 'nowrap',
                           }}
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={(e) => {
                             e.preventDefault();
                             setOpenMenu(null);
                             setIsMobileMenuOpen(false);
-                            if (cat === '슬런치 위클리') {
-                              navigate('/store/product/15');
+                            if (cat === '전체') {
+                              navigate('/store');
                             } else {
-                              navigate(`/store?category=${encodeURIComponent(cat)}`);
+                              navigate(`/store?productType=${encodeURIComponent(cat)}`);
                             }
                           }}
                           onMouseEnter={(e) => {
@@ -332,7 +289,7 @@ export const Header: React.FC<HeaderProps> = ({
                 (item.path === '/recipe' && location.pathname.startsWith('/recipe')) ||
                 (item.path === '/newsletter' && location.pathname.startsWith('/newsletter')) ||
                 (item.path === '/event' && location.pathname.startsWith('/event')) ||
-                (item.path === '/brand' && location.pathname.startsWith('/brand'));
+                (item.path === '/about' && location.pathname.startsWith('/about'));
               return (
                 <div key={item.path}>
                   <Link 
@@ -356,19 +313,17 @@ export const Header: React.FC<HeaderProps> = ({
                   </Link>
                   {isStore && isMobileStoreOpen && (
                     <div className="ml-3 mt-1 space-y-1">
-                      {[...primaryCategories, ...secondaryCategories].map((cat) => (
+                      {/* 제품 형태만 */}
+                      {productTypeCategories.map((cat) => (
                         <button
                           key={cat}
                           onClick={() => {
                             setIsMobileStoreOpen(false);
                             setIsMobileMenuOpen(false);
-                            if (cat === 'ALL') {
+                            if (cat === '전체') {
                               navigate('/store');
-                            } else if (cat === '슬런치 위클리') {
-                              // 슬런치 위클리는 상품 상세 페이지로 바로 이동
-                              navigate('/store/product/15');
                             } else {
-                              navigate(`/store?category=${encodeURIComponent(cat)}`);
+                              navigate(`/store?productType=${encodeURIComponent(cat)}`);
                             }
                           }}
                           className="block text-left w-full text-sm text-stone-600 py-1 hover:text-stone-900"

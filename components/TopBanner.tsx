@@ -9,7 +9,7 @@ export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
   return (
     <div 
       className="fixed top-0 left-0 right-0 z-[60] w-full h-8 flex items-center" 
-      style={{ backgroundColor: '#1A1A1A' }}
+      style={{ backgroundColor: '#000000' }}
     >
       <div className="w-full flex items-center justify-center text-xs font-medium relative" style={{ color: '#ffffff' }}>
         <Link to="/event" className="hover:underline text-center">

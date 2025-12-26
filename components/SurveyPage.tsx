@@ -1669,7 +1669,7 @@ ${result.description}
                                 <div className={`flex-shrink-0 w-5 h-5 ${isAdditional ? 'rounded-md' : 'rounded-full'} border-2 flex items-center justify-center ${
                                   isSelected ? 'border-black' : 'border-stone-300'
                                 }`}
-                                style={isSelected ? { backgroundColor: '#0D0D0D' } : {}}
+                                style={isSelected ? { backgroundColor: '#000000' } : {}}
                                 >
                                   {isSelected && (
                                     <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">

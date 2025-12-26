@@ -7,6 +7,7 @@ import { StorePage } from './pages/StorePage';
 import { BrandPage } from './pages/BrandPage';
 import { CommunityPage } from './pages/CommunityPage';
 import { NewsletterPage } from './pages/NewsletterPage';
+import AboutPage from './pages/AboutPage';
 import { VeganTestPage } from './pages/VeganTestPage';
 import RecipePage from './pages/RecipePage';
 import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
@@ -41,6 +42,7 @@ const Layout: React.FC<{
 }> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner, isChatOpen, chatPanel, shouldShowFooter }) => {
   const bannerHeight = showTopBanner ? 32 : 0;
   
+  // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
   return (
     <div className="min-h-screen min-w-[360px] flex flex-col">
       {/* 최상단 가입유도 배너 */}
@@ -55,7 +57,7 @@ const Layout: React.FC<{
       {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
       <div className="flex-1 flex" style={{ paddingTop: 64 + bannerHeight }}>
         {/* 좌측 메인 콘텐츠 */}
-        <main className="flex-1 flex flex-col" style={{ zIndex: 0 }}>
+        <main className="flex-1 flex flex-col" style={{ zIndex: 0, overflow: 'visible' }}>
           {children}
         </main>
         {/* 우측 챗봇 패널 */}
@@ -167,6 +169,7 @@ const AppContent: React.FC = () => {
         <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/store/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/about" element={<AboutPage />} />
         <Route path="/brand" element={<BrandPage />} />
         <Route path="/newsletter" element={<NewsletterPage />} />
         <Route path="/community" element={<CommunityPage />} />

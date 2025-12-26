@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        'slunch-black': '#0D0D0D',
+        'slunch-black': '#000000',
         'slunch-gray': '#6B6B6B',
         'slunch-gray-light': '#9A9A9A',
         'slunch-white': '#FAF9F6',
@@ -32,10 +32,11 @@ export default {
         'lg': '8px',
       },
       boxShadow: {
-        'hover-shadow': '8px 8px 0 #0D0D0D',
+        'hover-shadow': '8px 8px 0 #000000',
       },
     },
   },
   plugins: [],
 }
+
 

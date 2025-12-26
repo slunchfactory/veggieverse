@@ -565,7 +565,7 @@ const RecipeDetailPage: React.FC = () => {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ gap: '13px' }}>
               {recipe.relatedRecipes.map((relatedRecipe) => (
                 <Link 
                   key={relatedRecipe.id} 

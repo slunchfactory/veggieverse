@@ -308,14 +308,55 @@ const ARTICLES: Article[] = [
   },
 ];
 
+// 카테고리 목록
+const CATEGORIES = [
+  { id: 'all', label: 'ALL' },
+  { id: 'health', label: 'HEALTH' },
+  { id: 'culture', label: 'CULTURE' },
+  { id: 'food', label: 'FOOD' },
+  { id: 'life', label: 'LIFE' },
+  { id: 'slunch', label: "SLUNCH'S PICK" },
+];
+
 export const NewsletterPage: React.FC = () => {
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  
+  // 카테고리 필터링
+  const filteredArticles = selectedCategory === 'all' 
+    ? ARTICLES 
+    : ARTICLES.filter(article => {
+        if (selectedCategory === 'slunch') {
+          return article.category === "SLUNCH'S PICK";
+        }
+        return article.category.toLowerCase() === selectedCategory;
+      });
+  
+  // 페이지네이션 설정
+  const ITEMS_PER_PAGE = 16;
+  const totalPages = Math.ceil(filteredArticles.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentArticles = filteredArticles.slice(startIndex, endIndex);
+  
+  // 카테고리 변경 시 페이지 리셋
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setCurrentPage(1);
+  };
   
   // 이전/다음 아티클 찾기
   const currentArticleId = selectedArticle?.id || 0;
   const currentIndex = ARTICLES.findIndex(a => a.id === currentArticleId);
   const prevArticle = currentIndex > 0 ? ARTICLES[currentIndex - 1] : null;
   const nextArticle = currentIndex >= 0 && currentIndex < ARTICLES.length - 1 ? ARTICLES[currentIndex + 1] : null;
+  
+  // 페이지네이션 핸들러
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
@@ -524,76 +565,106 @@ export const NewsletterPage: React.FC = () => {
       )}
 
       {/* 메인 페이지 */}
-      <div className="page-container py-12">
-        <h1 className="text-2xl font-bold text-stone-800 mb-2">뉴스레터</h1>
-        <p className="text-stone-600 mb-8">
-          슬런치 팩토리 에디터가 발행하는 아티클
-        </p>
+      <div className="newsletter-page">
+        {/* 헤더 */}
+        <div className="newsletter-header">
+          <h1 className="newsletter-title">뉴스레터</h1>
+          <p className="newsletter-desc">
+            슬런치 팩토리 에디터가 발행하는 아티클
+          </p>
+        </div>
 
-        {/* 아티클 그리드 - 모바일 2열 */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {ARTICLES.map((article) => (
+        {/* 카테고리 필터 */}
+        <div className="newsletter-categories">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              className={`newsletter-category-btn ${selectedCategory === cat.id ? 'active' : ''}`}
+              onClick={() => handleCategoryChange(cat.id)}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* 아티클 그리드 - 4열 */}
+        {currentArticles.length === 0 ? (
+          <div className="newsletter-empty">
+            <p>해당 카테고리에 아티클이 없습니다.</p>
+          </div>
+        ) : (
+        <div className="newsletter-grid">
+          {currentArticles.map((article) => (
             <div
               key={article.id}
               onClick={() => setSelectedArticle(article)}
-              className="cursor-pointer group"
+              className="newsletter-card"
             >
-              <div className="border border-stone-200 bg-white overflow-hidden hover:shadow-lg transition-shadow">
-                {/* 썸네일 */}
-                <div
-                  className="w-full overflow-hidden"
-                  style={{ aspectRatio: '3/4', backgroundColor: '#e5ded8', borderRadius: '4px' }}
-                >
-                  <img
-                    src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
-                    alt={article.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                    decoding="async"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                    }}
-                  />
-                </div>
+              {/* 썸네일 */}
+              <div className="newsletter-card-img-wrapper">
+                <img
+                  src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
+                  alt={article.title}
+                  className="newsletter-card-img"
+                  loading="lazy"
+                  decoding="async"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
 
-                {/* 정보 */}
-                <div className="p-4">
-                  <p className="text-[10px] text-stone-500 tracking-wider mb-2">
-                    {article.category}
-                  </p>
-                  <h3 className="text-lg font-bold text-stone-800 mb-1 group-hover:underline">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-stone-600 mb-3 line-clamp-2">
-                    {article.subtitle}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-stone-400">
-                    <span>{article.author}</span>
-                    <span>{article.date}</span>
-                  </div>
+              {/* 정보 */}
+              <div className="newsletter-card-content">
+                <p className="newsletter-card-category">
+                  {article.category}
+                </p>
+                <h3 className="newsletter-card-title">
+                  {article.title}
+                </h3>
+                <p className="newsletter-card-desc">
+                  {article.subtitle}
+                </p>
+                <div className="newsletter-card-meta">
+                  <span>{article.author}</span>
+                  <span>{article.date}</span>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        )}
 
-        {/* 뉴스레터 구독 섹션 */}
-        <div className="bg-stone-50 border border-stone-200 rounded-none p-8">
-          <div className="text-center max-w-md mx-auto">
-            <h3 className="text-lg sm:text-xl font-semibold mb-2 text-stone-900">뉴스레터 구독</h3>
-            <p className="text-sm text-stone-600 mb-4">슬런치의 최신 소식과 레시피를 받아보세요</p>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <input
-                type="email"
-                placeholder="이메일 주소를 입력하세요"
-                className="flex-1 px-4 py-2.5 bg-white border border-stone-300 text-stone-900 placeholder-stone-500 text-sm focus:outline-none focus:border-stone-500"
-              />
-              <button className="px-6 py-2.5 bg-stone-900 text-white text-sm font-medium hover:bg-stone-800 transition-colors whitespace-nowrap">
-                구독하기
-              </button>
+        {/* 페이지네이션 */}
+        {totalPages > 1 && (
+          <div className="pagination">
+            <button 
+              className={`pagination-arrow ${currentPage === 1 ? 'disabled' : ''}`}
+              onClick={() => currentPage > 1 && handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              ←
+            </button>
+            <div className="pagination-numbers">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <button
+                  key={page}
+                  className={`pagination-number ${currentPage === page ? 'active' : ''}`}
+                  onClick={() => handlePageChange(page)}
+                >
+                  {page}
+                </button>
+              ))}
             </div>
+            <button 
+              className={`pagination-arrow ${currentPage === totalPages ? 'disabled' : ''}`}
+              onClick={() => currentPage < totalPages && handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              →
+            </button>
           </div>
-        </div>
+        )}
       </div>
 
     </div>

@@ -34,7 +34,7 @@
   
   /* Color Palette - Slunch Factory */
   /* Core Colors */
-  --black: #0D0D0D;
+  --black: #000000;
   --gray: #6B6B6B;
   --gray-light: #9A9A9A;
   --gray-lighter: #CCCCCC;
@@ -68,7 +68,7 @@
   /* Legacy aliases for compatibility */
   --color-bg-primary: #FAF9F6;
   --color-bg-secondary: #FFFFFF;
-  --color-text-primary: #0D0D0D;
+  --color-text-primary: #000000;
   --color-text-secondary: #6B6B6B;
   --color-text-muted: #9A9A9A;
   --color-text-inverse: #FAF9F6;
@@ -728,7 +728,7 @@ a:focus-visible {
 }
 
 .hover-shadow:hover {
-  box-shadow: 8px 8px 0 #0D0D0D;
+  box-shadow: 8px 8px 0 #000000;
   transform: translateY(-4px);
 }
 
@@ -742,7 +742,7 @@ a:focus-visible {
 /* Hover Lime Effect */
 .hover-lime:hover {
   background: #BFFF00 !important;
-  color: #0D0D0D !important;
+  color: #000000 !important;
 }
 
 /* Hover Text Lime Effect */
@@ -752,8 +752,28 @@ a:focus-visible {
 
 /* Nav Hover Effect */
 .nav-hover:hover {
-  background: #0D0D0D !important;
+  background: #000000 !important;
   color: #BFFF00 !important;
+}
+
+/* 상단 메뉴바 호버 효과 */
+.nav-item-text {
+  transition: text-decoration 0.15s ease;
+  display: inline-block;
+}
+
+.nav-item-text:hover,
+.nav-item-btn:hover .nav-item-text {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.nav-item-text.active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  /* font-weight 제거 - 레이아웃 시프트 방지 */
 }
 
 /* Scrollbar Styles (md guide compliant) */
@@ -770,22 +790,82 @@ a:focus-visible {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0D0D0D;
+  background: #000000;
 }
 
-/* ============================================
-   MENU CARD STYLES (Slunch Factory Guide)
-   ============================================ */
+/* ================================================
+   전역 카드 스타일 시스템
+   ================================================ */
 
-.menu-card {
-  background: var(--white-pure);
-  border: 1px solid var(--black);
+/* 1. 카드 컨테이너 - 공통 */
+.card,
+.product-card,
+.recipe-card,
+.menu-card,
+.newsletter-card {
+  border: none;
+  background: transparent;
   cursor: pointer;
   overflow: hidden;
 }
 
-.menu-card:hover .menu-card-img {
+/* 2. 이미지 영역 - 기본 4:5 */
+.card-img-wrapper,
+.product-card-img-wrapper,
+.recipe-card-img-wrapper,
+.menu-card-img-wrapper {
+  aspect-ratio: 4 / 5;
+  background: #F5F5F5;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 2-1. 이미지 영역 - 뉴스레터만 1:1 */
+.newsletter-card-img-wrapper {
+  aspect-ratio: 1 / 1;
+  background: #F5F5F5;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 3. 이미지 - 공통 */
+.card-img,
+.product-card-img,
+.recipe-card-img,
+.menu-card-img,
+.newsletter-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* 4. 이미지-텍스트 간격 - 공통 16px */
+.card-content,
+.product-card-content,
+.recipe-card-content,
+.menu-card-content,
+.newsletter-card-content {
+  padding: 16px 0 0 0;
+}
+
+/* 5. 호버 - 공통 */
+.card:hover img,
+.product-card:hover img,
+.recipe-card:hover img,
+.menu-card:hover img,
+.newsletter-card:hover img {
   transform: scale(1.05);
+}
+
+.menu-card:hover .menu-card-title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.menu-card:hover .menu-card-desc {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .menu-card:hover .menu-card-title {
@@ -802,7 +882,9 @@ a:focus-visible {
   cursor: default;
 }
 
-.menu-card.soldout .menu-card-img-wrapper {
+.menu-card.soldout .menu-card-img-wrapper,
+.product-card.soldout .product-card-img-wrapper,
+.recipe-card.soldout .recipe-card-img-wrapper {
   position: relative;
 }
 
@@ -822,17 +904,116 @@ a:focus-visible {
   letter-spacing: 0.1em;
 }
 
-.menu-card.soldout .menu-card-content {
+.menu-card.soldout .menu-card-content,
+.product-card.soldout .product-card-content,
+.recipe-card.soldout .recipe-card-content {
   opacity: 0.5;
 }
 
-.menu-card.soldout:hover .menu-card-img {
+.menu-card.soldout:hover .menu-card-img,
+.product-card.soldout:hover .product-card-img,
+.recipe-card.soldout:hover .recipe-card-img {
   transform: none;
 }
 
 .menu-card.soldout:hover .menu-card-title,
-.menu-card.soldout:hover .menu-card-desc {
+.menu-card.soldout:hover .menu-card-desc,
+.product-card.soldout:hover .product-card-title,
+.product-card.soldout:hover .product-card-desc,
+.recipe-card.soldout:hover .recipe-card-title,
+.recipe-card.soldout:hover .recipe-card-desc {
   text-decoration: none;
+}
+
+/* ================================================
+   Recipe Page - 레이아웃 및 정렬
+   ================================================ */
+
+/* 레시피 페이지 전체 */
+.recipe-page {
+  width: 100%;
+  max-width: none; /* 전체 너비 허용 */
+  margin: 0;
+  background: #fff;
+  overflow-x: clip; /* 가로 스크롤 방지 */
+}
+
+/* 레시피 히어로 섹션 */
+.recipe-hero {
+  text-align: center;
+  padding: 60px 64px;
+  position: relative;
+  overflow: visible;
+}
+
+/* 레시피 히어로 이미지 영역 */
+.recipe-hero-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* 레시피 캐러셀 - 버튼 잘림 방지 */
+.recipe-hero-carousel {
+  position: relative;
+  overflow: visible;
+  padding: 0 60px;
+}
+
+/* 레시피 섹션 */
+.recipe-section {
+  position: relative;
+  padding: 48px 64px;
+}
+
+/* 배경 확장 - 가상요소로 (다른 요소에 영향 없음) */
+.recipe-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 100%;
+  z-index: -1;
+}
+
+.recipe-section:nth-child(odd)::before {
+  background: #F5F5F0;
+}
+
+.recipe-section:nth-child(even)::before {
+  background: #FFFFFF;
+}
+
+/* 캐러셀 스크롤 영역 */
+.recipe-carousel-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 16px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 스크롤바 숨기기 */
+.recipe-carousel-scroll::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.recipe-carousel-scroll,
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 북마크 버튼 - 호버 시 표시 */
+.recipe-card:hover .bookmark-overlay {
+  opacity: 1 !important;
 }
 
 /* ================================================
@@ -1057,5 +1238,716 @@ a:focus-visible {
 
 .sl-share-btn:hover {
   border-color: var(--black);
+}
+
+/* ================================================
+   Newsletter Page - 별도 스타일
+   ================================================ */
+
+/* 1. 페이지 배경 */
+.newsletter-page {
+  background: #F5F5F0;
+  min-height: 100vh;
+  padding: 48px 64px 80px 64px;
+}
+
+/* 2. 페이지 헤더 */
+.newsletter-header {
+  margin-bottom: 32px;
+}
+
+/* 3. 카테고리 필터 */
+.newsletter-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.newsletter-category-btn {
+  padding: 10px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #6B6B6B;
+  background: transparent;
+  border: 1px solid #D4D4D4;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.newsletter-category-btn:hover {
+  border-color: #000000;
+  color: #000000;
+}
+
+.newsletter-category-btn.active {
+  background: #000000;
+  border-color: #000000;
+  color: #FFFFFF;
+}
+
+/* 빈 상태 */
+.newsletter-empty {
+  text-align: center;
+  padding: 80px 0;
+  color: #6B6B6B;
+  font-size: 14px;
+}
+
+.newsletter-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.newsletter-desc {
+  font-size: 14px;
+  color: #6B6B6B;
+}
+
+/* 3. 그리드 - 4열 */
+.newsletter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+}
+
+/* 4. 카드 스타일 */
+.newsletter-card {
+  background: transparent;
+  cursor: pointer;
+  transition: none;  /* 애니메이션 없이 즉시 */
+}
+
+/* 5. 호버 - 컬러 배경 + 패딩 */
+.newsletter-card:hover {
+  padding: 16px;
+  margin: -16px;
+  box-shadow: none;
+}
+
+/* 8가지 단색 컬러 */
+/* 그린 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+1):hover { 
+  background: #00B140; 
+}
+.newsletter-card:nth-child(8n+1):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+1):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+1):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 옐로우 - 텍스트 그대로 */
+.newsletter-card:nth-child(8n+2):hover { 
+  background: #FFEB00; 
+}
+
+/* 핑크 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+3):hover { 
+  background: #FF6AC1; 
+}
+.newsletter-card:nth-child(8n+3):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+3):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+3):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 퍼플 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+4):hover { 
+  background: #A78BFA; 
+}
+.newsletter-card:nth-child(8n+4):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+4):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+4):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 오렌지 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+5):hover { 
+  background: #FF5C00; 
+}
+.newsletter-card:nth-child(8n+5):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+5):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+5):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 시안 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+6):hover { 
+  background: #00D4FF; 
+}
+.newsletter-card:nth-child(8n+6):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+6):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+6):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 라임 - 텍스트 그대로 */
+.newsletter-card:nth-child(8n+7):hover { 
+  background: #BFFF00; 
+}
+
+/* 레드 - 텍스트 흰색 */
+.newsletter-card:nth-child(8n+8):hover { 
+  background: #FF4444; 
+}
+.newsletter-card:nth-child(8n+8):hover .newsletter-card-category,
+.newsletter-card:nth-child(8n+8):hover .newsletter-card-desc,
+.newsletter-card:nth-child(8n+8):hover .newsletter-card-meta {
+  color: #FFFFFF;
+}
+
+/* 7. 이미지 */
+.newsletter-card-img-wrapper {
+  aspect-ratio: 1 / 1;
+  background: #FFFFFF;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.newsletter-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 8. 텍스트 영역 */
+.newsletter-card-category {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #6B6B6B;
+  margin-bottom: 8px;
+}
+
+.newsletter-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  line-height: 1.4;
+  color: #000000;
+}
+
+.newsletter-card:hover .newsletter-card-title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.newsletter-card-desc {
+  font-size: 13px;
+  color: #6B6B6B;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.newsletter-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #9A9A9A;
+}
+
+/* ================================================
+   Pagination
+   ================================================ */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 64px;
+}
+
+.pagination-arrow {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #000000;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+}
+
+.pagination-arrow:hover {
+  color: #3D4A3A;
+}
+
+.pagination-arrow.disabled {
+  color: #CCCCCC;
+  cursor: default;
+}
+
+.pagination-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.pagination-number {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #3D4A3A;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.pagination-number.active {
+  font-weight: 700;
+  color: #000000;
+}
+
+.pagination-number:hover {
+  text-decoration: underline;
+}
+
+/* 반응형 */
+@media (max-width: 1280px) {
+  .newsletter-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .newsletter-page {
+    padding: 32px 24px 60px 24px;
+  }
+
+  .newsletter-categories {
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .newsletter-category-btn {
+    padding: 8px 14px;
+    font-size: 11px;
+  }
+
+  .newsletter-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 13px;
+  }
+
+  .newsletter-title {
+    font-size: 24px;
+  }
+}
+
+/* ================================================
+   About Page
+   ================================================ */
+
+/* ================================================
+   About Page - 스플릿 레이아웃 1:1
+   ================================================ */
+
+/* ========================================
+   Split Layout with Scroll Chaining
+   ======================================== */
+
+.split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* About: 1:1 */
+  min-height: calc(100vh - 100px);
+}
+
+.split-layout.store {
+  grid-template-columns: 280px 1fr;  /* Store: 280px + 나머지 */
+}
+
+/* 좌측 - sticky */
+.split-nav {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+  align-self: start;
+  padding: 48px;
+}
+
+/* 우측 - 일반 (전체 페이지 스크롤에 포함) */
+.split-content {
+  padding: 48px;
+}
+
+/* ========================================
+   About 페이지 - 좌우 스플릿
+   ======================================== */
+
+/* ========================================
+   About 페이지 - 블럭 조립 방식
+   ======================================== */
+
+.about-page {
+  display: block;
+}
+
+/* 좌측 메뉴 - 고정 */
+.about-nav {
+  position: fixed;
+  top: 100px;
+  left: 0;
+  width: 50%;
+  height: calc(100vh - 100px);
+  padding: 64px;
+  background: #fff;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-nav-item {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 0;
+  cursor: pointer;
+  color: #000000;
+}
+
+.about-nav-item:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.about-nav-item.active {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* 우측 콘텐츠 - 좌측만큼 밀림 */
+.about-content {
+  margin-left: 50%;
+  padding: 64px;
+  border-left: 1px solid #E5E5E5;
+  min-height: calc(100vh - 100px);
+}
+
+.about-section-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 32px;
+  letter-spacing: -0.02em;
+}
+
+.about-section-subtitle {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--gray);
+  margin-bottom: 8px;
+}
+
+.about-paragraph {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--black);
+  margin-bottom: 24px;
+}
+
+.about-image {
+  width: 100%;
+  margin: 40px 0;
+}
+
+/* 지점 정보 카드 */
+.branch-card {
+  border: 1px solid var(--black);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.branch-name {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.branch-info {
+  font-size: 14px;
+  color: var(--gray);
+  line-height: 1.8;
+}
+
+.branch-info strong {
+  color: var(--black);
+  font-weight: 600;
+}
+
+/* 링크 버튼 */
+.about-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 24px;
+  background: var(--black);
+  color: var(--white-pure);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: 16px;
+  transition: all 0.15s ease;
+}
+
+.about-link-btn:hover {
+  background: var(--lime);
+  color: var(--black);
+}
+
+/* 특허/기술 뱃지 */
+.tech-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: var(--olive);
+  color: var(--white-pure);
+  font-size: 12px;
+  font-weight: 700;
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+/* 하이라이트 박스 */
+.highlight-box {
+  background: #EEF2EB;
+  padding: 32px;
+  margin: 32px 0;
+}
+
+.highlight-box-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.highlight-box-text {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--gray);
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  /* About 페이지 - 모바일 */
+  .about-nav {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: row;
+    gap: 16px;
+    padding: 24px !important;
+    border-bottom: 1px solid #E5E5E5;
+    flex-wrap: wrap;
+  }
+  
+  .about-content {
+    margin-left: 0 !important;
+    padding: 24px !important;
+    border-left: none !important;
+  }
+
+  /* Store 페이지 - 모바일 */
+  .store-filter,
+  .filter-sidebar {
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    padding: 24px !important;
+    border-bottom: 1px solid #E5E5E5;
+  }
+  
+  .store-content {
+    margin-left: 0 !important;
+    padding: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-nav {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .about-section-title {
+    font-size: 24px;
+  }
+
+  .branch-card {
+    padding: 24px;
+  }
+}
+
+/* ================================================
+   Store Page - 필터 스타일
+   ================================================ */
+
+/* ========================================
+   Store 페이지 - 블럭 조립 방식
+   ======================================== */
+
+.store-page {
+  display: block !important;
+}
+
+/* 좌측 필터 - 고정 */
+.store-filter,
+.filter-sidebar {
+  position: fixed !important;
+  top: 100px !important;
+  left: 0 !important;
+  width: 280px !important;
+  height: calc(100vh - 100px) !important;
+  padding: 24px 32px !important;
+  overflow-y: hidden !important;
+  background: #fff !important;
+  z-index: 50 !important;
+}
+
+/* 우측 콘텐츠 - 좌측만큼 밀림 */
+.store-content {
+  margin-left: 280px !important;
+  padding: 32px !important;
+  min-height: calc(100vh - 100px) !important;
+}
+
+/* 필터 그룹 타이틀 */
+.filter-group-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--gray);
+  margin-bottom: 8px;
+  width: 100%;
+  display: block;
+}
+
+/* 필터 그룹 간격 */
+.filter-group {
+  margin-bottom: 20px;
+}
+
+/* 라디오 버튼 스타일 */
+.filter-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 13px;
+  transition: opacity 0.1s ease;
+}
+
+.filter-radio:hover {
+  opacity: 0.7;
+}
+
+.filter-radio-circle {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #CCCCCC;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+  flex-shrink: 0;
+}
+
+.filter-radio:hover .filter-radio-circle {
+  border: 2px solid #000000;
+}
+
+.filter-radio.selected .filter-radio-circle {
+  border: 2px solid #000000;
+  background: #BFFF00;
+}
+
+.filter-radio.selected .filter-radio-circle::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #000000;
+  border-radius: 50%;
+}
+
+/* 체크박스 스타일 */
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 13px;
+  transition: opacity 0.1s ease;
+}
+
+.filter-checkbox:hover {
+  opacity: 0.7;
+}
+
+.filter-checkbox-box {
+  width: 14px;
+  height: 14px;
+  border: 1px solid #CCCCCC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.1s ease;
+  flex-shrink: 0;
+}
+
+.filter-checkbox:hover .filter-checkbox-box {
+  border: 2px solid #000000;
+}
+
+.filter-checkbox.selected .filter-checkbox-box {
+  border: 2px solid #000000;
+  background: #BFFF00;
+}
+
+.filter-checkbox.selected .filter-checkbox-box::after {
+  content: '✓';
+  font-size: 10px;
+  font-weight: 700;
+  color: #000000;
+}
+
+/* ================================================
+   Footer - 기본 스타일
+   ================================================ */
+.site-footer {
+  position: relative;
+  z-index: 60; /* 좌측 fixed 영역(z-index: 50)보다 높게 */
+  background: var(--black);
+}
+
+/* ================================================
+   Footer - 반응형
+   ================================================ */
+@media (max-width: 768px) {
+  .site-footer {
+    padding: 32px 20px !important;
+  }
+  
+  .footer-content {
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  
+  .footer-section {
+    width: 100% !important;
+  }
 }
 

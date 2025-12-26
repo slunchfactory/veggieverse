@@ -421,7 +421,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       fontFamily: 'Jost, sans-serif',
                       fontSize: '13px',
                       backgroundColor: `${item.labelColor}dd`,
-                      color: isLightColor(item.labelColor) ? '#1a1a1a' : '#ffffff',
+                      color: isLightColor(item.labelColor) ? '#000000' : '#ffffff',
                       padding: '8px 20px',
                       borderRadius: '9999px',
                       transform: 'rotate(0deg)',

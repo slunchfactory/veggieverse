@@ -86,7 +86,7 @@ const RecipeHallOfFamePage: React.FC = () => {
 
       {/* 레시피 그리드 */}
       <div className="page-container py-12">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
           {hallOfFameRecipes.map((recipe) => (
             <div
               key={recipe.id}

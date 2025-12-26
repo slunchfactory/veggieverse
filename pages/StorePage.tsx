@@ -231,9 +231,10 @@ export const StorePage: React.FC = () => {
   const [sortType, setSortType] = useState<SortType>('default');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
-  const [spectrum, setSpectrum] = useState<string>('전체');
+  const [spectrum, setSpectrum] = useState<string>('none');
+  const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('ALL');
+  const [activeTab, setActiveTab] = useState<string>('전체');
   const navigate = useNavigate();
   
   // 하트(좋아요) 상태 관리
@@ -309,9 +310,15 @@ export const StorePage: React.FC = () => {
       statusBadge: p.soldOut ? 'SOLD_OUT' as const : (p.statusBadge || statusBadges[p.id % statusBadges.length]),
     })).filter((p) => {
       const matchCuisine = selectedCuisines.length === 0 || selectedCuisines.includes(p.cuisine);
-      const matchSpectrum = spectrum === '전체' || p.spectrum === spectrum;
+      // 'none'(일반)은 전체 보기로 처리
+      const matchSpectrum = spectrum === 'none' || spectrum === '전체' || p.spectrum === spectrum;
       const matchCategory = selectedCategories.length === 0 || selectedCategories.includes(p.category);
-      return matchCuisine && matchSpectrum && matchCategory;
+      // 추가 제한 필터 (글루텐프리, 할랄, 코셔)
+      const matchRestrictions = selectedRestrictions.length === 0 || selectedRestrictions.every(r => {
+        // 제품에 해당 속성이 있는지 확인 (실제 데이터 구조에 맞게 조정 필요)
+        return true; // 현재는 모든 제품 통과 (데이터에 restriction 필드 추가 시 수정)
+      });
+      return matchCuisine && matchSpectrum && matchCategory && matchRestrictions;
     });
 
     switch (sortType) {
@@ -349,10 +356,26 @@ export const StorePage: React.FC = () => {
     );
   };
 
-  const spectrumOptions = ['전체', '비건', '락토', '플렉시'];
+  // 식단 옵션 (라디오 - 단일 선택)
+  const dietOptions = [
+    { value: 'none', label: '일반' },
+    { value: 'vegan', label: '비건' },
+    { value: 'lacto', label: '락토비건' },
+    { value: 'ovo', label: '오보' },
+    { value: 'lacto-ovo', label: '락토오보' },
+    { value: 'flexi', label: '플렉시' },
+    { value: 'pesco', label: '페스코' },
+    { value: 'pollo', label: '폴로' },
+  ];
+
+  // 추가 제한 옵션 (체크박스 - 다중 선택)
+  const restrictionOptions = [
+    { value: 'gluten-free', label: '글루텐프리' },
+    { value: 'halal', label: '할랄' },
+    { value: 'kosher', label: '코셔' },
+  ];
+  // 음식 종류 옵션 ('전체' 삭제)
   const cuisineOptions = ['한식', '양식', '디저트'];
-  // 기획전만 별도 필터로 남김 (나머지는 상단 카테고리 탭에 포함됨)
-  const promotionOptions = ['기획전'];
 
   // 알고리즘 추천 상품 (BEST 상품 중 상위 4개)
   const algorithmRecommended = useMemo(() => {
@@ -365,309 +388,72 @@ export const StorePage: React.FC = () => {
   // 우측 섹션 영상 ID 목록
   const cardVideoIds = ['x7pnY0U5yYY', 'LeZQWQ_cXqU', '8cVFJrY89SA', 'IzNnBZMjbXU'];
 
-  // 카테고리 탭 목록
-  const categoryTabs = ['ALL', 'NEW', '슬런치 위클리', '소스와 오일', '밀키트', '베이커리'];
+  // 제품 형태 탭 목록
+  const productTypeTabs = ['전체', '밀키트', '베이커리', '소스/오일', '세트', '구독'];
   
-  // 카테고리별 제품 개수 계산
-  const getCategoryCount = (category: string): number => {
-    if (category === 'ALL') {
+  // 제품 형태별 제품 개수 계산
+  const getCategoryCount = (productType: string): number => {
+    if (productType === '전체') {
       return PRODUCTS.length;
     }
-    if (category === 'NEW') {
-      return PRODUCTS.filter(p => p.category === '신메뉴').length;
-    }
-    // 카테고리 매핑 (탭 이름 -> 실제 제품 category)
+    // 제품 형태 매핑 (탭 이름 -> 실제 제품 category)
     const categoryMap: Record<string, string> = {
-      '슬런치 위클리': '슬런치 위클리',
-      '소스와 오일': '소스와 오일',
       '밀키트': '밀키트',
       '베이커리': '베이커리',
+      '스낵': '스낵',
+      '소스/오일': '소스와 오일',
+      '세트': '세트',
+      '구독': '구독',
     };
-    const mappedCategory = categoryMap[category] || category;
+    const mappedCategory = categoryMap[productType] || productType;
     // 실제 제품의 category 값으로 필터링
     return PRODUCTS.filter(p => p.category === mappedCategory).length;
   };
   
   const handleTabClick = (tab: string) => {
-    if (tab === 'ALL') {
-      setActiveTab('ALL');
+    if (tab === '전체') {
+      setActiveTab('전체');
       setSelectedCategories([]);
       window.history.replaceState(null, '', '/veggieverse/store');
     } else {
       setActiveTab(tab);
       const categoryMap: Record<string, string> = {
-        'NEW': '신메뉴',
-        '슬런치 위클리': '슬런치 위클리',
-        '소스와 오일': '소스와 오일',
         '밀키트': '밀키트',
         '베이커리': '베이커리',
+        '스낵': '스낵',
+        '소스/오일': '소스와 오일',
+        '세트': '세트',
+        '구독': '구독',
       };
       setSelectedCategories([categoryMap[tab] || tab]);
-      window.history.replaceState(null, '', `/veggieverse/store?category=${encodeURIComponent(tab)}`);
+      window.history.replaceState(null, '', `/veggieverse/store?productType=${encodeURIComponent(tab)}`);
     }
   };
 
   return (
-    <div className="min-h-screen bg-slunch-white">
-      {/* Hero Section - Split Grid Layout (60-70% Main Video, 30-40% 2x2 Grid) */}
-      {activeTab === 'ALL' && (
-        <div className="w-full border-b-2 border-slunch-black">
-          {/* Desktop: Flex Row Layout */}
-          <div className="hidden lg:flex lg:flex-row">
-            {/* Left Column - Main Video (50%) */}
-            <div className="w-1/2 relative overflow-hidden border-r-2 border-slunch-black">
-              <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  title="슬런치 비건 레시피"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ 
-                    pointerEvents: 'none',
-                    objectFit: 'cover',
-                    width: '100%',
-                    height: '100%'
-                  }}
-                />
-              </div>
-            </div>
-            
-            {/* Right Column - 추천 콘텐츠 영역 (50%) */}
-            <div className="w-1/2 bg-slunch-white flex-shrink-0">
-              {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
-              <div className="hidden lg:flex p-5 pb-8 gap-4 h-full overflow-y-auto">
-                {/* 왼쪽 열 */}
-                <div className="flex-1 flex flex-col gap-4">
-                  {algorithmRecommended.slice(0, 2).map((product, idx) => (
-                    <div key={product.id} className="cursor-pointer group flex flex-col">
-                      <div 
-                        className="relative w-full overflow-hidden bg-slunch-black"
-                        style={{ aspectRatio: '3/4' }}
-                      >
-                        <iframe
-                          className="absolute w-full h-full"
-                          src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-                          title={product.name}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
-                        />
-                        {/* 추천 아이콘 (좌측 상단) */}
-                        <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 bg-slunch-lime flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-slunch-black" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pt-3 bg-slunch-black">
-                        <h4 className="font-mono font-bold text-slunch-white-pure leading-tight group-hover:underline text-base">
-                          {product.name}
-                        </h4>
-                        <p className="font-sans text-slunch-gray-light mt-2 line-clamp-2 text-xs">
-                          {product.spectrum} 식단에 어울리는 메뉴
-                        </p>
-                        <div className="flex items-center mt-3">
-                          <button 
-                            onClick={(e) => toggleLike(product.id, e)}
-                            className="flex items-center gap-1.5 hover:scale-105 transition-transform"
-                          >
-                            <Heart 
-                              className={`w-4 h-4 transition-colors ${
-                                likedItems.has(product.id) 
-                                  ? 'fill-slunch-lime text-slunch-lime' 
-                                  : 'text-slunch-gray hover:text-slunch-lime'
-                              }`} 
-                            />
-                            <span className={`font-sans text-xs ${likedItems.has(product.id) ? 'text-slunch-white-pure font-medium' : 'text-slunch-gray'}`}>
-                              {formatLikeCount(likeCounts[product.id] || 0)}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* 오른쪽 열 (아래로 오프셋) */}
-                <div className="flex-1 flex flex-col gap-4 pt-24">
-                  {algorithmRecommended.slice(2, 4).map((product, idx) => (
-                    <div key={product.id} className="cursor-pointer group flex flex-col">
-                      <div 
-                        className="relative w-full overflow-hidden bg-slunch-black"
-                        style={{ aspectRatio: '3/4' }}
-                      >
-                        <iframe
-                          className="absolute w-full h-full"
-                          src={`https://www.youtube.com/embed/${cardVideoIds[idx + 2]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx + 2]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-                          title={product.name}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
-                        />
-                        {/* 추천 아이콘 (좌측 상단) */}
-                        <div className="absolute top-3 left-3 z-10">
-                          <div className="w-8 h-8 bg-slunch-lime flex items-center justify-center">
-                            <Sparkles className="w-3.5 h-3.5 text-slunch-black" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pt-3 bg-slunch-black">
-                        <h4 className="font-mono font-bold text-slunch-white-pure leading-tight group-hover:underline text-base">
-                          {product.name}
-                        </h4>
-                        <p className="font-sans text-slunch-gray-light mt-2 line-clamp-2 text-xs">
-                          {product.spectrum} 식단에 어울리는 메뉴
-                        </p>
-                        <div className="flex items-center mt-3">
-                          <button 
-                            onClick={(e) => toggleLike(product.id, e)}
-                            className="flex items-center gap-1.5 hover:scale-105 transition-transform"
-                          >
-                            <Heart 
-                              className={`w-4 h-4 transition-colors ${
-                                likedItems.has(product.id) 
-                                  ? 'fill-slunch-lime text-slunch-lime' 
-                                  : 'text-slunch-gray hover:text-slunch-lime'
-                              }`} 
-                            />
-                            <span className={`font-sans text-xs ${likedItems.has(product.id) ? 'text-slunch-white-pure font-medium' : 'text-slunch-gray'}`}>
-                              {formatLikeCount(likeCounts[product.id] || 0)}
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Mobile: Stack Vertically */}
-          <div className="flex flex-col lg:hidden">
-            {/* Main Video on Top */}
-            <div className="relative w-full overflow-hidden border-b-2 border-slunch-black">
-              <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-                  title="슬런치 비건 레시피"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  style={{ 
-                    pointerEvents: 'none',
-                    objectFit: 'cover',
-                    width: '100%',
-                    height: '100%'
-                  }}
-                />
-              </div>
-            </div>
-            
-            {/* 추천 콘텐츠 영역 Below (Mobile) */}
-            <div className="lg:hidden p-4 sm:p-5 bg-slunch-white">
-              <div className="grid grid-cols-2 gap-3">
-                {algorithmRecommended.slice(0, 4).map((product, idx) => (
-                  <div key={product.id} className="cursor-pointer group flex flex-row gap-3">
-                    {/* 카드 영상 (왼쪽) */}
-                    <div 
-                      className="relative w-[45%] flex-shrink-0 overflow-hidden bg-slunch-black"
-                      style={{ aspectRatio: '3/4' }}
-                    >
-                      <iframe
-                        className="absolute w-full h-full"
-                        src={`https://www.youtube.com/embed/${cardVideoIds[idx]}?autoplay=1&mute=1&loop=1&playlist=${cardVideoIds[idx]}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
-                        title={product.name}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center', top: 0, left: 0 }}
-                      />
-                      {/* 추천 아이콘 (좌측 상단) */}
-                      <div className="absolute top-2 left-2 z-10">
-                        <div className="w-6 h-6 bg-slunch-lime flex items-center justify-center">
-                          <Sparkles className="w-3 h-3 text-slunch-black" />
-                        </div>
-                      </div>
-                    </div>
-                    {/* 카드 정보 (오른쪽) */}
-                    <div className="flex-1 flex flex-col justify-between py-1">
-                      <div>
-                        <h4 className="font-mono font-bold text-slunch-black leading-tight line-clamp-2 group-hover:underline text-xs">
-                          {product.name}
-                        </h4>
-                        <p className="font-sans text-slunch-gray mt-1 line-clamp-2 text-[10px]">
-                          {product.spectrum} 식단에 어울리는 메뉴
-                        </p>
-                      </div>
-                      <div className="flex items-center justify-between mt-2">
-                        <button 
-                          onClick={(e) => toggleLike(product.id, e)}
-                          className="flex items-center gap-1 hover:scale-105 transition-transform"
-                        >
-                          <Heart 
-                            className={`w-3.5 h-3.5 transition-colors ${
-                              likedItems.has(product.id) 
-                                ? 'fill-slunch-lime text-slunch-lime' 
-                                : 'text-slunch-gray hover:text-slunch-lime'
-                            }`} 
-                          />
-                          <span className={`font-sans text-[10px] ${likedItems.has(product.id) ? 'text-slunch-black font-medium' : 'text-slunch-gray'}`}>
-                            {formatLikeCount(likeCounts[product.id] || 0)}
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-      
-
-      <div className="page-container pt-8 pb-6">
-        <div className="flex" style={{ gap: 'var(--spacing-xl)', alignItems: 'flex-start' }}>
-          {/* 좌측 필터 - Sticky Sidebar */}
-          <aside 
-            className="flex-shrink-0 hidden md:block"
-            style={{ 
-              width: 'var(--sidebar-width)',
-              position: 'sticky',
-              top: 'calc(var(--header-height) + var(--spacing-md))',
-              alignSelf: 'flex-start',
-              borderRight: '2px solid #0D0D0D',
-              paddingRight: 'var(--spacing-lg)'
-            }}
-          >
-            <div className="space-y-8 text-slunch-black">
-              {/* 카테고리 탭 (세로형) */}
-              <div>
-                <div 
-                  className="mb-3 pb-2 font-sans font-semibold border-b-2 border-slunch-black"
-                  style={{ fontSize: 'var(--font-size-ui)' }}
-                >
-                  카테고리
+    <>
+      {/* 좌측 필터 - Fixed Sidebar */}
+      <aside className="store-filter">
+            <div className="text-slunch-black" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+              {/* 제품 형태 */}
+              <div className="filter-group">
+                <div className="filter-group-title">
+                  제품 형태
                 </div>
                 <div className="flex flex-col">
-                  {categoryTabs.map((tab) => (
+                  {productTypeTabs.map((tab) => (
                     <button
                       key={tab}
                       onClick={() => handleTabClick(tab)}
-                      className={`w-full text-left py-3 transition-colors font-sans ${
+                      className={`w-full text-left transition-colors font-sans ${
                         activeTab === tab
                           ? 'font-bold text-slunch-black'
                           : 'text-slunch-gray hover:opacity-70'
                       }`}
-                      style={{ fontSize: 'var(--font-size-ui)' }}
+                      style={{ fontSize: '14px', padding: '6px 0' }}
                     >
                       <span>{tab}</span>
-                      <span className="ml-1 font-sans text-slunch-gray-light"
-                        style={{ fontSize: 'var(--font-size-body)' }}
-                      >
+                      <span className="ml-1 font-sans text-slunch-gray-light" style={{ fontSize: '12px' }}>
                         {getCategoryCount(tab)}
                       </span>
                     </button>
@@ -675,156 +461,80 @@ export const StorePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* 비건 스펙트럼 */}
-              <div>
-                <div 
-                  className="font-semibold mb-3"
-                  style={{ 
-                    fontSize: 'var(--font-size-ui)',
-                    letterSpacing: 'var(--letter-spacing-tight)'
-                  }}
-                >
-                  비건 스펙트럼
+              {/* 식단 */}
+              <div className="filter-group">
+                <div className="filter-group-title">
+                  식단
                 </div>
-                <div className="flex flex-col" style={{ gap: '12px' }}>
-                  {spectrumOptions.map((opt) => (
+                <div className="flex flex-col">
+                  {dietOptions.map((opt) => (
                     <label
-                      key={opt}
-                      className="flex items-center cursor-pointer hover:opacity-70"
-                      style={{ 
-                        fontSize: 'var(--font-size-ui)',
-                        color: 'var(--color-text-secondary)',
-                        letterSpacing: 'var(--letter-spacing-tight)',
-                        gap: '12px',
-                        paddingTop: '4px',
-                        paddingBottom: '4px'
-                      }}
+                      key={opt.value}
+                      className={`filter-radio ${spectrum === opt.value ? 'selected' : ''}`}
+                      onClick={() => setSpectrum(opt.value)}
                     >
-                      <input
-                        type="radio"
-                        name="spectrum"
-                        checked={spectrum === opt}
-                        onChange={() => setSpectrum(opt)}
-                        className="hidden"
-                      />
-                      <span
-                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                          spectrum === opt
-                            ? 'border-slunch-black bg-slunch-black'
-                            : 'border-slunch-gray hover:border-slunch-black'
-                        }`}
-                      >
-                        {spectrum === opt && <span className="w-2 h-2 rounded-full bg-white"></span>}
-                      </span>
-                      <span>{opt}</span>
+                      <span className="filter-radio-circle"></span>
+                      <span>{opt.label}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
-              {/* 제품 유형 */}
-              <div>
-                <div 
-                  className="font-semibold mb-3"
-                  style={{ fontSize: 'var(--font-size-ui)' }}
-                >
-                  제품 유형
+              {/* 추가 제한 */}
+              <div className="filter-group">
+                <div className="filter-group-title">
+                  추가 제한
                 </div>
-                <div className="flex flex-col" style={{ gap: '12px' }}>
-                  {cuisineOptions.map((c) => {
-                    const checked = selectedCuisines.includes(c);
+                <div className="flex flex-col">
+                  {restrictionOptions.map((opt) => {
+                    const checked = selectedRestrictions.includes(opt.value);
                     return (
                       <label
-                        key={c}
-                        className="flex items-center cursor-pointer hover:opacity-70 font-sans text-slunch-gray"
-                        style={{ fontSize: 'var(--font-size-ui)',
-                          letterSpacing: 'var(--letter-spacing-tight)',
-                          gap: '12px',
-                          paddingTop: '4px',
-                          paddingBottom: '4px'
+                        key={opt.value}
+                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
+                        onClick={() => {
+                          setSelectedRestrictions(prev => 
+                            prev.includes(opt.value) 
+                              ? prev.filter(v => v !== opt.value) 
+                              : [...prev, opt.value]
+                          );
                         }}
                       >
-                        <input
-                          type="checkbox"
-                          checked={checked}
-                          onChange={() => toggleCuisine(c)}
-                          className="hidden"
-                        />
-                        <span
-                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                          checked
-                            ? 'border-slunch-black bg-slunch-black'
-                            : 'border-slunch-gray hover:border-slunch-black'
-                        }`}
-                        >
-                          {checked && <Check className="w-2.5 h-2.5 text-white" />}
-                        </span>
-                        <span style={{ letterSpacing: 'var(--letter-spacing-tight)' }}>{c}</span>
+                        <span className="filter-checkbox-box"></span>
+                        <span>{opt.label}</span>
                       </label>
                     );
                   })}
                 </div>
               </div>
 
-              {/* 기획전 필터 */}
-              {promotionOptions.length > 0 && (
-                <div>
-                  <div 
-                    className="font-semibold mb-3"
-                    style={{ 
-                      fontSize: 'var(--font-size-ui)',
-                      letterSpacing: 'var(--letter-spacing-tight)'
-                    }}
-                  >
-                    기획전
-                  </div>
-                  <div className="flex flex-col" style={{ gap: '12px' }}>
-                    {promotionOptions.map((opt) => {
-                      const checked = selectedCategories.includes(opt);
-                      return (
-                        <label
-                          key={opt}
-                          className="flex items-center cursor-pointer hover:opacity-70"
-                          style={{ 
-                            fontSize: 'var(--font-size-ui)',
-                            color: 'var(--color-text-secondary)',
-                            letterSpacing: 'var(--letter-spacing-tight)',
-                            gap: '12px',
-                            paddingTop: '4px',
-                            paddingBottom: '4px'
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={checked}
-                            onChange={() =>
-                              setSelectedCategories((prev) =>
-                                prev.includes(opt) ? prev.filter((i) => i !== opt) : [...prev, opt]
-                              )
-                            }
-                            className="hidden"
-                          />
-                          <span
-                        className={`w-4 h-4 border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                          checked
-                            ? 'border-slunch-black bg-slunch-black'
-                            : 'border-slunch-gray hover:border-slunch-black'
-                        }`}
-                          >
-                            {checked && <Check className="w-2.5 h-2.5 text-white" />}
-                          </span>
-                          <span>{opt}</span>
-                        </label>
-                      );
-                    })}
-                  </div>
+              {/* 음식 종류 */}
+              <div className="filter-group">
+                <div className="filter-group-title">
+                  음식 종류
                 </div>
-              )}
+                <div className="flex flex-col">
+                  {cuisineOptions.map((c) => {
+                    const checked = selectedCuisines.includes(c);
+                    return (
+                      <label
+                        key={c}
+                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
+                        onClick={() => toggleCuisine(c)}
+                      >
+                        <span className="filter-checkbox-box"></span>
+                        <span>{c}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+
             </div>
           </aside>
 
           {/* 우측 콘텐츠 */}
-          <div className="flex-1">
+      <main className="store-content">
             {/* 정렬 드롭다운 - Flat Design */}
             <div className="flex justify-end mb-6">
               <div className="relative inline-block">
@@ -871,8 +581,8 @@ export const StorePage: React.FC = () => {
 
             {/* 상품 그리드 */}
             <div 
-              className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-              style={{ gap: '16px' }}
+              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+              style={{ gap: '13px' }}
             >
               {sortedProducts.map((product, index) => (
                 <ProductCard 
@@ -883,10 +593,8 @@ export const StorePage: React.FC = () => {
                 />
               ))}
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 };
 
@@ -928,24 +636,25 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
     <div 
       className={`menu-card ${product.soldOut ? 'soldout' : ''}`}
       style={{
-        background: 'var(--white-pure)',
-        border: '1px solid var(--black)',
-        cursor: product.soldOut ? 'default' : 'pointer',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
         overflow: 'hidden',
       }}
-      onClick={product.soldOut ? undefined : onClick}
+      onClick={onClick}
     >
       {/* 썸네일 이미지 */}
       <div 
         className="menu-card-img-wrapper"
         style={{
           position: 'relative',
-          overflow: 'hidden',
+          aspectRatio: '4 / 5',
+          background: '#F5F5F5',
         }}
       >
         {/* 이미지 슬라이드 */}
         {images.length > 0 ? (
-          <div style={{ position: 'relative', width: '100%', height: '180px' }}>
+          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
             {images.map((img, idx) => (
               <img
                 key={`${product.id}-${idx}`}
@@ -957,7 +666,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   top: 0,
                   left: 0,
                   width: '100%',
-                  height: '180px',
+                  height: '100%',
                   objectFit: 'cover',
                   transition: 'transform 0.3s ease, opacity 0.5s ease',
                   opacity: idx === currentImageIndex ? 1 : 0,
@@ -1000,11 +709,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         ) : (
           <div style={{
             width: '100%',
-            height: '180px',
+            height: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: 'var(--white)',
+            backgroundColor: '#F5F5F5',
           }}>
             <span style={{ color: 'var(--gray-lighter)', fontSize: '13px' }}>IMG</span>
           </div>
@@ -1095,7 +804,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
       </div>
       
       {/* 상품 정보 */}
-      <div className="menu-card-content" style={{ padding: '20px' }}>
+      <div className="menu-card-content" style={{ padding: '16px 0' }}>
         {/* 태그 + 메뉴명 행 */}
         <div className="menu-card-title-row" style={{
           display: 'flex',
@@ -1108,7 +817,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             fontSize: '16px',
             fontWeight: 700,
             margin: 0,
-            color: 'var(--black)',
+            color: product.soldOut ? 'var(--gray)' : 'var(--black)',
           }}>
             {product.name}
           </h3>
@@ -1118,7 +827,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         {product.description && (
           <p className="menu-card-desc" style={{
             fontSize: '13px',
-            color: 'var(--gray)',
+            color: product.soldOut ? 'var(--gray-light)' : 'var(--gray)',
             marginBottom: '10px',
             margin: 0,
           }}>
@@ -1167,7 +876,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 <span className="menu-card-price" style={{
                   fontSize: '16px',
                   fontWeight: 700,
-                  color: 'var(--black)',
+                  color: product.soldOut ? 'var(--gray)' : 'var(--black)',
                 }}>
                   {product.price.toLocaleString()}원
                 </span>
@@ -1178,7 +887,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             <span className="menu-card-price" style={{
               fontSize: '16px',
               fontWeight: 700,
-              color: 'var(--black)',
+              color: product.soldOut ? 'var(--gray)' : 'var(--black)',
             }}>
               {product.price.toLocaleString()}원
             </span>

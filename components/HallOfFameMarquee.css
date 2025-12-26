@@ -1,0 +1,260 @@
+/* ========================================
+   명예의 전당 히어로 섹션
+   ======================================== */
+
+.hof-section {
+  background: #F5F5F0;
+  padding: 48px 0 40px 0;
+  width: 100%;
+}
+
+/* 헤더 영역 - 새 클래스 */
+.hof-header-area {
+  text-align: center;
+  padding: 0 24px 32px 24px;
+}
+
+.hof-badge-tag {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.hof-main-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: #000;
+  line-height: 1.2;
+}
+
+.hof-subtitle {
+  font-size: 14px;
+  color: #6B6B6B;
+  margin: 0;
+}
+
+/* 기존 클래스 유지 */
+.hof-hero {
+  background: #F5F5F0;
+  padding: 48px 0 40px 0;
+}
+
+.hof-header {
+  text-align: center;
+  padding: 24px 24px 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 10;
+}
+
+.hof-badge {
+  display: inline-block;
+  background: #000;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.hof-title {
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  margin: 0 0 8px 0 !important;
+  color: #000 !important;
+  line-height: 1.2 !important;
+}
+
+.hof-desc {
+  font-size: 14px !important;
+  color: #6B6B6B !important;
+  margin: 0 !important;
+}
+
+/* 무한 마키 */
+.hof-marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px 0;
+}
+
+.hof-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: hof-scroll 60s linear infinite;
+}
+
+@keyframes hof-scroll {
+  0% { 
+    transform: translateX(0); 
+  }
+  100% { 
+    transform: translateX(-50%); 
+  }
+}
+
+.hof-marquee:hover .hof-track {
+  animation-play-state: paused;
+}
+
+/* 카드 */
+.hof-card {
+  flex-shrink: 0;
+  width: 240px;
+  background: #fff;
+  border: 1px solid #E5E5E5;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.hof-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* 이미지 - 1:1 비율 */
+.hof-card-img {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #F5F5F5;
+}
+
+.hof-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.hof-card:hover .hof-card-img img {
+  transform: scale(1.05);
+}
+
+/* 순위 뱃지 - 검은 배경 + 라임 텍스트 */
+.hof-rank {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #000;
+  color: #BFFF00;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+/* 텍스트 영역 */
+.hof-card-content {
+  padding: 16px;
+}
+
+.hof-card-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  margin: 0 0 8px 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #000 !important;
+}
+
+.hof-card-likes {
+  font-size: 13px;
+  color: #6B6B6B;
+}
+
+/* 푸터 */
+.hof-footer {
+  text-align: center;
+  padding-top: 32px;
+}
+
+.hof-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+  padding: 12px 24px;
+  border: 1px solid #000;
+  transition: all 0.15s ease;
+}
+
+.hof-link:hover {
+  background: #000;
+  color: #fff;
+}
+
+/* 가장자리 페이드 */
+.hof-marquee::before,
+.hof-marquee::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hof-marquee::before {
+  left: 0;
+  background: linear-gradient(to right, #F5F5F0, transparent);
+}
+
+.hof-marquee::after {
+  right: 0;
+  background: linear-gradient(to left, #F5F5F0, transparent);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .hof-hero {
+    padding: 40px 0 32px 0;
+  }
+
+  .hof-title {
+    font-size: 26px !important;
+  }
+
+  .hof-card {
+    width: 200px;
+  }
+
+  .hof-marquee::before,
+  .hof-marquee::after {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hof-card {
+    width: 180px;
+  }
+
+  .hof-track {
+    gap: 16px;
+  }
+
+  .hof-marquee::before,
+  .hof-marquee::after {
+    width: 40px;
+  }
+}

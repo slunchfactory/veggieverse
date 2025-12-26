@@ -1,7 +1,344 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { X, ArrowRight } from 'lucide-react';
 import { getHomeProductImage } from '../utils/productImages';
+
+// 무드 슬라이더 이미지 데이터
+const MOOD_SLIDES = [
+  {
+    id: 1,
+    leftImage: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    id: 2,
+    leftImage: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    id: 3,
+    leftImage: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    id: 4,
+    leftImage: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    id: 5,
+    leftImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80&w=800',
+    rightImage: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&q=80&w=800',
+  },
+];
+
+// 무드 슬라이더 컴포넌트
+const MoodSlider: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const slidesWithClone = [...MOOD_SLIDES, MOOD_SLIDES[0]]; // 첫 번째 슬라이드 복제
+
+  const startAutoSlide = useCallback(() => {
+    intervalRef.current = setInterval(() => {
+      setCurrentSlide((prev) => prev + 1);
+    }, 4000); // 4초마다 슬라이드 변경
+  }, []);
+
+  const stopAutoSlide = useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+    }
+  }, []);
+
+  useEffect(() => {
+    startAutoSlide();
+    return () => stopAutoSlide();
+  }, [startAutoSlide, stopAutoSlide]);
+
+  // 마지막 복제 슬라이드에서 실제 첫 번째로 점프
+  useEffect(() => {
+    if (currentSlide === MOOD_SLIDES.length) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(0);
+      }, 1200); // 전환 애니메이션 완료 후
+      
+      setTimeout(() => {
+        setIsTransitioning(true);
+      }, 1250); // 약간의 딜레이 후 트랜지션 다시 활성화
+    }
+  }, [currentSlide]);
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+    stopAutoSlide();
+    startAutoSlide();
+  };
+
+  return (
+    <section 
+      className="relative w-full overflow-hidden"
+      style={{ height: 'calc(100vh - 96px)' }}
+    >
+      {/* 슬라이드 컨테이너 */}
+      <div 
+        className="flex h-full"
+        style={{ 
+          width: `${slidesWithClone.length * 100}%`,
+          transform: `translateX(-${currentSlide * (100 / slidesWithClone.length)}%)`,
+          transition: isTransitioning ? 'transform 1.2s ease-in-out' : 'none'
+        }}
+      >
+        {slidesWithClone.map((slide, index) => (
+          <div 
+            key={`${slide.id}-${index}`}
+            className="flex h-full"
+            style={{ width: `${100 / slidesWithClone.length}%` }}
+          >
+            {/* 좌측 이미지 */}
+            <div className="w-1/2 h-full overflow-hidden">
+              <img 
+                src={slide.leftImage}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+            {/* 우측 이미지 */}
+            <div className="w-1/2 h-full overflow-hidden">
+              <img 
+                src={slide.rightImage}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 인디케이터 */}
+      <div 
+        className="absolute bottom-8 left-8 flex gap-2"
+        style={{ zIndex: 10 }}
+      >
+        {MOOD_SLIDES.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            className="w-2 h-2 rounded-full transition-all duration-300"
+            style={{
+              backgroundColor: (currentSlide === index || (currentSlide === MOOD_SLIDES.length && index === 0)) ? '#FFFFFF' : 'rgba(255,255,255,0.4)',
+              transform: (currentSlide === index || (currentSlide === MOOD_SLIDES.length && index === 0)) ? 'scale(1.2)' : 'scale(1)',
+            }}
+            aria-label={`슬라이드 ${index + 1}로 이동`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// 레시피 비디오 Hero 섹션 (Store에서 이동)
+const RECIPE_VIDEO_ITEMS = [
+  { id: 1, name: '볶음김치', description: '비건 식단에 어울리는 메뉴', likes: 1100, videoId: 'x7pnY0U5yYY' },
+  { id: 2, name: '김치볶음밥', description: '비건 식단에 어울리는 메뉴', likes: 626, videoId: 'LeZQWQ_cXqU' },
+  { id: 3, name: '시금치 뇨끼', description: '비건 식단에 어울리는 메뉴', likes: 850, videoId: '8cVFJrY89SA' },
+  { id: 4, name: '구운 야채 빈앤넛', description: '비건 식단에 어울리는 메뉴', likes: 720, videoId: 'IzNnBZMjbXU' },
+];
+
+const RecipeVideoHero: React.FC = () => {
+  const formatLikeCount = (count: number): string => {
+    if (count >= 1000) {
+      return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return count.toString();
+  };
+
+  return (
+    <div className="w-full border-b border-black">
+      {/* Desktop: Flex Row Layout */}
+      <div className="hidden lg:flex lg:flex-row">
+        {/* Left Column - Main Video (50%) */}
+        <div className="w-1/2 relative overflow-hidden border-r border-black">
+          <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+              title="슬런치 비건 레시피"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ 
+                pointerEvents: 'none',
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%'
+              }}
+            />
+          </div>
+        </div>
+        
+        {/* Right Column - 추천 콘텐츠 영역 (50%) */}
+        <div className="w-1/2 bg-white flex-shrink-0">
+          {/* 데스크톱: 세로형 카드 2열 엇갈린 높이 */}
+          <div className="hidden lg:flex p-5 pb-8 gap-4 h-full overflow-y-auto">
+            {/* 왼쪽 열 */}
+            <div className="flex-1 flex flex-col gap-4">
+              {RECIPE_VIDEO_ITEMS.slice(0, 2).map((item) => (
+                <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-col">
+                  <div 
+                    className="relative w-full overflow-hidden bg-black"
+                    style={{ aspectRatio: '3/4' }}
+                  >
+                    <iframe
+                      className="absolute w-full h-full"
+                      src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                      title={item.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                    />
+                    {/* 추천 아이콘 (좌측 상단) */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                        <span className="text-black text-xs">✦</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-3 bg-black px-3 pb-3">
+                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center mt-3 gap-1.5">
+                      <span className="text-gray-400">♡</span>
+                      <span className="text-gray-400 text-xs">
+                        {formatLikeCount(item.likes)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            {/* 오른쪽 열 (아래로 오프셋) */}
+            <div className="flex-1 flex flex-col gap-4 pt-24">
+              {RECIPE_VIDEO_ITEMS.slice(2, 4).map((item) => (
+                <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-col">
+                  <div 
+                    className="relative w-full overflow-hidden bg-black"
+                    style={{ aspectRatio: '3/4' }}
+                  >
+                    <iframe
+                      className="absolute w-full h-full"
+                      src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                      title={item.name}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                    />
+                    {/* 추천 아이콘 (좌측 상단) */}
+                    <div className="absolute top-3 left-3 z-10">
+                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                        <span className="text-black text-xs">✦</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="pt-3 bg-black px-3 pb-3">
+                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
+                      {item.description}
+                    </p>
+                    <div className="flex items-center mt-3 gap-1.5">
+                      <span className="text-gray-400">♡</span>
+                      <span className="text-gray-400 text-xs">
+                        {formatLikeCount(item.likes)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Mobile: Stack Vertically */}
+      <div className="flex flex-col lg:hidden">
+        {/* Main Video on Top */}
+        <div className="relative w-full overflow-hidden border-b border-black">
+          <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+            <iframe
+              className="absolute inset-0 w-full h-full"
+              src="https://www.youtube.com/embed/qN-UMZZ1U9Y?autoplay=1&mute=1&loop=1&playlist=qN-UMZZ1U9Y&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+              title="슬런치 비건 레시피"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ 
+                pointerEvents: 'none',
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%'
+              }}
+            />
+          </div>
+        </div>
+        
+        {/* 추천 콘텐츠 영역 Below (Mobile) */}
+        <div className="lg:hidden p-4 sm:p-5 bg-white">
+          <div className="grid grid-cols-2" style={{ gap: '13px' }}>
+            {RECIPE_VIDEO_ITEMS.map((item) => (
+              <Link key={item.id} to="/recipe" className="cursor-pointer group flex flex-row gap-3">
+                {/* 카드 영상 (왼쪽) */}
+                <div 
+                  className="relative w-[45%] flex-shrink-0 overflow-hidden bg-black"
+                  style={{ aspectRatio: '3/4' }}
+                >
+                  <iframe
+                    className="absolute w-full h-full"
+                    src={`https://www.youtube.com/embed/${item.videoId}?autoplay=1&mute=1&loop=1&playlist=${item.videoId}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1`}
+                    title={item.name}
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    style={{ pointerEvents: 'none', transform: 'scale(2.5)', transformOrigin: 'center center' }}
+                  />
+                  {/* 추천 아이콘 (좌측 상단) */}
+                  <div className="absolute top-2 left-2 z-10">
+                    <div className="w-6 h-6 bg-[#BFFF00] flex items-center justify-center">
+                      <span className="text-black text-[10px]">✦</span>
+                    </div>
+                  </div>
+                </div>
+                {/* 카드 정보 (오른쪽) */}
+                <div className="flex-1 flex flex-col justify-between py-1">
+                  <div>
+                    <h4 className="font-bold text-black leading-tight line-clamp-2 group-hover:underline text-xs">
+                      {item.name}
+                    </h4>
+                    <p className="text-gray-500 mt-1 line-clamp-2 text-[10px]">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center mt-2 gap-1">
+                    <span className="text-gray-400 text-xs">♡</span>
+                    <span className="text-gray-400 text-[10px]">
+                      {formatLikeCount(item.likes)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // 인기 메뉴/굿즈 데이터
 const FEATURED_ITEMS = [
@@ -132,91 +469,9 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </button>
 
       {/* ============================================
-          HERO SECTION - Full-width Impact Banner
+          HERO SECTION - 1:1 Split Mood Image Slider
           ============================================ */}
-      <section 
-        ref={heroRef}
-        className="scroll-snap-section relative w-full h-screen overflow-hidden"
-        style={{ 
-          background: '#000000'
-        }}
-      >
-        {/* 배경 이미지 */}
-        <div 
-          className="absolute inset-0 opacity-40"
-          style={{
-            transform: `translateY(${scrollY * 0.5}px)`,
-            transition: 'transform 0.1s ease-out'
-          }}
-        >
-          <img 
-            src={`${import.meta.env.BASE_URL}main/banner/main-banner-1.png`}
-            alt="비건 음식"
-            className="w-full h-full object-cover"
-          />
-        </div>
-
-        {/* 플로팅 캐릭터들 (Parallax 효과) */}
-        <div 
-          className="absolute top-20 right-10 w-32 h-32 opacity-60"
-          style={{
-            transform: `translateY(${scrollY * 0.3}px) translateX(${Math.sin(scrollY * 0.01) * 10}px)`,
-            transition: 'transform 0.1s ease-out'
-          }}
-        >
-          <img 
-            src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
-            alt="슬런치 캐릭터"
-            className="w-full h-full object-contain"
-          />
-        </div>
-
-        {/* 메인 카피 & CTA */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
-          <h1 
-            className="text-white mb-6"
-            style={{ 
-              fontSize: 'var(--font-size-h1)',
-              fontWeight: 'var(--font-weight-h1)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              lineHeight: 'var(--line-height-h1)',
-              textShadow: '0 4px 20px rgba(0,0,0,0.3)',
-              wordBreak: 'keep-all',
-              overflowWrap: 'break-word'
-            }}
-          >
-            채소들이 만드는<br />
-            맛있는 우주,<br />
-            <span style={{ color: '#000000' }}>Veggieverse</span>
-          </h1>
-          <p 
-            className="text-white/90 mb-8 max-w-2xl"
-            style={{ 
-              fontSize: 'var(--font-size-body)',
-              fontWeight: 'var(--font-weight-body)',
-              lineHeight: 'var(--line-height-body)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              textShadow: '0 2px 10px rgba(0,0,0,0.2)'
-            }}
-          >
-            건강한 비건 식단으로 시작하는 새로운 하루
-          </p>
-          <Link
-            to="/store"
-            className="inline-flex items-center gap-2 px-8 py-4 font-bold text-white transition-all hover:scale-105 hover:shadow-xl"
-            style={{ 
-              backgroundColor: '#000000',
-              borderRadius: '0',
-              fontSize: 'var(--font-size-ui)',
-              fontWeight: 'var(--font-weight-ui)',
-              letterSpacing: 'var(--letter-spacing-tight)'
-            }}
-          >
-            지금 구경하기
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
+      <MoodSlider />
 
       {/* ============================================
           SECTION 1: We are Slunch Factory (Concept)
@@ -294,16 +549,16 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       <section 
         className="scroll-snap-section-flex section-spacing relative overflow-visible bg-white"
         style={{ 
-          borderTop: '1px solid #111111',
-          borderBottom: '1px solid #111111'
+          borderTop: '1px solid #000000',
+          borderBottom: '1px solid #000000'
         }}
       >
         <div className="page-container">
-          <div className="flex flex-col lg:flex-row border border-[#111111]">
+          <div className="flex flex-col lg:flex-row border border-[#000000]">
             {/* 왼쪽 영역 (60%) - 이미지 */}
             <div 
-              className="w-full lg:w-[60%] relative border-r-0 lg:border-r border-[#111111]"
-              style={{ borderRight: '1px solid #111111' }}
+              className="w-full lg:w-[60%] relative border-r-0 lg:border-r border-[#000000]"
+              style={{ borderRight: '1px solid #000000' }}
             >
               <div 
                 className="w-full overflow-hidden relative"
@@ -314,7 +569,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               >
                 {/* 도시락/패키지 이미지 자리 */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[#111111] text-sm font-medium">슬런치 위클리 패키지 이미지</span>
+                  <span className="text-[#000000] text-sm font-medium">슬런치 위클리 패키지 이미지</span>
                 </div>
                 
                 {/* 배달 모자 캐릭터 (Absolute Position - 모서리에 걸치도록) */}
@@ -338,7 +593,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
             <div className="w-full lg:w-[40%] flex flex-col justify-center p-6 lg:p-12">
               <h2 
-                className="text-[#111111] mb-6"
+                className="text-[#000000] mb-6"
                 style={{ 
                   fontSize: 'var(--font-size-h1)',
                   fontWeight: 'var(--font-weight-h1)',
@@ -351,7 +606,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               </h2>
               
               <p 
-                className="text-[#111111] mb-10"
+                className="text-[#000000] mb-10"
                 style={{ 
                   fontSize: 'var(--font-size-body)',
                   fontWeight: 'var(--font-weight-body)',
@@ -365,11 +620,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               
               {/* Key Points */}
               <div className="space-y-5 mb-10">
-                <div className="flex items-start gap-4 border-b border-[#111111] pb-4">
+                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
                   <span className="text-2xl leading-none">🥗</span>
                   <div>
                     <p 
-                      className="text-[#111111] mb-1" 
+                      className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
                         fontWeight: 'var(--font-weight-body)',
@@ -379,7 +634,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       주 14끼 식단
                     </p>
                     <p 
-                      className="text-[#111111]"
+                      className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
                         fontWeight: 'var(--font-weight-ui)',
@@ -391,11 +646,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   </div>
                 </div>
                 
-                <div className="flex items-start gap-4 border-b border-[#111111] pb-4">
+                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
                   <span className="text-2xl leading-none">🚚</span>
                   <div>
                     <p 
-                      className="text-[#111111] mb-1" 
+                      className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
                         fontWeight: 'var(--font-weight-body)',
@@ -405,7 +660,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       신선 새벽 배송
                     </p>
                     <p 
-                      className="text-[#111111]"
+                      className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
                         fontWeight: 'var(--font-weight-ui)',
@@ -421,7 +676,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <span className="text-2xl leading-none">🌱</span>
                   <div>
                     <p 
-                      className="text-[#111111] mb-1" 
+                      className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
                         fontWeight: 'var(--font-weight-body)',
@@ -431,7 +686,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       영양 밸런스 완벽 설계
                     </p>
                     <p 
-                      className="text-[#111111]"
+                      className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
                         fontWeight: 'var(--font-weight-ui)',
@@ -447,7 +702,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* CTA Button - Outline Style */}
               <Link
                 to="/store"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#111111] transition-all w-full lg:w-auto border-2 border-[#111111] hover:bg-[#111111] hover:text-white"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
                 style={{ 
                   borderRadius: '0',
                   fontSize: 'var(--font-size-ui)',
@@ -464,7 +719,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </section>
 
       {/* ============================================
-          SECTION 2: Best Menu/Goods (3:4 Grid)
+          Recipe Video Split Section (from Store)
+          ============================================ */}
+      <RecipeVideoHero />
+
+      {/* ============================================
+          SECTION 2: Best Menu/Goods (4:5 Grid)
           ============================================ */}
       <section className="scroll-snap-section-flex bg-white section-spacing">
         <div className="page-container">
@@ -493,10 +753,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             </p>
           </div>
           
-          {/* 3:4 비율 그리드 - 모바일 2열, 데스크톱 4열 */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {/* 4:5 비율 그리드 - 모바일 2열, 데스크톱 4열 */}
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
             {FEATURED_ITEMS.map((item, idx) => {
               const imageUrl = getHomeProductImage(idx);
+              // 할인 정보 (예시 데이터)
+              const originalPrice = Math.round(item.price * 1.25);
+              const discountRate = Math.round(((originalPrice - item.price) / originalPrice) * 100);
               return (
                 <Link 
                   key={item.id} 
@@ -504,11 +767,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   className="group cursor-pointer"
                 >
                   <div 
-                    className="w-full mb-3 overflow-hidden relative"
+                    className="w-full overflow-hidden relative"
                     style={{ 
-                      aspectRatio: '3/4', 
-                      backgroundColor: idx % 2 === 0 ? '#333333' : '#666666',
-                      borderRadius: '4px'
+                      aspectRatio: '4/5', 
+                      backgroundColor: '#F5F5F5',
+                      borderRadius: '0'
                     }}
                   >
                     {imageUrl ? (
@@ -524,215 +787,208 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-white/30 text-xs">IMG</span>
+                        <span className="text-stone-400 text-xs">IMG</span>
                       </div>
                     )}
                   </div>
-                  <p 
-                    className="mb-1 font-medium"
+                  {/* 상품명 */}
+                  <h3 
+                    className="group-hover:underline line-clamp-1"
                     style={{ 
-                      fontSize: 'var(--font-size-ui)',
-                      fontWeight: 'var(--font-weight-ui)',
-                      color: 'var(--color-text-muted)',
-                      letterSpacing: 'var(--letter-spacing-tight)',
-                      marginTop: '12px'
+                      fontSize: '16px',
+                      fontWeight: 700,
+                      color: '#000000',
+                      marginTop: '16px',
+                      marginBottom: '6px'
+                    }}
+                  >
+                    {item.name.replace('슬런치 ', '')}
+                  </h3>
+                  {/* 설명 */}
+                  <p 
+                    style={{ 
+                      fontSize: '13px',
+                      color: '#6B6B6B',
+                      marginBottom: '10px'
                     }}
                   >
                     {item.microCopy}
                   </p>
+                  {/* 원래 가격 */}
                   <p 
-                    className="group-hover:underline mb-1 line-clamp-2"
                     style={{ 
-                      fontSize: 'var(--font-size-h2)',
-                      fontWeight: 'var(--font-weight-h2)',
-                      color: 'var(--color-text-primary)',
-                      letterSpacing: 'var(--letter-spacing-tight)',
-                      lineHeight: 'var(--line-height-h2)',
-                      marginTop: '12px'
+                      fontSize: '13px',
+                      color: '#999999',
+                      textDecoration: 'line-through',
+                      marginBottom: '4px'
                     }}
                   >
-                    {item.name}
+                    {originalPrice.toLocaleString()}원
                   </p>
-                  <p 
-                    className="font-bold"
-                    style={{ 
-                      fontSize: 'var(--font-size-ui)',
-                      fontWeight: 700,
-                      color: 'var(--color-text-primary)',
-                      letterSpacing: 'var(--letter-spacing-tight)',
-                      marginTop: '4px'
-                    }}
-                  >
-                    {item.price.toLocaleString()}원
-                  </p>
+                  {/* 할인율 + 할인가 */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span 
+                      style={{ 
+                        display: 'inline-block',
+                        padding: '2px 8px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        backgroundColor: '#BFFF00',
+                        color: '#000000'
+                      }}
+                    >
+                      {discountRate}%
+                    </span>
+                    <span 
+                      style={{ 
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#000000'
+                      }}
+                    >
+                      {item.price.toLocaleString()}원
+                    </span>
+                  </div>
                 </Link>
               );
             })}
           </div>
-        </div>
-      </section>
 
-      {/* ============================================
-          SECTION 3: Magazine/Content (Image Left + Text Right)
-          ============================================ */}
-      <section className="scroll-snap-section-flex bg-[#faf9f7] section-spacing">
-        <div className="page-container">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-center">
-            {/* 이미지 영역 (좌측) */}
-            <div className="w-full lg:w-1/2">
-              <div 
-                className="w-full overflow-hidden relative"
-                style={{ 
-                  aspectRatio: '4/3', 
-                  backgroundColor: '#e5ded8',
-                  borderRadius: '4px'
-                }}
-              >
-                {/* 레시피 또는 스토리 이미지 자리 */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-stone-400 text-sm">레시피 이미지</span>
-                </div>
-              </div>
-            </div>
-            
-            {/* 텍스트 영역 (우측) */}
-            <div className="w-full lg:w-1/2">
-              <p 
-                className="text-stone-500 uppercase tracking-wider mb-3"
-                style={{ 
-                  fontSize: 'var(--font-size-ui)',
-                  fontWeight: 'var(--font-weight-ui)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
-                }}
-              >
-                RECIPE
-              </p>
-              <h2 
-                className="text-stone-900 mb-4"
-                style={{ 
-                  fontSize: 'var(--font-size-h1)',
-                  fontWeight: 'var(--font-weight-h1)',
-                  letterSpacing: 'var(--letter-spacing-tight)',
-                  lineHeight: 'var(--line-height-h1)'
-                }}
-              >
-                비건 레시피로 시작하는<br />
-                건강한 하루
-              </h2>
-              <p 
-                className="text-stone-700 mb-6"
-                style={{ 
-                  fontSize: 'var(--font-size-body)',
-                  fontWeight: 'var(--font-weight-body)',
-                  lineHeight: 'var(--line-height-body)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
-                }}
-              >
-                집에서도 쉽게 만들 수 있는 비건 레시피를 공유합니다.
-                <br />
-                맛있고 건강한 식단으로 일상에 새로운 변화를 가져보세요.
-              </p>
-              <Link
-                to="/recipe"
-                className="inline-flex items-center gap-2 text-stone-900 font-semibold hover:underline"
-                style={{ 
-                  fontSize: 'var(--font-size-ui)',
-                  fontWeight: 'var(--font-weight-ui)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
-                }}
-              >
-                레시피 보기
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+          {/* View all 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link 
+              to="/store"
+              style={{
+                display: 'inline-block',
+                padding: '14px 48px',
+                border: '1px solid #000000',
+                color: '#000000',
+                fontSize: '14px',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#000000';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.color = '#000000';
+              }}
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>
+
 
       {/* ============================================
           SECTION 4: Newsletter Preview
           ============================================ */}
-      <section className="scroll-snap-section-flex bg-white section-spacing">
+      <section 
+        className="scroll-snap-section-flex"
+        style={{ backgroundColor: '#000000', padding: '80px 0' }}
+      >
         <div className="page-container">
-          <div className="flex items-center justify-between mb-8">
-            <h2 
-              className="text-stone-900"
-              style={{ 
-                fontSize: 'var(--font-size-h1)',
-                fontWeight: 'var(--font-weight-h1)',
-                letterSpacing: 'var(--letter-spacing-tight)',
-                lineHeight: 'var(--line-height-h1)'
-              }}
-            >
-              NEWSLETTER
-            </h2>
-            <Link 
-              to="/newsletter" 
-              className="text-stone-600 hover:text-stone-900 font-medium"
-              style={{ 
-                fontSize: 'var(--font-size-ui)',
-                fontWeight: 'var(--font-weight-ui)',
-                letterSpacing: 'var(--letter-spacing-tight)'
-              }}
-            >
-              VIEW ALL →
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* 섹션 제목 */}
+          <h2 
+            style={{ 
+              fontSize: '24px',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
+              color: '#FFFFFF',
+              marginBottom: '32px'
+            }}
+          >
+            뉴스레터
+          </h2>
+
+          {/* 4열 그리드 */}
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
             {[
-              { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', isNew: true },
-              { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', isNew: true },
+              { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', isNew: false },
+              { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', isNew: false },
               { id: 3, category: 'FOOD', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', isNew: false },
-              { id: 4, category: 'CULTURE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', isNew: false },
+              { id: 4, category: 'LIFE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', isNew: false },
             ].map((article) => (
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
+                {/* 이미지 */}
                 <div 
-                  className="relative w-full overflow-hidden mb-3"
-                  style={{ aspectRatio: '3/4', backgroundColor: '#e5ded8', borderRadius: '4px' }}
+                  className="relative w-full overflow-hidden"
+                  style={{ aspectRatio: '1/1', backgroundColor: '#333333', borderRadius: '0', marginBottom: '16px' }}
                 >
-                  {article.isNew && (
-                    <div 
-                      className="absolute top-0 left-0 px-2 py-1 text-[10px] font-bold text-white z-10"
-                      style={{ backgroundColor: '#000000' }}
-                    >
-                      NEW
-                    </div>
-                  )}
+                  {/* 플레이스홀더 */}
                 </div>
+                {/* 카테고리 */}
                 <p 
-                  className="text-stone-500 tracking-wider mb-1"
                   style={{ 
-                    fontSize: 'var(--font-size-ui)',
-                    fontWeight: 'var(--font-weight-ui)',
-                    letterSpacing: 'var(--letter-spacing-tight)'
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.05em',
+                    color: '#6B6B6B',
+                    marginBottom: '8px'
                   }}
                 >
                   {article.category}
                 </p>
-                <p 
-                  className="text-stone-800 group-hover:underline line-clamp-2"
+                {/* 제목 - 흰색 */}
+                <h3 
+                  className="group-hover:underline line-clamp-2"
                   style={{ 
-                    fontSize: 'var(--font-size-h2)',
-                    fontWeight: 'var(--font-weight-h2)',
-                    letterSpacing: 'var(--letter-spacing-tight)',
-                    lineHeight: 'var(--line-height-h2)'
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    lineHeight: 1.4,
+                    color: '#FFFFFF',
+                    marginBottom: '8px'
                   }}
                 >
                   {article.title}
-                </p>
+                </h3>
+                {/* 설명 */}
                 <p 
-                  className="text-stone-500 mt-1 line-clamp-1"
+                  className="line-clamp-2"
                   style={{ 
-                    fontSize: 'var(--font-size-body)',
-                    fontWeight: 'var(--font-weight-body)',
-                    lineHeight: 'var(--line-height-body)',
-                    letterSpacing: 'var(--letter-spacing-tight)'
+                    fontSize: '13px',
+                    lineHeight: 1.5,
+                    color: '#999999'
                   }}
                 >
                   {article.subtitle}
                 </p>
               </Link>
             ))}
+          </div>
+
+          {/* View all 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link 
+              to="/newsletter"
+              style={{
+                display: 'inline-block',
+                padding: '14px 48px',
+                border: '1px solid #FFFFFF',
+                color: '#FFFFFF',
+                fontSize: '14px',
+                fontWeight: 500,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#BFFF00';
+                e.currentTarget.style.borderColor = '#BFFF00';
+                e.currentTarget.style.color = '#000000';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.borderColor = '#FFFFFF';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>

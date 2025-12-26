@@ -37,7 +37,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
                   fontSize: '11px', 
                   padding: '2px 8px',
                   backgroundColor: '#BFFF00',
-                  color: '#0D0D0D',
+                  color: '#000000',
                   lineHeight: '1.2',
                   height: '20px' // 할인된 가격과 높이 맞춤
                 }}
