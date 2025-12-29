@@ -96,13 +96,8 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.path}
                   className="bg-transparent border-none p-0"
                   style={{
-<<<<<<< HEAD
                     padding: '10px 12px',
                     fontSize: '15px',
-=======
-                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
-                    fontSize: 'var(--header-nav-font-size)',
->>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'inline-flex',
@@ -132,13 +127,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
                   style={{
-<<<<<<< HEAD
                     padding: '10px 12px',
                     fontSize: '15px',
-=======
-                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
-                    fontSize: 'var(--header-nav-font-size)',
->>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'inline-flex',
