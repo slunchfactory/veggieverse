@@ -48,59 +48,17 @@ const HallOfFameMarquee: React.FC = () => {
   const marqueeRecipes = [...hallOfFameRecipes, ...hallOfFameRecipes];
 
   return (
-    <section style={{ background: '#F5F5F0', padding: '48px 0 40px 0', width: '100%' }}>
-      {/* 헤더 */}
-      <div 
-        style={{
-          textAlign: 'center' as const,
-          padding: '0 24px 32px 24px',
-        }}
-      >
-        <span 
-          style={{
-            display: 'inline-block',
-            background: '#000',
-            color: '#fff',
-            padding: '8px 16px',
-            fontSize: '12px',
-            fontWeight: 700,
-            letterSpacing: '0.05em',
-            marginBottom: '16px',
-          }}
-        >
-          🏆 HALL OF FAME
-        </span>
-        <h2 
-          style={{
-            fontSize: '32px',
-            fontWeight: 800,
-            margin: '0 0 8px 0',
-            color: '#000',
-            lineHeight: 1.2,
-          }}
-        >
-          명예의 전당
-        </h2>
-        <p 
-          style={{
-            fontSize: '14px',
-            color: '#6B6B6B',
-            margin: 0,
-          }}
-        >
-          가장 많은 사랑을 받은 레시피
-        </p>
-      </div>
-      
-      {/* 마키 */}
-      <div className="hof-marquee">
-        <div className="hof-track">
+    <div className="w-full flex flex-col items-center justify-center" style={{ minHeight: '400px', height: 'auto' }}>
+      {/* 마키 - 검은 배경에서 사용 시 흰색 텍스트 */}
+      <div className="hof-marquee w-full" style={{ position: 'relative' }}>
+        <div className="hof-track" style={{ display: 'flex', alignItems: 'center' }}>
           {marqueeRecipes.map((recipe, i) => (
             <Link 
               to={`/recipe/${recipe.id}`} 
               className="hof-card" 
               key={`${recipe.id}-${i}`}
               draggable={false}
+              style={{ flexShrink: 0 }}
             >
               <div className="hof-card-img">
                 <img 
@@ -112,40 +70,14 @@ const HallOfFameMarquee: React.FC = () => {
                 <span className="hof-rank">#{(i % hallOfFameRecipes.length) + 1}</span>
               </div>
               <div className="hof-card-content">
-                <h3 className="hof-card-title">{recipe.title}</h3>
-                <span className="hof-card-likes">❤️ {recipe.likes.toLocaleString()}</span>
+                <h3 className="hof-card-title" style={{ color: '#fff' }}>{recipe.title}</h3>
+                <span className="hof-card-likes" style={{ color: '#fff' }}>❤️ {recipe.likes.toLocaleString()}</span>
               </div>
             </Link>
           ))}
         </div>
       </div>
-      
-      {/* 전체보기 링크 */}
-      <div 
-        className="hof-footer"
-        style={{
-          textAlign: 'center',
-          paddingTop: '32px',
-          paddingBottom: '16px',
-        }}
-      >
-        <Link 
-          to="/recipe/hall-of-fame" 
-          className="hof-link"
-          style={{
-            display: 'inline-block',
-            fontSize: '14px',
-            fontWeight: 600,
-            color: '#000',
-            textDecoration: 'none',
-            padding: '12px 24px',
-            border: '1px solid #000',
-          }}
-        >
-          전체보기 →
-        </Link>
-      </div>
-    </section>
+    </div>
   );
 };
 

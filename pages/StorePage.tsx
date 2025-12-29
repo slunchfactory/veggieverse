@@ -630,10 +630,28 @@ export const StorePage: React.FC = () => {
             <FilterContent />
           </div>
           <div className="bottomsheet-footer">
-            <button className="btn-reset" onClick={handleResetFilters}>
+            <button 
+              className="btn-reset" 
+              onClick={handleResetFilters}
+              style={{ 
+                minHeight: '44px',
+                padding: '12px 24px',
+                fontSize: '15px',
+                fontWeight: 600
+              }}
+            >
               초기화
             </button>
-            <button className="btn-apply" onClick={handleApplyFilters}>
+            <button 
+              className="btn-apply" 
+              onClick={handleApplyFilters}
+              style={{ 
+                minHeight: '44px',
+                padding: '12px 24px',
+                fontSize: '15px',
+                fontWeight: 600
+              }}
+            >
               적용하기
             </button>
           </div>
@@ -933,7 +951,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         {/* 설명 */}
         {product.description && (
           <p className="menu-card-desc" style={{
-            fontSize: '13px',
+            fontSize: '14px',
+            fontWeight: 400,
             color: product.soldOut ? 'var(--gray-light)' : 'var(--gray)',
             marginBottom: '10px',
             margin: 0,
@@ -949,6 +968,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
               {/* 원래 가격 - 취소선 */}
               <p className="menu-card-price-original" style={{
                 fontSize: '13px',
+                fontWeight: 400,
                 color: 'var(--gray-light)',
                 textDecoration: 'line-through',
                 marginBottom: '4px',
@@ -970,7 +990,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                       display: 'inline-block',
                       padding: '2px 8px',
                       fontSize: '11px',
-                      fontWeight: 700,
+                      fontWeight: 600,
                       backgroundColor: 'var(--lime)',
                       color: 'var(--black)',
                       lineHeight: '1.2',
@@ -982,7 +1002,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 {/* 할인된 가격 */}
                 <span className="menu-card-price" style={{
                   fontSize: '16px',
-                  fontWeight: 700,
+                  fontWeight: 600,
                   color: product.soldOut ? 'var(--gray)' : 'var(--black)',
                 }}>
                   {product.price.toLocaleString()}원
@@ -993,7 +1013,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             /* 할인이 없을 때 - 현재 가격만 */
             <span className="menu-card-price" style={{
               fontSize: '16px',
-              fontWeight: 700,
+              fontWeight: 600,
               color: product.soldOut ? 'var(--gray)' : 'var(--black)',
             }}>
               {product.price.toLocaleString()}원

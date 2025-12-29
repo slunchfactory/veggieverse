@@ -87,6 +87,10 @@
   width: 100%;
   overflow: hidden;
   padding: 20px 0;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hof-track {
@@ -94,6 +98,8 @@
   gap: 24px;
   width: max-content;
   animation: hof-scroll 60s linear infinite;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 @keyframes hof-scroll {
@@ -121,6 +127,7 @@
   text-decoration: none;
   color: inherit;
   display: block;
+  height: auto;
 }
 
 .hof-card:hover {

@@ -19,11 +19,12 @@
   --font-size-body: 16px;         /* Body Text / Descriptions */
   --font-size-ui: 15px;           /* Metadata / Buttons / Categories / Prices */
   
-  /* Typography Weights */
-  --font-weight-h1: 700;          /* Bold for H1 (can also use 500 for Medium) */
-  --font-weight-h2: 500;          /* Medium for H2 */
-  --font-weight-body: 400;        /* Regular for Body */
-  --font-weight-ui: 400;          /* Regular for UI elements */
+  /* Typography Weights - Hierarchy Rule */
+  --font-weight-h1: 700;           /* Bold (700) or ExtraBold (800) for Headlines */
+  --font-weight-h2: 700;         /* Bold (700) or ExtraBold (800) for Subheadings */
+  --font-weight-body: 400;        /* Regular (400) for Body Text */
+  --font-weight-ui: 500;          /* Medium (500) or SemiBold (600) for UI Elements */
+  --font-weight-price: 600;      /* SemiBold (600) for Prices - bolder than description */
   
   /* Typography Line Heights */
   --line-height-h1: 1.2;
@@ -2348,6 +2349,18 @@ a:focus-visible {
   .site-header .icons a {
     width: 32px !important;
     height: 32px !important;
+  }
+}
+
+/* ========================================
+   모바일 타이포그래피 크기 조정
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --font-size-h1: 36px;         /* H1: 32-36px on mobile (not smaller) */
+    --font-size-h2: 18px;         /* H2: maintain size */
+    --font-size-body: 16px;       /* Body: minimum 14px (16px maintained) */
+    --font-size-ui: 15px;         /* UI: maintain size */
   }
 }
 

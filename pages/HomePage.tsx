@@ -443,8 +443,15 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     <Link 
                       to="/"
                       onClick={dismissToast}
-                      className="mt-2 px-6 py-2.5 text-[13px] font-medium transition-colors hover:opacity-90"
-                      style={{ backgroundColor: '#000000', color: '#FFFFFF' }}
+                      className="mt-2 px-6 py-3 text-[15px] font-semibold transition-colors hover:opacity-90"
+                      style={{ 
+                        backgroundColor: '#000000', 
+                        color: '#FFFFFF',
+                        minHeight: '44px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
                     >
                       테스트 시작
                     </Link>
@@ -496,12 +503,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         </div>
 
         <div className="page-container relative z-10">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className="max-w-3xl mx-auto">
             <h2 
-              className="text-stone-900 mb-6"
+              className="text-stone-900 mb-6 text-center"
               style={{ 
                 fontSize: 'var(--font-size-h1)',
-                fontWeight: 'var(--font-weight-h1)',
+                fontWeight: 700,
                 letterSpacing: 'var(--letter-spacing-tight)',
                 lineHeight: 'var(--line-height-h1)'
               }}
@@ -509,10 +516,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               We are Slunch Factory
             </h2>
             <p 
-              className="text-stone-700 mb-8"
+              className="text-stone-700 mb-8 text-left"
               style={{ 
                 fontSize: 'var(--font-size-body)',
-                fontWeight: 'var(--font-weight-body)',
+                fontWeight: 400,
                 lineHeight: 'var(--line-height-body)',
                 letterSpacing: 'var(--letter-spacing-tight)'
               }}
@@ -596,7 +603,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 className="text-[#000000] mb-6"
                 style={{ 
                   fontSize: 'var(--font-size-h1)',
-                  fontWeight: 'var(--font-weight-h1)',
+                  fontWeight: 700,
                   letterSpacing: 'var(--letter-spacing-tight)',
                   lineHeight: 'var(--line-height-h1)'
                 }}
@@ -606,10 +613,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               </h2>
               
               <p 
-                className="text-[#000000] mb-10"
+                className="text-[#000000] mb-10 text-left"
                 style={{ 
                   fontSize: 'var(--font-size-body)',
-                  fontWeight: 'var(--font-weight-body)',
+                  fontWeight: 400,
                   lineHeight: 'var(--line-height-body)',
                   letterSpacing: 'var(--letter-spacing-tight)'
                 }}
@@ -627,7 +634,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 'var(--font-weight-body)',
+                        fontWeight: 600,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -637,7 +644,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
-                        fontWeight: 'var(--font-weight-ui)',
+                        fontWeight: 400,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -653,7 +660,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 'var(--font-weight-body)',
+                        fontWeight: 600,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -663,7 +670,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
-                        fontWeight: 'var(--font-weight-ui)',
+                        fontWeight: 400,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -679,7 +686,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 'var(--font-weight-body)',
+                        fontWeight: 600,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -689,7 +696,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000]"
                       style={{ 
                         fontSize: 'var(--font-size-ui)',
-                        fontWeight: 'var(--font-weight-ui)',
+                        fontWeight: 400,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -702,12 +709,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* CTA Button - Outline Style */}
               <Link
                 to="/store"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
                 style={{ 
                   borderRadius: '0',
                   fontSize: 'var(--font-size-ui)',
-                  fontWeight: 700,
-                  letterSpacing: '-0.01em'
+                  fontWeight: 600,
+                  letterSpacing: '-0.01em',
+                  minHeight: '44px' /* Touch target minimum */
                 }}
               >
                 이번 주 식단 보러가기
@@ -728,12 +736,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           ============================================ */}
       <section className="scroll-snap-section-flex bg-white section-spacing">
         <div className="page-container">
-          <div className="text-center mb-12">
+          <div className="mb-12">
             <h2 
-              className="text-stone-900 mb-4"
+              className="text-stone-900 mb-4 text-center"
               style={{ 
                 fontSize: 'var(--font-size-h1)',
-                fontWeight: 'var(--font-weight-h1)',
+                fontWeight: 700,
                 letterSpacing: 'var(--letter-spacing-tight)',
                 lineHeight: 'var(--line-height-h1)'
               }}
@@ -741,10 +749,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               오늘의 기분엔 이 메뉴!
             </h2>
             <p 
-              className="text-stone-600"
+              className="text-stone-600 text-center"
               style={{ 
                 fontSize: 'var(--font-size-body)',
-                fontWeight: 'var(--font-weight-body)',
+                fontWeight: 400,
                 lineHeight: 'var(--line-height-body)',
                 letterSpacing: 'var(--letter-spacing-tight)'
               }}
@@ -807,7 +815,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   {/* 설명 */}
                   <p 
                     style={{ 
-                      fontSize: '13px',
+                      fontSize: '14px',
+                      fontWeight: 400,
                       color: '#6B6B6B',
                       marginBottom: '10px'
                     }}
@@ -818,6 +827,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   <p 
                     style={{ 
                       fontSize: '13px',
+                      fontWeight: 400,
                       color: '#999999',
                       textDecoration: 'line-through',
                       marginBottom: '4px'
@@ -832,7 +842,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                         display: 'inline-block',
                         padding: '2px 8px',
                         fontSize: '11px',
-                        fontWeight: 700,
+                        fontWeight: 600,
                         backgroundColor: '#BFFF00',
                         color: '#000000'
                       }}
@@ -842,7 +852,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     <span 
                       style={{ 
                         fontSize: '16px',
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: '#000000'
                       }}
                     >
@@ -860,13 +870,15 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               to="/store"
               style={{
                 display: 'inline-block',
-                padding: '14px 48px',
+                padding: '12px 24px',
                 border: '1px solid #000000',
                 color: '#000000',
-                fontSize: '14px',
-                fontWeight: 500,
+                fontSize: '15px',
+                fontWeight: 600,
                 textDecoration: 'none',
-                transition: 'all 0.15s ease'
+                transition: 'all 0.15s ease',
+                minHeight: '44px',
+                minWidth: '120px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#000000';
@@ -968,13 +980,15 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               to="/newsletter"
               style={{
                 display: 'inline-block',
-                padding: '14px 48px',
+                padding: '12px 24px',
                 border: '1px solid #FFFFFF',
                 color: '#FFFFFF',
-                fontSize: '14px',
-                fontWeight: 500,
+                fontSize: '15px',
+                fontWeight: 600,
                 textDecoration: 'none',
-                transition: 'all 0.15s ease'
+                transition: 'all 0.15s ease',
+                minHeight: '44px',
+                minWidth: '120px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = '#BFFF00';
