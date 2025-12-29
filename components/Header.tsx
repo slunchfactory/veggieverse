@@ -60,7 +60,6 @@ export const Header: React.FC<HeaderProps> = ({
         alignItems: 'center',
       }}
     >
-<<<<<<< HEAD
       <nav className="inner h-full flex items-center justify-between max-w-[1400px] mx-auto min-w-[320px] w-full">
         {/* 왼쪽 로고 */}
         <Link 
