@@ -221,7 +221,6 @@ export const Header: React.FC<HeaderProps> = ({
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
         <div className="icons flex items-center gap-3 sm:gap-4 md:gap-5 flex-shrink-0" style={{ flex: '0 0 auto', minWidth: 'fit-content' }}>
           <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600 hidden sm:inline" style={{ lineHeight: 1 }}>KR</span>
->>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container flex-shrink-0">
