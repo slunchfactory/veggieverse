@@ -367,6 +367,7 @@ const RecipeCarousel: React.FC<{
           }}>
             <button 
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+              aria-label="북마크 추가"
               style={{ 
                 background: 'none', 
                 border: 'none', 
@@ -680,6 +681,7 @@ const LegacyRecipeCarousel: React.FC<{
             }}>
               <button 
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                aria-label="북마크 추가"
                 style={{ 
                   background: 'none', 
                   border: 'none', 

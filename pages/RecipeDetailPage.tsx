@@ -282,6 +282,7 @@ const RecipeDetailPage: React.FC = () => {
                 </button>
                 <button
                   onClick={() => setIsSaved(!isSaved)}
+                  aria-label={isSaved ? "저장 취소" : "저장"}
                   className={`text-white hover:text-white/70 transition-colors ${
                     isSaved ? 'text-white' : ''
                   }`}

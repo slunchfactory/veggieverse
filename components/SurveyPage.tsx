@@ -678,10 +678,8 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
       setMonsterName(generateMonsterName(selectedItems));
       setMonsterDescription(generateMonsterDescription(selectedItems));
     
-    // NOTE: 로컬 프롬프터 API 연동 예정
-    // 현재는 시뮬레이션 (2초 후 완료)
-    // 
-    // 연동 시 예상 코드:
+    // 이미지 생성 시뮬레이션
+    // TODO: 실제 API 연동 시 아래 코드로 대체
     // const veggieNames = selectedItems.map(item => item.name);
     // const response = await fetch('http://localhost:YOUR_PORT/generate-monster', {
     //   method: 'POST',
@@ -690,9 +688,10 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
     // });
     // const data = await response.json();
     // setMonsterImageUrl(data.imageUrl);
+    // setIsGeneratingImage(false);
     
       setTimeout(() => {
-        // 플레이스홀더: 실제 연동 시 이 부분을 API 응답으로 대체
+        // 현재는 시뮬레이션: 2초 후 플레이스홀더 표시
         setMonsterImageUrl(null); // null이면 플레이스홀더 표시
         setIsGeneratingImage(false);
       }, 2000);

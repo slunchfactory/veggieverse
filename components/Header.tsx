@@ -13,7 +13,7 @@ interface HeaderProps {
   onProfileMenuToggle: () => void;
   showProfileMenu: boolean;
   onResetProfile: () => void;
-  offsetTop?: number;
+  offsetTop?: number | string;
 }
 
 export const Header: React.FC<HeaderProps> = ({ 
@@ -23,6 +23,8 @@ export const Header: React.FC<HeaderProps> = ({
   onResetProfile,
   offsetTop = 0,
 }) => {
+  // offsetTop이 CSS 변수 문자열인 경우 그대로 사용, 숫자인 경우 px 변환
+  const topValue = typeof offsetTop === 'string' ? offsetTop : `${offsetTop}px`;
   const location = useLocation();
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -44,24 +46,33 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header
-      className="fixed left-0 right-0 z-[9999]"
+      className="site-header fixed left-0 right-0 z-[9999]"
       style={{ 
-        top: offsetTop,
+        top: topValue,
         backgroundColor: 'var(--white-pure)',
         borderBottom: '1px solid var(--gray-lighter)',
-        height: 'auto'
+        height: 'var(--header-h)',
+        display: 'flex',
+        alignItems: 'center',
       }}
     >
-      <nav className="h-full flex items-center justify-between px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="inner h-full flex items-center justify-between max-w-[1400px] mx-auto min-w-[320px] w-full">
         {/* 왼쪽 로고 */}
         <Link 
           to="/" 
-          className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
+          className="flex items-center flex-shrink-0"
+          style={{ flex: '0 0 auto', maxWidth: 'calc(50% - 80px)' }}
         >
           <img 
             src={`${import.meta.env.BASE_URL}common/logo.png`}
             alt="SLUNCH FACTORY" 
-            className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
+            className="logo-img w-auto"
+            style={{ 
+              height: 'calc(var(--header-h) * 0.38)',
+              width: 'auto',
+              display: 'block',
+              objectFit: 'contain',
+            }}
           />
         </Link>
         
@@ -81,20 +92,21 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.path}
                   className="bg-transparent border-none p-0"
                   style={{
-                    padding: '24px 16px',
+                    padding: '10px 12px',
                     fontSize: '15px',
                     fontWeight: 600,
                     cursor: 'pointer',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
                     color: 'var(--black)',
+                    lineHeight: 1,
                   }}
                 >
                   <Link 
                     to={item.path} 
                     className={`nav-item-text ${isActive ? 'active' : ''}`}
-                    style={{ color: 'inherit' }}
+                    style={{ color: 'inherit', lineHeight: 1 }}
                     onClick={() => setOpenMenu(null)}
                   >
                     {item.name}
@@ -111,14 +123,15 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
                   style={{
-                    padding: '24px 16px',
+                    padding: '10px 12px',
                     fontSize: '15px',
                     fontWeight: 600,
                     cursor: 'pointer',
-                    display: 'flex',
+                    display: 'inline-flex',
                     alignItems: 'center',
                     gap: '4px',
                     color: 'var(--black)',
+                    lineHeight: 1,
                   }}
                   onClick={(e) => {
                     e.preventDefault();
@@ -202,17 +215,25 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600">KR</span>
+        <div className="icons flex items-center gap-3 sm:gap-4 md:gap-5 flex-shrink-0" style={{ flex: '0 0 auto', minWidth: 'fit-content' }}>
+          <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600 hidden sm:inline" style={{ lineHeight: 1 }}>KR</span>
           
           {/* 마이페이지 버튼 */}
-          <div className="relative profile-menu-container">
+          <div className="relative profile-menu-container flex-shrink-0">
             <button 
               onClick={onProfileMenuToggle}
-              className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              className="flex items-center justify-center hover:opacity-80 transition-opacity"
+              style={{ 
+                width: '36px',
+                height: '36px',
+                padding: 0,
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
               {userProfile.profileImage ? (
-                <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-stone-300 shadow-sm">
+                <div className="rounded-full overflow-hidden border-2 border-stone-300 shadow-sm" style={{ width: '28px', height: '28px' }}>
                   <img 
                     src={userProfile.profileImage} 
                     alt="My Profile" 
@@ -220,8 +241,8 @@ export const Header: React.FC<HeaderProps> = ({
                   />
                 </div>
               ) : (
-                <div className="w-8 h-8 rounded-full bg-stone-200 flex items-center justify-center">
-                  <User className="w-4 h-4 text-stone-600" />
+                <div className="rounded-full bg-stone-200 flex items-center justify-center" style={{ width: '28px', height: '28px' }}>
+                  <User className="text-stone-600" style={{ width: '16px', height: '16px' }} />
                 </div>
               )}
             </button>
@@ -259,21 +280,44 @@ export const Header: React.FC<HeaderProps> = ({
           
           <Link 
             to="/cart" 
-            className="transition-colors relative text-stone-700 hover:text-stone-900"
+            className="transition-colors relative text-stone-700 hover:text-stone-900 flex-shrink-0"
+            style={{ 
+              width: '36px',
+              height: '36px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+            }}
           >
-            <ShoppingCart className="w-5 h-5" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] rounded-full flex items-center justify-center">0</span>
+            <ShoppingCart style={{ width: '20px', height: '20px' }} />
+            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-black text-white text-[10px] rounded-full flex items-center justify-center font-bold" style={{ lineHeight: 1 }}>0</span>
           </Link>
-          <button className="transition-colors text-stone-700 hover:text-stone-900">
-            <Search className="w-5 h-5" />
+          <button 
+            className="transition-colors text-stone-700 hover:text-stone-900 hidden sm:inline-flex items-center justify-center flex-shrink-0" 
+            style={{ 
+              width: '36px',
+              height: '36px',
+              padding: 0,
+            }}
+          >
+            <Search style={{ width: '20px', height: '20px' }} />
           </button>
           
           {/* 모바일 메뉴 버튼 */}
           <button 
-            className="lg:hidden transition-colors text-stone-700 hover:text-stone-900"
+            className="lg:hidden transition-colors text-stone-700 hover:text-stone-900 flex-shrink-0"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            style={{ 
+              width: '36px',
+              height: '36px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0,
+            }}
           >
-            <Menu className="w-6 h-6" />
+            <Menu style={{ width: '20px', height: '20px' }} />
           </button>
         </div>
       </nav>

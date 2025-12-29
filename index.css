@@ -9,6 +9,10 @@
    ============================================ */
 
 :root {
+  /* Header & Promo Bar Heights - Fixed Ratios */
+  --promo-h: 32px;                /* 프로모션 바 높이 (데스크탑) */
+  --header-h: 72px;               /* 헤더 높이 (데스크탑) */
+  
   /* Typography Scale - Strict Design System */
   --font-size-h1: 48px;           /* H1 / Page Titles / Hero Headlines */
   --font-size-h2: 18px;           /* H2 / Card Titles / Product Names in Grid */
@@ -43,6 +47,10 @@
   --lime: #BFFF00;
   --lime-dark: #9ACC00;
   --olive: #3D4A3A;
+  
+  /* Header & Promo Bar Heights - Fixed Ratios */
+  --promo-h: 32px;                /* 프로모션 바 높이 (데스크탑) */
+  --header-h: 72px;               /* 헤더 높이 (데스크탑) */
   
   /* Legacy aliases for compatibility */
   --color-black: var(--black);
@@ -1739,6 +1747,22 @@ a:focus-visible {
 }
 
 /* 반응형 */
+/* ================================================
+   반응형 헤더 높이 조정
+   ================================================ */
+@media (max-width: 1024px) {
+  :root {
+    --header-h: 64px;             /* 태블릿 헤더 높이 */
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --promo-h: 28px;              /* 모바일 프로모션 바 높이 */
+    --header-h: 56px;             /* 모바일 헤더 높이 */
+  }
+}
+
 @media (max-width: 1024px) {
   /* About 페이지 - 모바일 */
   .about-nav {
@@ -1756,21 +1780,6 @@ a:focus-visible {
     margin-left: 0 !important;
     padding: 24px !important;
     border-left: none !important;
-  }
-
-  /* Store 페이지 - 모바일 */
-  .store-filter,
-  .filter-sidebar {
-    position: static !important;
-    width: 100% !important;
-    height: auto !important;
-    padding: 24px !important;
-    border-bottom: 1px solid #E5E5E5;
-  }
-  
-  .store-content {
-    margin-left: 0 !important;
-    padding: 24px !important;
   }
 }
 
@@ -1801,18 +1810,36 @@ a:focus-visible {
   display: block !important;
 }
 
-/* 좌측 필터 - 고정 */
-.store-filter,
-.filter-sidebar {
-  position: fixed !important;
-  top: 100px !important;
-  left: 0 !important;
-  width: 280px !important;
-  height: calc(100vh - 100px) !important;
-  padding: 24px 32px !important;
-  overflow-y: hidden !important;
-  background: #fff !important;
-  z-index: 50 !important;
+/* 모바일에서 필터 완전히 숨김 (먼저 정의) */
+@media (max-width: 768px) {
+  .store-filter,
+  .filter-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
+
+/* 좌측 필터 - 고정 (데스크톱만) */
+@media (min-width: 769px) {
+  .store-filter,
+  .filter-sidebar {
+    position: fixed !important;
+    top: 100px !important;
+    left: 0 !important;
+    width: 280px !important;
+    height: calc(100vh - 100px) !important;
+    padding: 24px 32px !important;
+    overflow-y: hidden !important;
+    background: #fff !important;
+    z-index: 50 !important;
+    display: block !important;
+    visibility: visible !important;
+  }
 }
 
 /* 우측 콘텐츠 - 좌측만큼 밀림 */
@@ -1948,6 +1975,390 @@ a:focus-visible {
   
   .footer-section {
     width: 100% !important;
+  }
+}
+
+/* ================================================
+   모바일 필터 바 (768px 이하에서만 표시)
+   ================================================ */
+.mobile-filter-bar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: #fff;
+    border-bottom: 1px solid #E5E5E5;
+    position: sticky;
+    top: 64px;  /* 모바일 헤더 높이 */
+    z-index: 40;
+    gap: 12px;
+  }
+  
+  .mobile-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid #0D0D0D;
+    background: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-family);
+    white-space: nowrap;
+  }
+  
+  .filter-count {
+    background: #BFFF00;
+    color: #0D0D0D;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    min-width: 20px;
+    text-align: center;
+  }
+  
+  .mobile-sort {
+    padding: 10px 12px;
+    border: 1px solid #E5E5E5;
+    font-size: 14px;
+    background: #fff;
+    font-family: var(--font-family);
+    flex: 1;
+    max-width: 150px;
+  }
+  
+  /* 데스크톱 필터 숨김 */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  /* 데스크톱 정렬 숨김 */
+  .desktop-sort {
+    display: none !important;
+  }
+  
+  /* 좌측 필터 완전히 숨김 (모바일) - 모든 방법 사용 */
+  .store-filter,
+  .filter-sidebar,
+  aside.store-filter {
+    display: none !important;
+    visibility: hidden !important;
+    position: absolute !important;
+    left: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  /* 상품 그리드 전체 너비 */
+  .store-content {
+    margin-left: 0 !important;
+    padding: 20px;
+  }
+  
+  .store-content .grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+}
+
+/* ================================================
+   바텀시트 스타일
+   ================================================ */
+.filter-bottomsheet {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 0.3s, opacity 0.3s ease;
+}
+
+.filter-bottomsheet.open {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0s, opacity 0.3s ease;
+}
+
+/* 오버레이 */
+.bottomsheet-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* 시트 본체 */
+.bottomsheet-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 85vh;
+  background: #fff;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.filter-bottomsheet.open .bottomsheet-content {
+  transform: translateY(0);
+}
+
+/* 헤더 */
+.bottomsheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #E5E5E5;
+  flex-shrink: 0;
+}
+
+.bottomsheet-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+  font-family: var(--font-family);
+}
+
+.bottomsheet-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.bottomsheet-close:hover {
+  opacity: 0.7;
+}
+
+/* 바디 - 스크롤 영역 */
+.bottomsheet-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 푸터 - 버튼 영역 */
+.bottomsheet-footer {
+  display: flex;
+  gap: 12px;
+  padding: 16px 20px;
+  border-top: 1px solid #E5E5E5;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.btn-reset {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid #E5E5E5;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-family);
+  color: #000;
+  transition: all 0.2s ease;
+}
+
+.btn-reset:hover {
+  background: #F5F5F5;
+  border-color: #000;
+}
+
+.btn-apply {
+  flex: 2;
+  padding: 14px;
+  border: none;
+  background: #0D0D0D;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-family);
+  transition: all 0.2s ease;
+}
+
+.btn-apply:hover {
+  background: #333;
+}
+
+/* ================================================
+   데스크탑 (768px 초과)
+   ================================================ */
+@media (min-width: 769px) {
+  .filter-bottomsheet {
+    display: none;
+  }
+  
+  .mobile-filter-bar {
+    display: none;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+  
+  .desktop-sort {
+    display: flex !important;
+  }
+}
+
+/* ================================================
+   헤더 & 프로모션 바 고정 높이 스타일
+   ================================================ */
+
+/* 프로모션 바 */
+.promo-bar {
+  height: var(--promo-h);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+/* 헤더 */
+.site-header {
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--gray-lighter);
+}
+
+/* 헤더 내부 컨테이너 */
+.site-header .inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+/* 로고: 높이만 고정, 넓이는 자동 */
+.site-header .logo-img {
+  height: calc(var(--header-h) * 0.38);
+  width: auto;
+  display: block;
+}
+
+/* 메뉴: 라인하이트로 헤더 밀어올리는 것 방지 */
+.site-header nav a,
+.site-header nav button {
+  line-height: 1;
+  padding: 10px 12px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* 우측 아이콘 통일 */
+.site-header .icons button,
+.site-header .icons a {
+  height: 36px;
+  width: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* 모바일 반응형 패딩 조정 */
+@media (max-width: 768px) {
+  .site-header .inner {
+    padding: 0 16px !important;
+  }
+  
+  .site-header nav a,
+  .site-header nav button {
+    padding: 8px 10px;
+  }
+  
+  .site-header .icons {
+    gap: 8px !important;
+  }
+  
+  .site-header .icons button,
+  .site-header .icons a {
+    width: 32px !important;
+    height: 32px !important;
+  }
+}
+
+/* ========================================
+   모바일 투명 스크롤바 (768px 이하)
+   ======================================== */
+@media (max-width: 768px) {
+  /* 전체 페이지 스크롤바 */
+  body::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+  
+  body {
+    -ms-overflow-style: none;  /* IE, Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  /* 바텀시트 내부 스크롤바 */
+  .bottomsheet-body::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+  
+  .bottomsheet-body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* 상품 목록 스크롤바 */
+  .store-content::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+  
+  .store-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  /* 캐러셀 스크롤바 */
+  .recipe-carousel::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+  
+  .recipe-carousel {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

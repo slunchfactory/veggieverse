@@ -40,7 +40,8 @@ const Layout: React.FC<{
   chatPanel: React.ReactNode;
   shouldShowFooter: boolean;
 }> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner, isChatOpen, chatPanel, shouldShowFooter }) => {
-  const bannerHeight = showTopBanner ? 32 : 0;
+  // 프로모션 바 높이는 CSS 변수로 관리 (데스크탑: 32px, 모바일: 28px)
+  const bannerHeight = showTopBanner ? 1 : 0; // 1 = CSS 변수 사용, 0 = 없음
   
   // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
   return (
@@ -52,10 +53,10 @@ const Layout: React.FC<{
         showProfileMenu={showProfileMenu}
         onProfileMenuToggle={onProfileMenuToggle}
         onResetProfile={onResetProfile}
-        offsetTop={bannerHeight}
+        offsetTop={bannerHeight ? 'var(--promo-h)' : '0'}
       />
       {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
-      <div className="flex-1 flex" style={{ paddingTop: 64 + bannerHeight }}>
+      <div className="flex-1 flex" style={{ paddingTop: bannerHeight ? 'calc(var(--header-h) + var(--promo-h))' : 'var(--header-h)' }}>
         {/* 좌측 메인 콘텐츠 */}
         <main className="flex-1 flex flex-col" style={{ zIndex: 0, overflow: 'visible' }}>
           {children}

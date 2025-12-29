@@ -235,7 +235,19 @@ export const StorePage: React.FC = () => {
   const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<string>('전체');
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
+  // 모바일 여부 확인
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // 하트(좋아요) 상태 관리
   const [likedItems, setLikedItems] = useState<Set<number>>(new Set());
@@ -430,113 +442,208 @@ export const StorePage: React.FC = () => {
     }
   };
 
+  // 적용된 필터 개수 계산
+  const getActiveFilterCount = (): number => {
+    let count = 0;
+    if (activeTab !== '전체') count++;
+    if (spectrum !== 'none') count++;
+    if (selectedRestrictions.length > 0) count += selectedRestrictions.length;
+    if (selectedCuisines.length > 0) count += selectedCuisines.length;
+    return count;
+  };
+
+  // 필터 초기화
+  const handleResetFilters = () => {
+    setActiveTab('전체');
+    setSelectedCategories([]);
+    setSpectrum('none');
+    setSelectedRestrictions([]);
+    setSelectedCuisines([]);
+  };
+
+  // 필터 적용 (바텀시트 닫기)
+  const handleApplyFilters = () => {
+    setIsFilterOpen(false);
+  };
+
+  // 바디 스크롤 잠금
+  useEffect(() => {
+    if (isFilterOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isFilterOpen]);
+
+  // 필터 내용 공통 컴포넌트
+  const FilterContent: React.FC = () => (
+    <div className="text-slunch-black" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      {/* 제품 형태 */}
+      <div className="filter-group">
+        <div className="filter-group-title">
+          제품 형태
+        </div>
+        <div className="flex flex-col">
+          {productTypeTabs.map((tab) => (
+            <button
+              key={tab}
+              onClick={() => handleTabClick(tab)}
+              className={`w-full text-left transition-colors font-sans ${
+                activeTab === tab
+                  ? 'font-bold text-slunch-black'
+                  : 'text-slunch-gray hover:opacity-70'
+              }`}
+              style={{ fontSize: '14px', padding: '6px 0' }}
+            >
+              <span>{tab}</span>
+              <span className="ml-1 font-sans text-slunch-gray-light" style={{ fontSize: '12px' }}>
+                {getCategoryCount(tab)}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 식단 */}
+      <div className="filter-group">
+        <div className="filter-group-title">
+          식단
+        </div>
+        <div className="flex flex-col">
+          {dietOptions.map((opt) => (
+            <label
+              key={opt.value}
+              className={`filter-radio ${spectrum === opt.value ? 'selected' : ''}`}
+              onClick={() => setSpectrum(opt.value)}
+            >
+              <span className="filter-radio-circle"></span>
+              <span>{opt.label}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+
+      {/* 추가 제한 */}
+      <div className="filter-group">
+        <div className="filter-group-title">
+          추가 제한
+        </div>
+        <div className="flex flex-col">
+          {restrictionOptions.map((opt) => {
+            const checked = selectedRestrictions.includes(opt.value);
+            return (
+              <label
+                key={opt.value}
+                className={`filter-checkbox ${checked ? 'selected' : ''}`}
+                onClick={() => {
+                  setSelectedRestrictions(prev => 
+                    prev.includes(opt.value) 
+                      ? prev.filter(v => v !== opt.value) 
+                      : [...prev, opt.value]
+                  );
+                }}
+              >
+                <span className="filter-checkbox-box"></span>
+                <span>{opt.label}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 음식 종류 */}
+      <div className="filter-group">
+        <div className="filter-group-title">
+          음식 종류
+        </div>
+        <div className="flex flex-col">
+          {cuisineOptions.map((c) => {
+            const checked = selectedCuisines.includes(c);
+            return (
+              <label
+                key={c}
+                className={`filter-checkbox ${checked ? 'selected' : ''}`}
+                onClick={() => toggleCuisine(c)}
+              >
+                <span className="filter-checkbox-box"></span>
+                <span>{c}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <>
-      {/* 좌측 필터 - Fixed Sidebar */}
-      <aside className="store-filter">
-            <div className="text-slunch-black" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              {/* 제품 형태 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  제품 형태
-                </div>
-                <div className="flex flex-col">
-                  {productTypeTabs.map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => handleTabClick(tab)}
-                      className={`w-full text-left transition-colors font-sans ${
-                        activeTab === tab
-                          ? 'font-bold text-slunch-black'
-                          : 'text-slunch-gray hover:opacity-70'
-                      }`}
-                      style={{ fontSize: '14px', padding: '6px 0' }}
-                    >
-                      <span>{tab}</span>
-                      <span className="ml-1 font-sans text-slunch-gray-light" style={{ fontSize: '12px' }}>
-                        {getCategoryCount(tab)}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+      {/* 모바일 필터 바 - 상단 고정 */}
+      <div className="mobile-filter-bar">
+        <button 
+          className="mobile-filter-btn"
+          onClick={() => setIsFilterOpen(true)}
+        >
+          <span>필터</span>
+          {getActiveFilterCount() > 0 && (
+            <span className="filter-count">{getActiveFilterCount()}</span>
+          )}
+        </button>
+        <select 
+          className="mobile-sort"
+          value={sortType}
+          onChange={(e) => handleSortChange(e.target.value as SortType)}
+        >
+          {SORT_OPTIONS.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+      </div>
 
-              {/* 식단 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  식단
-                </div>
-                <div className="flex flex-col">
-                  {dietOptions.map((opt) => (
-                    <label
-                      key={opt.value}
-                      className={`filter-radio ${spectrum === opt.value ? 'selected' : ''}`}
-                      onClick={() => setSpectrum(opt.value)}
-                    >
-                      <span className="filter-radio-circle"></span>
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
+      {/* 좌측 필터 - Fixed Sidebar (데스크톱만 렌더링) */}
+      {!isMobile && (
+        <aside className="store-filter desktop-only">
+          <FilterContent />
+        </aside>
+      )}
 
-              {/* 추가 제한 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  추가 제한
-                </div>
-                <div className="flex flex-col">
-                  {restrictionOptions.map((opt) => {
-                    const checked = selectedRestrictions.includes(opt.value);
-                    return (
-                      <label
-                        key={opt.value}
-                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
-                        onClick={() => {
-                          setSelectedRestrictions(prev => 
-                            prev.includes(opt.value) 
-                              ? prev.filter(v => v !== opt.value) 
-                              : [...prev, opt.value]
-                          );
-                        }}
-                      >
-                        <span className="filter-checkbox-box"></span>
-                        <span>{opt.label}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 음식 종류 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  음식 종류
-                </div>
-                <div className="flex flex-col">
-                  {cuisineOptions.map((c) => {
-                    const checked = selectedCuisines.includes(c);
-                    return (
-                      <label
-                        key={c}
-                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
-                        onClick={() => toggleCuisine(c)}
-                      >
-                        <span className="filter-checkbox-box"></span>
-                        <span>{c}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-            </div>
-          </aside>
+      {/* 모바일 필터 - 바텀시트 */}
+      <div className={`filter-bottomsheet ${isFilterOpen ? 'open' : ''}`}>
+        <div className="bottomsheet-overlay" onClick={() => setIsFilterOpen(false)} />
+        <div className="bottomsheet-content">
+          <div className="bottomsheet-header">
+            <h3>필터</h3>
+            <button 
+              className="bottomsheet-close" 
+              onClick={() => setIsFilterOpen(false)}
+              aria-label="필터 닫기"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="bottomsheet-body">
+            <FilterContent />
+          </div>
+          <div className="bottomsheet-footer">
+            <button className="btn-reset" onClick={handleResetFilters}>
+              초기화
+            </button>
+            <button className="btn-apply" onClick={handleApplyFilters}>
+              적용하기
+            </button>
+          </div>
+        </div>
+      </div>
 
           {/* 우측 콘텐츠 */}
       <main className="store-content">
-            {/* 정렬 드롭다운 - Flat Design */}
-            <div className="flex justify-end mb-6">
+            {/* 정렬 드롭다운 - Flat Design (데스크톱) */}
+            <div className="flex justify-end mb-6 desktop-sort">
               <div className="relative inline-block">
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
