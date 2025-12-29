@@ -9,7 +9,7 @@
    ============================================ */
 
 :root {
-  /* Typography Scale - Strict Design System */
+  /* Typography Scale - Strict Design System (기본값 - 데스크톱) */
   --font-size-h1: 48px;           /* H1 / Page Titles / Hero Headlines */
   --font-size-h2: 18px;           /* H2 / Card Titles / Product Names in Grid */
   --font-size-body: 16px;         /* Body Text / Descriptions */
@@ -26,6 +26,13 @@
   --line-height-h2: 1.4;
   --line-height-body: 1.6;
   --line-height-ui: 1.5;
+  
+  /* Header 반응형 변수 */
+  --header-padding-x: 32px;       /* 좌우 패딩 */
+  --header-nav-font-size: 15px;   /* 네비게이션 폰트 크기 */
+  --header-nav-padding-y: 24px;   /* 네비게이션 아이템 상하 패딩 */
+  --header-nav-padding-x: 16px;   /* 네비게이션 아이템 좌우 패딩 */
+  --header-logo-height: 28px;      /* 로고 높이 */
   
   /* Font Family - Slunch Factory */
   --font-family: 'Plus Jakarta Sans', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -95,6 +102,36 @@
   
   /* Typography adjustments */
   --letter-spacing-tight: -0.02em;
+}
+
+/* 태블릿 (768px ~ 1024px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --font-size-h1: clamp(32px, 4vw, 40px);
+    --font-size-h2: clamp(16px, 2vw, 18px);
+    --font-size-body: clamp(14px, 1.5vw, 16px);
+    --font-size-ui: clamp(13px, 1.2vw, 15px);
+    --header-padding-x: 24px;
+    --header-nav-font-size: clamp(13px, 1.2vw, 15px);
+    --header-nav-padding-y: 20px;
+    --header-nav-padding-x: 12px;
+    --header-logo-height: clamp(24px, 3vw, 28px);
+  }
+}
+
+/* 모바일 (768px 이하) */
+@media (max-width: 767px) {
+  :root {
+    --font-size-h1: clamp(24px, 6vw, 32px);
+    --font-size-h2: clamp(14px, 3vw, 16px);
+    --font-size-body: clamp(13px, 2vw, 15px);
+    --font-size-ui: clamp(12px, 1.8vw, 14px);
+    --header-padding-x: 16px;
+    --header-nav-font-size: clamp(12px, 1.8vw, 14px);
+    --header-nav-padding-y: 16px;
+    --header-nav-padding-x: 8px;
+    --header-logo-height: clamp(20px, 4vw, 24px);
+  }
 }
 
 /* ============================================
@@ -966,7 +1003,8 @@ a:focus-visible {
 /* 레시피 섹션 */
 .recipe-section {
   position: relative;
-  padding: 48px 64px;
+  display: block;
+  width: 100%;
 }
 
 /* 배경 확장 - 가상요소로 (다른 요소에 영향 없음) */
@@ -978,7 +1016,8 @@ a:focus-visible {
   transform: translateX(-50%);
   width: 100vw;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
+  pointer-events: none;
 }
 
 .recipe-section:nth-child(odd)::before {

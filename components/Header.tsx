@@ -25,6 +25,10 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  // 현재 선택된 카테고리 확인
+  const searchParams = new URLSearchParams(location.search);
+  const currentCategory = searchParams.get('category') || (location.pathname === '/store' ? 'ALL' : null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isMobileStoreOpen, setIsMobileStoreOpen] = useState(false);
@@ -52,16 +56,38 @@ export const Header: React.FC<HeaderProps> = ({
         height: 'auto'
       }}
     >
-      <nav className="h-full flex items-center justify-between px-8 max-w-[1400px] mx-auto min-w-[320px]">
+      <nav className="h-full flex items-center justify-between max-w-[1400px] mx-auto min-w-[320px]" style={{
+        paddingLeft: 'var(--header-padding-x)',
+        paddingRight: 'var(--header-padding-x)',
+      }}>
         {/* 왼쪽 로고 */}
         <Link 
           to="/" 
           className="flex items-center gap-3 flex-shrink-0 min-w-[100px]"
+          onClick={(e) => {
+            // 로고 클릭 시 팝업 표시 이벤트 발생
+            const dontShowUntil = localStorage.getItem('veggieverse-dont-show-until');
+            if (dontShowUntil) {
+              const dontShowDate = new Date(dontShowUntil);
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              dontShowDate.setHours(0, 0, 0, 0);
+
+              // 오늘 날짜가 "보지 않기" 날짜보다 작으면 팝업 표시하지 않음
+              if (today < dontShowDate) {
+                return;
+              }
+            }
+            window.dispatchEvent(new CustomEvent('veggieverse-show-popup'));
+          }}
         >
           <img 
             src={`${import.meta.env.BASE_URL}common/logo.png`}
             alt="SLUNCH FACTORY" 
-            className="h-7 sm:h-8 lg:h-9 w-auto flex-shrink-0"
+            className="w-auto flex-shrink-0"
+            style={{
+              height: 'var(--header-logo-height)',
+            }}
           />
         </Link>
         
@@ -81,8 +107,8 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.path}
                   className="bg-transparent border-none p-0"
                   style={{
-                    padding: '24px 16px',
-                    fontSize: '15px',
+                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
+                    fontSize: 'var(--header-nav-font-size)',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -111,8 +137,8 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
                   style={{
-                    padding: '24px 16px',
-                    fontSize: '15px',
+                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
+                    fontSize: 'var(--header-nav-font-size)',
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'flex',
@@ -163,7 +189,7 @@ export const Header: React.FC<HeaderProps> = ({
                           href="#"
                           className="dropdown-item"
                           style={{
-                            fontSize: '13px',
+                            fontSize: 'clamp(11px, 1.2vw, 13px)',
                             fontWeight: 400,
                             color: 'var(--black)',
                             textDecoration: 'none',
@@ -202,8 +228,12 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
         
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
-        <div className="flex items-center gap-4 sm:gap-6">
-          <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600">KR</span>
+        <div className="flex items-center" style={{
+          gap: 'clamp(12px, 2vw, 24px)',
+        }}>
+          <span className="whitespace-nowrap font-bold text-stone-600" style={{
+            fontSize: 'clamp(10px, 1.5vw, 12px)',
+          }}>KR</span>
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container">
@@ -281,7 +311,9 @@ export const Header: React.FC<HeaderProps> = ({
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-sm">
-          <div className="px-4 py-3 space-y-2">
+          <div className="space-y-2" style={{
+            padding: 'clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px)',
+          }}>
             {navItems.map((item) => {
               const isStore = item.hasDropdown;
               const isActive = location.pathname === item.path || 
@@ -303,11 +335,14 @@ export const Header: React.FC<HeaderProps> = ({
                         setIsMobileMenuOpen(false);
                       }
                     }}
-                    className={`block text-sm py-1 ${
+                    className={`block py-1 uppercase ${
                       isActive 
                         ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                         : 'text-stone-700 font-medium'
                     }`}
+                    style={{
+                      fontSize: 'clamp(12px, 1.8vw, 14px)',
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -326,7 +361,10 @@ export const Header: React.FC<HeaderProps> = ({
                               navigate(`/store?productType=${encodeURIComponent(cat)}`);
                             }
                           }}
-                          className="block text-left w-full text-sm text-stone-600 py-1 hover:text-stone-900"
+                          className="block text-left w-full text-stone-600 py-1 hover:text-stone-900"
+                          style={{
+                            fontSize: 'clamp(11px, 1.5vw, 13px)',
+                          }}
                         >
                           {cat}
                         </button>

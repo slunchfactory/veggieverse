@@ -145,7 +145,7 @@ const HallOfFameMarquee: React.FC = () => {
           전체보기 →
         </Link>
       </div>
-    </div>
+    </section>
   );
 };
 
