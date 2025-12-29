@@ -284,7 +284,14 @@ const RecipeCarousel: React.FC<{
     <div 
       ref={scrollRef}
       className="flex overflow-x-auto no-scrollbar pb-4"
-      style={{ gap: '16px', scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch' }}
+      style={{ 
+        gap: '16px', 
+        scrollBehavior: 'smooth', 
+        WebkitOverflowScrolling: 'touch',
+        width: '100%',
+        position: 'relative',
+        overflowY: 'visible',
+      }}
     >
       {recipes.map((recipe) => (
         <div
@@ -435,15 +442,31 @@ const RecipeSection: React.FC<{
     <section 
       className="recipe-section"
       style={{ 
+        display: 'block',
         width: '100%',
         background: isOdd ? '#F5F5F0' : '#FFFFFF',
         padding: '48px 0',
+        position: 'relative',
+        overflow: 'visible',
+        minHeight: 'auto',
       }}
     >
       {/* 내부 콘텐츠 - 중앙 정렬 */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 64px' }}>
+      <div style={{ 
+        maxWidth: '1400px', 
+        margin: '0 auto', 
+        padding: '0 64px',
+        position: 'relative',
+        overflow: 'visible',
+      }}>
         {/* 헤더 */}
-        <div className="section-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '24px' }}>
+        <div className="section-header" style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'flex-end', 
+          marginBottom: '24px',
+          position: 'relative',
+        }}>
           <div>
             <span 
               style={{
@@ -476,19 +499,30 @@ const RecipeSection: React.FC<{
             </Link>
           </div>
           {/* 캐러셀 컨트롤 */}
-          <div className="carousel-controls" style={{ display: 'flex', gap: '8px' }}>
+          <div className="carousel-controls" style={{ 
+            display: 'flex', 
+            gap: '8px',
+            position: 'relative',
+          }}>
             <ArrowButton direction="left" />
             <ArrowButton direction="right" />
           </div>
         </div>
 
-        {/* 캐러셀 */}
-        <RecipeCarousel 
-          recipes={category.recipes} 
-          showAuthor 
-          categoryColor={colors}
-          scrollRef={scrollRef as React.RefObject<HTMLDivElement>}
-        />
+        {/* 캐러셀 컨테이너 - overflow 제어 */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          overflowX: 'auto',
+          overflowY: 'visible',
+        }}>
+          <RecipeCarousel 
+            recipes={category.recipes} 
+            showAuthor 
+            categoryColor={colors}
+            scrollRef={scrollRef as React.RefObject<HTMLDivElement>}
+          />
+        </div>
       </div>
     </section>
   );
@@ -795,7 +829,11 @@ const RecipePage: React.FC = () => {
   // 스피릿 진입 시 레이아웃
   if (fromSpirit && spiritInfo) {
     return (
-      <div className="recipe-page min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
+      <div className="recipe-page min-h-screen w-full" style={{ 
+        backgroundColor: '#ffffff',
+        overflowX: 'hidden',
+        overflowY: 'visible',
+      }}>
         {/* 스피릿 전체 섹션 래퍼 (하나의 큰 섹션) */}
         <div 
           className="mb-16"
@@ -922,31 +960,43 @@ const RecipePage: React.FC = () => {
         </div>
 
         {/* 일반 레시피 섹션들 (흰 배경) */}
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
           {/* 명예의 전당 히어로 */}
-          <HallOfFameMarquee />
+          <div style={{ display: 'block', width: '100%' }}>
+            <HallOfFameMarquee />
+          </div>
 
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
             {/* 일반 카테고리 섹션들 */}
             {recipeCategories.map((category, index) => (
               <RecipeSection key={category.id} category={category} index={index} />
             ))}
           </div>
-        </>
+        </div>
       </div>
     );
   }
 
   // 일반 진입 시 (기존 구조 유지)
   return (
-    <div className="recipe-page min-h-screen overflow-x-hidden w-full" style={{ backgroundColor: '#ffffff' }}>
+    <div className="recipe-page min-h-screen w-full" style={{ 
+      backgroundColor: '#ffffff',
+      display: 'flex',
+      flexDirection: 'column',
+      overflowX: 'hidden',
+      overflowY: 'visible',
+    }}>
       {/* 명예의 전당 히어로 */}
-      <HallOfFameMarquee />
+      <div style={{ display: 'block', width: '100%' }}>
+        <HallOfFameMarquee />
+      </div>
 
       {/* 카테고리별 섹션들 - 각각 별도 영역 (page-container 밖) */}
-      {displayCategories.map((category, index) => (
-        <RecipeSection key={category.id} category={category} index={index} />
-      ))}
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        {displayCategories.map((category, index) => (
+          <RecipeSection key={category.id} category={category} index={index} />
+        ))}
+      </div>
 
       {/* 레시피 작성 CTA */}
       <div className="page-container py-16">

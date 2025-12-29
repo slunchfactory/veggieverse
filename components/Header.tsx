@@ -27,6 +27,10 @@ export const Header: React.FC<HeaderProps> = ({
   const topValue = typeof offsetTop === 'string' ? offsetTop : `${offsetTop}px`;
   const location = useLocation();
   const navigate = useNavigate();
+
+  // 현재 선택된 카테고리 확인
+  const searchParams = new URLSearchParams(location.search);
+  const currentCategory = searchParams.get('category') || (location.pathname === '/store' ? 'ALL' : null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [isMobileStoreOpen, setIsMobileStoreOpen] = useState(false);
@@ -56,6 +60,7 @@ export const Header: React.FC<HeaderProps> = ({
         alignItems: 'center',
       }}
     >
+<<<<<<< HEAD
       <nav className="inner h-full flex items-center justify-between max-w-[1400px] mx-auto min-w-[320px] w-full">
         {/* 왼쪽 로고 */}
         <Link 
@@ -92,8 +97,13 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.path}
                   className="bg-transparent border-none p-0"
                   style={{
+<<<<<<< HEAD
                     padding: '10px 12px',
                     fontSize: '15px',
+=======
+                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
+                    fontSize: 'var(--header-nav-font-size)',
+>>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'inline-flex',
@@ -123,8 +133,13 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   className={`nav-item-btn bg-transparent border-none p-0 ${isActive || openMenu === 'store' ? 'active' : ''}`}
                   style={{
+<<<<<<< HEAD
                     padding: '10px 12px',
                     fontSize: '15px',
+=======
+                    padding: 'var(--header-nav-padding-y) var(--header-nav-padding-x)',
+                    fontSize: 'var(--header-nav-font-size)',
+>>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
                     fontWeight: 600,
                     cursor: 'pointer',
                     display: 'inline-flex',
@@ -176,7 +191,7 @@ export const Header: React.FC<HeaderProps> = ({
                           href="#"
                           className="dropdown-item"
                           style={{
-                            fontSize: '13px',
+                            fontSize: 'clamp(11px, 1.2vw, 13px)',
                             fontWeight: 400,
                             color: 'var(--black)',
                             textDecoration: 'none',
@@ -217,6 +232,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* 오른쪽 아이콘 + 모바일 메뉴 버튼 */}
         <div className="icons flex items-center gap-3 sm:gap-4 md:gap-5 flex-shrink-0" style={{ flex: '0 0 auto', minWidth: 'fit-content' }}>
           <span className="text-xs sm:text-sm whitespace-nowrap font-bold text-stone-600 hidden sm:inline" style={{ lineHeight: 1 }}>KR</span>
+>>>>>>> 5007cdf0408d3e34bc296e1e165a9e6e6e78284e
           
           {/* 마이페이지 버튼 */}
           <div className="relative profile-menu-container flex-shrink-0">
@@ -325,7 +341,9 @@ export const Header: React.FC<HeaderProps> = ({
       {/* 모바일 메뉴 드롭다운 */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-sm">
-          <div className="px-4 py-3 space-y-2">
+          <div className="space-y-2" style={{
+            padding: 'clamp(12px, 2vw, 16px) clamp(16px, 3vw, 24px)',
+          }}>
             {navItems.map((item) => {
               const isStore = item.hasDropdown;
               const isActive = location.pathname === item.path || 
@@ -347,11 +365,14 @@ export const Header: React.FC<HeaderProps> = ({
                         setIsMobileMenuOpen(false);
                       }
                     }}
-                    className={`block text-sm py-1 ${
+                    className={`block py-1 uppercase ${
                       isActive 
                         ? 'text-stone-900 font-extrabold underline underline-offset-4' 
                         : 'text-stone-700 font-medium'
                     }`}
+                    style={{
+                      fontSize: 'clamp(12px, 1.8vw, 14px)',
+                    }}
                   >
                     {item.name}
                   </Link>
@@ -370,7 +391,10 @@ export const Header: React.FC<HeaderProps> = ({
                               navigate(`/store?productType=${encodeURIComponent(cat)}`);
                             }
                           }}
-                          className="block text-left w-full text-sm text-stone-600 py-1 hover:text-stone-900"
+                          className="block text-left w-full text-stone-600 py-1 hover:text-stone-900"
+                          style={{
+                            fontSize: 'clamp(11px, 1.5vw, 13px)',
+                          }}
                         >
                           {cat}
                         </button>
