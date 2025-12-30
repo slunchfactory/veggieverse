@@ -2001,21 +2001,12 @@ a:focus-visible {
 }
 
 /* ================================================
-   Footer - 반응형
+   Footer - 반응형 (Tailwind 클래스로 대체됨)
    ================================================ */
-@media (max-width: 768px) {
-  .site-footer {
-    padding: 32px 20px !important;
-  }
-  
-  .footer-content {
-    flex-direction: column !important;
-    gap: 24px !important;
-  }
-  
-  .footer-section {
-    width: 100% !important;
-  }
+.site-footer {
+  position: relative;
+  z-index: 60;
+  background: var(--black);
 }
 
 /* ================================================

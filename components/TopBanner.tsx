@@ -8,7 +8,7 @@ interface TopBannerProps {
 export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
   return (
     <div 
-      className="promo-bar fixed top-0 left-0 right-0 z-[60] w-full"
+      className="promo-bar relative w-full"
       style={{ 
         height: 'var(--promo-h)',
         backgroundColor: '#000000',

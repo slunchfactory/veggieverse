@@ -512,12 +512,12 @@ const RecipeSection: React.FC<{
           width: '100%',
           overflowX: 'auto',
         }}>
-          <RecipeCarousel 
-            recipes={category.recipes} 
-            showAuthor 
-            categoryColor={colors}
-            scrollRef={scrollRef as React.RefObject<HTMLDivElement>}
-          />
+        <RecipeCarousel 
+          recipes={category.recipes} 
+          showAuthor 
+          categoryColor={colors}
+          scrollRef={scrollRef as React.RefObject<HTMLDivElement>}
+        />
         </div>
       </div>
     </section>
@@ -829,48 +829,48 @@ const RecipePage: React.FC = () => {
         <main className="w-full flex flex-col items-center">
           {/* Section 1: 스피릿 Hero / Title */}
           <section className="w-full max-w-[1280px] px-5 py-20 text-center" style={{ background: '#EEF2EB' }}>
-            <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
+              <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
             <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2" style={{ fontSize: '36px', fontWeight: 800 }}>
-              {spiritName} 추천 레시피
-            </h1>
+                {spiritName} 추천 레시피
+              </h1>
             <p className="text-stone-600 text-left max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B' }}>
-              "{spiritInfo.description}"
-            </p>
-          </section>
+                "{spiritInfo.description}"
+              </p>
+            </section>
 
           {/* Section 2: 스피릿 PICK 섹션 */}
-          {spiritPickRecipes.length > 0 && (
-            <section 
-              id="spirit-pick"
+            {spiritPickRecipes.length > 0 && (
+              <section 
+                id="spirit-pick"
               className="w-full max-w-[1280px] px-5 py-20"
-              style={{
+                style={{
                 background: '#EEF2EB',
-              }}
-            >
-              <span 
-                className="inline-block px-4 py-1.5 text-xs font-bold tracking-wide uppercase mb-3 rounded-none"
-                style={{ backgroundColor: '#3D4A3A', color: '#FFFFFF' }}
+                }}
               >
-                스피릿 PICK
-              </span>
+                  <span 
+                    className="inline-block px-4 py-1.5 text-xs font-bold tracking-wide uppercase mb-3 rounded-none"
+                    style={{ backgroundColor: '#3D4A3A', color: '#FFFFFF' }}
+                  >
+                    스피릿 PICK
+                  </span>
               <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2" style={{ fontSize: '24px', fontWeight: 700 }}>
-                {spiritName} 스피릿이 좋아하는 레시피
-              </h2>
+                    {spiritName} 스피릿이 좋아하는 레시피
+                  </h2>
               <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
-                {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
-              </p>
-              <div className="mt-6">
-                <RecipeCarousel recipes={spiritPickRecipes} showAuthor categoryColor={COLORS.green} />
-              </div>
-            </section>
-          )}
+                    {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
+                  </p>
+                  <div className="mt-6">
+                    <RecipeCarousel recipes={spiritPickRecipes} showAuthor categoryColor={COLORS.green} />
+                </div>
+              </section>
+            )}
 
           {/* Section 3: Recipe Grid (Centered Container) */}
           <section className="w-full max-w-[1280px] px-5 py-20">
             <div className="w-full flex flex-col">
 
-              {/* 큐레이션 섹션 */}
-              {displayCategories.length > 0 && (
+            {/* 큐레이션 섹션 */}
+            {displayCategories.length > 0 && (
                 <div style={{ padding: '40px 0' }}>
                   <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2" style={{ fontWeight: 700 }}>
                     {spiritName}에게 어울리는 레시피
@@ -907,44 +907,44 @@ const RecipePage: React.FC = () => {
                     })}
                   </div>
                 </div>
-              )}
+            )}
 
-              {/* 스피릿 미션 섹션 */}
+            {/* 스피릿 미션 섹션 */}
               <div 
-                style={{
-                  padding: '40px 0',
-                  borderTop: '1px solid rgba(0, 0, 0, 0.06)',
-                }}
-              >
-                <div className="text-center max-w-2xl mx-auto">
-                  <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-100 rounded-none mb-6">
-                    <Trophy className="w-5 h-5 text-emerald-700" />
-                    <span className="text-emerald-700 font-semibold">스피릿 미션</span>
-                  </div>
-                  <h3 className="text-2xl font-bold text-stone-900 mb-3" style={{ fontWeight: 700 }}>
-                    이 레시피를 만들어보고 후기를 남겨주시면
-                  </h3>
-                  <div className="flex items-center justify-center gap-3 mb-6">
-                    <span className="text-4xl">{spiritInfo.emoji}</span>
-                    <span className="text-2xl font-bold text-emerald-700" style={{ fontWeight: 700 }}>{spiritName}</span>
-                    <span className="text-4xl">배지를 드려요!</span>
-                  </div>
-                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
-                    레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
-                    <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
-                  </p>
+              style={{
+                padding: '40px 0',
+                borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+              }}
+            >
+              <div className="text-center max-w-2xl mx-auto">
+                <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-emerald-100 rounded-none mb-6">
+                  <Trophy className="w-5 h-5 text-emerald-700" />
+                  <span className="text-emerald-700 font-semibold">스피릿 미션</span>
                 </div>
+                  <h3 className="text-2xl font-bold text-stone-900 mb-3" style={{ fontWeight: 700 }}>
+                  이 레시피를 만들어보고 후기를 남겨주시면
+                </h3>
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <span className="text-4xl">{spiritInfo.emoji}</span>
+                    <span className="text-2xl font-bold text-emerald-700" style={{ fontWeight: 700 }}>{spiritName}</span>
+                  <span className="text-4xl">배지를 드려요!</span>
+                </div>
+                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
+                  레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
+                  <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
+                </p>
               </div>
-            </div>
+          </div>
+        </div>
           </section>
 
           {/* Section 4: 일반 카테고리 섹션들 */}
           <section className="w-full max-w-[1280px] px-5 py-20">
             <div className="w-full flex flex-col">
-              {recipeCategories.map((category, index) => (
-                <RecipeSection key={category.id} category={category} index={index} />
-              ))}
-            </div>
+            {recipeCategories.map((category, index) => (
+              <RecipeSection key={category.id} category={category} index={index} />
+            ))}
+          </div>
           </section>
         </main>
       </div>
@@ -957,48 +957,48 @@ const RecipePage: React.FC = () => {
       <main className="w-full flex flex-col">
         {/* 카테고리별 섹션들 */}
         <div className="w-full flex flex-col">
-          {displayCategories.map((category, index) => (
-            <RecipeSection key={category.id} category={category} index={index} />
-          ))}
+      {displayCategories.map((category, index) => (
+        <RecipeSection key={category.id} category={category} index={index} />
+      ))}
         </div>
 
-        {/* 레시피 작성 CTA */}
-        <div className="page-container py-16">
-          <section className="border-t border-stone-200 pt-16">
-            <div className="text-center max-w-xl mx-auto">
-              <div className="w-16 h-16 bg-green-100 rounded-none flex items-center justify-center mx-auto mb-6">
-                <Plus className="w-8 h-8 text-green-600" />
-              </div>
+      {/* 레시피 작성 CTA */}
+      <div className="page-container py-16">
+        <section className="border-t border-stone-200 pt-16">
+          <div className="text-center max-w-xl mx-auto">
+            <div className="w-16 h-16 bg-green-100 rounded-none flex items-center justify-center mx-auto mb-6">
+              <Plus className="w-8 h-8 text-green-600" />
+            </div>
               <h3 className="text-2xl font-bold text-stone-900 mb-3" style={{ fontWeight: 700 }}>
-                {spiritName ? `내 스피릿에 맞는 나만의 레시피 투고하기` : '나만의 레시피를 공유해보세요'}
-              </h3>
+              {spiritName ? `내 스피릿에 맞는 나만의 레시피 투고하기` : '나만의 레시피를 공유해보세요'}
+            </h3>
               <p className="text-stone-500 mb-6 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
-                {spiritName 
-                  ? `${spiritName}님의 특성에 맞는 레시피를 자유롭게 올려주세요. 같은 스피릿 유저들에게 영감을 줄 수 있어요!`
-                  : '당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.\n다른 유저들에게 영감을 줄 수 있어요!'
-                }
-              </p>
-              <button 
-                onClick={() => {
-                  navigate('/recipe?upload=true');
-                }}
+              {spiritName 
+                ? `${spiritName}님의 특성에 맞는 레시피를 자유롭게 올려주세요. 같은 스피릿 유저들에게 영감을 줄 수 있어요!`
+                : '당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.\n다른 유저들에게 영감을 줄 수 있어요!'
+              }
+            </p>
+            <button 
+              onClick={() => {
+                navigate('/recipe?upload=true');
+              }}
                 className={`inline-flex items-center gap-2 px-6 py-3 rounded-none font-semibold transition-colors ${
-                  spiritName 
-                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                    : 'bg-stone-900 hover:bg-stone-800 text-white'
-                }`}
+                spiritName 
+                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
+                  : 'bg-stone-900 hover:bg-stone-800 text-white'
+              }`}
                 style={{ 
                   fontSize: '15px',
                   fontWeight: 600,
                   minHeight: '44px'
                 }}
-              >
-                <Upload className="w-5 h-5" />
-                <span>{spiritName ? '레시피 투고하기' : '레시피 작성하기'}</span>
-              </button>
-            </div>
-          </section>
-        </div>
+            >
+              <Upload className="w-5 h-5" />
+              <span>{spiritName ? '레시피 투고하기' : '레시피 작성하기'}</span>
+            </button>
+          </div>
+        </section>
+      </div>
       </main>
     </div>
   );

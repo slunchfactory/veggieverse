@@ -46,17 +46,24 @@ const Layout: React.FC<{
   // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
   return (
     <div className="min-h-screen min-w-[360px] flex flex-col">
-      {/* 최상단 가입유도 배너 */}
-      {showTopBanner && <TopBanner onClose={onCloseBanner} />}
-      <Header 
-        userProfile={userProfile}
-        showProfileMenu={showProfileMenu}
-        onProfileMenuToggle={onProfileMenuToggle}
-        onResetProfile={onResetProfile}
-        offsetTop={bannerHeight ? 'var(--promo-h)' : '0'}
-      />
+      {/* === STICKY TOP CONTAINER === */}
+      <div className="sticky top-0 z-50 w-full">
+        {/* 1. Promo Banner (Conditional) */}
+        {showTopBanner && <TopBanner onClose={onCloseBanner} />}
+        
+        {/* 2. Main Header */}
+        <Header 
+          userProfile={userProfile}
+          showProfileMenu={showProfileMenu}
+          onProfileMenuToggle={onProfileMenuToggle}
+          onResetProfile={onResetProfile}
+          showTopBanner={showTopBanner}
+        />
+      </div>
+      
+      {/* === PAGE CONTENT === */}
       {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
-      <div className="flex-1 flex" style={{ paddingTop: bannerHeight ? 'calc(var(--header-h) + var(--promo-h))' : 'var(--header-h)' }}>
+      <div className="flex-1 flex" style={{ paddingTop: 0 }}>
         {/* 좌측 메인 콘텐츠 */}
         <main className="flex-1 flex flex-col" style={{ zIndex: 0, overflow: 'visible' }}>
           {children}
