@@ -171,7 +171,7 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
       >
         {/* 헤더 */}
         <div className="sticky top-0 bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-stone-900">레시피 투고하기</h2>
+          <h2 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>레시피 투고하기</h2>
           <button
             onClick={handleClose}
             className="p-2 hover:bg-stone-100 transition-colors"

@@ -65,14 +65,14 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
                  <div className="p-5 bg-gradient-to-br from-orange-50 to-amber-50/50 rounded-none">
                     <div className="flex items-center gap-2 mb-2 text-orange-600">
                         <Sparkles className="w-4 h-4" />
-                        <span className="font-semibold text-sm uppercase tracking-wide">Fun Fact</span>
+                        <span className="font-normal text-sm uppercase tracking-wide">Fun Fact</span>
                     </div>
                     <p className="text-sm text-stone-600 leading-relaxed">{data.funFact}</p>
                  </div>
                  <div className="p-5 bg-gradient-to-br from-green-50 to-emerald-50/50 rounded-none">
                     <div className="flex items-center gap-2 mb-2 text-green-600">
                         <Calendar className="w-4 h-4" />
-                        <span className="font-semibold text-sm uppercase tracking-wide">Season</span>
+                        <span className="font-normal text-sm uppercase tracking-wide">Season</span>
                     </div>
                     <p className="text-sm text-stone-600 leading-relaxed">{data.bestSeason}</p>
                  </div>
@@ -85,7 +85,7 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
                 </div>
                 
                 <div className="mb-6">
-                  <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">Ingredients</h4>
+                  <h4 className="text-xs font-normal text-stone-400 uppercase tracking-wider mb-3">Ingredients</h4>
                   <ul className="grid grid-cols-2 gap-2">
                     {data.simpleRecipe.ingredients.map((ing, i) => (
                       <li key={i} className="text-sm text-stone-600 flex items-center gap-2">
@@ -97,11 +97,11 @@ export const DetailPanel: React.FC<DetailPanelProps> = ({ isOpen, onClose, loadi
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-bold text-stone-400 uppercase tracking-wider mb-3">Preparation</h4>
+                  <h4 className="text-xs font-normal text-stone-400 uppercase tracking-wider mb-3">Preparation</h4>
                   <ol className="space-y-4">
                     {data.simpleRecipe.steps.map((step, i) => (
                       <li key={i} className="flex gap-4 text-stone-600">
-                        <span className="flex-shrink-0 w-6 h-6 rounded-none bg-gradient-to-br from-orange-400 to-amber-400 text-white text-xs font-bold flex items-center justify-center shadow-sm">
+                        <span className="flex-shrink-0 w-6 h-6 rounded-none bg-gradient-to-br from-orange-400 to-amber-400 text-white text-xs font-normal flex items-center justify-center shadow-sm" style={{ fontWeight: 400 }}>
                           {i + 1}
                         </span>
                         <p className="text-sm leading-relaxed pt-0.5">{step}</p>

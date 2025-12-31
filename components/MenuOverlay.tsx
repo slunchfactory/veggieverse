@@ -12,7 +12,7 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({ scale, onZoomIn, onZoo
     <>
       {/* Top Left Logo */}
       <div className="fixed top-8 left-8 z-40 pointer-events-none">
-        <h1 className="text-3xl font-bold tracking-tighter text-stone-900 pointer-events-auto cursor-default">
+        <h1 className="text-stone-900 pointer-events-auto cursor-default font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400, letterSpacing: '-0.02em' }}>
           veggieverse
         </h1>
       </div>

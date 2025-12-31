@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Heart, Share2, Bookmark, Clock, ChefHat, Users, Sparkles, Lightbulb, ChevronRight, ChevronLeft, ChevronUp, ChevronDown, MessageCircle, CheckCircle2, Camera } from 'lucide-react';
+import { ArrowLeft, Share2, Clock, ChefHat, Users, Sparkles, Lightbulb, ChevronRight, ChevronLeft, ChevronUp, ChevronDown, MessageCircle, CheckCircle2, Camera } from 'lucide-react';
 import { getIngredientIcon } from '../utils/ingredientIcon';
 import { getRecipeHeroImage, getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 import { CommentSection } from '../components/CommentSection';
@@ -10,6 +10,18 @@ import { useUser } from '../contexts/UserContext';
 import { ToastContainer, ToastProps } from '../components/Toast';
 import { DEFAULT_RECIPE_IMAGE } from '../data/recipeDetails';
 import { PhotoReviewModal, PhotoReview } from '../components/PhotoReviewModal';
+import { TopControlBar, TabItem } from '../components/TopControlBar';
+
+// 레시피 카테고리 탭 데이터
+const recipeTabs: TabItem[] = [
+  { id: 'popular', label: '인기' },
+  { id: 'new', label: '신규' },
+  { id: 'lunch', label: '점심' },
+  { id: 'dessert', label: '디저트' },
+  { id: 'korean', label: '한식' },
+  { id: 'drink', label: '술안주' },
+  { id: 'date', label: '데이트' },
+];
 
 const RecipeDetailPage: React.FC = () => {
   const { id } = useParams();
@@ -22,6 +34,13 @@ const RecipeDetailPage: React.FC = () => {
   const [imageError, setImageError] = useState(false);
   const [showPhotoReviewModal, setShowPhotoReviewModal] = useState(false);
   const [photoReviews, setPhotoReviews] = useState<PhotoReview[]>([]);
+  const [activeRecipeTab, setActiveRecipeTab] = useState('popular');
+
+  // 탭 변경 핸들러 - 해당 카테고리 페이지로 이동
+  const handleRecipeTabChange = (tabId: string) => {
+    setActiveRecipeTab(tabId);
+    navigate(`/recipe/category/${tabId}`);
+  };
 
   // 포토 리뷰 로드
   useEffect(() => {
@@ -48,24 +67,25 @@ const RecipeDetailPage: React.FC = () => {
   // 레시피가 없을 때 Fallback UI
   if (!recipe) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-stone-50 px-4">
-        <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
-          <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <ChefHat className="w-10 h-10 text-stone-400" />
+      <div className="min-h-screen flex flex-col bg-stone-50" style={{ paddingTop: '48px' }}>
+        {/* 카테고리 탭 바 (스티키) */}
+        <TopControlBar
+          tabs={recipeTabs}
+          activeTab={activeRecipeTab}
+          onTabChange={handleRecipeTabChange}
+        />
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
+            <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <ChefHat className="w-10 h-10 text-stone-400" />
+            </div>
+            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>준비 중인 레시피입니다</h1>
+            <p className="text-stone-600 mb-6">
+              아직 이 레시피의 상세 정보가 준비되지 않았습니다.
+              <br />
+              곧 만나볼 수 있을 거예요!
+            </p>
           </div>
-          <h1 className="text-2xl font-bold text-stone-900 mb-2">준비 중인 레시피입니다</h1>
-          <p className="text-stone-600 mb-6">
-            아직 이 레시피의 상세 정보가 준비되지 않았습니다.
-            <br />
-            곧 만나볼 수 있을 거예요!
-          </p>
-          <Link
-            to="/recipe"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-black text-white rounded-none font-medium hover:bg-[#333333] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            레시피 목록으로 돌아가기
-          </Link>
         </div>
       </div>
     );
@@ -73,7 +93,6 @@ const RecipeDetailPage: React.FC = () => {
   
   const [servings, setServings] = useState(recipe.servings || 2);
   const [isLiked, setIsLiked] = useState(false);
-  const [isSaved, setIsSaved] = useState(false);
   
   const multiplier = servings / (recipe.servings || 2);
   
@@ -204,7 +223,14 @@ const RecipeDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white" style={{ paddingTop: '48px' }}>
+      {/* 카테고리 탭 바 (스티키) */}
+      <TopControlBar
+        tabs={recipeTabs}
+        activeTab={activeRecipeTab}
+        onTabChange={handleRecipeTabChange}
+      />
+
       {/* 커버 이미지 영역 (표지 페이지) */}
       <div className="relative h-[70vh] min-h-[600px] bg-[#F5F5F5]">
         <img
@@ -245,7 +271,7 @@ const RecipeDetailPage: React.FC = () => {
                 </p>
                 
                 {/* 제목 */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+                <h1 className="text-white mb-4 leading-tight drop-shadow-lg font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                   {recipe.title}
                 </h1>
                 
@@ -258,9 +284,9 @@ const RecipeDetailPage: React.FC = () => {
                 
                 {/* 해시태그 */}
                 {recipe.tags && recipe.tags.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex items-center gap-3 flex-wrap">
                     {recipe.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 bg-white/20 backdrop-blur-sm text-white text-sm rounded-full border border-white/30">
+                      <span key={tag} className="text-white/80 text-sm">
                         #{tag}
                       </span>
                     ))}
@@ -270,25 +296,27 @@ const RecipeDetailPage: React.FC = () => {
 
               {/* 액션 버튼들 (타이틀 섹션 우측 상단) */}
               <div className="flex items-center gap-3 flex-shrink-0">
+                {/* 북마크 타원 (레시피 카드와 동일한 스타일) */}
                 <button
                   onClick={() => setIsLiked(!isLiked)}
-                  className="flex items-center gap-1.5 text-white hover:text-white/70 transition-colors"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '56px',
+                    height: '28px',
+                    borderRadius: '50%',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    border: isLiked ? 'none' : '1px solid rgba(255,255,255,0.8)',
+                    background: isLiked ? '#fff' : 'transparent',
+                    color: isLiked ? '#000' : '#fff',
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer',
+                  }}
                   title="좋아요"
                 >
-                  <Heart className={`w-5 h-5 ${isLiked ? 'fill-white text-white' : ''}`} />
-                  <span className="text-sm font-medium">
-                    {((recipe.likes || 0) + (isLiked ? 1 : 0)).toLocaleString()}
-                  </span>
-                </button>
-                <button
-                  onClick={() => setIsSaved(!isSaved)}
-                  aria-label={isSaved ? "저장 취소" : "저장"}
-                  className={`text-white hover:text-white/70 transition-colors ${
-                    isSaved ? 'text-white' : ''
-                  }`}
-                  title="저장"
-                >
-                  <Bookmark className={`w-5 h-5 ${isSaved ? 'fill-amber-300' : ''}`} />
+                  {((recipe.likes || 0) + (isLiked ? 1 : 0)).toLocaleString()}
                 </button>
                 <button
                   onClick={() => {
@@ -325,14 +353,14 @@ const RecipeDetailPage: React.FC = () => {
             <Clock className="w-4 h-4 text-stone-500" />
             <div>
               <p className="text-xs text-stone-500">총 시간</p>
-              <p className="text-sm font-bold text-stone-900">{recipe.totalTime || '30분'}</p>
+              <p className="text-sm font-normal text-stone-900">{recipe.totalTime || '30분'}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             <ChefHat className="w-4 h-4 text-stone-500" />
             <div>
               <p className="text-xs text-stone-500">난이도</p>
-              <p className="text-sm font-bold text-stone-900">{recipe.difficulty || '보통'}</p>
+              <p className="text-sm font-normal text-stone-900">{recipe.difficulty || '보통'}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
@@ -340,7 +368,7 @@ const RecipeDetailPage: React.FC = () => {
             <div className="flex items-center gap-2">
               <div>
                 <p className="text-xs text-stone-500">인원</p>
-                <p className="text-sm font-bold text-stone-900">{servings}인분</p>
+                <p className="text-sm font-normal text-stone-900">{servings}인분</p>
               </div>
               <div className="flex flex-col gap-1 ml-1">
                 <button
@@ -381,7 +409,7 @@ const RecipeDetailPage: React.FC = () => {
             {/* 재료 섹션 - 띠지 스타일 */}
             <div className="bg-stone-50 border border-stone-200 rounded-none p-6">
               <div className="mb-4">
-                <h2 className="text-xl font-bold text-stone-900">재료</h2>
+                <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>재료</h2>
               </div>
               <div className="space-y-2">
                 {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => (
@@ -396,7 +424,7 @@ const RecipeDetailPage: React.FC = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex items-baseline gap-2">
-                      <span className="text-sm font-bold text-stone-900 truncate leading-tight">{ingredient.name}</span>
+                      <span className="text-sm font-normal text-stone-900 truncate leading-tight">{ingredient.name}</span>
                       <span className="text-sm font-medium text-stone-900 font-accent whitespace-nowrap leading-tight">{parseAmount(ingredient.amount)}</span>
                       {ingredient.note && (
                         <span className="text-xs text-stone-500 whitespace-nowrap leading-tight">({ingredient.note})</span>
@@ -410,17 +438,17 @@ const RecipeDetailPage: React.FC = () => {
             {/* 영양 정보 - 띠지 스타일 */}
             <div className="bg-stone-50 border border-stone-200 rounded-none p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-stone-900">영양 정보</h2>
+                <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>영양 정보</h2>
                 <span className="text-xs text-stone-500">1인분 기준</span>
               </div>
               {recipe.nutrition ? (
                 <div className="space-y-0">
                   <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-bold text-stone-900">칼로리</span>
+                    <span className="text-sm font-normal text-stone-900">칼로리</span>
                     <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.calories} kcal</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-bold text-stone-900">지방</span>
+                    <span className="text-sm font-normal text-stone-900">지방</span>
                     <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.fat}g</span>
                   </div>
                   <div className="flex justify-between py-1.5 border-b border-stone-200 pl-4">
@@ -428,7 +456,7 @@ const RecipeDetailPage: React.FC = () => {
                     <span className="text-xs text-stone-700 font-accent">{recipe.nutrition.saturatedFat}g</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-bold text-stone-900">탄수화물</span>
+                    <span className="text-sm font-normal text-stone-900">탄수화물</span>
                     <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.carbs}g</span>
                   </div>
                   <div className="flex justify-between py-1.5 border-b border-stone-200 pl-4">
@@ -440,7 +468,7 @@ const RecipeDetailPage: React.FC = () => {
                     <span className="text-xs text-stone-700 font-accent">{recipe.nutrition.fiber}g</span>
                   </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-sm font-bold text-stone-900">단백질</span>
+                    <span className="text-sm font-normal text-stone-900">단백질</span>
                     <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.protein}g</span>
                   </div>
                 </div>
@@ -451,10 +479,23 @@ const RecipeDetailPage: React.FC = () => {
           </div>
         </section>
 
+        {/* 조리 순서 구분선 (전체 너비) */}
+        <div
+          style={{
+            position: 'relative',
+            left: '50%',
+            marginLeft: '-50vw',
+            width: '100vw',
+            borderTop: '1px solid black',
+            marginTop: '32px',
+            marginBottom: '32px',
+          }}
+        />
+
         {/* 조리 순서 */}
         <section className="mb-8">
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-stone-900">조리 순서</h2>
+            <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>조리 순서</h2>
           </div>
           
           <div className="space-y-0">
@@ -466,11 +507,11 @@ const RecipeDetailPage: React.FC = () => {
                     <div key={step.step} data-step={step.step}>
                       {/* 콘텐츠 영역 */}
                       <div>
-                        <h3 className="font-bold text-stone-900 mb-3 text-lg">
+                        <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: '20px', fontWeight: 600 }}>
                           {String(step.step).padStart(2, '0')}. {step.title}
                         </h3>
                         {/* 대제목 밑 실선 */}
-                        <hr className="mb-4 border-t border-stone-300 -mx-4 sm:-mx-6 md:-mx-0" />
+                        <hr className="mb-4 border-t border-black -mx-4 sm:-mx-6 md:-mx-0" />
                         
                           {/* 단계 이미지 (조건부 렌더링) */}
                           {stepImage && (
@@ -505,7 +546,7 @@ const RecipeDetailPage: React.FC = () => {
                                 {instruction}
                               </p>
                               {instIdx < step.instructions.length - 1 && (
-                                <hr className="my-3 border-t border-stone-300 -mx-4 sm:-mx-6 md:-mx-0" />
+                                <hr className="my-3 border-t border-black -mx-4 sm:-mx-6 md:-mx-0" />
                               )}
                             </div>
                           ))}
@@ -513,7 +554,7 @@ const RecipeDetailPage: React.FC = () => {
                         
                         {/* TIP */}
                         {step.tip && (
-                          <div className="mt-4 pt-4 border-t border-stone-100">
+                          <div className="mt-4 pt-4 border-t border-black">
                             <p className="text-sm text-stone-600">
                               <span className="font-medium text-stone-900">TIP:</span> {step.tip}
                             </p>
@@ -530,8 +571,20 @@ const RecipeDetailPage: React.FC = () => {
           </div>
         </section>
 
+        {/* 댓글 섹션 구분선 (전체 너비) */}
+        <div
+          style={{
+            position: 'relative',
+            left: '50%',
+            marginLeft: '-50vw',
+            width: '100vw',
+            borderTop: '1px solid black',
+            marginTop: '64px',
+          }}
+        />
+
         {/* 댓글 섹션 */}
-        <div ref={commentSectionRef} className="mt-16 pt-8 border-t border-stone-200">
+        <div ref={commentSectionRef} className="pt-8">
           <CommentSection 
             recipeId={id || '1'} 
             photoReviews={photoReviews}
@@ -539,10 +592,22 @@ const RecipeDetailPage: React.FC = () => {
           />
         </div>
 
+        {/* 요리 리뷰 남기기 구분선 (전체 너비) */}
+        <div
+          style={{
+            position: 'relative',
+            left: '50%',
+            marginLeft: '-50vw',
+            width: '100vw',
+            borderTop: '1px solid black',
+            marginTop: '32px',
+          }}
+        />
+
         {/* 요리 리뷰 남기기 버튼 (리뷰 섹션 아래) */}
-        <div className="mt-8 pt-8 border-t border-stone-200">
+        <div className="pt-8">
           <div className="text-center mb-6">
-            <h2 className="text-xl font-bold text-stone-900 mb-2">요리 리뷰 남기기</h2>
+            <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>요리 리뷰 남기기</h2>
             <p className="text-sm text-stone-500 mb-6">이 레시피를 만들어보셨나요? 사진과 함께 후기를 남겨주세요!</p>
             <button
               onClick={() => setShowPhotoReviewModal(true)}
@@ -555,11 +620,25 @@ const RecipeDetailPage: React.FC = () => {
           </div>
         </div>
 
+        {/* 관련 레시피 구분선 (전체 너비) */}
+        {recipe.relatedRecipes && recipe.relatedRecipes.length > 0 && (
+          <div
+            style={{
+              position: 'relative',
+              left: '50%',
+              marginLeft: '-50vw',
+              width: '100vw',
+              borderTop: '1px solid black',
+              marginTop: '48px',
+            }}
+          />
+        )}
+
         {/* 관련 레시피 */}
         {recipe.relatedRecipes && recipe.relatedRecipes.length > 0 && (
-          <section className="mt-12 pt-8 border-t border-stone-200">
+          <section className="pt-8">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-stone-900">비슷한 재료로 만드는 레시피</h2>
+              <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>비슷한 재료로 만드는 레시피</h2>
               <Link to="/recipe" className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 transition-colors">
                 <span>더보기</span>
                 <ChevronRight className="w-4 h-4" />

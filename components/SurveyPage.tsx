@@ -1008,7 +1008,7 @@ ${result.description}
             </button>
             
             <div className="text-6xl mb-6">🥗</div>
-            <h2 className="text-2xl font-bold text-stone-800 mb-4">
+            <h2 className="text-stone-800 mb-4 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
               마이 테이스트 스피릿
             </h2>
             <p className="text-stone-500 mb-8">
@@ -1037,7 +1037,7 @@ ${result.description}
                   setStarted(true); // 에러가 발생해도 시작은 진행
                 }
               }}
-              className="w-full py-4 bg-black text-white rounded-none font-semibold hover:bg-lime hover:text-black transition-colors"
+              className="w-full py-4 bg-black text-white rounded-none font-normal hover:bg-lime hover:text-black transition-colors"
               style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
             >
               시작하기
@@ -1125,7 +1125,7 @@ ${result.description}
                 {/* 라벨 */}
                 
                 {/* 스피릿 이름 - 가장 크게 */}
-                <h2 className="text-4xl font-bold text-stone-800 mb-2">
+                <h2 className="text-stone-800 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>
                   {result.name}
                 </h2>
                 
@@ -1180,7 +1180,7 @@ ${result.description}
                   }
                   setShowShareModal(true);
                 }}
-                className="flex-1 py-4 rounded-none font-bold text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                className="flex-1 py-4 rounded-none font-normal text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
                 style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
                 aria-label="공유하기"
               >
@@ -1193,7 +1193,7 @@ ${result.description}
                 onClick={() => {
                   setShowRecipeCurationModal(true);
                 }}
-                className="flex-1 py-4 rounded-none font-bold text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                className="flex-1 py-4 rounded-none font-normal text-base transition-all flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
                 style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
                 aria-label="레시피 보기"
               >
@@ -1227,7 +1227,7 @@ ${result.description}
                 >
                   {/* 헤더 */}
                   <div className="flex items-center justify-between mb-6">
-                    <h3 id="share-modal-title" className="text-xl font-bold text-stone-800">
+                    <h3 id="share-modal-title" className="text-stone-800 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                       공유하기
                     </h3>
                     <button
@@ -1366,7 +1366,7 @@ ${result.description}
                       title="X (트위터)"
                       aria-label="X(트위터)로 공유하기"
                     >
-                      <span className="text-2xl font-bold text-white" aria-hidden="true">𝕏</span>
+                      <span className="text-white font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }} aria-hidden="true">𝕏</span>
                     </button>
                     
                     {/* 링크 복사 */}
@@ -1399,7 +1399,7 @@ ${result.description}
               </div>
             )}
             
-            {/* Secondary CTA - 이미지 저장 & 프로필 저장 */}
+            {/* Secondary CTA - 이미지 다운로드 & 프로필 북마크 */}
             <div className="grid grid-cols-2 gap-3 mb-4">
               <button
                 onClick={async () => {
@@ -1425,7 +1425,7 @@ ${result.description}
                     alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
                   }
                 }}
-                className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors flex items-center justify-center gap-2"
+                className="py-3 px-4 border-2 border-stone-200 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors flex items-center justify-center gap-2"
                 aria-label="이미지 저장하기"
               >
                 <Download className="w-5 h-5" aria-hidden="true" />
@@ -1439,9 +1439,9 @@ ${result.description}
                     setProfileSaved(true);
                   }
                 }}
-                aria-label="프로필에 저장하기"
+                aria-label="프로필에 북마크하기"
                 disabled={profileSaved}
-                className={`py-3 px-4 border-2 rounded-none font-semibold transition-all flex items-center justify-center gap-2 ${
+                className={`py-3 px-4 border-2 rounded-none font-normal transition-all flex items-center justify-center gap-2 ${
                   profileSaved 
                     ? 'border-[#E0E0E0] bg-[#F5F5F5] text-black cursor-default'
                     : 'border-stone-200 text-stone-600 hover:bg-stone-50'
@@ -1450,12 +1450,12 @@ ${result.description}
                 {profileSaved ? (
                   <>
                     <Check className="w-5 h-5" aria-hidden="true" />
-                    저장됨
+                    북마크됨
                   </>
                 ) : (
                   <>
                     <UserCircle className="w-5 h-5" aria-hidden="true" />
-                    프로필에 저장
+                    프로필에 북마크
                   </>
                 )}
               </button>
@@ -1517,7 +1517,7 @@ ${result.description}
                       </div>
                       
                       {/* 맞춤 메시지 */}
-                      <h3 id="curation-modal-title" className="text-xl font-bold text-stone-900 mb-2 text-center">
+                      <h3 id="curation-modal-title" className="text-stone-900 mb-2 text-center font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                         {result.name}를 위한 레시피
                       </h3>
                       <p className="text-stone-600 text-center leading-relaxed">
@@ -1531,7 +1531,7 @@ ${result.description}
                         setShowRecipeCurationModal(false);
                         navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
                       }}
-                      className="w-full py-4 rounded-none font-bold transition-colors flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
+                      className="w-full py-4 rounded-none font-normal transition-colors flex items-center justify-center gap-2 text-white hover:bg-lime hover:text-black"
                       style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
                     >
                       레시피 보기
@@ -1576,7 +1576,7 @@ ${result.description}
               setCurrentStep(0);
               setStarted(true);
             }}
-            className="px-6 py-3 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
           >
             다시 시작하기
           </button>
@@ -1596,7 +1596,7 @@ ${result.description}
               setCurrentStep(0);
               setStarted(true);
             }}
-            className="px-6 py-3 bg-black text-white rounded-none font-semibold hover:bg-stone-800 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
           >
             다시 시작하기
           </button>
@@ -1625,7 +1625,7 @@ ${result.description}
       <div className="flex items-center justify-center min-h-screen p-8">
         <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
           {/* 질문 */}
-          <h2 className="text-2xl font-bold text-center text-stone-800 mb-8">
+          <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
             {currentQuestion.question}
           </h2>
           
@@ -1677,7 +1677,7 @@ ${result.description}
                                   )}
                                 </div>
                                 <div className="flex-1">
-                                  <div className="font-semibold text-stone-800">{option.label}</div>
+                                  <div className="font-normal text-stone-800">{option.label}</div>
                                   <div className="text-sm text-stone-500">{option.description}</div>
                                 </div>
                               </div>
@@ -1729,7 +1729,7 @@ ${result.description}
               // 첫 질문에서는 "처음으로" 버튼
               <button
                 onClick={scrollToTop}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors"
+                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
               >
                 처음으로
               </button>
@@ -1737,7 +1737,7 @@ ${result.description}
               // 그 외에는 "이전" 버튼
               <button
                 onClick={handleBack}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-semibold hover:bg-stone-50 transition-colors"
+                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
               >
                 이전
               </button>
@@ -1745,7 +1745,7 @@ ${result.description}
             <button
               onClick={handleNext}
               disabled={currentQuestion.hasDietCategories ? !hasPrimaryDiet() : !answers[currentQuestion.id]}
-              className={`flex-1 py-3 rounded-none font-semibold transition-colors ${
+              className={`flex-1 py-3 rounded-none font-normal transition-colors ${
                 (currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id])
                   ? 'text-white hover:opacity-90'
                   : 'bg-stone-200 text-stone-400 cursor-not-allowed'

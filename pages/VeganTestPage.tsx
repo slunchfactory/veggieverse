@@ -350,20 +350,40 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
             background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 1) 100%)',
           }}
         />
-        {/* X 버튼 - 스킵 (헤더 아래에 위치: headerOffset은 배너+헤더 높이이므로 헤더 하단 바로 아래) */}
+        {/* X 버튼 - 스킵 (Solid Line 스타일) */}
         <Link
           to="/shop"
-          className="fixed right-4 z-[90] p-2 bg-white/90 backdrop-blur-sm rounded-none shadow-lg hover:bg-white transition-colors"
-          style={{ top: `${headerOffset + 16}px` }}
+          className="fixed right-4 z-[90] p-2 flex items-center justify-center"
+          style={{
+            top: `${headerOffset + 16}px`,
+            background: 'var(--cream)',
+            border: '1px solid #000000',
+          }}
         >
-          <X className="w-5 h-5 text-stone-800" />
+          <X className="w-5 h-5" style={{ color: '#000000' }} />
         </Link>
+
+        {/* 모든 아이템의 keyframes를 한 번에 렌더링 (리렌더 방지) */}
+        <style>
+          {items.map((item) => {
+            const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
+            return `
+              @keyframes float-${itemId} {
+                0% { transform: translate3d(0px, 0px, 0) rotate(0deg); }
+                20% { transform: translate3d(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px, 0) rotate(${90 * item.rotateDirection}deg); }
+                50% { transform: translate3d(${item.driftX}px, ${item.driftY}px, 0) rotate(${180 * item.rotateDirection}deg); }
+                80% { transform: translate3d(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px, 0) rotate(${270 * item.rotateDirection}deg); }
+                100% { transform: translate3d(0px, 0px, 0) rotate(${360 * item.rotateDirection}deg); }
+              }
+            `;
+          }).join('')}
+        </style>
 
         {/* 떠다니는 야채/과일들 - 150%~250% 크기, 오른쪽 회전 */}
         {items.map((item) => {
           const isSelected = selectedItems.some(i => i.id === item.id);
           const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
-          
+
           return (
             <div
               key={item.id}
@@ -380,36 +400,14 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
               }}
               onPointerDown={(e) => startDrag(item, e)}
             >
-              {/* 개별 애니메이션 스타일 */}
-              <style>{`
-                @keyframes float-${itemId} {
-                  0% { 
-                    transform: translate3d(0px, 0px, 0) rotate(0deg);
-                  }
-                  20% { 
-                    transform: translate3d(${item.driftX * 0.25}px, ${-item.floatAmplitude * 0.6}px, 0) rotate(${90 * item.rotateDirection}deg);
-                  }
-                  50% { 
-                    transform: translate3d(${item.driftX}px, ${item.driftY}px, 0) rotate(${180 * item.rotateDirection}deg);
-                  }
-                  80% { 
-                    transform: translate3d(${item.driftX * 0.25}px, ${item.floatAmplitude * 0.6}px, 0) rotate(${270 * item.rotateDirection}deg);
-                  }
-                  100% { 
-                    transform: translate3d(0px, 0px, 0) rotate(${360 * item.rotateDirection}deg);
-                  }
-                }
-              `}</style>
-              
               {/* 플로팅 + 회전 애니메이션 */}
               <div
                 className="w-full h-full"
                 style={{
-                  animation: (draggingId === item.id || isSelected) ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
-                  animationDelay: (draggingId === item.id || isSelected) ? '0s' : `${item.animationDelay}s`,
+                  animation: draggingId === item.id ? 'none' : `float-${itemId} ${item.rotationDuration}s ease-in-out infinite`,
+                  animationDelay: `${item.animationDelay}s`,
                   backfaceVisibility: 'hidden',
                   willChange: 'transform',
-                  transform: isSelected ? `rotate(${item.rotation}deg) scale(1.2)` : 'translateZ(0)',
                   transformOrigin: 'center center',
                 }}
               >
@@ -461,7 +459,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                   alt={item.name}
                   loading="lazy"
                   decoding="async"
-                  className={`w-full h-full object-contain transition-all duration-300 ${
+                  className={`w-full h-full object-contain ${
                     isSelected ? 'opacity-0' : 'group-hover:scale-105'
                   }`}
                   style={{
@@ -469,6 +467,7 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                     zIndex: 20,
                     backfaceVisibility: 'hidden',
                     transform: 'translateZ(0)',
+                    transition: 'opacity 0.3s ease',
                   }}
                   draggable={false}
                 />
@@ -477,10 +476,17 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
           );
         })}
 
-        {/* 하단 선택 바 - 원본 이미지 표시 */}
+        {/* 하단 선택 바 - Solid Line 스타일 */}
         {showSelectionBar && (
           <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[80]">
-            <div className="bg-white/95 backdrop-blur-sm rounded-none shadow-lg px-6 py-3 flex items-center gap-4">
+            <div
+              className="flex items-center gap-4"
+              style={{
+                background: 'var(--cream)',
+                border: '1px solid #000000',
+                padding: '12px 24px',
+              }}
+            >
               {/* 선택된 아이템들 - 원본 이미지 */}
               <div className="flex items-center gap-3">
                 {[0, 1, 2].map((index) => {
@@ -491,32 +497,32 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                       className="relative"
                     >
                       <div
-                        className={`w-14 h-14 rounded-none flex items-center justify-center transition-all ${
-                          item 
-                            ? 'bg-stone-50' 
-                            : 'border-2 border-dashed border-stone-300'
-                        }`}
+                        className="w-14 h-14 flex items-center justify-center"
+                        style={{
+                          background: item ? '#F7F4EF' : 'transparent',
+                          border: item ? '1px solid #000000' : '1px dashed #000000',
+                        }}
                       >
                         {item ? (
-                          <img 
+                          <img
                             src={item.imageUrl}
                             alt={item.name}
-                  loading="lazy"
-                  decoding="async"
+                            loading="lazy"
+                            decoding="async"
                             className="w-10 h-10 object-contain"
                           />
                         ) : (
-                          <span className="text-stone-300 text-xs font-medium">{index + 1}</span>
+                          <span style={{ color: '#6B6B6B', fontSize: '12px', fontWeight: 400 }}>{index + 1}</span>
                         )}
                       </div>
-                      {/* 취소 버튼 - Rustic Noir */}
+                      {/* 취소 버튼 - Solid Line */}
                       {item && (
                         <button
                           onClick={() => removeSelection(item.id)}
-                          className="absolute -top-1 -right-1 w-5 h-5 text-white rounded-none flex items-center justify-center transition-colors z-10 shadow-sm"
-                          style={{ backgroundColor: '#000000' }}
+                          className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center z-10"
+                          style={{ backgroundColor: '#000000', border: '1px solid #000000' }}
                         >
-                          <X className="w-3 h-3" />
+                          <X className="w-3 h-3 text-white" />
                         </button>
                       )}
                     </div>
@@ -524,17 +530,21 @@ export const VeganTestPage: React.FC<VeganTestPageProps> = ({ onSaveProfile, hea
                 })}
               </div>
 
-              {/* 구분선 */}
-              <div className="w-px h-8 bg-stone-200"></div>
+              {/* 구분선 - Solid Line */}
+              <div style={{ width: '1px', height: '32px', background: '#000000' }} />
 
-              {/* 믹스하기 버튼 - Rustic Noir */}
+              {/* 믹스하기 버튼 - Solid Line */}
               <button
                 onClick={goToSurvey}
                 disabled={selectedItems.length < 3}
-                className="px-5 py-2 rounded-none font-semibold text-sm flex items-center gap-1.5 transition-all"
+                className="flex items-center gap-1.5"
                 style={{
-                  backgroundColor: selectedItems.length === 3 ? '#000000' : '#e5e5e5',
-                  color: selectedItems.length === 3 ? '#fff' : '#a3a3a3',
+                  padding: '10px 20px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  backgroundColor: selectedItems.length === 3 ? '#000000' : 'transparent',
+                  color: selectedItems.length === 3 ? '#fff' : '#6B6B6B',
+                  border: '1px solid #000000',
                   cursor: selectedItems.length === 3 ? 'pointer' : 'not-allowed',
                 }}
               >

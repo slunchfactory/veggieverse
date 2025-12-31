@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import { X, Upload, Image as ImageIcon, Star, Camera } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 import { ALL_BADGES, spiritNameToBadgeId } from '../contexts/UserContext';
 import { ToastProps } from './Toast';
@@ -65,7 +65,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) {
       onToast({
         type: 'info',
@@ -96,7 +96,6 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
     setIsSubmitting(true);
 
     try {
-      // 실제로는 서버에 업로드하지만, 여기서는 localStorage에 저장
       const review: PhotoReview = {
         id: `review-${Date.now()}`,
         authorId: user.id,
@@ -109,7 +108,6 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
         createdAt: new Date().toISOString(),
       };
 
-      // 리뷰 저장
       const existingReviews = JSON.parse(
         localStorage.getItem(`veggieverse-recipe-${recipeId}-reviews`) || '[]'
       );
@@ -119,10 +117,8 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
         JSON.stringify(existingReviews)
       );
 
-      // 유저 통계 업데이트
       updateUserStats({ comments: user.comments + 1 });
 
-      // 스피릿 배지 체크
       let earnedBadge = null;
       let earnedCoupon = null;
       if (user.spiritName) {
@@ -135,7 +131,6 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
         }
       }
 
-      // 배지 획득 모달 표시
       if (earnedBadge && earnedCoupon) {
         setEarnedBadgeData({
           spiritName: user.spiritName,
@@ -145,7 +140,6 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
         });
         setShowBadgeModal(true);
       } else {
-        // 배지가 없으면 일반 토스트만 표시
         onToast({
           type: 'success',
           title: '리뷰 완료',
@@ -153,10 +147,8 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
         });
       }
 
-      // 리뷰 제출 콜백
       onReviewSubmitted(review);
 
-      // 폼 초기화 및 닫기 (배지 모달이 없을 때만)
       if (!earnedBadge || !earnedCoupon) {
         setFormData({
           content: '',
@@ -188,124 +180,252 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
     onClose();
   };
 
+  const handleBadgeModalClose = () => {
+    setShowBadgeModal(false);
+    setEarnedBadgeData(null);
+    setFormData({
+      content: '',
+      rating: 5,
+      image: null,
+      imagePreview: null,
+    });
+    onClose();
+  };
+
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.4)' }}
       onClick={handleClose}
     >
       <div
-        className="bg-white rounded-none shadow-2xl max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto"
+        style={{
+          background: '#FFFFFF',
+          border: '1px solid #000',
+          borderRadius: '16px',
+          maxWidth: '480px',
+          width: '100%',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between mb-6">
+        {/* Header */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          padding: '24px 24px 0',
+        }}>
           <div>
-            <h2 className="text-2xl font-bold text-stone-900">I Made It! 요리 완료 인증하기</h2>
-            <p className="text-sm text-stone-500 mt-1">{recipeTitle}</p>
+            <h2 style={{
+              fontSize: '18px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '4px',
+            }}>
+              요리 인증
+            </h2>
+            <p style={{
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#888',
+            }}>
+              {recipeTitle}
+            </p>
           </div>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-stone-100 transition-colors rounded-none"
+            style={{
+              width: '32px',
+              height: '32px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+            }}
+            aria-label="닫기"
           >
-            <X className="w-5 h-5 text-stone-400" />
+            <X size={20} strokeWidth={1} color="#000" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ padding: '24px' }}>
           {/* 사진 업로드 */}
-          <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              요리 완료 사진 <span className="text-red-500">*</span>
-              <span className="text-xs text-stone-500 ml-2 font-normal">(필수: 직접 만든 요리 사진을 업로드해야 인증이 완료됩니다)</span>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '8px',
+            }}>
+              사진 첨부
             </label>
-            <div className="flex items-center space-x-4">
-              <div className="w-32 h-32 border-2 border-stone-200 rounded-none flex items-center justify-center overflow-hidden bg-stone-50">
-                {formData.imagePreview ? (
-                  <img
-                    src={formData.imagePreview}
-                    alt="Review Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <Camera className="w-8 h-8 text-stone-400" />
-                )}
-              </div>
-              <div className="flex-1">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="block w-full text-sm text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"
-                  required
+            <div
+              style={{
+                border: '1px solid #000',
+                borderRadius: '8px',
+                padding: '24px',
+                textAlign: 'center',
+                cursor: 'pointer',
+                position: 'relative',
+                minHeight: '120px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+              onClick={() => document.getElementById('photo-input')?.click()}
+            >
+              {formData.imagePreview ? (
+                <img
+                  src={formData.imagePreview}
+                  alt="Preview"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '200px',
+                    objectFit: 'contain',
+                    borderRadius: '4px',
+                  }}
                 />
-                <p className="text-xs text-stone-500 mt-2 font-medium">
-                  ⚠️ 사진 없이는 인증이 완료되지 않습니다. 직접 만든 요리 사진을 업로드해주세요.
-                </p>
-              </div>
+              ) : (
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: '#888',
+                }}>
+                  사진 첨부
+                </span>
+              )}
+              <input
+                id="photo-input"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
             </div>
           </div>
 
           {/* 별점 */}
-          <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
-              별점 <span className="text-red-500">*</span>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '8px',
+            }}>
+              별점
             </label>
-            <div className="flex items-center gap-2">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
                   key={star}
                   type="button"
                   onClick={() => setFormData({ ...formData, rating: star })}
-                  className="focus:outline-none"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '2px',
+                  }}
                 >
-                  <Star
-                    className={`w-8 h-8 transition-colors ${
-                      star <= formData.rating
-                        ? 'fill-amber-400 text-amber-400'
-                        : 'text-stone-300'
-                    }`}
-                  />
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill={star <= formData.rating ? '#000' : 'none'}
+                    stroke="#000"
+                    strokeWidth="1"
+                  >
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
                 </button>
               ))}
-              <span className="ml-2 text-stone-600 font-medium">
+              <span style={{
+                marginLeft: '8px',
+                fontSize: '13px',
+                fontWeight: 400,
+                color: '#666',
+              }}>
                 {formData.rating} / 5
               </span>
             </div>
           </div>
 
           {/* 한 줄 평 */}
-          <div>
-            <label htmlFor="content" className="block text-sm font-medium text-stone-700 mb-2">
-              한 줄 평 <span className="text-red-500">*</span>
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '8px',
+            }}>
+              한 줄 평
             </label>
             <textarea
-              id="content"
               value={formData.content}
               onChange={(e) => setFormData({ ...formData, content: e.target.value })}
               rows={3}
-              className="w-full p-3 border-2 border-stone-200 rounded-none focus:outline-none focus:border-emerald-400 resize-y"
-              placeholder="이 레시피에 대한 간단한 후기를 작성해주세요..."
-              required
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #000',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 400,
+                resize: 'none',
+                outline: 'none',
+                boxSizing: 'border-box',
+              }}
+              placeholder="요리에 대한 간단한 후기를 남겨주세요"
             />
           </div>
 
-          {/* 제출 버튼 */}
-          <button
-            type="submit"
-            className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-none font-semibold transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? (
-              <>
-                <span className="animate-spin inline-block w-5 h-5 border-2 border-white border-t-transparent rounded-full" />
-                인증 중...
-              </>
-            ) : (
-              <>
-                <Upload className="w-5 h-5" />
-                포토 리뷰 인증하고 배지 받기
-              </>
-            )}
-          </button>
+          {/* 버튼 영역 */}
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button
+              type="button"
+              onClick={handleClose}
+              style={{
+                flex: 1,
+                padding: '14px',
+                background: 'transparent',
+                border: '1px solid #000',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#000',
+                cursor: 'pointer',
+              }}
+            >
+              취소
+            </button>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              style={{
+                flex: 1,
+                padding: '14px',
+                background: '#000',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: '#fff',
+                cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                opacity: isSubmitting ? 0.6 : 1,
+              }}
+            >
+              {isSubmitting ? '인증 중...' : '인증하기'}
+            </button>
+          </div>
         </form>
       </div>
 
@@ -323,4 +443,3 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
     </div>
   );
 };
-

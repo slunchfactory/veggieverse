@@ -1,9 +1,45 @@
 import React, { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Bookmark, Check } from 'lucide-react';
+import { LoginModal } from './LoginModal';
 
 const AVATAR_IMG = '/veggieverse/characters/slunch-character.png';
 const AVATAR_VIDEO = '/veggieverse/characters/slunch-character-move.mp4';
 type TabKey = 'chat' | 'profile' | 'saved';
 
+// 북마크 더미 데이터 (썸네일 이미지 및 태그 포함)
+interface BookmarkItem {
+  id: number;
+  title: string;
+  dietaryType: string; // 식단 유형 (비건, 락토오보 등)
+  mealType: string; // 식사 유형 (아침, 점심, 저녁, 디저트 등)
+  cuisine: string; // 요리 유형 (한식, 양식, 일식 등)
+  image: string;
+}
+
+const MOCK_BOOKMARKS: BookmarkItem[] = [
+  { id: 1, title: '콩나물 비빔밥', dietaryType: '비건', mealType: '메인', cuisine: '한식', image: '/veggieverse/store/thumbnails/sprout-bibimbap.jpg' },
+  { id: 2, title: '토마토 병아리콩 스튜', dietaryType: '비건', mealType: '점심', cuisine: '양식', image: '/veggieverse/store/thumbnails/tomato-stew.jpg' },
+  { id: 3, title: '비건 렌틸콩 카레', dietaryType: '락토오보', mealType: '저녁', cuisine: '한식', image: '/veggieverse/store/thumbnails/lentil-curry.jpg' },
+  { id: 4, title: '두부 스테이크와 구운 야채', dietaryType: '비건', mealType: '', cuisine: '디저트', image: '/veggieverse/store/thumbnails/tofu-steak.jpg' },
+  { id: 5, title: '아보카도 오픈 샌드위치', dietaryType: '비건', mealType: '아침', cuisine: '양식', image: '/veggieverse/store/thumbnails/avocado-sandwich.jpg' },
+  { id: 6, title: '가지 라자냐', dietaryType: '비건', mealType: '저녁', cuisine: '양식', image: '/veggieverse/store/thumbnails/eggplant-lasagna.jpg' },
+  { id: 7, title: '매콤 팽이버섯 덮밥', dietaryType: '비건', mealType: '점심', cuisine: '한식', image: '/veggieverse/store/thumbnails/mushroom-rice.jpg' },
+  { id: 8, title: '브로콜리 크림 파스타', dietaryType: '락토오보', mealType: '저녁', cuisine: '양식', image: '/veggieverse/store/thumbnails/broccoli-pasta.jpg' },
+  { id: 9, title: '시금치 두부볶음', dietaryType: '비건', mealType: '점심', cuisine: '한식', image: '/veggieverse/store/thumbnails/spinach-tofu.jpg' },
+  { id: 10, title: '버섯 리소토', dietaryType: '비건', mealType: '저녁', cuisine: '양식', image: '/veggieverse/store/thumbnails/mushroom-risotto.jpg' },
+  { id: 11, title: '비건 치즈 케이크', dietaryType: '비건', mealType: '', cuisine: '디저트', image: '/veggieverse/store/thumbnails/vegan-cheesecake.jpg' },
+  { id: 12, title: '단호박 수프', dietaryType: '비건', mealType: '점심', cuisine: '양식', image: '/veggieverse/store/thumbnails/pumpkin-soup.jpg' },
+  { id: 13, title: '옥수수 타코', dietaryType: '비건', mealType: '점심', cuisine: '양식', image: '/veggieverse/store/thumbnails/corn-taco.jpg' },
+  { id: 14, title: '비건 김치볶음밥', dietaryType: '비건', mealType: '점심', cuisine: '한식', image: '/veggieverse/store/thumbnails/kimchi-fried-rice.jpg' },
+  { id: 15, title: '연근 튀김', dietaryType: '비건', mealType: '저녁', cuisine: '한식', image: '/veggieverse/store/thumbnails/lotus-root-fry.jpg' },
+];
+
+// 태그 문자열 생성 함수
+const getTagsString = (item: BookmarkItem): string => {
+  const tags = [item.dietaryType, item.mealType, item.cuisine].filter(tag => tag && tag.trim() !== '');
+  return tags.join(' • ');
+};
 
 interface ChatWidgetProps {
   isOpen: boolean;
@@ -17,178 +53,517 @@ interface ChatPanelProps {
 
 export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
   const [avatarError, setAvatarError] = useState(false);
-  const positionClass = useMemo(() => 'fixed z-[90] right-4 bottom-20 sm:right-6 sm:bottom-24', []);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   // 챗봇이 열렸을 때는 버튼을 숨김
   if (isOpen) return null;
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.touches[0].clientY);
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStart === null) return;
+    const touchEnd = e.changedTouches[0].clientY;
+    const diff = touchStart - touchEnd;
+    if (diff > 50) {
+      onToggle();
+    }
+    setTouchStart(null);
+  };
+
   return (
-    <button
-      aria-label="챗봇 열기"
-      className={`chatbot-trigger ${positionClass} w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 bg-transparent border-none hover:scale-110 transition-all flex items-center justify-center overflow-hidden`}
-      onClick={onToggle}
-      style={{ borderRadius: '24%' }}
-    >
-      {avatarError ? (
-        <div className="w-full h-full flex items-center justify-center text-5xl bg-stone-100">
-          🍉
+    <div
+      className="fixed bottom-0 left-0 right-0 z-[90] cursor-pointer"
+      style={{ background: '#3fa945' }}
+        onClick={onToggle}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* 캐릭터 빼꼼 */}
+        {avatarError ? (
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '100%',
+              left: '16px',
+              width: '56px',
+              height: '56px',
+              marginBottom: '-8px',
+              background: '#fff',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '28px',
+              border: '2px solid #3fa945',
+            }}
+          >
+            🍉
+          </div>
+        ) : (
+          <img
+            src={AVATAR_IMG}
+            alt="챗봇"
+            style={{
+              position: 'absolute',
+              bottom: '100%',
+              left: '16px',
+              width: '56px',
+              height: '56px',
+              marginBottom: '-8px',
+              objectFit: 'cover',
+              borderRadius: '50%',
+              border: '2px solid #3fa945',
+              background: '#fff',
+            }}
+            onError={() => setAvatarError(true)}
+            draggable={false}
+          />
+        )}
+
+        {/* 배너 텍스트 + 스피릿 찾기 버튼 */}
+        <div style={{
+          padding: '14px 16px 14px 80px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+        }}>
+          <p
+            style={{
+              color: '#fff',
+              fontSize: '13px',
+              fontWeight: 400,
+              margin: 0,
+              lineHeight: 1.4,
+              flex: 1,
+            }}
+          >
+            지금 내 기분에 맞는 레시피와 메뉴 추천해드릴게요
+          </p>
+          <Link
+            to="/"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '6px 12px',
+              background: '#fff',
+              color: '#3fa945',
+              fontSize: '12px',
+              fontWeight: 500,
+              borderRadius: '4px',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
+          >
+            🥗 나의 스피릿 찾기
+          </Link>
         </div>
-      ) : (
-        <video
-          src={AVATAR_VIDEO}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          onError={() => setAvatarError(true)}
-        />
-      )}
-    </button>
+    </div>
   );
 };
 
 export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
   const [avatarError, setAvatarError] = useState(false);
   const [tab, setTab] = useState<TabKey>('chat');
-  const memoryOn = true;
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 개발용: 로그인 상태로 설정
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [contextTasteOn, setContextTasteOn] = useState(true);
   const [input, setInput] = useState('');
   const quickPrompts = ['오늘 점심 추천', '주간 식단 짜줘', '장보기 리스트 만들어줘', '저염/고단백으로'];
 
+  const handleLogin = () => {
+    // 로그인 모달 열기
+    setIsLoginModalOpen(true);
+  };
+
+  const handleLoginSuccess = () => {
+    // 로그인 성공 후 상태 업데이트
+    setIsLoggedIn(true);
+    setIsLoginModalOpen(false);
+  };
+
+  if (!isOpen) {
+    return null;
+  }
+
   return (
-    <div className="h-full w-full bg-white shadow-2xl flex flex-col">
-          {/* 헤더 */}
-          <div className="h-16 px-4 flex items-center gap-3 border-b border-stone-200">
-            {avatarError ? (
-              <div className="w-10 h-10 rounded-none bg-gradient-to-br from-lime-200 via-emerald-200 to-amber-200 flex items-center justify-center text-xl">
-                🍉
-              </div>
+    <>
+      {/* 데스크탑: Fixed Bottom Right */}
+      <div className="hidden md:block fixed bottom-8 right-8 z-[90] w-[360px] h-[600px] bg-white border border-black flex flex-col" style={{ boxShadow: '4px 4px 0 #000' }}>
+        {/* 헤더 */}
+        <div className="h-16 px-4 flex items-center gap-3 border-b border-black">
+          {avatarError ? (
+            <div className="w-10 h-10 border border-black bg-white flex items-center justify-center text-xl">
+              🍉
+            </div>
+          ) : (
+            <img
+              src={AVATAR_IMG}
+              alt="챗봇"
+              className="w-10 h-10 border border-black object-cover"
+              onError={() => setAvatarError(true)}
+              draggable={false}
+            />
+          )}
+          <div className="flex-1 flex flex-col">
+            <p className="text-base font-normal text-black" style={{ fontSize: '16px' }}>VeggieVerse GPT</p>
+            {isLoggedIn ? (
+              <span className="text-[11px] text-gray-500 flex items-center gap-1 cursor-default">
+                <Check className="w-3 h-3" />
+                대화가 저장되고 있습니다
+              </span>
             ) : (
-              <img
-                src={AVATAR_IMG}
-                alt="챗봇"
-                className="w-10 h-10 rounded-none object-cover"
-                onError={() => setAvatarError(true)}
-                draggable={false}
-              />
-            )}
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-stone-900">VeggieVerse GPT</p>
-              <p className="text-[12px] text-emerald-600">기억 {memoryOn ? 'ON' : 'OFF'} • 빠른 답변</p>
-            </div>
-            <div className="flex items-center gap-2">
               <button
-                onClick={onToggle}
-                className="text-stone-400 hover:text-stone-700 text-lg leading-none px-2 py-1"
-                aria-label="챗봇 닫기"
+                onClick={handleLogin}
+                className="text-[11px] text-black underline text-left hover:text-gray-600 transition-colors"
               >
-                ×
+                로그인하고 대화 기억하기
               </button>
-            </div>
-          </div>
-
-          {/* 탭 */}
-          <div className="flex border-b border-stone-200 px-4 gap-4">
-            {[
-              { key: 'chat', label: '대화' },
-              { key: 'profile', label: '내 취향/기억' },
-              { key: 'saved', label: '저장/핀' },
-            ].map(t => (
-              <button
-                key={t.key}
-                onClick={() => setTab(t.key as TabKey)}
-                className={`relative py-3 text-sm ${
-                  tab === t.key ? 'text-stone-900 font-semibold' : 'text-stone-500'
-                }`}
-              >
-                {t.label}
-                {tab === t.key && <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] bg-black" />}
-              </button>
-            ))}
-          </div>
-
-          {/* 본문 */}
-          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
-            {tab === 'chat' && (
-              <>
-                <label className="flex items-center gap-2 text-[12px] text-stone-500 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="accent-black"
-                    checked={contextTasteOn}
-                    onChange={() => setContextTasteOn(!contextTasteOn)}
-                  />
-                  취향/알레르기 적용
-                </label>
-
-                <div className="text-xs text-stone-500">
-                  집에 있는 재료로도 세계 각지의 유명한 레스토랑 맛을 최대한 비슷하게 만들어볼게요.
-                  필요하면 어울리는 슬런치 제품도 같이 추천해 드릴게요.
-                </div>
-
-                <div className="grid grid-cols-2 gap-2">
-                  {quickPrompts.map(p => (
-                    <button
-                      key={p}
-                      className="text-left text-[12px] px-3 py-2 border border-stone-200 rounded-none hover:border-stone-400 transition-colors"
-                      onClick={() => setInput(p)}
-                    >
-                      {p}
-                    </button>
-                  ))}
-                </div>
-              </>
             )}
+          </div>
+          <button
+            onClick={onToggle}
+            className="text-black hover:bg-black hover:text-white transition-colors text-lg leading-none px-2 py-1 border border-black"
+            aria-label="챗봇 닫기"
+          >
+            ×
+          </button>
+        </div>
 
-            {tab === 'profile' && (
-              <div className="space-y-3">
-                <div className="p-3 border border-stone-200 rounded-none">
-                  <p className="text-[12px] text-stone-500 mb-1">식단 유형</p>
-                  <p className="text-sm font-semibold text-stone-900">비건 / 저염 / 고단백</p>
-                </div>
-                <div className="p-3 border border-stone-200 rounded-none">
-                  <p className="text-[12px] text-stone-500 mb-1">선호 / 비선호</p>
-                  <p className="text-sm text-stone-800">선호: 버섯, 올리브, 토마토</p>
-                  <p className="text-sm text-stone-800">비선호: 너무 매운 음식, 파인애플</p>
-                </div>
-                <div className="p-3 border border-stone-200 rounded-none">
-                  <p className="text-[12px] text-stone-500 mb-1">알레르기</p>
-                  <p className="text-sm text-stone-800">견과류(피넛) 주의</p>
-                </div>
+        {/* 탭 */}
+        <div className="flex border-b border-black px-4 gap-4">
+          {[
+            { key: 'chat', label: '대화' },
+            { key: 'profile', label: '내 취향/기억' },
+            { key: 'saved', label: '북마크' },
+          ].map(t => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key as TabKey)}
+              className={`relative py-3 text-sm font-normal transition-colors ${
+                tab === t.key ? 'text-black' : 'text-black hover:underline'
+              }`}
+              style={{ fontSize: '14px' }}
+            >
+              {t.label}
+              {tab === t.key && <span className="absolute left-0 right-0 bottom-0 h-[1px] bg-black" />}
+            </button>
+          ))}
+        </div>
+
+        {/* 본문 */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+          {tab === 'chat' && (
+            <>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={contextTasteOn}
+                  onChange={() => setContextTasteOn(!contextTasteOn)}
+                  className="w-3 h-3 border border-black accent-black"
+                  style={{ accentColor: '#000' }}
+                />
+                <span className="text-xs text-black font-normal" style={{ fontSize: '13px' }}>취향/알레르기 적용</span>
+              </label>
+
+              <div className="text-xs text-black font-normal" style={{ fontSize: '13px', lineHeight: '1.6' }}>
+                집에 있는 재료로도 세계 각지의 유명한 레스토랑 맛을 최대한 비슷하게 만들어볼게요.
+                필요하면 어울리는 슬런치 제품도 같이 추천해 드릴게요.
               </div>
-            )}
 
-            {tab === 'saved' && (
-              <div className="space-y-3">
-                <div className="p-3 border border-stone-200 rounded-none">
-                  <p className="text-[12px] text-stone-500 mb-1">핀한 레시피</p>
-                  <p className="text-sm text-stone-800">토마토 병아리콩 스튜 (저염)</p>
-                </div>
-                <div className="p-3 border border-stone-200 rounded-none">
-                  <p className="text-[12px] text-stone-500 mb-1">장보기 리스트</p>
-                  <p className="text-sm text-stone-800">병아리콩, 시금치, 레몬, 올리브오일</p>
-                </div>
+              <div className="grid grid-cols-2 gap-2">
+                {quickPrompts.map(p => (
+                  <button
+                    key={p}
+                    className="text-left px-3 py-2 border border-black bg-white text-black font-normal hover:bg-black hover:text-white transition-colors"
+                    style={{ fontSize: '13px' }}
+                    onClick={() => setInput(p)}
+                  >
+                    {p}
+                  </button>
+                ))}
               </div>
-            )}
-          </div>
+            </>
+          )}
 
-          {/* 입력 */}
-          <div className="border-t border-stone-200 p-4 bg-white space-y-2">
-            <div className="flex items-end gap-2">
-              <textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                rows={2}
-                placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
-                className="flex-1 resize-none rounded-none border border-stone-200 px-3 py-2 text-sm focus:outline-none focus:border-stone-400"
-              />
-              <button className="px-4 py-2 bg-black text-white rounded-none text-sm font-semibold hover:opacity-90 transition-colors">
-                전송
-              </button>
+          {tab === 'profile' && (
+            <div className="space-y-3">
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>식단 유형</p>
+                <p className="text-sm font-normal text-black" style={{ fontSize: '14px' }}>비건 / 저염 / 고단백</p>
+              </div>
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>선호 / 비선호</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>선호: 버섯, 올리브, 토마토</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>비선호: 너무 매운 음식, 파인애플</p>
+              </div>
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>알레르기</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>견과류(피넛) 주의</p>
+              </div>
             </div>
+          )}
+
+          {tab === 'saved' && (
+            <div className="grid grid-cols-2 gap-3 p-1">
+              {MOCK_BOOKMARKS.map((bookmark) => (
+                <Link
+                  key={bookmark.id}
+                  to={`/recipe/${bookmark.id}`}
+                  className="group flex flex-col border border-black bg-white hover:bg-black transition-colors cursor-pointer"
+                >
+                  {/* 이미지 */}
+                  <div className="w-full h-[100px] border-b border-black bg-gray-200 overflow-hidden relative">
+                    <img
+                      src={bookmark.image}
+                      alt={bookmark.title}
+                      className="w-full h-full object-cover group-hover:opacity-80"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 플레이스홀더
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">IMG</div>';
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* 텍스트 영역 */}
+                  <div className="p-2 text-left">
+                    <p className="text-[12px] font-medium mb-1 truncate group-hover:text-white">
+                      {bookmark.title}
+                    </p>
+                    <p className="text-[10px] text-gray-500 group-hover:text-gray-300 truncate">
+                      {getTagsString(bookmark)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 입력 */}
+        <div className="border-t border-black p-4 bg-white space-y-2">
+          <div className="flex items-end gap-2">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              rows={2}
+              placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
+              className="flex-1 resize-none border border-black px-3 py-2 text-black bg-white focus:outline-none focus:ring-0 font-normal"
+              style={{ fontSize: '13px' }}
+            />
+            <button 
+              className="px-4 py-2 bg-black text-white border border-black font-normal hover:opacity-90 transition-opacity"
+              style={{ fontSize: '13px' }}
+            >
+              전송
+            </button>
           </div>
         </div>
+      </div>
+
+      {/* 모바일: Bottom Sheet */}
+      <>
+        {/* 오버레이 */}
+        <div 
+          className="md:hidden fixed inset-0 z-[89] bg-black/50"
+          onClick={onToggle}
+          style={{ top: 0 }}
+        />
+        <div className="md:hidden fixed inset-x-0 bottom-0 z-[90] bg-white flex flex-col border-t border-black" style={{ height: '80vh' }}>
+        {/* 헤더 */}
+        <div className="h-16 px-4 flex items-center gap-3 border-b border-black">
+          {avatarError ? (
+            <div className="w-10 h-10 border border-black bg-white flex items-center justify-center text-xl">
+              🍉
+            </div>
+          ) : (
+            <img
+              src={AVATAR_IMG}
+              alt="챗봇"
+              className="w-10 h-10 border border-black object-cover"
+              onError={() => setAvatarError(true)}
+              draggable={false}
+            />
+          )}
+          <div className="flex-1 flex flex-col">
+            <p className="text-base font-normal text-black" style={{ fontSize: '16px' }}>VeggieVerse GPT</p>
+            {isLoggedIn ? (
+              <span className="text-[11px] text-gray-500 flex items-center gap-1 cursor-default">
+                <Check className="w-3 h-3" />
+                대화가 저장되고 있습니다
+              </span>
+            ) : (
+              <button
+                onClick={handleLogin}
+                className="text-[11px] text-black underline text-left hover:text-gray-600 transition-colors"
+              >
+                로그인하고 대화 기억하기
+              </button>
+            )}
+          </div>
+          <button
+            onClick={onToggle}
+            className="text-black hover:bg-black hover:text-white transition-colors text-lg leading-none px-2 py-1 border border-black"
+            aria-label="챗봇 닫기"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* 탭 */}
+        <div className="flex border-b border-black px-4 gap-4">
+          {[
+            { key: 'chat', label: '대화' },
+            { key: 'profile', label: '내 취향/기억' },
+            { key: 'saved', label: '북마크' },
+          ].map(t => (
+            <button
+              key={t.key}
+              onClick={() => setTab(t.key as TabKey)}
+              className={`relative py-3 text-sm font-normal transition-colors ${
+                tab === t.key ? 'text-black' : 'text-black hover:underline'
+              }`}
+              style={{ fontSize: '14px' }}
+            >
+              {t.label}
+              {tab === t.key && <span className="absolute left-0 right-0 bottom-0 h-[1px] bg-black" />}
+            </button>
+          ))}
+        </div>
+
+        {/* 본문 */}
+        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4">
+          {tab === 'chat' && (
+            <>
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={contextTasteOn}
+                  onChange={() => setContextTasteOn(!contextTasteOn)}
+                  className="w-3 h-3 border border-black accent-black"
+                  style={{ accentColor: '#000' }}
+                />
+                <span className="text-xs text-black font-normal" style={{ fontSize: '13px' }}>취향/알레르기 적용</span>
+              </label>
+
+              <div className="text-xs text-black font-normal" style={{ fontSize: '13px', lineHeight: '1.6' }}>
+                집에 있는 재료로도 세계 각지의 유명한 레스토랑 맛을 최대한 비슷하게 만들어볼게요.
+                필요하면 어울리는 슬런치 제품도 같이 추천해 드릴게요.
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {quickPrompts.map(p => (
+                  <button
+                    key={p}
+                    className="text-left px-3 py-2 border border-black bg-white text-black font-normal hover:bg-black hover:text-white transition-colors"
+                    style={{ fontSize: '13px' }}
+                    onClick={() => setInput(p)}
+                  >
+                    {p}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+
+          {tab === 'profile' && (
+            <div className="space-y-3">
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>식단 유형</p>
+                <p className="text-sm font-normal text-black" style={{ fontSize: '14px' }}>비건 / 저염 / 고단백</p>
+              </div>
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>선호 / 비선호</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>선호: 버섯, 올리브, 토마토</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>비선호: 너무 매운 음식, 파인애플</p>
+              </div>
+              <div className="p-3 border border-black bg-white">
+                <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>알레르기</p>
+                <p className="text-sm text-black font-normal" style={{ fontSize: '14px' }}>견과류(피넛) 주의</p>
+              </div>
+            </div>
+          )}
+
+          {tab === 'saved' && (
+            <div className="grid grid-cols-2 gap-3 p-1">
+              {MOCK_BOOKMARKS.map((bookmark) => (
+                <Link
+                  key={bookmark.id}
+                  to={`/recipe/${bookmark.id}`}
+                  className="group flex flex-col border border-black bg-white hover:bg-black transition-colors cursor-pointer"
+                >
+                  {/* 이미지 */}
+                  <div className="w-full h-[100px] border-b border-black bg-gray-200 overflow-hidden relative">
+                    <img
+                      src={bookmark.image}
+                      alt={bookmark.title}
+                      className="w-full h-full object-cover group-hover:opacity-80"
+                      onError={(e) => {
+                        // 이미지 로드 실패 시 플레이스홀더
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                        const parent = target.parentElement;
+                        if (parent) {
+                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">IMG</div>';
+                        }
+                      }}
+                    />
+                  </div>
+
+                  {/* 텍스트 영역 */}
+                  <div className="p-2 text-left">
+                    <p className="text-[12px] font-medium mb-1 truncate group-hover:text-white">
+                      {bookmark.title}
+                    </p>
+                    <p className="text-[10px] text-gray-500 group-hover:text-gray-300 truncate">
+                      {getTagsString(bookmark)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* 입력 */}
+        <div className="border-t border-black p-4 bg-white space-y-2">
+          <div className="flex items-end gap-2">
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              rows={2}
+              placeholder="두유, 단호박, 마카다미아로 버터처럼 부드러운 맛을 만들고 싶어."
+              className="flex-1 resize-none border border-black px-3 py-2 text-black bg-white focus:outline-none focus:ring-0 font-normal"
+              style={{ fontSize: '13px' }}
+            />
+            <button 
+              className="px-4 py-2 bg-black text-white border border-black font-normal hover:opacity-90 transition-opacity"
+              style={{ fontSize: '13px' }}
+            >
+              전송
+            </button>
+          </div>
+        </div>
+      </div>
+      </>
+
+      {/* Login Modal */}
+      <LoginModal 
+        isOpen={isLoginModalOpen} 
+        onClose={() => setIsLoginModalOpen(false)}
+        onLoginSuccess={handleLoginSuccess}
+      />
+    </>
   );
 };
 
@@ -200,4 +575,3 @@ export const ChatWidget: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
     </>
   );
 };
-

@@ -200,13 +200,13 @@ const RecipeVideoHero: React.FC = () => {
                     />
                     {/* 추천 아이콘 (좌측 상단) */}
                     <div className="absolute top-3 left-3 z-10">
-                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#3fa945] flex items-center justify-center">
                         <span className="text-black text-xs">✦</span>
                       </div>
                     </div>
                   </div>
                   <div className="pt-3 bg-black px-3 pb-3">
-                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                    <h4 className="font-normal text-white leading-tight group-hover:underline text-base">
                       {item.name}
                     </h4>
                     <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
@@ -241,13 +241,13 @@ const RecipeVideoHero: React.FC = () => {
                     />
                     {/* 추천 아이콘 (좌측 상단) */}
                     <div className="absolute top-3 left-3 z-10">
-                      <div className="w-8 h-8 bg-[#BFFF00] flex items-center justify-center">
+                      <div className="w-8 h-8 bg-[#3fa945] flex items-center justify-center">
                         <span className="text-black text-xs">✦</span>
                       </div>
                     </div>
                   </div>
                   <div className="pt-3 bg-black px-3 pb-3">
-                    <h4 className="font-bold text-white leading-tight group-hover:underline text-base">
+                    <h4 className="font-normal text-white leading-tight group-hover:underline text-base">
                       {item.name}
                     </h4>
                     <p className="text-gray-400 mt-2 line-clamp-2 text-xs">
@@ -309,7 +309,7 @@ const RecipeVideoHero: React.FC = () => {
                   />
                   {/* 추천 아이콘 (좌측 상단) */}
                   <div className="absolute top-2 left-2 z-10">
-                    <div className="w-6 h-6 bg-[#BFFF00] flex items-center justify-center">
+                    <div className="w-6 h-6 bg-[#3fa945] flex items-center justify-center">
                       <span className="text-black text-[10px]">✦</span>
                     </div>
                   </div>
@@ -317,7 +317,7 @@ const RecipeVideoHero: React.FC = () => {
                 {/* 카드 정보 (오른쪽) */}
                 <div className="flex-1 flex flex-col justify-between py-1">
                   <div>
-                    <h4 className="font-bold text-black leading-tight line-clamp-2 group-hover:underline text-xs">
+                    <h4 className="font-normal text-black leading-tight line-clamp-2 group-hover:underline text-xs">
                       {item.name}
                     </h4>
                     <p className="text-gray-500 mt-1 line-clamp-2 text-[10px]">
@@ -356,6 +356,8 @@ interface HomePageProps {
   headerOffset?: number;
 }
 
+const SPIRIT_MODAL_HIDE_KEY = 'spiritModal_hideUntil';
+
 export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   const [showToast, setShowToast] = useState(true);
   const [scrollY, setScrollY] = useState(0);
@@ -371,12 +373,24 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 하루동안 안보기 체크
+  useEffect(() => {
+    const hideUntil = localStorage.getItem(SPIRIT_MODAL_HIDE_KEY);
+    if (hideUntil && Date.now() < parseInt(hideUntil)) {
+      setShowToast(false);
+    }
+  }, []);
+
   const dismissToast = () => {
     setShowToast(false);
   };
 
-  const openToast = () => {
-    setShowToast(true);
+  const dismissForToday = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    localStorage.setItem(SPIRIT_MODAL_HIDE_KEY, tomorrow.getTime().toString());
+    setShowToast(false);
   };
 
   return (
@@ -394,35 +408,29 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             aria-modal="true"
             aria-labelledby="test-modal-title"
           >
-            <div 
+            <div
               className="relative bg-black pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
-              style={{ 
+              style={{
                 width: '90%',
                 maxWidth: '380px',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)'
               }}
             >
-              <button 
-                onClick={dismissToast}
-                className="absolute top-4 right-4 z-10 p-1 transition-opacity hover:opacity-80"
-                aria-label="모달 닫기"
-              >
-                <X className="w-5 h-5 text-white" aria-hidden="true" />
-              </button>
-              
               <div className="flex flex-col">
-                <div 
-                  className="relative w-full overflow-hidden bg-black rounded-t-2xl"
-                  style={{ 
+                <Link
+                  to="/"
+                  onClick={dismissToast}
+                  className="relative w-full overflow-hidden bg-black rounded-t-2xl cursor-pointer block"
+                  style={{
                     aspectRatio: '1/1',
                     isolation: 'isolate'
                   }}
                 >
                   <img
                     src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800"
-                    alt="비건 음식"
-                    className="w-full h-full object-cover"
-                    style={{ 
+                    alt="비건 음식 - 클릭하여 테스트 시작"
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    style={{
                       transform: 'translateZ(0) scale(1.05)',
                       backfaceVisibility: 'hidden',
                       WebkitBackfaceVisibility: 'hidden',
@@ -430,8 +438,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       height: '100%'
                     }}
                   />
-                </div>
-                
+                </Link>
+
                 <div className="w-full bg-black p-8 flex flex-col justify-center rounded-b-2xl">
                   <div className="flex flex-col items-center text-center gap-3">
                     <h2 id="test-modal-title" className="text-[18px] font-semibold text-white flex items-center gap-2">
@@ -440,21 +448,38 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     <span className="text-[14px] text-white/70 leading-relaxed">
                       좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
                     </span>
-                    <Link 
-                      to="/"
-                      onClick={dismissToast}
-                      className="mt-2 px-6 py-3 text-[15px] font-semibold transition-colors hover:opacity-90"
-                      style={{ 
-                        backgroundColor: '#000000', 
-                        color: '#FFFFFF',
-                        minHeight: '44px',
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                    >
-                      테스트 시작
-                    </Link>
+
+                    {/* 하단 버튼 영역 */}
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
+                      <button
+                        onClick={dismissForToday}
+                        style={{
+                          padding: '8px 16px',
+                          fontSize: '13px',
+                          fontWeight: 400,
+                          color: 'rgba(255,255,255,0.6)',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        오늘 하루동안 안보기
+                      </button>
+                      <button
+                        onClick={dismissToast}
+                        style={{
+                          padding: '8px 16px',
+                          fontSize: '13px',
+                          fontWeight: 400,
+                          color: 'rgba(255,255,255,0.6)',
+                          background: 'transparent',
+                          border: 'none',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        닫기
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -463,17 +488,6 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         </>
       )}
       
-      {/* 최소화된 플로팅 버튼 */}
-      <button
-        onClick={openToast}
-        className={`fixed right-6 z-30 px-3 py-2 rounded-none shadow-lg transition-all duration-300 flex items-center gap-2 ${
-          showToast ? 'opacity-0 pointer-events-none translate-x-4' : 'opacity-100 translate-x-0'
-        }`}
-        style={{ backgroundColor: '#000000', top: `${headerOffset + 16}px` }}
-      >
-        <span className="text-lg">🥗</span>
-        <span className="text-[11px] font-medium text-white">비건 테스트</span>
-      </button>
 
       {/* ============================================
           HERO SECTION - 1:1 Split Mood Image Slider
@@ -485,32 +499,19 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           ============================================ */}
       <section 
         ref={conceptRef}
-        className="scroll-snap-section-flex bg-[#faf9f7] section-spacing relative overflow-hidden"
+        className="scroll-snap-section-flex bg-[#faf9f7] relative overflow-hidden"
+        style={{ paddingTop: '80px', paddingBottom: '80px' }}
       >
-        {/* 배경 캐릭터 (Absolute Position) */}
-        <div 
-          className="absolute -right-20 top-1/2 -translate-y-1/2 w-64 h-64 opacity-20 pointer-events-none"
-          style={{
-            transform: `translateY(${scrollY * 0.2}px)`,
-            transition: 'transform 0.1s ease-out'
-          }}
-        >
-          <img 
-            src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
-            alt="슬런치 캐릭터"
-            className="w-full h-full object-contain"
-          />
-        </div>
 
         <div className="page-container relative z-10">
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl">
             <h2 
-              className="text-stone-900 mb-6 text-center"
+              className="text-stone-900 mb-6 text-left"
               style={{ 
-                fontSize: 'var(--font-size-h1)',
-                fontWeight: 700,
+                fontSize: 'var(--font-size-h2)',
+                fontWeight: 400,
                 letterSpacing: 'var(--letter-spacing-tight)',
-                lineHeight: 'var(--line-height-h1)'
+                lineHeight: 'var(--line-height-h2)'
               }}
             >
               We are Slunch Factory
@@ -528,24 +529,6 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               <br />
               채소들의 이야기로 만든 특별한 요리와 함께, 당신만의 비건 우주를 만들어가세요.
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              {['Potato', 'Tomato', 'Carrot', 'Broccoli'].map((veggie, idx) => (
-                <div 
-                  key={idx}
-                  className="w-16 h-16 relative"
-                  style={{
-                    transform: `translateY(${Math.sin(scrollY * 0.01 + idx) * 5}px)`,
-                    transition: 'transform 0.1s ease-out'
-                  }}
-                >
-                  <img 
-                    src={`${import.meta.env.BASE_URL}vege_flot_img/${veggie.toLowerCase()}.png`}
-                    alt={veggie}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -554,18 +537,17 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           SLUNCH WEEKLY - Dedicated Feature Section (Lofa Style)
           ============================================ */}
       <section 
-        className="scroll-snap-section-flex section-spacing relative overflow-visible bg-white"
+        className="relative overflow-visible bg-white w-full"
         style={{ 
           borderTop: '1px solid #000000',
           borderBottom: '1px solid #000000'
         }}
       >
-        <div className="page-container">
-          <div className="flex flex-col lg:flex-row border border-[#000000]">
-            {/* 왼쪽 영역 (60%) - 이미지 */}
+        <div className="w-full">
+          <div className="flex flex-col lg:flex-row">
+            {/* 왼쪽 영역 (50%) - 이미지 */}
             <div 
-              className="w-full lg:w-[60%] relative border-r-0 lg:border-r border-[#000000]"
-              style={{ borderRight: '1px solid #000000' }}
+              className="w-full lg:w-[50%] relative border-r border-[#000000]"
             >
               <div 
                 className="w-full overflow-hidden relative"
@@ -576,36 +558,21 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               >
                 {/* 도시락/패키지 이미지 자리 */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[#000000] text-sm font-medium">슬런치 위클리 패키지 이미지</span>
+                  <span className="text-[#000000] text-sm font-normal">슬런치 위클리 패키지 이미지</span>
                 </div>
                 
-                {/* 배달 모자 캐릭터 (Absolute Position - 모서리에 걸치도록) */}
-                <div 
-                  className="absolute -bottom-6 -right-6 w-20 h-20 lg:w-28 lg:h-28 z-10"
-                  style={{
-                    transform: `translateY(${scrollY * 0.15}px)`,
-                    transition: 'transform 0.1s ease-out'
-                  }}
-                >
-                  <img 
-                    src={`${import.meta.env.BASE_URL}characters/slunch-character.png`}
-                    alt="슬런치 캐릭터"
-                    className="w-full h-full object-contain"
-                    style={{ filter: 'none' }}
-                  />
-                </div>
               </div>
             </div>
             
-            {/* 오른쪽 영역 (40%) - 텍스트 & CTA */}
-            <div className="w-full lg:w-[40%] flex flex-col justify-center p-6 lg:p-12">
+            {/* 오른쪽 영역 (50%) - 텍스트 & CTA */}
+            <div className="w-full lg:w-[50%] flex flex-col justify-center p-6 lg:p-12">
               <h2 
-                className="text-[#000000] mb-6"
+                className="text-[#000000] mb-6 font-normal"
                 style={{ 
-                  fontSize: 'var(--font-size-h1)',
-                  fontWeight: 700,
+                  fontSize: 'var(--font-size-h2)',
+                  fontWeight: 400,
                   letterSpacing: 'var(--letter-spacing-tight)',
-                  lineHeight: 'var(--line-height-h1)'
+                  lineHeight: 'var(--line-height-h2)'
                 }}
               >
                 고민 없는 건강한 일주일,<br />
@@ -634,7 +601,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -660,7 +627,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -686,7 +653,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       className="text-[#000000] mb-1" 
                       style={{ 
                         fontSize: 'var(--font-size-body)',
-                        fontWeight: 600,
+                        fontWeight: 500,
                         letterSpacing: 'var(--letter-spacing-tight)'
                       }}
                     >
@@ -709,11 +676,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               {/* CTA Button - Outline Style */}
               <Link
                 to="/store"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-bold text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-normal text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
                 style={{ 
                   borderRadius: '0',
                   fontSize: 'var(--font-size-ui)',
-                  fontWeight: 600,
+                  fontWeight: 400,
                   letterSpacing: '-0.01em',
                   minHeight: '44px' /* Touch target minimum */
                 }}
@@ -734,22 +701,22 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       {/* ============================================
           SECTION 2: Best Menu/Goods (4:5 Grid)
           ============================================ */}
-      <section className="scroll-snap-section-flex bg-white section-spacing">
+      <section className="scroll-snap-section-flex bg-white" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
         <div className="page-container">
-          <div className="mb-12">
+          <div className="mb-12 max-w-3xl">
             <h2 
-              className="text-stone-900 mb-4 text-center"
+              className="text-stone-900 mb-4 text-left font-normal"
               style={{ 
-                fontSize: 'var(--font-size-h1)',
-                fontWeight: 700,
+                fontSize: 'var(--font-size-h2)',
+                fontWeight: 400,
                 letterSpacing: 'var(--letter-spacing-tight)',
-                lineHeight: 'var(--line-height-h1)'
+                lineHeight: 'var(--line-height-h2)'
               }}
             >
               오늘의 기분엔 이 메뉴!
             </h2>
             <p 
-              className="text-stone-600 text-center"
+              className="text-stone-600 text-left"
               style={{ 
                 fontSize: 'var(--font-size-body)',
                 fontWeight: 400,
@@ -804,7 +771,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     className="group-hover:underline line-clamp-1"
                     style={{ 
                       fontSize: '16px',
-                      fontWeight: 700,
+                      fontWeight: 400,
                       color: '#000000',
                       marginTop: '16px',
                       marginBottom: '6px'
@@ -837,14 +804,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   </p>
                   {/* 할인율 + 할인가 */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span 
-                      style={{ 
-                        display: 'inline-block',
-                        padding: '2px 8px',
-                        fontSize: '11px',
+                    <span
+                      style={{
+                        fontSize: '16px',
                         fontWeight: 600,
-                        backgroundColor: '#BFFF00',
-                        color: '#000000'
+                        color: '#87b5e1'
                       }}
                     >
                       {discountRate}%
@@ -852,7 +816,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     <span 
                       style={{ 
                         fontSize: '16px',
-                        fontWeight: 600,
+                        fontWeight: 400,
                         color: '#000000'
                       }}
                     >
@@ -874,7 +838,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 border: '1px solid #000000',
                 color: '#000000',
                 fontSize: '15px',
-                fontWeight: 600,
+                fontWeight: 400,
                 textDecoration: 'none',
                 transition: 'all 0.15s ease',
                 minHeight: '44px',
@@ -908,7 +872,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           <h2 
             style={{ 
               fontSize: '24px',
-              fontWeight: 800,
+              fontWeight: 400,
               letterSpacing: '-0.02em',
               lineHeight: 1.2,
               color: '#FFFFFF',
@@ -938,7 +902,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 <p 
                   style={{ 
                     fontSize: '11px',
-                    fontWeight: 600,
+                    fontWeight: 400,
                     letterSpacing: '0.05em',
                     color: '#6B6B6B',
                     marginBottom: '8px'
@@ -951,7 +915,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   className="group-hover:underline line-clamp-2"
                   style={{ 
                     fontSize: '16px',
-                    fontWeight: 700,
+                    fontWeight: 400,
                     lineHeight: 1.4,
                     color: '#FFFFFF',
                     marginBottom: '8px'
@@ -984,15 +948,15 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 border: '1px solid #FFFFFF',
                 color: '#FFFFFF',
                 fontSize: '15px',
-                fontWeight: 600,
+                fontWeight: 400,
                 textDecoration: 'none',
                 transition: 'all 0.15s ease',
                 minHeight: '44px',
                 minWidth: '120px'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#BFFF00';
-                e.currentTarget.style.borderColor = '#BFFF00';
+                e.currentTarget.style.backgroundColor = '#3fa945';
+                e.currentTarget.style.borderColor = '#3fa945';
                 e.currentTarget.style.color = '#000000';
               }}
               onMouseLeave={(e) => {

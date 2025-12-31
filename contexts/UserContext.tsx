@@ -107,7 +107,24 @@ const spiritNameToBadgeId = (spiritName: string): BadgeType | null => {
 };
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUserState] = useState<User | null>(null);
+  // 개발용: 기본 mock user 데이터
+  const mockUser: User = {
+    id: 'dev-user-1',
+    username: '개발자',
+    profileImage: null,
+    spiritType: 'ENFP',
+    spiritName: 'Bloomist',
+    badges: [
+      { id: 'spirit-bloomist', name: 'Bloomist 요리사', description: 'Bloomist 활동 완료', icon: '🌻', category: 'spirit', earnedAt: new Date().toISOString() },
+      { id: 'first-recipe', name: '첫 레시피', description: '첫 레시피를 투고했습니다', icon: '🎉', category: 'activity', earnedAt: new Date().toISOString() },
+    ],
+    recipes: 5,
+    comments: 12,
+    likes: 23,
+    joinedAt: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(), // 30일 전
+  };
+
+  const [user, setUserState] = useState<User | null>(mockUser); // 개발용: mock user로 초기화
   const [coupons, setCoupons] = useState<Coupon[]>([]);
 
   // localStorage에서 유저 정보 로드
@@ -120,7 +137,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUserState(JSON.parse(savedUser));
       } catch (e) {
         console.error('Failed to load user data:', e);
+        // 에러 발생 시 mock user 유지
+        setUserState(mockUser);
       }
+    } else {
+      // localStorage에 없으면 mock user 사용
+      setUserState(mockUser);
     }
     
     if (savedCoupons) {

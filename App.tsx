@@ -12,8 +12,15 @@ import { VeganTestPage } from './pages/VeganTestPage';
 import RecipePage from './pages/RecipePage';
 import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
+import RecipeCategoryPage from './pages/RecipeCategoryPage';
 import ProfilePage from './pages/ProfilePage';
+import EventPage from './pages/EventPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
+import OrdersPage from './pages/mypage/OrdersPage';
+import BookmarksPage from './pages/mypage/BookmarksPage';
+import WishlistPage from './pages/mypage/WishlistPage';
+import ReviewsPage from './pages/mypage/ReviewsPage';
+import ProfileEditPage from './pages/mypage/ProfileEditPage';
 import { ChatWidget, ChatTrigger, ChatPanel } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -40,19 +47,26 @@ const Layout: React.FC<{
   chatPanel: React.ReactNode;
   shouldShowFooter: boolean;
 }> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner, isChatOpen, chatPanel, shouldShowFooter }) => {
-  // 프로모션 바 높이는 CSS 변수로 관리 (데스크탑: 32px, 모바일: 28px)
-  const bannerHeight = showTopBanner ? 1 : 0; // 1 = CSS 변수 사용, 0 = 없음
-  
+  // CSS 변수로 현재 고정 헤더 전체 높이 설정 (프로모 바 + 헤더)
+  const headerAreaStyle = {
+    '--header-area-h': showTopBanner
+      ? 'calc(var(--promo-h) + var(--header-h))'
+      : 'var(--header-h)',
+  } as React.CSSProperties;
+
   // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
   return (
-    <div className="min-h-screen min-w-[360px] flex flex-col">
-      {/* === STICKY TOP CONTAINER === */}
-      <div className="sticky top-0 z-50 w-full">
+    <div className="min-h-screen min-w-[360px] flex flex-col" style={{ backgroundColor: 'var(--cream)', ...headerAreaStyle }}>
+      {/* === FIXED TOP CONTAINER === */}
+      <div
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{ backgroundColor: 'var(--cream)' }}
+      >
         {/* 1. Promo Banner (Conditional) */}
         {showTopBanner && <TopBanner onClose={onCloseBanner} />}
-        
+
         {/* 2. Main Header */}
-        <Header 
+        <Header
           userProfile={userProfile}
           showProfileMenu={showProfileMenu}
           onProfileMenuToggle={onProfileMenuToggle}
@@ -60,28 +74,20 @@ const Layout: React.FC<{
           showTopBanner={showTopBanner}
         />
       </div>
-      
+
       {/* === PAGE CONTENT === */}
-      {/* 2열 레이아웃: 좌측 콘텐츠, 우측 챗봇 */}
-      <div className="flex-1 flex" style={{ paddingTop: 0 }}>
-        {/* 좌측 메인 콘텐츠 */}
-        <main className="flex-1 flex flex-col" style={{ zIndex: 0, overflow: 'visible' }}>
-          {children}
-        </main>
-        {/* 우측 챗봇 패널 */}
-        <div 
-          className={`h-full overflow-hidden transition-all duration-300 ease-in-out ${
-            isChatOpen ? 'w-full max-w-[420px]' : 'w-0'
-          }`}
-          style={{ zIndex: 10, position: 'relative' }}
-        >
-          {isChatOpen && (
-            <div className="h-full w-full bg-white border-l border-stone-200 shadow-2xl" style={{ minWidth: '320px' }}>
-              {chatPanel}
-            </div>
-          )}
-        </div>
-      </div>
+      {/* 메인 콘텐츠 - 고정 헤더 높이만큼 상단 여백 추가 */}
+      <main
+        className="flex-1 flex flex-col"
+        style={{
+          zIndex: 0,
+          overflow: 'visible',
+          paddingTop: showTopBanner ? 'calc(var(--promo-h) + var(--header-h))' : 'var(--header-h)',
+        }}
+      >
+        {children}
+      </main>
+      {/* 챗봇 패널은 ChatPanel 컴포넌트 내부에서 fixed position으로 렌더링됨 */}
       {/* Footer - Sticky Footer 패턴 (VeganTestPage 제외) */}
       {shouldShowFooter && <Footer />}
     </div>
@@ -167,7 +173,7 @@ const AppContent: React.FC = () => {
       showTopBanner={showTopBanner}
       onCloseBanner={() => setShowTopBanner(false)}
       isChatOpen={isChatOpen}
-      chatPanel={<ChatPanel isOpen={isChatOpen} onToggle={toggleChat} />}
+      chatPanel={null}
       shouldShowFooter={shouldShowFooter}
     >
       <Routes>
@@ -182,6 +188,7 @@ const AppContent: React.FC = () => {
         <Route path="/newsletter" element={<NewsletterPage />} />
         <Route path="/community" element={<CommunityPage />} />
         <Route path="/recipe" element={<RecipePage />} />
+        <Route path="/recipe/category/:categoryId" element={<RecipeCategoryPage />} />
         <Route path="/recipe/hall-of-fame" element={<RecipeHallOfFamePage />} />
         <Route 
           path="/recipe/:id" 
@@ -192,11 +199,22 @@ const AppContent: React.FC = () => {
           } 
         />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/event" element={<ComingSoonPage title="이벤트" />} />
+        <Route path="/event" element={<EventPage />} />
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
         <Route path="/mypage" element={<ProfilePage />} />
+        <Route path="/mypage/orders" element={<OrdersPage />} />
+        <Route path="/mypage/bookmarks" element={<BookmarksPage />} />
+        <Route path="/mypage/wishlist" element={<WishlistPage />} />
+        <Route path="/mypage/reviews" element={<ReviewsPage />} />
+        <Route path="/mypage/edit" element={<ProfileEditPage />} />
+        <Route path="/mypage/cancel-return" element={<ComingSoonPage title="취소/반품" />} />
+        <Route path="/mypage/receipt" element={<ComingSoonPage title="영수증 발급" />} />
+        <Route path="/mypage/inquiry" element={<ComingSoonPage title="1:1 문의 내역" />} />
+        <Route path="/mypage/address" element={<ComingSoonPage title="배송지 관리" />} />
+        <Route path="/mypage/level" element={<ComingSoonPage title="회원 등급" />} />
       </Routes>
       <ChatTrigger isOpen={isChatOpen} onToggle={toggleChat} />
+      <ChatPanel isOpen={isChatOpen} onToggle={toggleChat} />
     </Layout>
     </>
   );
@@ -206,8 +224,7 @@ const AppContent: React.FC = () => {
 const ComingSoonPage: React.FC<{ title: string }> = ({ title }) => (
   <div className="min-h-[60vh] flex items-center justify-center">
     <div className="text-center">
-      <h1 className="text-3xl font-bold text-stone-800 mb-4">{title}</h1>
-      <p className="text-stone-500">페이지 준비 중입니다.</p>
+      <p className="text-stone-500" style={{ fontSize: '14px', lineHeight: '1.6' }}>페이지 준비 중입니다.</p>
     </div>
   </div>
 );

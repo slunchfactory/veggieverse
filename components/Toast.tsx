@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Trophy, Gift, CheckCircle } from 'lucide-react';
+import { X } from 'lucide-react';
 
 export interface ToastProps {
   id: string;
@@ -30,55 +30,71 @@ export const Toast: React.FC<ToastProps> = ({
     return () => clearTimeout(timer);
   }, [id, duration, onClose]);
 
-  const getIcon = () => {
-    switch (type) {
-      case 'badge':
-        return <Trophy className="w-5 h-5 text-black" />;
-      case 'coupon':
-        return <Gift className="w-5 h-5 text-black" />;
-      case 'success':
-        return <CheckCircle className="w-5 h-5 text-black" />;
-      default:
-        return null;
-    }
-  };
-
-  const getBgColor = () => {
-    switch (type) {
-      case 'badge':
-        return 'bg-[#F5F5F5] border-[#E0E0E0]';
-      case 'coupon':
-        return 'bg-[#F5F5F5] border-[#E0E0E0]';
-      case 'success':
-        return 'bg-[#F5F5F5] border-[#E0E0E0]';
-      default:
-        return 'bg-stone-50 border-stone-200';
-    }
-  };
-
   return (
     <div
-      className={`${getBgColor()} border-2 rounded-lg shadow-lg p-4 min-w-[320px] max-w-md animate-slideInRight`}
+      style={{
+        background: '#FFFFFF',
+        border: '1px solid #000',
+        borderRadius: '8px',
+        padding: '16px',
+        minWidth: '300px',
+        maxWidth: '380px',
+        animation: 'slideInRight 0.3s ease-out',
+      }}
     >
-      <div className="flex items-start gap-3">
+      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
         {badgeEmoji && (
-          <span className="text-3xl flex-shrink-0">{badgeEmoji}</span>
+          <span style={{ fontSize: '28px', flexShrink: 0 }}>{badgeEmoji}</span>
         )}
-        {!badgeEmoji && getIcon()}
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-1">
-            <h4 className="font-bold text-stone-900 text-sm">{title}</h4>
+        <div style={{ flex: 1 }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '4px',
+          }}>
+            <h4 style={{
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#000',
+              margin: 0,
+            }}>
+              {title}
+            </h4>
             <button
               onClick={() => onClose(id)}
-              className="text-stone-400 hover:text-stone-600 transition-colors"
+              style={{
+                width: '24px',
+                height: '24px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                padding: '0',
+              }}
+              aria-label="닫기"
             >
-              <X className="w-4 h-4" />
+              <X size={16} strokeWidth={1} color="#000" />
             </button>
           </div>
-          <p className="text-sm text-stone-700 mb-1">{message}</p>
+          <p style={{
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#666',
+            margin: '0 0 4px 0',
+          }}>
+            {message}
+          </p>
           {couponCode && (
-            <p className="text-xs text-stone-600 mt-2">
-              쿠폰 코드: <span className="font-bold">{couponCode}</span>
+            <p style={{
+              fontSize: '12px',
+              fontWeight: 400,
+              color: '#888',
+              margin: '8px 0 0 0',
+            }}>
+              쿠폰 코드: <span style={{ color: '#000' }}>{couponCode}</span>
             </p>
           )}
         </div>
@@ -96,11 +112,30 @@ export const ToastContainer: React.FC<ToastContainerProps> = ({ toasts, onClose 
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-8 right-8 z-[2000] flex flex-col gap-3">
+    <div style={{
+      position: 'fixed',
+      bottom: '32px',
+      right: '32px',
+      zIndex: 2000,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+    }}>
       {toasts.map((toast) => (
         <Toast key={toast.id} {...toast} onClose={onClose} />
       ))}
+      <style>{`
+        @keyframes slideInRight {
+          from {
+            transform: translateX(100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateX(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 };
-

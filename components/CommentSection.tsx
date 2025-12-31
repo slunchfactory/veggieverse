@@ -177,7 +177,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-stone-900">리뷰</h2>
+          <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>리뷰</h2>
           <span className="text-sm text-stone-500">({reviews.length})</span>
           {reviews.length > 0 && (
             <div className="flex items-center gap-1 ml-2">
@@ -286,7 +286,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
             return (
               <div
                 key={review.id}
-                className={`py-4 ${idx < paginatedReviews.length - 1 ? 'border-b border-stone-100' : ''}`}
+                className={`py-4 ${idx < paginatedReviews.length - 1 ? 'border-b border-black' : ''}`}
               >
                 <div className="flex items-start gap-4">
                   {/* 메인 콘텐츠 */}
@@ -357,7 +357,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               onClick={() => setCurrentPage(page)}
               className={`w-8 h-8 flex items-center justify-center text-sm transition-colors ${
                 currentPage === page
-                  ? 'font-bold text-stone-900'
+                  ? 'font-normal text-stone-900'
                   : 'text-stone-400 hover:text-stone-700'
               }`}
             >

@@ -30,26 +30,23 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
           </span>
           {/* 할인율 | 할인된 가격 (아래, 가로 배치, 높이 맞춤) */}
           <div className="flex items-center gap-2">
-            {/* 할인율 뱃지 - 11px, lime 배경, black 텍스트, 높이 맞춤 */}
+            {/* 할인율 */}
             {discountRate > 0 && (
-              <span className="inline-flex items-center justify-center font-bold font-mono"
-                style={{ 
-                  fontSize: '11px', 
-                  padding: '2px 8px',
-                  backgroundColor: '#BFFF00',
-                  color: '#000000',
-                  lineHeight: '1.2',
-                  height: '20px' // 할인된 가격과 높이 맞춤
+              <span className="font-mono"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  color: '#87b5e1',
                 }}
               >
                 {discountRate}%
               </span>
             )}
-            {/* 할인된 가격 - 18px, bold, black */}
-            <span className="font-mono font-bold text-slunch-black"
+            {/* 할인된 가격 - 18px, regular, black */}
+            <span className="font-mono font-normal text-slunch-black"
               style={{ 
                 fontSize: '18px', 
-                fontWeight: 700,
+                fontWeight: 400,
                 lineHeight: '1.2'
               }}
             >
@@ -58,9 +55,9 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
           </div>
         </>
       ) : (
-        /* 할인이 없을 때 - 현재 가격만 18px, bold, black */
-        <span className="font-mono font-bold text-slunch-black"
-          style={{ fontSize: '18px', fontWeight: 700 }}
+        /* 할인이 없을 때 - 현재 가격만 18px, regular, black */
+        <span className="font-mono font-normal text-slunch-black"
+          style={{ fontSize: '18px', fontWeight: 400 }}
         >
           {price.toLocaleString()}원
         </span>

@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
   };
 
   return (
-    <footer className="bg-black text-white w-full">
+    <footer className="bg-black text-white w-full" style={{ borderTop: '1px solid var(--black)' }}>
       {/* === MOBILE FOOTER (Visible only < 768px) === */}
       <div className="block md:hidden px-5 py-10">
         {/* Mobile 2-Column Grid */}
@@ -21,7 +21,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
           <div>
             <Link 
               to="/about"
-              className="block text-[11px] font-bold tracking-widest uppercase mb-3 text-white"
+              className="block text-[11px] font-normal tracking-widest uppercase mb-3 text-white"
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
             >
@@ -57,7 +57,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
           <div>
             <Link 
               to="/newsletter"
-              className="block text-[11px] font-bold tracking-widest uppercase mb-3 text-white"
+              className="block text-[11px] font-normal tracking-widest uppercase mb-3 text-white"
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
             >
@@ -70,7 +70,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
 
           {/* Column 3: CONTACT */}
           <div>
-            <p className="text-[11px] font-bold tracking-widest uppercase mb-3 text-white">CONTACT</p>
+            <p className="text-[11px] font-normal tracking-widest uppercase mb-3 text-white">CONTACT</p>
             <a 
               href="mailto:slunch@slunch.co.kr" 
               className="block text-[13px] text-gray-400 leading-relaxed mb-1"
@@ -91,7 +91,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
 
           {/* Column 4: SOCIAL */}
           <div>
-            <p className="text-[11px] font-bold tracking-widest uppercase mb-3 text-white">SOCIAL</p>
+            <p className="text-[11px] font-normal tracking-widest uppercase mb-3 text-white">SOCIAL</p>
             <a 
               href="https://instagram.com/slunch_factory" 
               target="_blank" 
@@ -126,7 +126,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
 
           {/* Column 5: BANK */}
           <div>
-            <p className="text-[11px] font-bold tracking-widest uppercase mb-3 text-white">BANK</p>
+            <p className="text-[11px] font-normal tracking-widest uppercase mb-3 text-white">BANK</p>
             <p className="text-[14px] text-white font-mono mb-1">
               우리은행 1005-504-450570
             </p>
@@ -137,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
 
           {/* Column 6: CS */}
           <div>
-            <p className="text-[11px] font-bold tracking-widest uppercase mb-3 text-white">CS</p>
+            <p className="text-[11px] font-normal tracking-widest uppercase mb-3 text-white">CS</p>
             <p className="text-[14px] text-white font-mono mb-1">
               032-224-6525
             </p>
@@ -164,7 +164,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
           <div>
             <Link 
               to="/about"
-              className="block text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white"
+              className="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white"
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
             >
@@ -174,7 +174,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               <li>
                 <Link 
                   to="/about?section=slow-and-lunch" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -184,7 +184,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               <li>
                 <Link 
                   to="/about?section=branch" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -194,7 +194,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               <li>
                 <Link 
                   to="/about?section=b2b-vtech" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -208,25 +208,25 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
           <div>
             <Link 
               to="/newsletter"
-              className="block text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white"
+              className="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white"
               onMouseEnter={(e) => handleHover(e, true)}
               onMouseLeave={(e) => handleHover(e, false)}
             >
               NEWSLETTER
             </Link>
-            <p className="text-[13px] text-gray-400 font-medium leading-[1.8]">
+            <p className="text-[13px] text-gray-400 font-normal leading-[1.8]">
               슬런치 에디터가 발행하는 아티클
             </p>
           </div>
 
           {/* Column 3: CONTACT */}
           <div>
-            <p className="text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white">CONTACT</p>
+            <p className="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white">CONTACT</p>
             <ul className="space-y-2">
               <li>
                 <a 
                   href="mailto:slunch@slunch.co.kr" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -236,7 +236,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               <li>
                 <a 
                   href="mailto:export@slunch.co.kr" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -248,14 +248,14 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
 
           {/* Column 4: SOCIAL */}
           <div>
-            <p className="text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white">SOCIAL</p>
+            <p className="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white">SOCIAL</p>
             <ul className="space-y-2">
               <li>
                 <a 
                   href="https://instagram.com/slunch_factory" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -267,7 +267,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                   href="https://youtube.com" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -279,7 +279,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                   href="https://linkedin.com" 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="block text-[13px] text-gray-400 font-medium leading-[1.8] hover:text-[#BFFF00] transition-colors"
+                  className="block text-[13px] text-gray-400 font-normal leading-[1.8] hover:text-primary-light transition-colors"
                   onMouseEnter={(e) => handleHover(e, true)}
                   onMouseLeave={(e) => handleHover(e, false)}
                 >
@@ -292,20 +292,20 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
           {/* Column 5: BANK & CS (Grouped) */}
           <div>
             <div className="mb-6">
-              <p className="text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white">BANK</p>
+              <p className="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white">BANK</p>
               <p className="text-[14px] text-white font-mono mb-1 leading-[1.8]">
                 우리은행 1005-504-450570
               </p>
-              <p className="text-[13px] text-gray-400 font-medium leading-[1.8]">
+              <p className="text-[13px] text-gray-400 font-normal leading-[1.8]">
                 (주)슬런치팩토리
               </p>
             </div>
             <div>
-              <p className="text-[11px] font-bold tracking-[0.15em] uppercase mb-4 text-white">CS</p>
+              <p className="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-white">CS</p>
               <p className="text-[14px] text-white font-mono mb-1 leading-[1.8]">
                 032-224-6525
               </p>
-              <p className="text-[13px] text-gray-400 font-medium leading-[1.8]">
+              <p className="text-[13px] text-gray-400 font-normal leading-[1.8]">
                 카카오톡 채널 문의
               </p>
             </div>

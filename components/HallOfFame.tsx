@@ -72,7 +72,7 @@ export const HallOfFame: React.FC = () => {
       <section className="py-16 border-t border-stone-200">
         <div className="text-center">
           <Trophy className="w-16 h-16 text-amber-400 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-stone-900 mb-2">명예의 전당</h2>
+          <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>명예의 전당</h2>
           <p className="text-stone-500">아직 데이터가 없습니다. 첫 레시피를 올려보세요!</p>
         </div>
       </section>
@@ -85,9 +85,9 @@ export const HallOfFame: React.FC = () => {
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-100 rounded-none mb-4">
             <Trophy className="w-6 h-6 text-amber-700" />
-            <span className="text-amber-700 font-semibold">이번 달 베스트 인플루언서</span>
+            <span className="text-amber-700 font-normal">이번 달 베스트 인플루언서</span>
           </div>
-          <h2 className="text-3xl font-bold text-stone-900 mb-2">명예의 전당</h2>
+          <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>명예의 전당</h2>
           <p className="text-stone-600">가장 활발한 커뮤니티 멤버들을 소개합니다</p>
         </div>
 
@@ -96,23 +96,24 @@ export const HallOfFame: React.FC = () => {
             <Link
               key={user.id}
               to={`/profile?user=${user.id}`}
-              className="block p-6 bg-white border-2 border-stone-200 rounded-none hover:border-amber-300 hover:shadow-lg transition-all"
+              className="block p-6 bg-white border border-black rounded-none transition-transform duration-200 hover:scale-[1.02]"
             >
               <div className="flex items-center gap-4">
                 {/* 순위 */}
-                <div className={`w-12 h-12 rounded-none flex items-center justify-center font-bold text-lg ${
-                  index === 0 ? 'bg-amber-500 text-white' :
-                  index === 1 ? 'bg-stone-400 text-white' :
-                  index === 2 ? 'bg-amber-600 text-white' :
-                  'bg-stone-200 text-stone-700'
-                }`}>
+                <div
+                  className="w-12 h-12 rounded-none flex items-center justify-center font-normal text-lg border border-black"
+                  style={{
+                    backgroundColor: index === 0 ? '#f59e0b' : index === 1 ? '#a8a29e' : index === 2 ? '#d97706' : '#e7e5e4',
+                    color: index <= 2 ? '#fff' : '#44403c'
+                  }}
+                >
                   {index + 1}
                 </div>
 
                 {/* 유저 정보 */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-lg font-bold text-stone-900">{user.username}</h3>
+                    <h3 className="text-lg font-normal text-stone-900">{user.username}</h3>
                     {user.spiritName && (
                       <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-none">
                         {user.spiritName}
@@ -137,7 +138,7 @@ export const HallOfFame: React.FC = () => {
 
                 {/* 점수 */}
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-amber-600">{user.score}</div>
+                  <div className="text-amber-600 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{user.score}</div>
                   <div className="text-xs text-stone-500">점수</div>
                 </div>
               </div>

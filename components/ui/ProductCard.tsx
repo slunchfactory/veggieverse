@@ -27,12 +27,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const cardContent = (
     <div
-      className="bg-slunch-white-pure border-2 border-slunch-black hover-shadow cursor-pointer"
+      className="bg-cream border border-black rounded-lg cursor-pointer transition-transform duration-200 hover:scale-[1.02]"
       onClick={onClick}
     >
       {/* Image Container */}
       {image && (
-        <div className="relative w-full aspect-square overflow-hidden">
+        <div className="relative w-full aspect-square overflow-hidden mb-[13px]">
           <img
             src={image}
             alt={title}
@@ -47,13 +47,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       )}
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="font-mono font-bold text-slunch-black mb-2 text-lg">
+      {/* Content - 넉넉한 패딩 */}
+      <div className="p-6">
+        <h3 className="font-normal text-slunch-black mb-[8px] leading-tight" style={{ fontSize: '16px' }}>
           {title}
         </h3>
         {description && (
-          <p className="font-sans text-slunch-gray text-sm mb-3">
+          <p className="font-sans text-slunch-gray text-sm mb-[13px] leading-relaxed">
             {description}
           </p>
         )}
@@ -64,7 +64,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 {originalPrice.toLocaleString()}원
               </span>
             )}
-            <span className="font-mono font-bold text-slunch-black text-lg">
+            <span className="font-mono font-normal text-slunch-black" style={{ fontSize: '15px', fontWeight: 400 }}>
               {price.toLocaleString()}원
             </span>
           </div>

@@ -57,14 +57,6 @@ const RecipeHallOfFamePage: React.FC = () => {
         </div>
         
         <div className="page-container relative">
-          {/* 뒤로가기 */}
-          <Link 
-            to="/recipe" 
-            className="inline-flex items-center gap-2 mb-8 transition-colors hover:opacity-80 text-white"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>레시피로 돌아가기</span>
-          </Link>
           
           {/* 타이틀 */}
           <div className="text-center">
@@ -74,7 +66,7 @@ const RecipeHallOfFamePage: React.FC = () => {
             >
               <Trophy className="w-10 h-10" />
             </div>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-4 text-white">
+            <h1 className="mb-4 text-white font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
               명예의 전당
             </h1>
             <p className="text-lg sm:text-xl max-w-2xl mx-auto text-white/80">
@@ -95,11 +87,11 @@ const RecipeHallOfFamePage: React.FC = () => {
               }`}
             >
               {/* 카드 */}
-              <div 
-                className="bg-white rounded-none overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-                style={recipe.rank <= 3 ? { 
-                  boxShadow: `0 0 0 3px ${cardColors[(recipe.rank - 1) % cardColors.length].bg}` 
-                } : {}}
+              <div
+                className="bg-white rounded-none overflow-hidden transition-transform duration-200 hover:scale-[1.02]"
+                style={recipe.rank <= 3 ? {
+                  border: `1px solid ${cardColors[(recipe.rank - 1) % cardColors.length].bg}`
+                } : { border: '1px solid #000' }}
               >
                 {/* 이미지 영역 */}
                 <div className={`relative ${recipe.rank <= 3 ? 'aspect-[16/10]' : 'aspect-square'}`}>
@@ -110,7 +102,7 @@ const RecipeHallOfFamePage: React.FC = () => {
                   <img
                     src={getRecipeThumbnailImage(recipe.id)}
                     alt={recipe.title}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-200"
                     loading="lazy"
                     decoding="async"
                     onError={(e) => {
@@ -120,24 +112,25 @@ const RecipeHallOfFamePage: React.FC = () => {
                   />
                   
                   {/* 랭킹 뱃지 (원형) */}
-                  <div 
-                    className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
-                    style={{ 
+                  <div
+                    className="absolute top-4 left-4 w-10 h-10 rounded-full flex items-center justify-center"
+                    style={{
                       backgroundColor: cardColors[(recipe.rank - 1) % cardColors.length].text,
-                      color: cardColors[(recipe.rank - 1) % cardColors.length].bg
+                      color: cardColors[(recipe.rank - 1) % cardColors.length].bg,
+                      border: `1px solid ${cardColors[(recipe.rank - 1) % cardColors.length].bg}`
                     }}
                   >
                     {recipe.rank <= 3 ? (
                       recipe.rank === 1 ? <Crown className="w-5 h-5" /> : <Medal className="w-5 h-5" />
                     ) : (
-                      <span className="font-bold text-sm">{recipe.rank}</span>
+                      <span className="font-normal text-sm">{recipe.rank}</span>
                     )}
                   </div>
                 </div>
                 
                 {/* 텍스트 영역 */}
                 <div className="p-4">
-                  <h3 className={`font-bold text-stone-900 mb-1 group-hover:text-black transition-colors ${
+                  <h3 className={`font-normal text-stone-900 mb-1 group-hover:text-black transition-colors ${
                     recipe.rank <= 3 ? 'text-xl' : 'text-base'
                   }`}>
                     {recipe.title}

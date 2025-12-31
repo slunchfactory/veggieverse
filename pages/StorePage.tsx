@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { Sparkles, ChevronDown, Check, Heart } from 'lucide-react';
+import { Sparkles, ChevronDown, Check, Heart, X, SlidersHorizontal } from 'lucide-react';
 import { getProductThumbnailImages } from '../utils/productImages';
 import { Badge } from '../components/ui/Badge';
+import { TopControlBar, TabItem, SortOption } from '../components/TopControlBar';
 
 // 상품 타입 정의
 interface Product {
@@ -18,7 +19,7 @@ interface Product {
   description?: string;
   externalUrl?: string;
   soldOut?: boolean;
-  statusBadge?: 'NEW' | 'BEST' | 'LIMITED' | 'SEASONAL' | 'SOLD_OUT';
+  statusBadge?: 'NEW' | 'BEST' | 'SOLD_OUT';
 }
 
 // 슬런치 공식 사이트 기반 상품 데이터
@@ -234,7 +235,7 @@ export const StorePage: React.FC = () => {
   const [spectrum, setSpectrum] = useState<string>('none');
   const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('전체');
+  const [activeTab, setActiveTab] = useState<string>('밀키트');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
@@ -312,14 +313,18 @@ export const StorePage: React.FC = () => {
   // 현재 선택된 정렬 옵션 라벨
   const currentSortLabel = SORT_OPTIONS.find(opt => opt.value === sortType)?.label || '기본 정렬';
 
-  // 정렬된 상품 목록 (각 상품에 랜덤 상태 뱃지 할당)
+  // 정렬된 상품 목록 (일부 상품에만 뱃지 할당)
   const sortedProducts = useMemo(() => {
-    const statusBadges: Array<'NEW' | 'BEST' | 'LIMITED' | 'SEASONAL'> = ['NEW', 'BEST', 'LIMITED', 'SEASONAL'];
-    
-    const products = [...PRODUCTS].map((p, index) => ({
+    // 특정 상품에만 뱃지 할당 (NEW: 1번, BEST: 2, 4번, SOLD_OUT: 품절상품)
+    const badgeAssignments: Record<number, 'NEW' | 'BEST' | undefined> = {
+      1: 'NEW',    // 볶음김치 - NEW
+      2: 'BEST',   // 김치볶음밥 - BEST
+      4: 'BEST',   // 블루베리 타르트 - BEST
+    };
+
+    const products = [...PRODUCTS].map((p) => ({
       ...p,
-      // 상품 ID를 기반으로 일관된 랜덤 뱃지 할당 (페이지 새로고침 시에도 동일하게 유지)
-      statusBadge: p.soldOut ? 'SOLD_OUT' as const : (p.statusBadge || statusBadges[p.id % statusBadges.length]),
+      statusBadge: p.soldOut ? 'SOLD_OUT' as const : badgeAssignments[p.id],
     })).filter((p) => {
       const matchCuisine = selectedCuisines.length === 0 || selectedCuisines.includes(p.cuisine);
       // 'none'(일반)은 전체 보기로 처리
@@ -333,27 +338,77 @@ export const StorePage: React.FC = () => {
       return matchCuisine && matchSpectrum && matchCategory && matchRestrictions;
     });
 
+    // 기본 정렬: NEW → BEST → 일반 → SOLD_OUT
+    const sortWithPriority = (arr: typeof products) => {
+      return arr.sort((a, b) => {
+        // SOLD_OUT 최하단
+        if (a.soldOut && !b.soldOut) return 1;
+        if (!a.soldOut && b.soldOut) return -1;
+        // NEW 최상단
+        if (a.statusBadge === 'NEW' && b.statusBadge !== 'NEW') return -1;
+        if (a.statusBadge !== 'NEW' && b.statusBadge === 'NEW') return 1;
+        // BEST 그 다음
+        if (a.statusBadge === 'BEST' && b.statusBadge !== 'BEST') return -1;
+        if (a.statusBadge !== 'BEST' && b.statusBadge === 'BEST') return 1;
+        return 0;
+      });
+    };
+
     switch (sortType) {
       case 'price-low':
-        return products.sort((a, b) => a.price - b.price);
-      case 'price-high':
-        return products.sort((a, b) => b.price - a.price);
-      case 'popularity':
-        return products.sort((a, b) => b.popularity - a.popularity);
-      case 'name-az':
-        return products.sort((a, b) => a.name.localeCompare(b.name));
-      case 'name-za':
-        return products.sort((a, b) => b.name.localeCompare(a.name));
-      case 'algorithm':
-        // NOTE: 비건 테스트 결과 기반 추천 로직 추가 예정
-        // 현재는 인기순 + BEST 우선으로 임시 정렬
         return products.sort((a, b) => {
-          if (a.isBest && !b.isBest) return -1;
-          if (!a.isBest && b.isBest) return 1;
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          if (a.statusBadge === 'NEW' && b.statusBadge !== 'NEW') return -1;
+          if (a.statusBadge !== 'NEW' && b.statusBadge === 'NEW') return 1;
+          if (a.statusBadge === 'BEST' && b.statusBadge !== 'BEST') return -1;
+          if (a.statusBadge !== 'BEST' && b.statusBadge === 'BEST') return 1;
+          return a.price - b.price;
+        });
+      case 'price-high':
+        return products.sort((a, b) => {
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          if (a.statusBadge === 'NEW' && b.statusBadge !== 'NEW') return -1;
+          if (a.statusBadge !== 'NEW' && b.statusBadge === 'NEW') return 1;
+          if (a.statusBadge === 'BEST' && b.statusBadge !== 'BEST') return -1;
+          if (a.statusBadge !== 'BEST' && b.statusBadge === 'BEST') return 1;
+          return b.price - a.price;
+        });
+      case 'popularity':
+        return products.sort((a, b) => {
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          if (a.statusBadge === 'NEW' && b.statusBadge !== 'NEW') return -1;
+          if (a.statusBadge !== 'NEW' && b.statusBadge === 'NEW') return 1;
+          if (a.statusBadge === 'BEST' && b.statusBadge !== 'BEST') return -1;
+          if (a.statusBadge !== 'BEST' && b.statusBadge === 'BEST') return 1;
+          return b.popularity - a.popularity;
+        });
+      case 'name-az':
+        return products.sort((a, b) => {
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          return a.name.localeCompare(b.name);
+        });
+      case 'name-za':
+        return products.sort((a, b) => {
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          return b.name.localeCompare(a.name);
+        });
+      case 'algorithm':
+        return products.sort((a, b) => {
+          if (a.soldOut && !b.soldOut) return 1;
+          if (!a.soldOut && b.soldOut) return -1;
+          if (a.statusBadge === 'NEW') return -1;
+          if (b.statusBadge === 'NEW') return 1;
+          if (a.statusBadge === 'BEST') return -1;
+          if (b.statusBadge === 'BEST') return 1;
           return b.popularity - a.popularity;
         });
       default:
-        return products;
+        return sortWithPriority(products);
     }
   }, [sortType, selectedCuisines, spectrum, selectedCategories]);
 
@@ -401,7 +456,7 @@ export const StorePage: React.FC = () => {
   const cardVideoIds = ['x7pnY0U5yYY', 'LeZQWQ_cXqU', '8cVFJrY89SA', 'IzNnBZMjbXU'];
 
   // 제품 형태 탭 목록
-  const productTypeTabs = ['전체', '밀키트', '베이커리', '소스/오일', '세트', '구독'];
+  const productTypeTabs = ['밀키트', '베이커리', '소스/오일', '세트', '구독'];
   
   // 제품 형태별 제품 개수 계산
   const getCategoryCount = (productType: string): number => {
@@ -479,247 +534,316 @@ export const StorePage: React.FC = () => {
     };
   }, [isFilterOpen]);
 
-  // 필터 내용 공통 컴포넌트
+  // 필터 내용 공통 컴포넌트 - 텍스트 기반, 테두리 없음
   const FilterContent: React.FC = () => (
-            <div className="text-slunch-black" style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-              {/* 제품 형태 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  제품 형태
-                </div>
-                <div className="flex flex-col">
-                  {productTypeTabs.map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => handleTabClick(tab)}
-                      className={`w-full text-left transition-colors font-sans ${
-                        activeTab === tab
-                          ? 'font-bold text-slunch-black'
-                          : 'text-slunch-gray hover:opacity-70'
-                      }`}
-                      style={{ fontSize: '14px', padding: '6px 0' }}
-                    >
-                      <span>{tab}</span>
-                      <span className="ml-1 font-sans text-slunch-gray-light" style={{ fontSize: '12px' }}>
-                        {getCategoryCount(tab)}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* 식단 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  식단
-                </div>
-                <div className="flex flex-col">
-                  {dietOptions.map((opt) => (
-                    <label
-                      key={opt.value}
-                      className={`filter-radio ${spectrum === opt.value ? 'selected' : ''}`}
-                      onClick={() => setSpectrum(opt.value)}
-                    >
-                      <span className="filter-radio-circle"></span>
-                      <span>{opt.label}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* 추가 제한 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  추가 제한
-                </div>
-                <div className="flex flex-col">
-                  {restrictionOptions.map((opt) => {
-                    const checked = selectedRestrictions.includes(opt.value);
-                    return (
-                      <label
-                        key={opt.value}
-                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
-                        onClick={() => {
-                          setSelectedRestrictions(prev => 
-                            prev.includes(opt.value) 
-                              ? prev.filter(v => v !== opt.value) 
-                              : [...prev, opt.value]
-                          );
-                        }}
-                      >
-                        <span className="filter-checkbox-box"></span>
-                        <span>{opt.label}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* 음식 종류 */}
-              <div className="filter-group">
-                <div className="filter-group-title">
-                  음식 종류
-                </div>
-                <div className="flex flex-col">
-                  {cuisineOptions.map((c) => {
-                    const checked = selectedCuisines.includes(c);
-                    return (
-                      <label
-                        key={c}
-                        className={`filter-checkbox ${checked ? 'selected' : ''}`}
-                        onClick={() => toggleCuisine(c)}
-                      >
-                        <span className="filter-checkbox-box"></span>
-                        <span>{c}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-    </div>
-  );
-
-  return (
-    <>
-      {/* 모바일 필터 바 - 상단 고정 */}
-      <div className="mobile-filter-bar">
-        <button 
-          className="mobile-filter-btn"
-          onClick={() => setIsFilterOpen(true)}
-        >
-          <span>필터</span>
-          {getActiveFilterCount() > 0 && (
-            <span className="filter-count">{getActiveFilterCount()}</span>
-          )}
-        </button>
-        <select 
-          className="mobile-sort"
-          value={sortType}
-          onChange={(e) => handleSortChange(e.target.value as SortType)}
-        >
-          {SORT_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      {/* 식단 */}
+      <div style={{ paddingBottom: '20px', borderBottom: '1px solid #000' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {dietOptions.map((opt) => (
+            <label
+              key={opt.value}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                fontSize: '14px',
+                fontWeight: 400,
+                color: spectrum === opt.value ? '#000' : '#666',
+                cursor: 'pointer',
+              }}
+            >
+              <span
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '50%',
+                  border: '1px solid #000',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                {spectrum === opt.value && (
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                )}
+              </span>
+              <span onClick={() => setSpectrum(opt.value)}>{opt.label}</span>
+            </label>
           ))}
-        </select>
-            </div>
-
-      {/* 좌측 필터 - Fixed Sidebar (데스크톱만 렌더링) */}
-      {!isMobile && (
-        <aside className="store-filter desktop-only">
-          <FilterContent />
-          </aside>
-      )}
-
-      {/* 모바일 필터 - 바텀시트 */}
-      <div className={`filter-bottomsheet ${isFilterOpen ? 'open' : ''}`}>
-        <div className="bottomsheet-overlay" onClick={() => setIsFilterOpen(false)} />
-        <div className="bottomsheet-content">
-          <div className="bottomsheet-header">
-            <h3>필터</h3>
-            <button 
-              className="bottomsheet-close" 
-              onClick={() => setIsFilterOpen(false)}
-              aria-label="필터 닫기"
-            >
-              ✕
-            </button>
-          </div>
-          <div className="bottomsheet-body">
-            <FilterContent />
-          </div>
-          <div className="bottomsheet-footer">
-            <button 
-              className="btn-reset" 
-              onClick={handleResetFilters}
-              style={{ 
-                minHeight: '44px',
-                padding: '12px 24px',
-                fontSize: '15px',
-                fontWeight: 600
-              }}
-            >
-              초기화
-            </button>
-            <button 
-              className="btn-apply" 
-              onClick={handleApplyFilters}
-              style={{ 
-                minHeight: '44px',
-                padding: '12px 24px',
-                fontSize: '15px',
-                fontWeight: 600
-              }}
-            >
-              적용하기
-            </button>
-          </div>
         </div>
       </div>
 
-          {/* 우측 콘텐츠 */}
-      <main className="store-content">
-            {/* 정렬 드롭다운 - Flat Design (데스크톱) */}
-            <div className="flex justify-end mb-6 desktop-sort">
-              <div className="relative inline-block">
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center justify-between gap-8 px-4 py-2.5 bg-slunch-white-pure border-2 border-slunch-black transition-colors min-w-[180px] hover-lift hover:bg-slunch-black hover:text-slunch-white-pure font-sans"
-                  style={{ fontSize: 'var(--font-size-ui)' }}
+      {/* 추가 제한 */}
+      <div style={{ padding: '20px 0', borderBottom: '1px solid #000' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {restrictionOptions.map((opt) => {
+            const checked = selectedRestrictions.includes(opt.value);
+            return (
+              <label
+                key={opt.value}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: checked ? '#000' : '#666',
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setSelectedRestrictions(prev =>
+                    prev.includes(opt.value)
+                      ? prev.filter(v => v !== opt.value)
+                      : [...prev, opt.value]
+                  );
+                }}
+              >
+                <span
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    border: '1px solid #000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
                 >
-                  <span className="flex items-center gap-1.5">
-                    {sortType === 'algorithm' && <Sparkles className="w-3 h-3" />}
-                    {currentSortLabel}
-                  </span>
-                  <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
+                  {checked && (
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                  )}
+                </span>
+                <span>{opt.label}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
 
-                {isDropdownOpen && (
-                  <>
-                    <div 
-                      className="fixed inset-0 z-10" 
-                      onClick={() => setIsDropdownOpen(false)}
-                    />
-                    
-                    <div className="absolute top-full left-0 mt-1 bg-slunch-white-pure border-2 border-slunch-black z-20 min-w-[180px]">
-                      {SORT_OPTIONS.map((option) => (
-                        <button
-                          key={option.value}
-                          onClick={() => handleSortChange(option.value as SortType)}
-                          className={`w-full text-left px-4 py-2.5 transition-colors flex items-center gap-1.5 font-sans ${
-                            sortType === option.value
-                              ? 'font-bold text-slunch-black'
-                              : 'text-slunch-gray hover:bg-slunch-black hover:text-slunch-white-pure'
-                          }`}
-                          style={{ fontSize: 'var(--font-size-ui)' }}
-                        >
-                          {option.icon && <Sparkles className="w-3 h-3" />}
-                          {option.label}
-                        </button>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
+      {/* 음식 종류 */}
+      <div style={{ paddingTop: '20px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {cuisineOptions.map((c) => {
+            const checked = selectedCuisines.includes(c);
+            return (
+              <label
+                key={c}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: checked ? '#000' : '#666',
+                  cursor: 'pointer',
+                }}
+                onClick={() => toggleCuisine(c)}
+              >
+                <span
+                  style={{
+                    width: '18px',
+                    height: '18px',
+                    borderRadius: '50%',
+                    border: '1px solid #000',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  {checked && (
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                  )}
+                </span>
+                <span>{c}</span>
+              </label>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
 
-            {/* 상품 그리드 */}
-            <div 
-              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-              style={{ gap: '13px' }}
+  // TopControlBar용 탭 데이터
+  const storeTabs: TabItem[] = productTypeTabs.map(tab => ({
+    id: tab,
+    label: tab,
+    count: getCategoryCount(tab),
+  }));
+
+  // TopControlBar용 정렬 옵션
+  const sortOptionsForBar: SortOption[] = SORT_OPTIONS.map(opt => ({
+    value: opt.value,
+    label: opt.label,
+  }));
+
+  return (
+    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+      {/* 상단 컨트롤 바 - KBP Style */}
+      <TopControlBar
+        tabs={storeTabs}
+        activeTab={activeTab}
+        onTabChange={handleTabClick}
+        showFilter={true}
+        filterCount={getActiveFilterCount()}
+        onFilterClick={() => setIsFilterOpen(true)}
+        showSort={true}
+        sortOptions={sortOptionsForBar}
+        currentSort={sortType}
+        onSortChange={(value) => handleSortChange(value as SortType)}
+      />
+
+      {/* 우측 필터 드로어 (슬라이드 패널) */}
+      {isFilterOpen && (
+        <div className="fixed inset-0 z-[100]">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0"
+            onClick={() => setIsFilterOpen(false)}
+          />
+          {/* Filter Panel - Right Side */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '320px',
+              maxWidth: '100vw',
+              background: '#FFFFFF',
+              borderLeft: '1px solid #000',
+              display: 'flex',
+              flexDirection: 'column',
+              animation: 'slideInRight 0.3s ease-out',
+            }}
+          >
+            {/* Header */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '16px 20px',
+                borderBottom: '1px solid #000',
+              }}
             >
-              {sortedProducts.map((product, index) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product} 
-                  isAlgorithmMode={sortType === 'algorithm'}
-                  onClick={() => navigate(`/store/product/${product.id}`)}
-                />
-              ))}
+              <h3 style={{ fontSize: '16px', fontWeight: 400, margin: 0 }}>Filter</h3>
+              <button
+                onClick={() => setIsFilterOpen(false)}
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <X size={20} strokeWidth={1} />
+              </button>
             </div>
+
+            {/* Body */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
+              <FilterContent />
+            </div>
+
+            {/* Footer */}
+            <div
+              style={{
+                display: 'flex',
+                gap: '12px',
+                padding: '16px 20px',
+                borderTop: '1px solid #000',
+              }}
+            >
+              <button
+                onClick={handleResetFilters}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  background: 'transparent',
+                  border: '1px solid #000',
+                  cursor: 'pointer',
+                }}
+              >
+                초기화
+              </button>
+              <button
+                onClick={handleApplyFilters}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  background: '#000',
+                  color: '#fff',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                적용
+              </button>
+            </div>
+          </div>
+          <style>{`
+            @keyframes slideInRight {
+              from { transform: translateX(100%); }
+              to { transform: translateX(0); }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* 메인 콘텐츠 - Full Width (Fixed TopControlBar 높이만큼 여백) */}
+      <main style={{ padding: '24px 16px', paddingTop: '72px', maxWidth: '1400px', margin: '0 auto' }}>
+        {/* 상품 그리드 - 반응형 */}
+        <div
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
+          style={{ marginBottom: '60px' }}
+        >
+          {sortedProducts.map((product) => (
+            <div key={product.id}>
+              <ProductCard
+                product={product}
+                isAlgorithmMode={sortType === 'algorithm'}
+                onClick={() => navigate(`/store/product/${product.id}`)}
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* 상품이 없을 때 */}
+        {sortedProducts.length === 0 && (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <p style={{ fontSize: '15px', color: '#666' }}>
+              조건에 맞는 상품이 없습니다.
+            </p>
+            <button
+              onClick={handleResetFilters}
+              style={{
+                marginTop: '16px',
+                padding: '10px 20px',
+                fontSize: '14px',
+                background: '#000',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              필터 초기화
+            </button>
+          </div>
+        )}
       </main>
-    </>
+    </div>
   );
 };
 
@@ -768,13 +892,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
       }}
       onClick={onClick}
     >
-      {/* 썸네일 이미지 */}
-      <div 
+      {/* 썸네일 이미지 - 테두리 없음, 여백으로 구분 */}
+      <div
         className="menu-card-img-wrapper"
         style={{
           position: 'relative',
-          aspectRatio: '4 / 5',
+          aspectRatio: '1 / 1',
           background: '#F5F5F5',
+          borderRadius: '4px',
+          overflow: 'hidden',
         }}
       >
         {/* 이미지 슬라이드 */}
@@ -862,7 +988,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             backgroundColor: 'var(--lime)',
             color: 'var(--black)',
             fontSize: '11px',
-            fontWeight: 700,
+            fontWeight: 400,
             display: 'flex',
             alignItems: 'center',
             gap: '4px',
@@ -905,7 +1031,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           </div>
         )}
 
-        {/* SOLD OUT 오버레이 */}
+        {/* SOLD OUT 오버레이 - 반투명 처리만 (텍스트 없음, 뱃지로 표시) */}
         {product.soldOut && (
           <div className="menu-card-overlay" style={{
             position: 'absolute',
@@ -913,56 +1039,43 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             left: 0,
             right: 0,
             bottom: 0,
-            background: 'rgba(13, 13, 13, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--white-pure)',
-            fontSize: '14px',
-            fontWeight: 700,
-            letterSpacing: '0.1em',
+            background: 'rgba(13, 13, 13, 0.5)',
             zIndex: 15,
-          }}>
-            SOLD OUT
-          </div>
+          }} />
         )}
       </div>
       
       {/* 상품 정보 */}
-      <div className="menu-card-content" style={{ padding: '16px 0' }}>
-        {/* 태그 + 메뉴명 행 */}
-        <div className="menu-card-title-row" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginBottom: '4px',
+      <div className="menu-card-content" style={{ padding: '16px 0 0 0' }}>
+        {/* 상품명 */}
+        <h3 className="menu-card-title" style={{
+          fontSize: '15px',
+          fontWeight: 400,
+          lineHeight: '1.3',
+          margin: '0 0 8px 0',
+          color: product.soldOut ? 'var(--gray)' : '#000000',
         }}>
-          {/* 뱃지가 이미지 위에 있으므로 여기서는 제거 */}
-          <h3 className="menu-card-title" style={{
-            fontSize: '16px',
-            fontWeight: 700,
-            margin: 0,
-            color: product.soldOut ? 'var(--gray)' : 'var(--black)',
-          }}>
-            {product.name}
-          </h3>
-        </div>
-        
-        {/* 설명 */}
+          {product.name}
+        </h3>
+
+        {/* 설명 - 1줄만 */}
         {product.description && (
           <p className="menu-card-desc" style={{
-            fontSize: '14px',
+            fontSize: '13px',
             fontWeight: 400,
-            color: product.soldOut ? 'var(--gray-light)' : 'var(--gray)',
-            marginBottom: '10px',
-            margin: 0,
+            color: '#6B6B6B',
+            margin: '0 0 12px 0',
+            lineHeight: '1.5',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}>
             {product.description}
           </p>
         )}
         
         {/* 가격 정보 */}
-        <div style={{ marginTop: '10px' }}>
+        <div style={{ marginTop: '0' }}>
           {product.originalPrice && product.originalPrice > product.price ? (
             <>
               {/* 원래 가격 - 취소선 */}
@@ -982,18 +1095,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 alignItems: 'center',
                 gap: '8px',
               }}>
-                {/* 할인율 뱃지 */}
+                {/* 할인율 */}
                 {(() => {
                   const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                   return discountRate > 0 ? (
                     <span style={{
-                      display: 'inline-block',
-                      padding: '2px 8px',
-                      fontSize: '11px',
+                      fontSize: '16px',
                       fontWeight: 600,
-                      backgroundColor: 'var(--lime)',
-                      color: 'var(--black)',
-                      lineHeight: '1.2',
+                      color: '#87b5e1',
                     }}>
                       {discountRate}%
                     </span>
@@ -1002,7 +1111,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                 {/* 할인된 가격 */}
                 <span className="menu-card-price" style={{
                   fontSize: '16px',
-                  fontWeight: 600,
+                  fontWeight: 400,
                   color: product.soldOut ? 'var(--gray)' : 'var(--black)',
                 }}>
                   {product.price.toLocaleString()}원
@@ -1013,7 +1122,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             /* 할인이 없을 때 - 현재 가격만 */
             <span className="menu-card-price" style={{
               fontSize: '16px',
-              fontWeight: 600,
+              fontWeight: 400,
               color: product.soldOut ? 'var(--gray)' : 'var(--black)',
             }}>
               {product.price.toLocaleString()}원

@@ -426,28 +426,19 @@ export const ProductDetailPage: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--cream)' }}>
       {/* 스크롤 투 탑 버튼 */}
       {showScrollToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-32 right-4 z-[95] w-12 h-12 bg-black border border-stone-300 flex items-center justify-center transition-opacity animate-fadeIn hover:opacity-80"
+          className="fixed bottom-32 right-4 z-[95] w-12 h-12 flex items-center justify-center transition-opacity animate-fadeIn"
+          style={{ background: '#000000', border: '1px solid #000000' }}
           aria-label="상단으로 이동"
         >
           <ChevronUp className="w-5 h-5 text-white" />
         </button>
       )}
 
-      {/* 상단 네비게이션 */}
-      <div className="page-container py-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-stone-600 hover:text-stone-900 transition-colors"
-        >
-          <ChevronLeft className="w-5 h-5" />
-          <span className="text-sm">뒤로가기</span>
-        </button>
-      </div>
 
       {/* 상품 정보 영역 */}
       <div className="page-container pb-12">
@@ -486,7 +477,7 @@ export const ProductDetailPage: React.FC = () => {
               {/* Sold Out 오버레이 */}
               {product.soldOut && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
-                  <span className="text-white text-2xl font-medium font-accent">Sold out</span>
+                  <span className="text-white font-accent font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>Sold out</span>
                 </div>
               )}
 
@@ -545,12 +536,12 @@ export const ProductDetailPage: React.FC = () => {
               </span>
             )}
 
-            {/* 상품명 - H1: 48px */}
+            {/* 상품명 - H1: 24px Regular (Quiet Luxury) */}
             <h1 
-              className="text-stone-900 mb-4"
+              className="text-stone-900 mb-4 font-normal"
               style={{ 
-                fontSize: 'var(--font-size-h1)',
-                fontWeight: 'var(--font-weight-h1)',
+                fontSize: '24px',
+                fontWeight: 400,
                 letterSpacing: 'var(--letter-spacing-tight)',
                 lineHeight: 'var(--line-height-h1)'
               }}
@@ -576,12 +567,11 @@ export const ProductDetailPage: React.FC = () => {
                   {(() => {
                     const discountRate = Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
                     return discountRate > 0 ? (
-                      <span 
-                        className="font-bold"
-                        style={{ 
-                          fontSize: 'var(--font-size-ui)',
-                          color: 'var(--color-text-primary)',
-                          letterSpacing: 'var(--letter-spacing-tight)'
+                      <span
+                        style={{
+                          fontSize: '16px',
+                          fontWeight: 600,
+                          color: '#87b5e1',
                         }}
                       >
                         {discountRate}%
@@ -591,11 +581,11 @@ export const ProductDetailPage: React.FC = () => {
                 </>
               )}
               <span 
-                className="font-bold"
+                className="font-normal"
                 style={{ 
                   fontSize: 'var(--font-size-ui)',
                   color: 'var(--color-text-primary)',
-                  fontWeight: 700,
+                  fontWeight: 500,
                   letterSpacing: 'var(--letter-spacing-tight)'
                 }}
               >
@@ -629,14 +619,14 @@ export const ProductDetailPage: React.FC = () => {
             </div>
 
             {/* 구분선 */}
-            <div className="border-t border-stone-200 my-6" />
+            <div style={{ borderTop: '1px solid #000000', margin: '24px 0' }} />
 
             {/* 구매혜택 및 배송 정보 */}
             <div className="space-y-1">
               {/* 구매혜택 */}
               <div className="flex items-center gap-2 text-xs text-stone-600">
                 <span>구매혜택</span>
-                <span className="font-medium">0 포인트 적립예정</span>
+                <span className="font-normal">0 포인트 적립예정</span>
                 <button className="text-stone-400 hover:text-stone-600" aria-label="포인트 적립 안내">
                   <Info className="w-3 h-3" />
                 </button>
@@ -645,13 +635,13 @@ export const ProductDetailPage: React.FC = () => {
               {/* 배송 방법 */}
               <div className="flex items-center gap-2 text-xs text-stone-600">
                 <span>배송 방법</span>
-                <span className="font-medium">택배</span>
+                <span className="font-normal">택배</span>
               </div>
 
               {/* 배송비 */}
               <div className="flex items-center gap-2 text-xs text-stone-600">
                 <span>배송비</span>
-                <span className="font-medium">
+                <span className="font-normal">
                   <span className="font-accent">3,500</span>원 (<span className="font-accent">55,000</span>원 이상 무료배송)
                 </span>
                 <span className="text-stone-400">|</span>
@@ -669,63 +659,78 @@ export const ProductDetailPage: React.FC = () => {
                   <Truck className="w-5 h-5 text-stone-600" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-stone-900 mb-1">오늘출발 상품</p>
+                  <p className="text-sm font-normal text-stone-900 mb-1">오늘출발 상품</p>
                   <p className="text-xs text-stone-600">오늘 14:00까지 결제시 오늘 바로 발송됩니다.</p>
                 </div>
               </div>
             </div>
 
             {/* 구분선 */}
-            <div className="border-t border-stone-200 my-6" />
+            <div style={{ borderTop: '1px solid #000000', margin: '24px 0' }} />
 
             {/* 수량 선택 */}
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-sm text-stone-600 font-medium">수량</span>
-              <div className="flex items-center border border-stone-300">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>수량</span>
+              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #000000' }}>
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-3 hover:bg-stone-100 transition-colors"
+                  style={{ padding: '12px 16px', background: 'transparent', border: 'none', cursor: product.soldOut ? 'not-allowed' : 'pointer' }}
                   disabled={product.soldOut}
                 >
-                  <Minus className="w-4 h-4 text-stone-600" />
+                  <Minus className="w-4 h-4" style={{ color: '#000000' }} />
                 </button>
-                <span className="px-6 py-3 text-sm font-medium min-w-[60px] text-center">{quantity}</span>
+                <span style={{ padding: '12px 24px', fontSize: '14px', fontWeight: 400, minWidth: '60px', textAlign: 'center', borderLeft: '1px solid #000000', borderRight: '1px solid #000000' }}>{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-4 py-3 hover:bg-stone-100 transition-colors"
+                  style={{ padding: '12px 16px', background: 'transparent', border: 'none', cursor: product.soldOut ? 'not-allowed' : 'pointer' }}
                   disabled={product.soldOut}
                 >
-                  <Plus className="w-4 h-4 text-stone-600" />
+                  <Plus className="w-4 h-4" style={{ color: '#000000' }} />
                 </button>
               </div>
             </div>
 
             {/* 총 금액 */}
-            <div className="flex items-center justify-between mb-8">
-              <span className="text-sm text-stone-600 font-medium">총 금액</span>
-              <span className="text-2xl font-bold text-stone-900 font-accent">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>총 금액</span>
+              <span style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400, color: '#000000' }}>
                 {totalPrice.toLocaleString()}원
               </span>
             </div>
 
             {/* 버튼 영역 - 데스크톱용 (모바일에서는 숨김) */}
-            <div className="hidden lg:flex gap-3">
+            <div className="hidden lg:flex" style={{ gap: '12px' }}>
               <button
                 onClick={() => setIsLiked(!isLiked)}
-                className={`p-4 border transition-colors ${
-                  isLiked ? 'border-black bg-[#F5F5F5]' : 'border-stone-300 hover:bg-stone-50'
-                }`}
+                style={{
+                  padding: '16px',
+                  background: isLiked ? '#F5F5F5' : 'transparent',
+                  border: '1px solid #000000',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                <Heart className={`w-5 h-5 ${isLiked ? 'fill-black text-black' : 'text-stone-600'}`} />
+                <Heart className={`w-5 h-5 ${isLiked ? 'fill-black text-black' : 'text-black'}`} />
               </button>
               <button
                 onClick={handleAddToCart}
                 disabled={product.soldOut}
-                className={`flex-1 py-4 text-sm font-medium transition-colors flex items-center justify-center gap-2 border ${
-                  product.soldOut
-                    ? 'border-stone-200 text-stone-400 cursor-not-allowed'
-                    : 'border-stone-900 text-stone-900 hover:bg-stone-100'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  background: 'transparent',
+                  border: '1px solid #000000',
+                  color: product.soldOut ? '#A0A0A0' : '#000000',
+                  cursor: product.soldOut ? 'not-allowed' : 'pointer',
+                }}
               >
                 <ShoppingCart className="w-4 h-4" />
                 장바구니
@@ -733,11 +738,16 @@ export const ProductDetailPage: React.FC = () => {
               <button
                 onClick={handleBuyNow}
                 disabled={product.soldOut}
-                className={`flex-1 py-4 text-sm font-medium transition-colors ${
-                  product.soldOut
-                    ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                    : 'bg-stone-900 text-white hover:bg-stone-800'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  background: product.soldOut ? '#A0A0A0' : '#000000',
+                  border: '1px solid #000000',
+                  color: '#ffffff',
+                  cursor: product.soldOut ? 'not-allowed' : 'pointer',
+                }}
               >
                 {product.soldOut ? '품절' : '바로 구매'}
               </button>
@@ -751,61 +761,92 @@ export const ProductDetailPage: React.FC = () => {
       <div ref={tabMenuTriggerRef} className="h-0" />
       
       {/* 탭 영역 - JavaScript로 고정 제어 */}
-      <div 
-        ref={tabMenuContainerRef} 
-        className={`bg-white shadow-sm transition-all ${
-          isTabSticky 
-            ? 'fixed top-16 left-0 right-0 z-[9998]' 
+      <div
+        ref={tabMenuContainerRef}
+        className={`transition-all ${
+          isTabSticky
+            ? 'fixed top-16 left-0 right-0 z-[9998]'
             : 'relative z-10'
         }`}
-        style={isTabSticky ? {
-          width: '100%',
-          maxWidth: '100%'
-        } : {}}
+        style={{
+          background: 'var(--cream)',
+          ...(isTabSticky ? { width: '100%', maxWidth: '100%' } : {})
+        }}
       >
-        <div className="tab-menu bg-white">
+        <div style={{ background: 'var(--cream)' }}>
           <div className={`${isTabSticky ? 'page-container' : 'page-container'}`}>
             {/* 탭 버튼 */}
-            <div className="flex border-b border-stone-200">
+            <div style={{ display: 'flex', borderBottom: '1px solid #000000' }}>
               <button
                 onClick={() => scrollToSection('review')}
-                className={`flex-1 py-4 text-sm text-center transition-colors border-r border-stone-200 ${
-                  activeSection === 'review'
-                    ? 'text-stone-900 font-bold border-b-2 border-stone-900'
-                    : 'text-stone-400 hover:text-stone-600'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px 0',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  textAlign: 'center',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRight: '1px solid #000000',
+                  borderBottom: activeSection === 'review' ? '2px solid #000000' : 'none',
+                  color: activeSection === 'review' ? '#000000' : '#6B6B6B',
+                  cursor: 'pointer',
+                }}
               >
-                리뷰 <span className="font-normal">({reviews.length.toLocaleString()})</span>
+                리뷰 ({reviews.length.toLocaleString()})
               </button>
               <button
                 onClick={() => scrollToSection('detail')}
-                className={`flex-1 py-4 text-sm text-center transition-colors border-r border-stone-200 ${
-                  activeSection === 'detail'
-                    ? 'text-stone-900 font-bold border-b-2 border-stone-900'
-                    : 'text-stone-400 hover:text-stone-600'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px 0',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  textAlign: 'center',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRight: '1px solid #000000',
+                  borderBottom: activeSection === 'detail' ? '2px solid #000000' : 'none',
+                  color: activeSection === 'detail' ? '#000000' : '#6B6B6B',
+                  cursor: 'pointer',
+                }}
               >
                 상세정보
               </button>
               <button
                 onClick={() => scrollToSection('return')}
-                className={`flex-1 py-4 text-sm text-center transition-colors border-r border-stone-200 ${
-                  activeSection === 'return'
-                    ? 'text-stone-900 font-bold border-b-2 border-stone-900'
-                    : 'text-stone-400 hover:text-stone-600'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px 0',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  textAlign: 'center',
+                  background: 'transparent',
+                  border: 'none',
+                  borderRight: '1px solid #000000',
+                  borderBottom: activeSection === 'return' ? '2px solid #000000' : 'none',
+                  color: activeSection === 'return' ? '#000000' : '#6B6B6B',
+                  cursor: 'pointer',
+                }}
               >
                 반품/교환정보
               </button>
               <button
                 onClick={() => scrollToSection('qna')}
-                className={`flex-1 py-4 text-sm text-center transition-colors ${
-                  activeSection === 'qna'
-                    ? 'text-stone-900 font-bold border-b-2 border-stone-900'
-                    : 'text-stone-400 hover:text-stone-600'
-                }`}
+                style={{
+                  flex: 1,
+                  padding: '16px 0',
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  textAlign: 'center',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: activeSection === 'qna' ? '2px solid #000000' : 'none',
+                  color: activeSection === 'qna' ? '#000000' : '#6B6B6B',
+                  cursor: 'pointer',
+                }}
               >
-                상품문의 <span className="font-normal">({qnas.length.toLocaleString()})</span>
+                상품문의 ({qnas.length.toLocaleString()})
               </button>
             </div>
           </div>
@@ -814,20 +855,12 @@ export const ProductDetailPage: React.FC = () => {
 
       <div className="page-container overflow-x-hidden">
         {/* 리뷰 섹션 */}
-        <div 
-          ref={reviewRef} 
-          data-section="review" 
-          className="scroll-mt-[152px] pt-8"
+        <div
+          ref={reviewRef}
+          data-section="review"
+          className="scroll-mt-[152px] mb-[60px] pt-8"
         >
-          <h2 
-            className="text-stone-900 mb-6"
-            style={{ 
-              fontSize: 'var(--font-size-h1)',
-              fontWeight: 'var(--font-weight-h1)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              lineHeight: 'var(--line-height-h1)'
-            }}
-          >
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
             리뷰
           </h2>
           {reviews.length === 0 ? (
@@ -854,14 +887,14 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* 상세정보 섹션 */}
-        <div ref={detailRef} data-section="detail" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8">
-          {/* 상세 설명 텍스트 - Body: 16px */}
+        <div ref={detailRef} data-section="detail" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
+          {/* 상세 설명 텍스트 - 13px (뉴스레터 상세 본문과 동일) */}
           {product.detailDescription && (
             <div className="prose prose-stone max-w-none mb-8">
               <p 
                 className="text-stone-600 whitespace-pre-line"
                 style={{ 
-                  fontSize: 'var(--font-size-body)',
+                  fontSize: '13px',
                   fontWeight: 'var(--font-weight-body)',
                   lineHeight: 'var(--line-height-body)',
                   letterSpacing: 'var(--letter-spacing-tight)'
@@ -883,16 +916,8 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* 반품/교환정보 섹션 */}
-        <div ref={returnRef} data-section="return" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8">
-          <h2 
-            className="text-stone-900 mb-6"
-            style={{ 
-              fontSize: 'var(--font-size-h1)',
-              fontWeight: 'var(--font-weight-h1)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              lineHeight: 'var(--line-height-h1)'
-            }}
-          >
+        <div ref={returnRef} data-section="return" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
             반품/교환정보
           </h2>
           <p 
@@ -909,16 +934,8 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* 상품문의 섹션 */}
-        <div ref={qnaRef} data-section="qna" className="scroll-mt-[152px] mt-16 border-t border-stone-200 pt-8 mb-20 lg:mb-8">
-          <h2 
-            className="text-stone-900 mb-6"
-            style={{ 
-              fontSize: 'var(--font-size-h1)',
-              fontWeight: 'var(--font-weight-h1)',
-              letterSpacing: 'var(--letter-spacing-tight)',
-              lineHeight: 'var(--line-height-h1)'
-            }}
-          >
+        <div ref={qnaRef} data-section="qna" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
             상품문의
           </h2>
           {qnas.length === 0 ? (
@@ -946,34 +963,53 @@ export const ProductDetailPage: React.FC = () => {
       </div>
 
       {/* 하단 고정 버튼 영역 - 모바일/태블릿용 */}
-      <div 
-        className="buy-fixed-bar fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 px-4 py-3 lg:hidden"
-        style={{ 
-          position: 'fixed', 
-          bottom: 0, 
-          left: 0, 
-          right: 0, 
+      <div
+        className="buy-fixed-bar lg:hidden"
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
           width: '100%',
-          zIndex: 99999 
+          zIndex: 99999,
+          background: 'var(--cream)',
+          borderTop: '1px solid #000000',
+          padding: '12px 16px',
         }}
       >
-        <div className="flex gap-3 max-w-[1400px] mx-auto">
+        <div style={{ display: 'flex', gap: '12px', maxWidth: '1400px', margin: '0 auto' }}>
           <button
             onClick={() => setIsLiked(!isLiked)}
-            className={`p-3 border transition-colors flex-shrink-0 ${
-              isLiked ? 'border-red-400 bg-red-50' : 'border-stone-300 hover:bg-stone-50'
-            }`}
+            style={{
+              padding: '12px',
+              background: isLiked ? '#F5F5F5' : 'transparent',
+              border: '1px solid #000000',
+              cursor: 'pointer',
+              flexShrink: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <Heart className={`w-5 h-5 ${isLiked ? 'fill-red-500 text-red-500' : 'text-stone-600'}`} />
+            <Heart className={`w-5 h-5 ${isLiked ? 'fill-black text-black' : 'text-black'}`} />
           </button>
           <button
             onClick={handleAddToCart}
             disabled={product.soldOut}
-            className={`flex-1 py-3 text-sm font-medium transition-colors flex items-center justify-center gap-2 border ${
-              product.soldOut
-                ? 'border-stone-200 text-stone-400 cursor-not-allowed'
-                : 'border-stone-900 text-stone-900 hover:bg-stone-100'
-            }`}
+            style={{
+              flex: 1,
+              padding: '12px',
+              fontSize: '14px',
+              fontWeight: 400,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              background: 'transparent',
+              border: '1px solid #000000',
+              color: product.soldOut ? '#A0A0A0' : '#000000',
+              cursor: product.soldOut ? 'not-allowed' : 'pointer',
+            }}
           >
             <ShoppingCart className="w-4 h-4" />
             장바구니
@@ -981,11 +1017,16 @@ export const ProductDetailPage: React.FC = () => {
           <button
             onClick={handleBuyNow}
             disabled={product.soldOut}
-            className={`flex-1 py-3 text-sm font-medium transition-colors ${
-              product.soldOut
-                ? 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                : 'bg-stone-900 text-white hover:bg-stone-800'
-            }`}
+            style={{
+              flex: 1,
+              padding: '12px',
+              fontSize: '14px',
+              fontWeight: 400,
+              background: product.soldOut ? '#A0A0A0' : '#000000',
+              border: '1px solid #000000',
+              color: '#ffffff',
+              cursor: product.soldOut ? 'not-allowed' : 'pointer',
+            }}
           >
             {product.soldOut ? '품절' : '바로 구매'}
           </button>

@@ -38,7 +38,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
-            <h1 className="text-2xl font-bold text-stone-900 mb-2">오류가 발생했습니다</h1>
+            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>오류가 발생했습니다</h1>
             <p className="text-stone-600 mb-6">
               레시피를 불러오는 중 문제가 발생했습니다.
               <br />

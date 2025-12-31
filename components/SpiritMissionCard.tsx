@@ -65,7 +65,7 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
       <div>
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-bold text-stone-900">
+          <h2 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
             ✦ {user.spiritName}만을 위한 오늘의 스피릿 미션
           </h2>
         </div>
@@ -84,7 +84,7 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
         <div className="mb-4">
           <button
             onClick={onPhotoReviewClick || (() => {})}
-            className="w-full py-4 bg-stone-900 hover:bg-stone-800 text-white rounded-md font-bold text-base transition-colors flex items-center justify-center gap-2"
+            className="w-full py-4 bg-stone-900 hover:bg-stone-800 text-white rounded-md font-normal text-base transition-colors flex items-center justify-center gap-2"
           >
             <ChefHat className="w-5 h-5" />
             <span>I Made It! 요리 완료 인증하고 배지 받기</span>

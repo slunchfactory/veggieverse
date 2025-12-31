@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight, Plus, Upload, Trophy, X, Bookmark, Heart } f
 import { COLORS } from '../constants/colors';
 import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 import HallOfFameMarquee from '../components/HallOfFameMarquee';
+import { PopularRecipes } from '../components/PopularRecipes';
+import { TopControlBar, TabItem } from '../components/TopControlBar';
 
 // 카테고리별 레시피 데이터
 interface Recipe {
@@ -193,6 +195,9 @@ const recipeCategories: RecipeCategory[] = [
       { id: 203, title: '비빔국수', description: '새콤달콤 입맛 돋우는', image: '/vege_flot_img/chili pepper.png', author: '면요리사', likes: 521 },
       { id: 204, title: '샐러드 랩', description: '간편하고 건강한 한 끼', image: '/vege_flot_img/green bean.png', author: '다이어터', likes: 298 },
       { id: 205, title: '버섯 덮밥', description: '쫄깃한 식감의 영양밥', image: '/vege_flot_img/mushroom.png', author: '버섯사랑', likes: 367 },
+      { id: 206, title: '아보카도 토스트', description: '영양 가득 브런치 메뉴', image: '/vege_flot_img/avocado.png', author: '브런치러버', likes: 412 },
+      { id: 207, title: '토마토 리조또', description: '이탈리안 정통 레시피', image: '/vege_flot_img/tomato.png', author: '리조또장인', likes: 356 },
+      { id: 208, title: '호박 크림 수프', description: '부드럽고 든든한 한 그릇', image: '/vege_flot_img/pumpkin.png', author: '수프마스터', likes: 423 },
     ], ['효율적', '간편조리', '고단백']),
   },
   {
@@ -268,268 +273,588 @@ const addSpiritLikes = (recipes: Recipe[]): Recipe[] => {
 
 const recipesWithSpiritLikes = addSpiritLikes(allRecipes);
 
-// 재사용 가능한 캐러셀 컴포넌트 (버튼 외부 노출)
-const RecipeCarousel: React.FC<{ 
-  recipes: Recipe[]; 
-  showAuthor?: boolean;
-  categoryColor?: { text: string; bg: string };
-  onScrollLeft?: () => void;
-  onScrollRight?: () => void;
-  scrollRef?: React.RefObject<HTMLDivElement>;
-}> = ({ recipes, showAuthor = false, categoryColor, onScrollLeft, onScrollRight, scrollRef: externalRef }) => {
-  const internalRef = useRef<HTMLDivElement>(null);
-  const scrollRef = externalRef || internalRef;
-
+// 레시피 카드 컴포넌트 - 여백 기반 깔끔한 스타일
+const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, index }) => {
   return (
-    <div 
-      ref={scrollRef}
-      className="flex overflow-x-auto no-scrollbar pb-4"
-      style={{ 
-        gap: '16px', 
-        scrollBehavior: 'smooth', 
-        WebkitOverflowScrolling: 'touch',
-        width: '100%',
-        position: 'relative',
-        overflowY: 'visible',
+    <Link
+      to={`/recipe/${recipe.id}`}
+      style={{
+        display: 'block',
+        background: 'var(--cream)',
+        cursor: 'pointer',
       }}
     >
-      {recipes.map((recipe) => (
-        <div
-          key={recipe.id}
-          className="recipe-card flex-shrink-0"
-          style={{ 
-            width: '260px',
-            background: '#F0EDE8',
-            borderRadius: '16px',
-            padding: '20px 16px',
-            cursor: 'pointer',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            transition: 'background 0.15s ease',
+      {/* 이미지 영역 - 1:1 비율, 둥근 모서리 */}
+      <div style={{
+        width: '100%',
+        aspectRatio: '1 / 1',
+        background: '#f5f5f5',
+        overflow: 'hidden',
+        position: 'relative',
+        borderRadius: '4px',
+      }}>
+        <img
+          src={getRecipeThumbnailImage(recipe.id)}
+          alt={recipe.title}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#E5E0D8'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#F0EDE8'; }}
-        >
-          {/* 상단: 제목 */}
-          <Link to={`/recipe/${recipe.id}`}>
-            <h3 style={{
-              fontSize: '16px',
-              fontWeight: 700,
-              textAlign: 'center',
-              margin: 0,
-              marginBottom: '12px',
-              color: '#000',
-              lineHeight: 1.4,
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden',
-            }}>
-              {recipe.title}
-            </h3>
-          </Link>
-
-          {/* 구분선 + 작성자 */}
-          <div style={{ borderTop: '2px solid #000', padding: '8px 0', textAlign: 'center' }}>
-            <span style={{ fontSize: '12px', color: '#666' }}>@{recipe.author || '슬런치'}</span>
-          </div>
-
-          {/* 구분선 + 해시태그 */}
-          <div style={{ borderTop: '2px solid #000', padding: '8px 0', textAlign: 'center', marginBottom: '12px' }}>
-            <span style={{ fontSize: '12px', color: '#666' }}>
-              {recipe.tags?.slice(0, 3).map(tag => `#${tag}`).join(' ') || '#비건 #건강'}
-            </span>
-          </div>
-
-          {/* 이미지 (1:1 정사각형) */}
-          <Link to={`/recipe/${recipe.id}`}>
-            <div style={{
-              width: '100%',
-              aspectRatio: '1 / 1',
-              background: '#000',
-              borderRadius: '4px',
-              overflow: 'hidden',
-            }}>
-              <img
-                src={getRecipeThumbnailImage(recipe.id)}
-                alt={recipe.title}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                loading="lazy"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.src = getFallbackRecipeImage(recipe.id);
-                }}
-              />
-            </div>
-          </Link>
-
-          {/* 하단: 북마크 왼쪽, 좋아요 오른쪽 */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            padding: '12px 0 0 0',
-            marginTop: '12px',
+          loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getFallbackRecipeImage(recipe.id);
+          }}
+        />
+        {/* 순위 뱃지 (옵션) */}
+        {index !== undefined && (
+          <span style={{
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            background: '#000',
+            color: '#fff',
+            padding: '4px 8px',
+            fontSize: '11px',
+            fontWeight: 400,
+            borderRadius: '2px',
           }}>
-            <button 
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-              aria-label="북마크 추가"
-              style={{ 
-                background: 'none', 
-                border: 'none', 
-                cursor: 'pointer', 
-                padding: 0,
-                fontSize: '18px',
-                opacity: 0.6,
-                transition: 'opacity 0.15s ease',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; }}
-            >
-              <Bookmark className="w-5 h-5" style={{ color: '#666' }} />
-            </button>
-            <span style={{ fontSize: '13px', color: '#6B6B6B', display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <Heart className="w-4 h-4" style={{ color: '#E53935', fill: '#E53935' }} />
-              {recipe.likes?.toLocaleString() || 0}
-            </span>
-          </div>
+            #{index + 1}
+          </span>
+        )}
+      </div>
+
+      {/* 텍스트 영역 - 테두리 없음, 여백으로 구분 */}
+      <div style={{ paddingTop: '12px' }}>
+        {/* 제목 + 좋아요 */}
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+          gap: '8px',
+          marginBottom: '4px',
+        }}>
+          <h3 style={{
+            fontSize: '15px',
+            fontWeight: 400,
+            margin: 0,
+            color: '#000',
+            lineHeight: 1.3,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            flex: 1,
+          }}>
+            {recipe.title}
+          </h3>
+          <span style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '3px',
+            fontSize: '11px',
+            color: '#6B6B6B',
+            flexShrink: 0,
+          }}>
+            <Heart className="w-3 h-3" style={{ color: '#E53935', fill: '#E53935' }} />
+            {recipe.likes?.toLocaleString() || 0}
+          </span>
+        </div>
+
+        {/* 설명 - 2줄 */}
+        <p style={{
+          fontSize: '13px',
+          color: '#6B6B6B',
+          margin: '0 0 8px 0',
+          lineHeight: 1.4,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+        }}>
+          {recipe.description}
+        </p>
+
+        {/* 저자 */}
+        <div style={{
+          fontSize: '12px',
+          color: '#6B6B6B',
+        }}>
+          <span>@{recipe.author || '슬런치'}</span>
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+// 반응형 그리드 컴포넌트 - 여백 기반
+const RecipeGrid: React.FC<{
+  recipes: Recipe[];
+  showRank?: boolean;
+}> = ({ recipes, showRank = false }) => {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {recipes.map((recipe, idx) => (
+        <div key={recipe.id}>
+          <RecipeCard recipe={recipe} index={showRank ? idx : undefined} />
         </div>
       ))}
     </div>
   );
 };
 
-// 섹션 컴포넌트 (캐러셀 + 헤더 통합)
+// ═══════════════════════════════════════════════════════════════
+// Editorial Magazine Cover 스타일 레시피 카드
+// 상단: 이미지 (1:1, edge-to-edge) / 하단: 제목 + @작성자 + 북마크(완전한 타원)
+// 비율: 2:3 (200px x 300px)
+// ═══════════════════════════════════════════════════════════════
+const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmarked?: boolean }> = ({ recipe, index, isBookmarked = false }) => {
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [isBookmarkHovered, setIsBookmarkHovered] = useState(false);
+
+  return (
+    <div
+      style={{
+        padding: '4px',
+        margin: '-4px',
+      }}
+    >
+      <Link
+        to={`/recipe/${recipe.id}`}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          minWidth: '200px',
+          maxWidth: '200px',
+          height: '300px',
+          background: '#FFFFFF',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          cursor: 'pointer',
+          textDecoration: 'none',
+          transition: 'transform 0.2s ease',
+          transform: isCardHovered ? 'scale(1.03)' : 'scale(1)',
+          transformOrigin: 'center center',
+        }}
+        onMouseEnter={() => setIsCardHovered(true)}
+        onMouseLeave={() => setIsCardHovered(false)}
+      >
+        {/* 상단: 이미지 영역 - edge-to-edge, 1:1 비율, 상단 모서리만 둥글게 */}
+        <div style={{
+          width: '200px',
+          height: '200px',
+          overflow: 'hidden',
+          background: '#f0f0f0',
+          flexShrink: 0,
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
+        }}>
+          <img
+            src={getRecipeThumbnailImage(recipe.id)}
+            alt={recipe.title}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = getFallbackRecipeImage(recipe.id);
+            }}
+          />
+        </div>
+
+        {/* 하단: Typography */}
+        <div style={{
+          padding: '12px 16px 16px',
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          minHeight: 0,
+        }}>
+          {/* 제목 */}
+          <h3 style={{
+            fontSize: '18px',
+            fontWeight: 700,
+            margin: 0,
+            color: '#000',
+            lineHeight: 1.3,
+            marginBottom: '4px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textDecoration: isCardHovered ? 'underline' : 'none',
+            textUnderlineOffset: '2px',
+          }}>
+            {recipe.title}
+          </h3>
+
+          {/* @작성자 */}
+          <span style={{
+            fontSize: '12px',
+            fontWeight: 400,
+            color: '#888',
+          }}>
+            @{recipe.author || 'slunch'}
+          </span>
+
+          {/* 북마크 수 (완전한 타원) - 우측 하단 정렬 */}
+          <div style={{
+            marginTop: 'auto',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}>
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '42px',
+                height: '20px',
+                borderRadius: '50%',
+                fontSize: '11px',
+                fontWeight: 500,
+                border: (isBookmarked || isBookmarkHovered) ? 'none' : '1px solid #000',
+                background: (isBookmarked || isBookmarkHovered) ? '#000' : 'transparent',
+                color: (isBookmarked || isBookmarkHovered) ? '#fff' : '#000',
+                transition: 'all 0.2s ease',
+              }}
+              onMouseEnter={() => setIsBookmarkHovered(true)}
+              onMouseLeave={() => setIsBookmarkHovered(false)}
+            >
+              {recipe.likes?.toLocaleString() || 0}
+            </span>
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+};
+
+// 기존 Portrait 카드 (호환성 유지)
+const PortraitRecipeCard = EditorialRecipeCard;
+
+// ═══════════════════════════════════════════════════════════════
+// "전체보기" 카드 컴포넌트 (Editorial 스타일과 동일한 크기)
+// ═══════════════════════════════════════════════════════════════
+const ViewAllCard: React.FC<{ categoryId: string; categoryTitle: string }> = ({ categoryId, categoryTitle }) => {
+  return (
+    <Link
+      to={`/recipe/category/${categoryId}`}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '200px',
+        maxWidth: '200px',
+        height: '300px',
+        background: '#F5F5F5',
+        borderRadius: '16px',
+        textDecoration: 'none',
+        transition: 'background 0.2s ease',
+      }}
+      className="hover:bg-gray-200"
+    >
+      <span style={{
+        fontSize: '12px',
+        fontWeight: 400,
+        color: '#666',
+        letterSpacing: '0.1em',
+        textTransform: 'uppercase',
+      }}>
+        View More
+      </span>
+    </Link>
+  );
+};
+
+// ═══════════════════════════════════════════════════════════════
+// 2-Column 섹션 컴포넌트 (좌측 고정 텍스트 + 우측 가로 스크롤)
+// ═══════════════════════════════════════════════════════════════
 const RecipeSection: React.FC<{
   category: RecipeCategory;
   index: number;
 }> = ({ category, index }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const colors = categoryColors[category.id] || COLORS.lincolnGreen;
-  const isOdd = index % 2 === 0;
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
 
-  const scroll = (dir: 'left' | 'right') => {
+  // 스크롤 상태 체크
+  const checkScrollState = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: dir === 'left' ? -280 : 280, behavior: 'smooth' });
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
     }
   };
 
-  const ArrowButton: React.FC<{ direction: 'left' | 'right' }> = ({ direction }) => (
-    <button
-      onClick={() => scroll(direction)}
-      style={{
-        width: '40px',
-        height: '40px',
-        borderRadius: '50%',
-        background: '#000',
-        border: 'none',
-        color: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        transition: 'all 0.15s ease',
-      }}
-      onMouseEnter={(e) => { e.currentTarget.style.background = '#333'; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = '#000'; }}
-    >
-      {direction === 'left' ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
-    </button>
-  );
+  useEffect(() => {
+    checkScrollState();
+    const container = scrollRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollState);
+      window.addEventListener('resize', checkScrollState);
+      return () => {
+        container.removeEventListener('scroll', checkScrollState);
+        window.removeEventListener('resize', checkScrollState);
+      };
+    }
+  }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const scrollAmount = 400;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  // 배경색 번갈아가며 적용
+  const bgColor = index % 2 === 0 ? '#FAFAF8' : '#fdfbf7';
+
+  // 최대 10개 레시피
+  const displayRecipes = category.recipes.slice(0, 10);
 
   return (
-    <section 
+    <section
+      id={`recipe-section-${category.id}`}
       className="recipe-section"
-      style={{ 
+      style={{
         display: 'block',
         width: '100%',
-        background: isOdd ? '#F5F5F0' : '#FFFFFF',
-        padding: '48px 0',
+        background: bgColor,
         position: 'relative',
+        padding: '48px 0 56px',
       }}
     >
-      {/* 내부 콘텐츠 - 중앙 정렬 */}
-      <div style={{ 
-        maxWidth: '1400px', 
-        margin: '0 auto', 
-        padding: '0 64px',
-        position: 'relative',
-      }}>
-        {/* 헤더 */}
-        <div className="section-header" style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'flex-end', 
-          marginBottom: '24px',
-          position: 'relative',
-        }}>
-          <div>
-            <span 
-              style={{
-                display: 'inline-block',
-                padding: '4px 12px',
-                fontSize: '11px',
-                fontWeight: 600,
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                marginBottom: '8px',
-                backgroundColor: colors.bg,
-                color: colors.text,
-              }}
-            >
-              {category.subtitle}
-            </span>
-            <Link 
-              to={`/recipe?category=${category.id}`}
-              style={{
-                display: 'block',
-                fontSize: '22px',
-                fontWeight: 700,
-                color: '#000',
-                textDecoration: 'none',
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none'; }}
-            >
-              {category.title} →
-            </Link>
-          </div>
-          {/* 캐러셀 컨트롤 */}
-          <div className="carousel-controls" style={{ 
-            display: 'flex', 
-            gap: '8px',
-            position: 'relative',
+      {/* 2-Column 레이아웃 */}
+      <div
+        className="px-4 md:px-8 lg:px-16"
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '32px',
+          alignItems: 'flex-start',
+        }}
+      >
+        {/* 왼쪽 영역 - 고정 텍스트 (데스크톱만) */}
+        <div
+          style={{
+            flex: '0 0 200px',
+            position: 'sticky',
+            top: 'calc(var(--header-area-h, 100px) + 24px)',
+          }}
+          className="hidden lg:block"
+        >
+          <span style={{
+            fontSize: '11px',
+            fontWeight: 400,
+            color: '#999',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            display: 'block',
+            marginBottom: '8px',
           }}>
-            <ArrowButton direction="left" />
-            <ArrowButton direction="right" />
-          </div>
+            {category.subtitle}
+          </span>
+          <Link
+            to={`/recipe/category/${category.id}`}
+            style={{
+              textDecoration: 'none',
+              marginBottom: '12px',
+              display: 'block',
+            }}
+          >
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: 400,
+              color: '#000',
+              lineHeight: 1.3,
+              display: 'inline',
+              borderBottom: '1px solid transparent',
+              transition: 'border-color 0.2s',
+            }}
+            className="hover:!border-black"
+            >
+              {category.title}
+            </h2>
+          </Link>
+          <p style={{
+            fontSize: '13px',
+            fontWeight: 400,
+            color: '#6B6B6B',
+            lineHeight: 1.6,
+            marginBottom: '56px',
+          }}>
+            슬런치가 엄선한 {category.title.toLowerCase()} 레시피를 만나보세요.
+          </p>
         </div>
 
-        {/* 캐러셀 컨테이너 */}
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          overflowX: 'auto',
-        }}>
-        <RecipeCarousel 
-          recipes={category.recipes} 
-          showAuthor 
-          categoryColor={colors}
-          scrollRef={scrollRef as React.RefObject<HTMLDivElement>}
-        />
+        {/* 오른쪽 영역 - 가로 스크롤 슬라이더 */}
+        <div style={{ flex: 1, position: 'relative', minWidth: 0, marginRight: '-64px' }}
+          className="lg:mr-[-64px] md:mr-[-32px] mr-[-16px]"
+        >
+          {/* 모바일/태블릿 헤더 */}
+          <div className="lg:hidden mb-4">
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 400,
+              color: '#999',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+            }}>
+              {category.subtitle}
+            </span>
+            <Link
+              to={`/recipe/category/${category.id}`}
+              style={{
+                display: 'block',
+                textDecoration: 'none',
+                marginTop: '4px',
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: '20px',
+                  fontWeight: 400,
+                  color: '#000',
+                  display: 'inline',
+                  borderBottom: '1px solid transparent',
+                  transition: 'border-color 0.2s',
+                }}
+                className="hover:!border-black"
+              >
+                {category.title}
+              </h2>
+            </Link>
+          </div>
+
+          {/* 슬라이더 래퍼 (버튼 오버레이용) */}
+          <div
+            style={{ position: 'relative' }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            {/* 좌측 스크롤 버튼 */}
+            {isHovered && canScrollLeft && (
+              <button
+                onClick={() => scroll('left')}
+                className="hidden md:flex"
+                style={{
+                  position: 'absolute',
+                  left: '-20px',
+                  top: '50%',
+                  transform: 'translateY(-70%)',
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  border: '1px solid #E0E0E0',
+                  background: 'rgba(255,255,255,0.95)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#000';
+                  e.currentTarget.style.borderColor = '#000';
+                  e.currentTarget.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
+                  e.currentTarget.style.borderColor = '#E0E0E0';
+                  e.currentTarget.style.color = '#000';
+                }}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+
+            {/* 우측 스크롤 버튼 */}
+            {isHovered && canScrollRight && (
+              <button
+                onClick={() => scroll('right')}
+                className="hidden md:flex lg:right-[52px] md:right-[20px] right-[4px]"
+                style={{
+                  position: 'absolute',
+                  top: '50%',
+                  transform: 'translateY(-70%)',
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  border: '1px solid #E0E0E0',
+                  background: 'rgba(255,255,255,0.95)',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  zIndex: 10,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#000';
+                  e.currentTarget.style.borderColor = '#000';
+                  e.currentTarget.style.color = '#fff';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
+                  e.currentTarget.style.borderColor = '#E0E0E0';
+                  e.currentTarget.style.color = '#000';
+                }}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            )}
+
+            {/* 슬라이더 컨테이너 */}
+            <div
+              ref={scrollRef}
+              className="no-scrollbar lg:pr-16 md:pr-8 pr-4"
+              style={{
+                display: 'flex',
+                gap: '16px',
+                overflowX: 'auto',
+                scrollSnapType: 'x mandatory',
+                paddingBottom: '4px',
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch',
+              }}
+            >
+              {/* 레시피 카드들 (최대 10개) */}
+              {displayRecipes.map((recipe) => (
+                <div key={recipe.id} style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                  <PortraitRecipeCard recipe={recipe} />
+                </div>
+              ))}
+
+              {/* 마지막: 전체보기 카드 */}
+              <div style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
+                <ViewAllCard categoryId={category.id} categoryTitle={category.title} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-// 기존 RecipeCarousel 호환용 (스피릿 페이지 등에서 사용)
-const LegacyRecipeCarousel: React.FC<{ 
-  recipes: Recipe[]; 
-  showAuthor?: boolean;
-  categoryColor?: { text: string; bg: string };
-}> = ({ recipes, showAuthor = false, categoryColor }) => {
+// 스피릿 페이지용 캐러셀 (버튼 오버레이)
+const SpiritRecipeCarousel: React.FC<{
+  recipes: Recipe[];
+  showRank?: boolean;
+}> = ({ recipes, showRank = false }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -542,15 +867,20 @@ const LegacyRecipeCarousel: React.FC<{
     }
   };
 
+  useEffect(() => {
+    checkScroll();
+  }, []);
+
   const scroll = (dir: 'left' | 'right') => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: dir === 'left' ? -320 : 320, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: dir === 'left' ? -300 : 300, behavior: 'smooth' });
       setTimeout(checkScroll, 300);
     }
   };
 
   return (
-    <div className="relative group" style={{ padding: '0 24px' }}>
+    <div style={{ position: 'relative' }}>
+      {/* 좌측 버튼 */}
       {canScrollLeft && (
         <button
           onClick={() => scroll('left')}
@@ -561,9 +891,9 @@ const LegacyRecipeCarousel: React.FC<{
             transform: 'translateY(-50%)',
             width: '40px',
             height: '40px',
-            borderRadius: '50%',
-            background: '#fff',
             border: '1px solid #000',
+            background: '#fff',
+            color: '#000',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -571,18 +901,20 @@ const LegacyRecipeCarousel: React.FC<{
             zIndex: 10,
             transition: 'all 0.15s ease',
           }}
-          onMouseEnter={(e) => { 
-            e.currentTarget.style.background = '#000'; 
-            e.currentTarget.style.color = '#fff'; 
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#000';
+            e.currentTarget.style.color = '#fff';
           }}
-          onMouseLeave={(e) => { 
-            e.currentTarget.style.background = '#fff'; 
-            e.currentTarget.style.color = '#000'; 
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#fff';
+            e.currentTarget.style.color = '#000';
           }}
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
       )}
+
+      {/* 우측 버튼 */}
       {canScrollRight && (
         <button
           onClick={() => scroll('right')}
@@ -593,146 +925,46 @@ const LegacyRecipeCarousel: React.FC<{
             transform: 'translateY(-50%)',
             width: '40px',
             height: '40px',
-            borderRadius: '50%',
-            background: '#fff',
-            border: '1px solid #E5E5E5',
+            border: '1px solid #000',
+            background: '#000',
+            color: '#fff',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
             zIndex: 10,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
             transition: 'all 0.15s ease',
           }}
-          onMouseEnter={(e) => { 
-            e.currentTarget.style.borderColor = '#000'; 
-            e.currentTarget.style.background = '#000'; 
-            e.currentTarget.style.color = '#fff'; 
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = '#333';
           }}
-          onMouseLeave={(e) => { 
-            e.currentTarget.style.borderColor = '#E5E5E5'; 
-            e.currentTarget.style.background = '#fff'; 
-            e.currentTarget.style.color = '#000'; 
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = '#000';
           }}
         >
           <ChevronRight className="w-5 h-5" />
         </button>
       )}
+
+      {/* 캐러셀 */}
       <div
         ref={scrollRef}
         onScroll={checkScroll}
-        className="flex overflow-x-auto no-scrollbar pb-4 w-full"
-        style={{ gap: '13px', scrollSnapType: 'x mandatory' }}
+        className="flex overflow-x-auto no-scrollbar"
+        style={{
+          gap: '20px',
+          scrollBehavior: 'smooth',
+          WebkitOverflowScrolling: 'touch',
+          padding: '4px 0',
+        }}
       >
         {recipes.map((recipe, idx) => (
-          <div
+          <RecipeCard
             key={recipe.id}
-            className="recipe-card flex-shrink-0"
-            style={{ 
-              scrollSnapAlign: 'start',
-              background: '#F0EDE8',
-              borderRadius: '16px',
-              padding: '20px 12px',
-              cursor: 'pointer',
-              overflow: 'hidden',
-              width: '280px',
-              display: 'flex',
-              flexDirection: 'column',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#E5E0D8'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#F0EDE8'; }}
-          >
-            {/* 상단: 제목 (중앙 정렬, 2줄) */}
-            <Link to={`/recipe/${recipe.id}`}>
-              <h3 
-                style={{
-                  fontSize: '18px',
-                  fontWeight: 700,
-                  textAlign: 'center',
-                  margin: 0,
-                  marginBottom: '12px',
-                  color: 'var(--black)',
-                  lineHeight: 1.4,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
-                {recipe.title}
-              </h3>
-            </Link>
-
-            {/* 구분선 + 작성자 */}
-            <div style={{ borderTop: '2px solid #000000', padding: '8px 0', textAlign: 'center' }}>
-              <span style={{ fontSize: '12px', color: '#666' }}>@{recipe.author || '슬런치'}</span>
-            </div>
-
-            {/* 구분선 + 해시태그 */}
-            <div style={{ borderTop: '2px solid #000000', padding: '8px 0', textAlign: 'center', marginBottom: '12px' }}>
-              <span style={{ fontSize: '12px', color: '#666' }}>
-                {recipe.tags?.slice(0, 3).map(tag => `#${tag}`).join(' ') || '#비건 #건강'}
-              </span>
-            </div>
-
-            {/* 이미지 (1:1 정사각형) */}
-            <Link to={`/recipe/${recipe.id}`}>
-              <div 
-                style={{
-                  width: '100%',
-                  aspectRatio: '1 / 1',
-                  background: '#000',
-                  borderRadius: '4px',
-                  overflow: 'hidden',
-                }}
-              >
-                <img
-                  src={getRecipeThumbnailImage(recipe.id)}
-                  alt={recipe.title}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  loading="lazy"
-                  decoding="async"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = getFallbackRecipeImage(recipe.id);
-                  }}
-                />
-              </div>
-            </Link>
-
-            {/* 하단: 북마크 왼쪽, 좋아요 오른쪽 */}
-            <div style={{ 
-              display: 'flex', 
-              justifyContent: 'space-between', 
-              alignItems: 'center', 
-              marginTop: '12px',
-              padding: '12px 0 0 0',
-            }}>
-              <button 
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                aria-label="북마크 추가"
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  cursor: 'pointer', 
-                  padding: 0,
-                  opacity: 0.6,
-                  transition: 'opacity 0.15s ease',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.opacity = '1'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; }}
-              >
-                <Bookmark className="w-5 h-5" style={{ color: '#666' }} />
-              </button>
-              <span style={{ fontSize: '13px', color: '#6B6B6B', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <Heart className="w-4 h-4" style={{ color: '#E53935', fill: '#E53935' }} />
-                {recipe.likes?.toLocaleString() || 0}
-              </span>
-            </div>
-          </div>
+            recipe={recipe}
+            index={showRank ? idx : undefined}
+          />
         ))}
-
       </div>
     </div>
   );
@@ -762,8 +994,44 @@ const circularRecipes = [
   { id: 20, image: '/vege_flot_img/potato.png', color: COLORS.purple },
 ];
 
-// 원형 캐러셀 히어로 컴포넌트
-// RecipeHeroSection 삭제됨 - HallOfFameMarquee가 히어로 역할
+// 인기 레시피 섹션 - 여백 기반
+const RecipeHeroSection: React.FC<{ recipes: Recipe[] }> = ({ recipes }) => {
+  return (
+    <section style={{ background: 'var(--cream)', paddingTop: '32px' }}>
+      {/* 섹션 헤더 - 여백으로 구분 */}
+      <div className="px-4 md:px-8 lg:px-16 mb-6">
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Popular
+            </span>
+            <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#000', marginTop: '4px' }}>
+              인기 레시피
+            </h2>
+          </div>
+          <Link
+            to="/recipe/hall-of-fame"
+            style={{
+              fontSize: '13px',
+              fontWeight: 400,
+              color: '#6B6B6B',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.color = '#000'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none'; e.currentTarget.style.color = '#6B6B6B'; }}
+          >
+            전체보기 →
+          </Link>
+        </div>
+      </div>
+
+      {/* 반응형 그리드 - 상위 8개 */}
+      <div className="px-4 md:px-8 lg:px-16 pb-12">
+        <RecipeGrid recipes={recipes.slice(0, 8)} showRank />
+      </div>
+    </section>
+  );
+};
 
 const RecipePage: React.FC = () => {
   const navigate = useNavigate();
@@ -830,7 +1098,7 @@ const RecipePage: React.FC = () => {
           {/* Section 1: 스피릿 Hero / Title */}
           <section className="w-full max-w-[1280px] px-5 py-20 text-center" style={{ background: '#EEF2EB' }}>
               <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-stone-900 mb-2" style={{ fontSize: '36px', fontWeight: 800 }}>
+            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                 {spiritName} 추천 레시피
               </h1>
             <p className="text-stone-600 text-left max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B' }}>
@@ -848,19 +1116,19 @@ const RecipePage: React.FC = () => {
                 }}
               >
                   <span 
-                    className="inline-block px-4 py-1.5 text-xs font-bold tracking-wide uppercase mb-3 rounded-none"
+                    className="inline-block px-4 py-1.5 text-xs font-normal tracking-wide uppercase mb-3 rounded-none"
                     style={{ backgroundColor: '#3D4A3A', color: '#FFFFFF' }}
                   >
                     스피릿 PICK
                   </span>
-              <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2" style={{ fontSize: '24px', fontWeight: 700 }}>
+              <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName} 스피릿이 좋아하는 레시피
                   </h2>
               <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
                     {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
                   </p>
                   <div className="mt-6">
-                    <RecipeCarousel recipes={spiritPickRecipes} showAuthor categoryColor={COLORS.green} />
+                    <SpiritRecipeCarousel recipes={spiritPickRecipes} showRank />
                 </div>
               </section>
             )}
@@ -872,7 +1140,7 @@ const RecipePage: React.FC = () => {
             {/* 큐레이션 섹션 */}
             {displayCategories.length > 0 && (
                 <div style={{ padding: '40px 0' }}>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 mb-2" style={{ fontWeight: 700 }}>
+                  <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName}에게 어울리는 레시피
                   </h2>
                   <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
@@ -891,7 +1159,7 @@ const RecipePage: React.FC = () => {
                               >
                                 {category.subtitle}
                               </span>
-                              <h3 className="text-xl sm:text-2xl font-bold text-stone-900" style={{ fontWeight: 700 }}>
+                              <h3 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                                 {category.title}
                               </h3>
                             </div>
@@ -900,7 +1168,7 @@ const RecipePage: React.FC = () => {
                             </button>
                           </div>
                           <div className="mt-6">
-                            <RecipeCarousel recipes={category.recipes} showAuthor categoryColor={colors} />
+                            <SpiritRecipeCarousel recipes={category.recipes} />
                           </div>
                         </div>
                       );
@@ -921,12 +1189,12 @@ const RecipePage: React.FC = () => {
                   <Trophy className="w-5 h-5 text-emerald-700" />
                   <span className="text-emerald-700 font-semibold">스피릿 미션</span>
                 </div>
-                  <h3 className="text-2xl font-bold text-stone-900 mb-3" style={{ fontWeight: 700 }}>
+                  <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                   이 레시피를 만들어보고 후기를 남겨주시면
                 </h3>
                 <div className="flex items-center justify-center gap-3 mb-6">
                   <span className="text-4xl">{spiritInfo.emoji}</span>
-                    <span className="text-2xl font-bold text-emerald-700" style={{ fontWeight: 700 }}>{spiritName}</span>
+                    <span className="text-emerald-700 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{spiritName}</span>
                   <span className="text-4xl">배지를 드려요!</span>
                 </div>
                   <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
@@ -951,54 +1219,122 @@ const RecipePage: React.FC = () => {
     );
   }
 
-  // 일반 진입 시 (표준 vertical stacking 구조)
+  // 인기 레시피 Top 20 (좋아요 순)
+  const top20Recipes = useMemo(() => {
+    return [...allRecipes]
+      .sort((a, b) => (b.likes || 0) - (a.likes || 0))
+      .slice(0, 20);
+  }, []);
+
+  // TopControlBar용 탭 데이터
+  const recipeTabs: TabItem[] = [
+    { id: 'popular', label: '인기' },
+    { id: 'new', label: '신규' },
+    { id: 'lunch', label: '점심' },
+    { id: 'dessert', label: '디저트' },
+    { id: 'korean', label: '한식' },
+    { id: 'drink', label: '술안주' },
+    { id: 'date', label: '데이트' },
+  ];
+
+  const [activeRecipeTab, setActiveRecipeTab] = useState('popular');
+
+  // 탭 변경시 해당 섹션으로 스크롤
+  const handleRecipeTabChange = (tabId: string) => {
+    setActiveRecipeTab(tabId);
+    if (tabId === 'popular') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const section = document.getElementById(`recipe-section-${tabId}`);
+      if (section) {
+        const headerHeight = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-area-h') || '100');
+        const offset = section.offsetTop - headerHeight - 60;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+      }
+    }
+  };
+
+
+  // 일반 진입 시 - 깔끔한 여백 기반 디자인
   return (
-    <div className="w-full min-h-screen bg-[#FAF9F6] overflow-x-hidden">
-      <main className="w-full flex flex-col">
+    <div className="w-full min-h-screen" style={{ background: 'var(--cream)' }}>
+      {/* 상단 컨트롤 바 - KBP Style (Fixed) */}
+      <TopControlBar
+        tabs={recipeTabs}
+        activeTab={activeRecipeTab}
+        onTabChange={handleRecipeTabChange}
+      />
+
+      {/* Fixed TopControlBar 높이만큼 여백 */}
+      <main className="w-full flex flex-col" style={{ paddingTop: '48px' }}>
+        {/* 인기 레시피 섹션 - Retro Desktop OS 스타일 */}
+        <PopularRecipes />
+
         {/* 카테고리별 섹션들 */}
         <div className="w-full flex flex-col">
-      {displayCategories.map((category, index) => (
-        <RecipeSection key={category.id} category={category} index={index} />
-      ))}
+          {displayCategories.map((category, index) => (
+            <RecipeSection key={category.id} category={category} index={index} />
+          ))}
         </div>
 
-      {/* 레시피 작성 CTA */}
-      <div className="page-container py-16">
-        <section className="border-t border-stone-200 pt-16">
+        {/* 레시피 작성 CTA - 여백 기반 */}
+        <div className="px-4 md:px-8 lg:px-16 py-16" style={{ background: 'var(--cream)' }}>
           <div className="text-center max-w-xl mx-auto">
-            <div className="w-16 h-16 bg-green-100 rounded-none flex items-center justify-center mx-auto mb-6">
-              <Plus className="w-8 h-8 text-green-600" />
+            <div style={{
+              width: '48px',
+              height: '48px',
+              background: '#F5F5F5',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 20px',
+            }}>
+              <Plus className="w-6 h-6" style={{ color: '#6B6B6B' }} />
             </div>
-              <h3 className="text-2xl font-bold text-stone-900 mb-3" style={{ fontWeight: 700 }}>
-              {spiritName ? `내 스피릿에 맞는 나만의 레시피 투고하기` : '나만의 레시피를 공유해보세요'}
+            <h3 style={{
+              fontSize: '18px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '8px',
+            }}>
+              나만의 레시피를 공유해보세요
             </h3>
-              <p className="text-stone-500 mb-6 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
-              {spiritName 
-                ? `${spiritName}님의 특성에 맞는 레시피를 자유롭게 올려주세요. 같은 스피릿 유저들에게 영감을 줄 수 있어요!`
-                : '당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.\n다른 유저들에게 영감을 줄 수 있어요!'
-              }
+            <p style={{
+              fontSize: '14px',
+              fontWeight: 400,
+              color: '#6B6B6B',
+              marginBottom: '20px',
+              lineHeight: 1.6,
+            }}>
+              당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.
             </p>
-            <button 
+            <button
               onClick={() => {
                 navigate('/recipe?upload=true');
               }}
-                className={`inline-flex items-center gap-2 px-6 py-3 rounded-none font-semibold transition-colors ${
-                spiritName 
-                  ? 'bg-emerald-600 hover:bg-emerald-700 text-white' 
-                  : 'bg-stone-900 hover:bg-stone-800 text-white'
-              }`}
-                style={{ 
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  minHeight: '44px'
-                }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '12px 24px',
+                fontSize: '14px',
+                fontWeight: 400,
+                background: '#000',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                transition: 'opacity 0.15s ease',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.8'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.opacity = '1'; }}
             >
-              <Upload className="w-5 h-5" />
-              <span>{spiritName ? '레시피 투고하기' : '레시피 작성하기'}</span>
+              <Upload className="w-4 h-4" />
+              <span>레시피 작성하기</span>
             </button>
           </div>
-        </section>
-      </div>
+        </div>
       </main>
     </div>
   );

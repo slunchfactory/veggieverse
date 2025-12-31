@@ -1,7 +1,16 @@
 import React from 'react';
 
+/**
+ * Button Component - Slunch Design System v2
+ *
+ * Variants:
+ * - primary: Fresh Veggie Green 배경, 흰색 텍스트
+ * - secondary: 투명 배경, 검정 실선 테두리
+ * - ghost: 투명 배경, 텍스트만 (호버 시 밑줄)
+ */
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'primary-lime' | 'secondary' | 'secondary-olive' | 'secondary-gray' | 'ghost' | 'olive';
+  variant?: 'primary' | 'secondary' | 'ghost';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   disabled?: boolean;
   children: React.ReactNode;
@@ -18,61 +27,63 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   // Size configurations (padding / font-size)
   const sizeClasses = {
-    sm: 'px-4 py-2 text-[11px]',
+    sm: 'px-4 py-2 text-[12px]',
     md: 'px-6 py-3 text-[13px]',
     lg: 'px-8 py-4 text-sm',
     xl: 'px-12 py-5 text-base',
   };
 
-  const ghostClasses = 'px-0 py-2'; // Ghost는 항상 고정 패딩
+  const ghostClasses = 'px-0 py-2';
 
-  const baseClasses = variant === 'ghost' 
-    ? `${ghostClasses} font-bold transition-all duration-150`
-    : `${sizeClasses[size]} font-bold transition-all duration-150`;
-  
+  const baseClasses = variant === 'ghost'
+    ? `${ghostClasses} font-medium transition-all duration-200`
+    : `${sizeClasses[size]} font-semibold transition-all duration-200 rounded-md`;
+
   const variantStyles: Record<string, React.CSSProperties> = {
-    // Primary: black bg, white text → hover: lime bg, black text
+    // Primary: Fresh Veggie Green bg, white text
     primary: {
-      background: 'var(--black)',
+      background: 'var(--primary)',
       color: 'var(--white-pure)',
+      border: 'none',
+      borderRadius: '6px',
     },
-    // Primary Lime: lime bg, black text → hover: dark lime bg
-    'primary-lime': {
-      background: 'var(--lime)',
-      color: 'var(--black)',
-    },
-    // Secondary: transparent bg, black outline (1px) → hover: black bg, white text
+    // Secondary: transparent bg, black border
     secondary: {
       background: 'transparent',
       border: '1px solid var(--black)',
       color: 'var(--black)',
+      borderRadius: '6px',
     },
-    // Secondary Olive: transparent bg, olive outline → hover: olive bg, white text
-    'secondary-olive': {
-      background: 'transparent',
-      border: '1px solid var(--olive)',
-      color: 'var(--olive)',
-    },
-    // Secondary Gray: gray bg, white text
-    'secondary-gray': {
-      background: 'var(--gray)',
-      color: 'var(--white-pure)',
-    },
-    // Ghost: transparent, underline → hover: underline (text only)
+    // Ghost: transparent, no border
     ghost: {
       background: 'transparent',
-      color: 'var(--black)',
+      color: 'var(--warm-gray)',
       border: 'none',
     },
-    // Olive Accent: olive bg, white text
-    olive: {
-      background: 'var(--olive)',
+  };
+
+  const hoverStyles: Record<string, React.CSSProperties> = {
+    primary: {
+      background: 'var(--primary-dark)',
       color: 'var(--white-pure)',
+    },
+    secondary: {
+      background: 'var(--black)',
+      color: 'var(--white-pure)',
+    },
+    ghost: {
+      color: 'var(--primary)',
     },
   };
 
   const buttonStyle = disabled
-    ? { background: 'var(--gray-light)', color: 'var(--white-pure)', opacity: 0.6, cursor: 'not-allowed' }
+    ? {
+        background: 'var(--gray-lighter)',
+        color: 'var(--warm-gray)',
+        cursor: 'not-allowed',
+        border: 'none',
+        borderRadius: '6px',
+      }
     : variantStyles[variant] || variantStyles.primary;
 
   return (
@@ -81,20 +92,16 @@ export const Button: React.FC<ButtonProps> = ({
       style={buttonStyle}
       disabled={disabled}
       onMouseEnter={(e) => {
-        if (!disabled && variant === 'primary') {
-          e.currentTarget.style.background = 'var(--lime)';
-          e.currentTarget.style.color = 'var(--black)';
-        } else if (!disabled && variant === 'primary-lime') {
-          e.currentTarget.style.background = 'var(--lime-dark)';
-        } else if (!disabled && variant === 'secondary') {
-          e.currentTarget.style.background = 'var(--black)';
-          e.currentTarget.style.color = 'var(--white-pure)';
-        } else if (!disabled && variant === 'secondary-olive') {
-          e.currentTarget.style.background = 'var(--olive)';
-          e.currentTarget.style.color = 'var(--white-pure)';
-        } else if (!disabled && variant === 'ghost') {
-          e.currentTarget.style.textDecoration = 'underline';
-          e.currentTarget.style.textUnderlineOffset = '4px';
+        if (!disabled) {
+          const hover = hoverStyles[variant];
+          if (hover) {
+            if (hover.background) e.currentTarget.style.background = hover.background as string;
+            if (hover.color) e.currentTarget.style.color = hover.color as string;
+            if (variant === 'ghost') {
+              e.currentTarget.style.textDecoration = 'underline';
+              e.currentTarget.style.textUnderlineOffset = '4px';
+            }
+          }
         }
       }}
       onMouseLeave={(e) => {
@@ -102,7 +109,6 @@ export const Button: React.FC<ButtonProps> = ({
           const defaultStyle = variantStyles[variant] || variantStyles.primary;
           e.currentTarget.style.background = defaultStyle.background as string || '';
           e.currentTarget.style.color = defaultStyle.color as string || '';
-          e.currentTarget.style.border = (defaultStyle.border as string) || '';
           if (variant === 'ghost') {
             e.currentTarget.style.textDecoration = 'none';
           }
@@ -114,4 +120,3 @@ export const Button: React.FC<ButtonProps> = ({
     </button>
   );
 };
-

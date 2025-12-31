@@ -1,20 +1,88 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Trophy, Gift, User, ChefHat, MessageCircle, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
-import { ALL_BADGES } from '../contexts/UserContext';
+import { TopControlBar, TabItem } from '../components/TopControlBar';
+
+// 스피릿 이미지 타입
+interface SpiritProfile {
+  profileImage: string | null;
+  veganType: string | null;
+  savedAt: string | null;
+}
+
+const myPageTabs: TabItem[] = [
+  { id: 'home', label: '홈' },
+  { id: 'orders', label: '주문/배송' },
+  { id: 'bookmarks', label: '레시피 북마크' },
+  { id: 'wishlist', label: '관심상품' },
+  { id: 'reviews', label: '리뷰' },
+  { id: 'info', label: '내정보' },
+];
 
 const ProfilePage: React.FC = () => {
   const { user, coupons } = useUser();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('home');
+  const [spiritProfile, setSpiritProfile] = useState<SpiritProfile | null>(null);
+
+  // localStorage에서 스피릿 프로필 로드
+  useEffect(() => {
+    const savedProfile = localStorage.getItem('veggieverse-profile');
+    if (savedProfile) {
+      try {
+        setSpiritProfile(JSON.parse(savedProfile));
+      } catch (e) {
+        console.error('Failed to load spirit profile:', e);
+      }
+    }
+  }, []);
+
+  // 탭 변경시 해당 페이지로 이동
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    if (tabId === 'home') {
+      navigate('/mypage');
+    } else if (tabId === 'orders') {
+      navigate('/mypage/orders');
+    } else if (tabId === 'bookmarks') {
+      navigate('/mypage/bookmarks');
+    } else if (tabId === 'wishlist') {
+      navigate('/mypage/wishlist');
+    } else if (tabId === 'reviews') {
+      navigate('/mypage/reviews');
+    } else if (tabId === 'info') {
+      navigate('/mypage/edit');
+    }
+  };
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ffffff' }}>
-        <div className="text-center">
-          <p className="text-stone-500 mb-4">로그인이 필요합니다.</p>
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'var(--cream)',
+        }}
+      >
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B', marginBottom: '16px' }}>
+            로그인이 필요합니다.
+          </p>
           <Link
             to="/"
-            className="inline-block px-6 py-3 bg-black text-white rounded-none font-medium hover:bg-[#333333] transition-colors"
+            style={{
+              display: 'inline-block',
+              padding: '12px 24px',
+              fontSize: '14px',
+              fontWeight: 400,
+              background: '#000000',
+              color: '#fff',
+              border: '1px solid #000000',
+              textDecoration: 'none',
+            }}
           >
             테스트 시작하기
           </Link>
@@ -23,171 +91,258 @@ const ProfilePage: React.FC = () => {
     );
   }
 
-  const spiritBadges = user.badges.filter(b => b.category === 'spirit');
-  const activityBadges = user.badges.filter(b => b.category === 'activity');
   const unusedCoupons = coupons.filter(c => !c.used);
 
-  return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
-      <div className="page-container py-10">
-        {/* 헤더 */}
-        <div className="mb-8">
-          <Link
-            to="/recipe"
-            className="inline-flex items-center gap-2 text-stone-600 hover:text-stone-900 transition-colors mb-6"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span>레시피로 돌아가기</span>
-          </Link>
-          <h1 className="text-3xl font-bold text-stone-900">프로필</h1>
-        </div>
+  // Mock 데이터: 최근 주문 내역 (최대 2개만 표시)
+  const recentOrders = [
+    {
+      id: 1,
+      date: '2024.12.15',
+      productName: '볶음김치 외 1건',
+      thumbnail: '/veggieverse/store/thumbnails/kimchi.jpg',
+      orderNumber: 'ORD-241215-001',
+      price: 24000,
+      status: '배송중',
+    },
+    {
+      id: 2,
+      date: '2024.12.10',
+      productName: '김치볶음밥',
+      thumbnail: '/veggieverse/store/thumbnails/kimchi-fried-rice.jpg',
+      orderNumber: 'ORD-241210-003',
+      price: 12000,
+      status: '배송완료',
+    },
+  ];
 
-        {/* 프로필 정보 카드 */}
-        <div className="bg-white border-2 border-stone-200 rounded-none p-8 mb-8">
-          <div className="flex items-center gap-6 mb-6">
-            <div className="w-20 h-20 bg-[#E0E0E0] rounded-none flex items-center justify-center">
-              <User className="w-10 h-10 text-black" />
-            </div>
-            <div>
-              <h2 className="text-2xl font-bold text-stone-900 mb-1">{user.username}</h2>
-              {user.spiritName && (
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{user.spiritName}</span>
-                  <span className="text-sm text-stone-500">({user.spiritType})</span>
+  // 회원 등급
+  const getUserLevel = () => {
+    const totalSpent = 0;
+    const orderCount = 0;
+    if (totalSpent >= 200000) return { name: 'HARVEST', desc: '최고 등급', color: '#DAA520' };
+    if (totalSpent >= 50000 || orderCount >= 2) return { name: 'GREEN', desc: '성장 등급', color: '#4CAF50' };
+    return { name: 'FRESH', desc: '시작 등급', color: '#8BC34A' };
+  };
+
+  const userLevel = getUserLevel();
+  const points = 1500;
+
+  return (
+    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+      {/* TopControlBar - KBP Style */}
+      <TopControlBar
+        tabs={myPageTabs}
+        activeTab={activeTab}
+        onTabChange={handleTabChange}
+      />
+
+      {/* Content */}
+      <main className="w-full max-w-[900px] mx-auto p-4 md:p-6 lg:p-8" style={{ paddingTop: '80px' }}>
+
+        {/* 스피릿 프로필 */}
+        <section style={{ marginBottom: '32px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            {/* 스피릿 이미지 */}
+            <div
+              style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                background: '#F5F5F5',
+                border: '1px solid #E5E5E5',
+                flexShrink: 0,
+              }}
+            >
+              {spiritProfile?.profileImage ? (
+                <img
+                  src={spiritProfile.profileImage}
+                  alt="My Spirit"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              ) : (
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '32px',
+                  }}
+                >
+                  🌱
                 </div>
               )}
-              <p className="text-sm text-stone-500 mt-1">
-                가입일: {new Date(user.joinedAt).toLocaleDateString('ko-KR')}
+            </div>
+            {/* 인사말 */}
+            <div>
+              <h1 style={{ fontSize: '20px', fontWeight: 400, color: '#000000', marginBottom: '4px' }}>
+                반갑습니다, {user.spiritName || user.username}님
+              </h1>
+              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+                {user.spiritName} 스피릿
               </p>
             </div>
           </div>
+        </section>
 
-          {/* 통계 */}
-          <div className="grid grid-cols-3 gap-4 pt-6 border-t border-stone-200">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 text-stone-500 mb-1">
-                <ChefHat className="w-4 h-4" />
-                <span className="text-sm">레시피</span>
-              </div>
-              <p className="text-2xl font-bold text-stone-900">{user.recipes}</p>
-            </div>
-            <div className="text-center border-x border-stone-200">
-              <div className="flex items-center justify-center gap-2 text-stone-500 mb-1">
-                <MessageCircle className="w-4 h-4" />
-                <span className="text-sm">댓글</span>
-              </div>
-              <p className="text-2xl font-bold text-stone-900">{user.comments}</p>
-            </div>
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 text-stone-500 mb-1">
-                <Heart className="w-4 h-4" />
-                <span className="text-sm">좋아요</span>
-              </div>
-              <p className="text-2xl font-bold text-stone-900">{user.likes}</p>
-            </div>
+        {/* 회원등급 / 쿠폰 / 포인트 */}
+        <section style={{ marginBottom: '32px' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              borderTop: '1px solid #000',
+              borderBottom: '1px solid #000',
+            }}
+          >
+            {[
+              { label: '회원등급', value: userLevel.name, path: '/mypage/level' },
+              { label: '보유쿠폰', value: `${unusedCoupons.length}장`, path: '/mypage/coupons' },
+              { label: '포인트', value: `${points.toLocaleString()}P`, path: '/mypage/points' },
+            ].map((item, idx) => (
+              <Link
+                key={item.label}
+                to={item.path}
+                style={{
+                  padding: '16px 20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  textDecoration: 'none',
+                  borderLeft: idx > 0 ? '1px solid #E5E5E5' : 'none',
+                }}
+              >
+                <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>{item.label}</span>
+                <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>{item.value}</span>
+              </Link>
+            ))}
           </div>
-        </div>
+        </section>
 
-        {/* 배지 진열대 */}
-        <div className="bg-white border-2 border-stone-200 rounded-none p-8 mb-8">
-          <div className="flex items-center gap-2 mb-6">
-            <Trophy className="w-6 h-6 text-black" />
-            <h2 className="text-2xl font-bold text-stone-900">배지 진열대</h2>
-            <span className="text-stone-500">({user.badges.length}개)</span>
+        {/* 최근 주문 */}
+        <section style={{ marginBottom: '32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <h2 style={{ fontSize: '15px', fontWeight: 400, color: '#000000' }}>최근 주문</h2>
+            <Link
+              to="/mypage/orders"
+              style={{
+                fontSize: '12px',
+                fontWeight: 400,
+                color: '#6B6B6B',
+                textDecoration: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '2px',
+              }}
+            >
+              전체보기 <ChevronRight size={14} />
+            </Link>
           </div>
 
-          {/* 스피릿 배지 */}
-          {spiritBadges.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-stone-700 mb-4">스피릿 배지</h3>
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-                {spiritBadges.map((badge) => (
-                  <div
-                    key={badge.id}
-                    className="flex flex-col items-center gap-2 p-4 bg-[#F5F5F5] rounded-none border-2 border-[#E0E0E0]"
-                  >
-                    <span className="text-4xl">{badge.icon}</span>
-                    <p className="text-xs font-medium text-stone-700 text-center">{badge.name}</p>
-                  </div>
-                ))}
+          {recentOrders.length > 0 ? (
+            <div style={{ borderTop: '1px solid #000' }}>
+              {/* 테이블 헤더 */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '100px 1fr 1fr 120px',
+                  padding: '12px 0',
+                  borderBottom: '1px solid #E5E5E5',
+                }}
+              >
+                <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>주문일</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>주문내역</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>주문번호</span>
+                <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', textAlign: 'right' }}>결제금액</span>
               </div>
-            </div>
-          )}
-
-          {/* 활동 배지 */}
-          {activityBadges.length > 0 && (
-            <div>
-              <h3 className="text-lg font-semibold text-stone-700 mb-4">활동 배지</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                {activityBadges.map((badge) => (
-                  <div
-                    key={badge.id}
-                    className="flex flex-col items-center gap-2 p-4 bg-[#F5F5F5] rounded-none border-2 border-[#E0E0E0]"
-                  >
-                    <span className="text-4xl">{badge.icon}</span>
-                    <p className="text-xs font-medium text-stone-700 text-center">{badge.name}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 미획득 배지 (회색으로 표시) */}
-          {user.badges.length < Object.keys(ALL_BADGES).length && (
-            <div className="mt-8 pt-8 border-t border-stone-200">
-              <h3 className="text-lg font-semibold text-stone-500 mb-4">미획득 배지</h3>
-              <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-4">
-                {Object.values(ALL_BADGES)
-                  .filter(badge => !user.badges.some(b => b.id === badge.id))
-                  .map((badge) => (
-                    <div
-                      key={badge.id}
-                      className="flex flex-col items-center gap-2 p-4 bg-stone-100 rounded-none border-2 border-stone-200 opacity-50"
-                    >
-                      <span className="text-4xl grayscale">{badge.icon}</span>
-                      <p className="text-xs font-medium text-stone-500 text-center">{badge.name}</p>
-                    </div>
-                  ))}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* 쿠폰 */}
-        {unusedCoupons.length > 0 && (
-          <div className="bg-white border-2 border-stone-200 rounded-none p-8">
-            <div className="flex items-center gap-2 mb-6">
-              <Gift className="w-6 h-6 text-black" />
-              <h2 className="text-2xl font-bold text-stone-900">보유 쿠폰</h2>
-              <span className="text-stone-500">({unusedCoupons.length}개)</span>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {unusedCoupons.map((coupon) => (
+              {/* 테이블 바디 */}
+              {recentOrders.map((order, idx) => (
                 <div
-                  key={coupon.id}
-                  className="p-4 bg-[#F5F5F5] border-2 border-[#E0E0E0] rounded-none"
+                  key={order.id}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '100px 1fr 1fr 120px',
+                    alignItems: 'center',
+                    padding: '10px 0',
+                    borderBottom: idx < recentOrders.length - 1 ? '1px solid #E5E5E5' : '1px solid #000',
+                  }}
                 >
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="font-semibold text-stone-900">
-                      {coupon.discount}{coupon.type === 'percentage' ? '%' : '원'} 할인
-                    </span>
-                    <span className="text-xs text-stone-500">
-                      {new Date(coupon.earnedAt).toLocaleDateString('ko-KR')}
-                    </span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>{order.date}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div
+                      style={{
+                        width: '60px',
+                        height: '60px',
+                        background: '#F5F5F5',
+                        flexShrink: 0,
+                        overflow: 'hidden',
+                      }}
+                    >
+                      <img
+                        src={order.thumbnail}
+                        alt={order.productName}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/veggieverse/store/thumbnails/placeholder.jpg';
+                        }}
+                      />
+                    </div>
+                    <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>{order.productName}</span>
                   </div>
-                  <div className="px-3 py-2 bg-white rounded-none mb-2">
-                    <p className="font-mono font-bold text-stone-900">{coupon.code}</p>
-                  </div>
-                  <p className="text-xs text-stone-600">슬런치 팩토리 스토어에서 사용 가능</p>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>{order.orderNumber}</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000', textAlign: 'right' }}>{order.price.toLocaleString()}원</span>
                 </div>
               ))}
             </div>
-          </div>
-        )}
-      </div>
+          ) : (
+            <div style={{ padding: '40px 0', borderTop: '1px solid #000', borderBottom: '1px solid #000', textAlign: 'center' }}>
+              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>주문 내역이 없습니다.</p>
+            </div>
+          )}
+        </section>
+
+        {/* 활동 뱃지 */}
+        <section style={{ marginBottom: '32px' }}>
+          <h2 style={{ fontSize: '15px', fontWeight: 400, color: '#000000', marginBottom: '12px' }}>
+            활동 뱃지
+          </h2>
+          {user.badges && user.badges.length > 0 ? (
+            <div style={{ borderTop: '1px solid #000', borderBottom: '1px solid #000' }}>
+              {user.badges.map((badge, idx) => (
+                <div
+                  key={badge.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '14px 0',
+                    borderBottom: idx < user.badges.length - 1 ? '1px solid #E5E5E5' : 'none',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <span style={{ fontSize: '20px' }}>{badge.icon}</span>
+                    <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>{badge.name}</span>
+                  </div>
+                  <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>
+                    {badge.earnedAt ? new Date(badge.earnedAt).toLocaleDateString('ko-KR') : ''}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ padding: '40px 0', borderTop: '1px solid #000', borderBottom: '1px solid #000', textAlign: 'center' }}>
+              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+                아직 획득한 뱃지가 없습니다.
+              </p>
+            </div>
+          )}
+        </section>
+
+      </main>
     </div>
   );
 };
 
 export default ProfilePage;
-

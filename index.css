@@ -1,145 +1,222 @@
-/* VeggieVerse Global Styles - Slunch Factory Design System */
+/* VeggieVerse Global Styles - Slunch Design System v2 */
+/* "실선과 여백이 만드는 시원한 개방감 + 신선한 채소의 생동감" */
 
-/* Font Import - Plus Jakarta Sans & Pretendard */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+/* Font Import - Pretendard Only (KBP 스타일 산세리프 통일) */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 /* ============================================
-   EDITORIAL MINIMALIST DESIGN TOKENS
+   SLUNCH DESIGN SYSTEM v2 - DESIGN TOKENS
+   Open Border Grid + Flat & Clean
    ============================================ */
 
 :root {
-  /* Header & Promo Bar Heights - Fixed Ratios */
-  --promo-h: 32px;                /* 프로모션 바 높이 (데스크탑) */
-  --header-h: 72px;               /* 헤더 높이 (데스크탑) */
-  
-  /* Typography Scale - Strict Design System */
-  --font-size-h1: 48px;           /* H1 / Page Titles / Hero Headlines */
-  --font-size-h2: 18px;           /* H2 / Card Titles / Product Names in Grid */
-  --font-size-body: 16px;         /* Body Text / Descriptions */
-  --font-size-ui: 15px;           /* Metadata / Buttons / Categories / Prices */
-  
-  /* Typography Weights - Hierarchy Rule */
-  --font-weight-h1: 700;           /* Bold (700) or ExtraBold (800) for Headlines */
-  --font-weight-h2: 700;         /* Bold (700) or ExtraBold (800) for Subheadings */
-  --font-weight-body: 400;        /* Regular (400) for Body Text */
-  --font-weight-ui: 500;          /* Medium (500) or SemiBold (600) for UI Elements */
-  --font-weight-price: 600;      /* SemiBold (600) for Prices - bolder than description */
-  
-  /* Typography Line Heights */
-  --line-height-h1: 1.2;
-  --line-height-h2: 1.4;
-  --line-height-body: 1.6;
-  --line-height-ui: 1.5;
-  
-  /* Header 반응형 변수 */
-  --header-padding-x: 32px;       /* 좌우 패딩 */
-  --header-nav-font-size: 15px;   /* 네비게이션 폰트 크기 */
-  --header-nav-padding-y: 24px;   /* 네비게이션 아이템 상하 패딩 */
-  --header-nav-padding-x: 16px;   /* 네비게이션 아이템 좌우 패딩 */
-  --header-logo-height: 28px;      /* 로고 높이 */
-  
-  /* Font Family - Slunch Factory */
-  --font-family: 'Plus Jakarta Sans', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-primary: var(--font-family);
-  --font-accent: var(--font-family);
-  
-  /* Color Palette - Slunch Factory */
-  /* Core Colors */
-  --black: #000000;
-  --gray: #6B6B6B;
-  --gray-light: #9A9A9A;
-  --gray-lighter: #CCCCCC;
-  --white: #FAF9F6;
+  /* ==========================================
+     COLOR PALETTE - Fresh Veggie Colors
+     ========================================== */
+
+  /* Primary - Fresh Veggie Green (신선한 채소 그린) */
+  --primary: #3fa945;
+  --primary-light: #6B9B7A;
+  --primary-dark: #365E43;
+  --primary-50: #F0F5F1;
+
+  /* Secondary - Carrot Orange (당근 오렌지) */
+  --secondary: #E07B39;
+  --secondary-light: #F4A261;
+  --secondary-dark: #C45D1E;
+
+  /* Accent - Vivid Points (비비드 포인트) */
+  --tomato-red: #D64545;
+  --corn-yellow: #F2C94C;
+  --eggplant-purple: #7B5EA7;
+
+  /* Background - Warm Cream (오끼뜨 감성) */
+  --cream: #FDFBF7;
+  --eggshell: #F7F4EF;
   --white-pure: #FFFFFF;
-  --lime: #BFFF00;
-  --lime-dark: #9ACC00;
-  --olive: #3D4A3A;
-  
-  /* Header & Promo Bar Heights - Fixed Ratios */
-  --promo-h: 32px;                /* 프로모션 바 높이 (데스크탑) */
-  --header-h: 72px;               /* 헤더 높이 (데스크탑) */
-  
+
+  /* Text & Line - Pure Black (선명한 실선) */
+  --deep-forest: #000000;
+  --charcoal: #3D3D3D;
+  --warm-gray: #6B6B6B;
+  --muted: #A0A0A0;
+
   /* Legacy aliases for compatibility */
-  --color-black: var(--black);
-  --color-gray: var(--gray);
+  --black: #000000;
+  --gray: var(--warm-gray);
+  --gray-light: #9A9A9A;
+  --gray-lighter: #D4D4D4;
+  --white: var(--cream);
+  --lime: var(--primary);
+  --lime-dark: var(--primary-dark);
+  --olive: var(--primary-dark);
+
+  /* Semantic Colors */
+  --color-success: var(--primary);
+  --color-error: var(--tomato-red);
+  --color-warning: var(--corn-yellow);
+  --color-info: var(--eggplant-purple);
+
+  /* Legacy color aliases */
+  --color-black: var(--deep-forest);
+  --color-gray: var(--warm-gray);
   --color-gray-light: var(--gray-light);
-  --color-white: var(--white);
-  --color-lime: var(--lime);
-  --color-lime-dark: var(--lime-dark);
-  --color-olive: var(--olive);
+  --color-white: var(--cream);
+  --color-lime: var(--primary);
+  --color-lime-dark: var(--primary-dark);
+  --color-olive: var(--primary-dark);
   --color-white-pure: var(--white-pure);
   --color-gray-lighter: var(--gray-lighter);
-  
-  /* Semantic Colors */
-  --color-success: #BFFF00;
-  --color-error: #FF4444;
-  --color-warning: #FFB800;
-  --color-info: #6B6B6B;
-  
+  --color-bg-primary: var(--cream);
+  --color-bg-secondary: var(--eggshell);
+  --color-text-primary: var(--charcoal);
+  --color-text-secondary: var(--warm-gray);
+  --color-text-muted: var(--muted);
+  --color-text-inverse: var(--cream);
+  --color-accent-primary: var(--primary);
+  --color-accent-hover: var(--primary-dark);
+  --color-accent-olive: var(--primary-dark);
+
   /* Overlay */
-  --overlay-dark: rgba(13, 13, 13, 0.7);
-  --overlay-light: rgba(250, 249, 246, 0.9);
-  
-  /* Legacy aliases for compatibility */
-  --color-bg-primary: #FAF9F6;
-  --color-bg-secondary: #FFFFFF;
-  --color-text-primary: #000000;
-  --color-text-secondary: #6B6B6B;
-  --color-text-muted: #9A9A9A;
-  --color-text-inverse: #FAF9F6;
-  --color-accent-primary: #BFFF00;
-  --color-accent-hover: #9ACC00;
-  --color-accent-olive: #3D4A3A;
-  
-  /* Borders */
-  --border-width: 1px;
-  --border-style: solid;
-  --border-radius: 2px;
-  
-  /* Spacing */
+  --overlay-dark: rgba(0, 0, 0, 0.7);
+  --overlay-light: rgba(253, 251, 247, 0.9);
+
+  /* ==========================================
+     TYPOGRAPHY - Pretendard Only (산세리프 통일)
+     ========================================== */
+
+  /* Font Family */
+  --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-primary: var(--font-family);
+  --font-accent: var(--font-family);
+
+  /* Typography Scale */
+  --font-size-display: 48px;
+  --font-size-h1: 36px;
+  --font-size-h1-mobile: 28px;
+  --font-size-h2: 28px;
+  --font-size-h2-mobile: 22px;
+  --font-size-h3: 20px;
+  --font-size-h3-mobile: 18px;
+  --font-size-product: 16px;
+  --font-size-body: 16px;
+  --font-size-body-mobile: 15px;
+  --font-size-small: 14px;
+  --font-size-caption: 12px;
+  --font-size-ui: 15px;
+
+  /* Typography Weights - NO BOLD RULE: 모든 텍스트는 Regular(400) */
+  --font-weight-regular: 400;
+  --font-weight-bold: 400;      /* 강제로 Regular */
+  --font-weight-semibold: 400;  /* 강제로 Regular */
+  --font-weight-h1: 400;        /* 크기로만 위계 표현 */
+  --font-weight-h2: 400;        /* 크기로만 위계 표현 */
+  --font-weight-body: 400;
+  --font-weight-ui: 400;
+  --font-weight-price: 400;
+
+  /* Typography Line Heights - 읽기 편한 행간 */
+  --line-height-display: 1.3;
+  --line-height-h1: 1.3;
+  --line-height-h2: 1.4;
+  --line-height-body: 1.7;
+  --line-height-ui: 1.6;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-wide: 0.05em;
+
+  /* ==========================================
+     LAYOUT - Open Border Grid (시원한 여백)
+     ========================================== */
+
+  /* Header & Promo Bar Heights */
+  --promo-h: 32px;
+  --header-h: 72px;
+  --header-area-h: calc(var(--promo-h) + var(--header-h));
+  --header-height: 64px;
+  --sidebar-width: 240px;
+
+  /* Header 반응형 변수 */
+  --header-padding-x: 32px;
+  --header-nav-font-size: 15px;
+  --header-nav-padding-y: 24px;
+  --header-nav-padding-x: 16px;
+  --header-logo-height: 28px;
+
+  /* Section Spacing - 과감하게 넓은 여백 */
+  --section-padding-desktop: 120px;
+  --section-padding-mobile: 80px;
+  --card-padding: 32px;
+  --element-gap: 24px;
+
+  /* Spacing Scale */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
   --spacing-2xl: 48px;
-  
-  /* Layout */
-  --header-height: 64px;
-  --sidebar-width: 240px;
-  
-  /* Typography adjustments */
-  --letter-spacing-tight: -0.02em;
+  --spacing-3xl: 80px;
+  --spacing-4xl: 120px;
+
+  /* ==========================================
+     BORDERS & RADIUS - Flat & Clean
+     ========================================== */
+
+  /* Border - 실선 스타일 */
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--deep-forest);
+  --border-color-light: rgba(0, 0, 0, 0.2);
+
+  /* Border Radius - 살짝 둥근 모서리 (오끼뜨 감성) */
+  --border-radius-sm: 4px;
+  --border-radius: 6px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+  --border-radius-full: 9999px;
 }
 
 /* 태블릿 (768px ~ 1024px) */
 @media (min-width: 768px) and (max-width: 1023px) {
   :root {
-    --font-size-h1: clamp(32px, 4vw, 40px);
-    --font-size-h2: clamp(16px, 2vw, 18px);
-    --font-size-body: clamp(14px, 1.5vw, 16px);
-    --font-size-ui: clamp(13px, 1.2vw, 15px);
+    --font-size-display: 40px;
+    --font-size-h1: 32px;
+    --font-size-h2: 24px;
+    --font-size-h3: 18px;
+    --font-size-body: 15px;
+    --font-size-ui: 15px;
     --header-padding-x: 24px;
     --header-nav-font-size: clamp(13px, 1.2vw, 15px);
     --header-nav-padding-y: 20px;
     --header-nav-padding-x: 12px;
     --header-logo-height: clamp(24px, 3vw, 28px);
+    --section-padding-desktop: 100px;
+    --card-padding: 28px;
   }
 }
 
 /* 모바일 (768px 이하) */
 @media (max-width: 767px) {
   :root {
-    --font-size-h1: clamp(24px, 6vw, 32px);
-    --font-size-h2: clamp(14px, 3vw, 16px);
-    --font-size-body: clamp(13px, 2vw, 15px);
-    --font-size-ui: clamp(12px, 1.8vw, 14px);
+    --font-size-display: 32px;
+    --font-size-h1: 28px;
+    --font-size-h1-mobile: 28px;
+    --font-size-h2: 22px;
+    --font-size-h2-mobile: 22px;
+    --font-size-h3: 18px;
+    --font-size-h3-mobile: 18px;
+    --font-size-body: 15px;
+    --font-size-body-mobile: 15px;
+    --font-size-ui: 14px;
     --header-padding-x: 16px;
     --header-nav-font-size: clamp(12px, 1.8vw, 14px);
     --header-nav-padding-y: 16px;
     --header-nav-padding-x: 8px;
     --header-logo-height: clamp(20px, 4vw, 24px);
+    --section-padding-desktop: 80px;
+    --card-padding: 24px;
   }
 }
 
@@ -152,6 +229,25 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* ============================================
+   NO BOLD RULE - 전역 폰트 굵기 강제 적용
+   모든 텍스트는 Regular(400)로 통일
+   크기 차이로만 위계를 표현
+   ============================================ */
+html, body, #root,
+h1, h2, h3, h4, h5, h6,
+p, span, div, a, button,
+input, textarea, select, label,
+li, td, th, dt, dd,
+strong, b, em, i {
+  font-weight: 400 !important;
+}
+
+/* Tailwind bold 클래스 무효화 */
+.font-bold, .font-semibold, .font-medium, .font-extrabold, .font-black {
+  font-weight: 400 !important;
 }
 
 /* HTML & Body - 완전 초기화 및 Full-width */
@@ -181,10 +277,10 @@ body {
   position: relative;
 }
 
-/* Selection */
+/* Selection - Primary Green으로 강조 */
 ::selection {
-  background: var(--lime);
-  color: var(--black);
+  background: var(--primary);
+  color: var(--white-pure);
 }
 
 /* React Root - 완전 초기화 */
@@ -352,8 +448,8 @@ body {
 
 @media (min-width: 1280px) {
   .page-container {
-    padding-left: 48px;
-    padding-right: 48px;
+    padding-left: 56px;
+    padding-right: 56px;
   }
 }
 
@@ -754,52 +850,74 @@ a:focus-visible {
 }
 
 /* ============================================
-   GRUNGE PUNCH UTILITY CLASSES
+   SLUNCH v2 UTILITY CLASSES - Flat & Clean
    ============================================ */
 
-/* Selection Style - 위에 이미 정의됨 */
-
-/* Hover Lift Effect */
+/* Hover Lift Effect - 부드러운 상승 */
 .hover-lift {
-  transition: transform 0.15s ease;
+  transition: transform 0.2s ease;
 }
 
 .hover-lift:hover {
   transform: translateY(-2px);
 }
 
-/* Hover Shadow Effect */
+/* Hover Border Effect - 실선 강조 (그림자 없음) */
+.hover-border {
+  transition: border-color 0.2s ease;
+}
+
+.hover-border:hover {
+  border-color: var(--primary) !important;
+  border-width: 2px;
+}
+
+/* Focus Primary State - Fresh Veggie Green */
+.focus-primary:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+/* Hover Primary Effect */
+.hover-primary:hover {
+  background: var(--primary) !important;
+  color: var(--white-pure) !important;
+}
+
+/* Hover Text Primary Effect */
+.hover-text-primary:hover {
+  color: var(--primary) !important;
+}
+
+/* Nav Hover Effect - 실선 언더라인 */
+.nav-hover:hover {
+  color: var(--primary) !important;
+}
+
+/* Legacy aliases for compatibility */
+.focus-lime:focus {
+  outline: none;
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px var(--primary-50);
+}
+
+.hover-lime:hover {
+  background: var(--primary) !important;
+  color: var(--white-pure) !important;
+}
+
+.hover-text-lime:hover {
+  color: var(--primary) !important;
+}
+
+/* Hover Shadow - 최소화된 그림자 (Flat 유지) */
 .hover-shadow {
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .hover-shadow:hover {
-  box-shadow: 8px 8px 0 #000000;
-  transform: translateY(-4px);
-}
-
-/* Focus Lime State */
-.focus-lime:focus {
-  outline: none;
-  border-color: #BFFF00 !important;
-  box-shadow: 4px 4px 0 #BFFF00;
-}
-
-/* Hover Lime Effect */
-.hover-lime:hover {
-  background: #BFFF00 !important;
-  color: #000000 !important;
-}
-
-/* Hover Text Lime Effect */
-.hover-text-lime:hover {
-  color: #BFFF00 !important;
-}
-
-/* Nav Hover Effect */
-.nav-hover:hover {
-  background: #000000 !important;
-  color: #BFFF00 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 /* 상단 메뉴바 호버 효과 */
@@ -822,21 +940,22 @@ a:focus-visible {
   /* font-weight 제거 - 레이아웃 시프트 방지 */
 }
 
-/* Scrollbar Styles (md guide compliant) */
+/* Scrollbar Styles - Slunch v2 */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #FAF9F6;
+  background: var(--cream);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6B6B6B;
+  background: var(--warm-gray);
+  border-radius: var(--border-radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #000000;
+  background: var(--deep-forest);
 }
 
 /* ================================================
@@ -892,7 +1011,7 @@ a:focus-visible {
 .recipe-card-content,
 .menu-card-content,
 .newsletter-card-content {
-  padding: 16px 0 0 0;
+  padding: 13px 0 0 0;
 }
 
 /* 5. 호버 - 공통 */
@@ -1014,6 +1133,12 @@ a:focus-visible {
   position: relative;
   display: block;
   width: 100%;
+}
+
+/* 레시피 섹션 내부 콘텐츠가 ::before 배경 위에 표시되도록 */
+.recipe-section > * {
+  position: relative;
+  z-index: 1;
 }
 
 /* 배경 확장 - 가상요소로 (다른 요소에 영향 없음) */
@@ -1162,8 +1287,8 @@ a:focus-visible {
 }
 
 .sl-quiz-option.selected {
-  border: 2px solid var(--black);
-  background: var(--lime);
+  border: 2px solid var(--deep-forest);
+  background: var(--primary-50);
   padding: 15px 19px;
 }
 
@@ -1226,8 +1351,8 @@ a:focus-visible {
 }
 
 .sl-quiz-btn-next:hover {
-  background: var(--lime);
-  color: var(--black);
+  background: var(--primary);
+  color: var(--white-pure);
 }
 
 .sl-quiz-btn-next:disabled {
@@ -1308,31 +1433,36 @@ a:focus-visible {
 .newsletter-categories {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 40px;
+  gap: 0;
+  margin-bottom: 60px;
 }
 
 .newsletter-category-btn {
-  padding: 10px 20px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  color: #6B6B6B;
+  padding: 10px 0;
+  margin-right: 32px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--black);
   background: transparent;
-  border: 1px solid #D4D4D4;
+  border: none;
   cursor: pointer;
   transition: all 0.15s ease;
+  text-decoration: none;
 }
 
 .newsletter-category-btn:hover {
-  border-color: #000000;
-  color: #000000;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 .newsletter-category-btn.active {
-  background: #000000;
-  border-color: #000000;
-  color: #FFFFFF;
+  background: transparent;
+  color: var(--black);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
 }
 
 /* 빈 상태 */
@@ -1344,8 +1474,8 @@ a:focus-visible {
 }
 
 .newsletter-title {
-  font-size: 32px;
-  font-weight: 800;
+  font-size: var(--font-size-h2);
+  font-weight: 400;
   margin-bottom: 8px;
 }
 
@@ -1359,6 +1489,8 @@ a:focus-visible {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 13px;
+  margin-bottom: 60px;
+  row-gap: 32px;
 }
 
 /* 4. 카드 스타일 */
@@ -1368,90 +1500,13 @@ a:focus-visible {
   transition: none;  /* 애니메이션 없이 즉시 */
 }
 
-/* 5. 호버 - 컬러 배경 + 패딩 */
-.newsletter-card:hover {
-  padding: 16px;
-  margin: -16px;
-  box-shadow: none;
-}
-
-/* 8가지 단색 컬러 */
-/* 그린 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+1):hover { 
-  background: #00B140; 
-}
-.newsletter-card:nth-child(8n+1):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+1):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+1):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
-
-/* 옐로우 - 텍스트 그대로 */
-.newsletter-card:nth-child(8n+2):hover { 
-  background: #FFEB00; 
-}
-
-/* 핑크 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+3):hover { 
-  background: #FF6AC1; 
-}
-.newsletter-card:nth-child(8n+3):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+3):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+3):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
-
-/* 퍼플 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+4):hover { 
-  background: #A78BFA; 
-}
-.newsletter-card:nth-child(8n+4):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+4):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+4):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
-
-/* 오렌지 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+5):hover { 
-  background: #FF5C00; 
-}
-.newsletter-card:nth-child(8n+5):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+5):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+5):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
-
-/* 시안 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+6):hover { 
-  background: #00D4FF; 
-}
-.newsletter-card:nth-child(8n+6):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+6):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+6):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
-
-/* 라임 - 텍스트 그대로 */
-.newsletter-card:nth-child(8n+7):hover { 
-  background: #BFFF00; 
-}
-
-/* 레드 - 텍스트 흰색 */
-.newsletter-card:nth-child(8n+8):hover { 
-  background: #FF4444; 
-}
-.newsletter-card:nth-child(8n+8):hover .newsletter-card-category,
-.newsletter-card:nth-child(8n+8):hover .newsletter-card-desc,
-.newsletter-card:nth-child(8n+8):hover .newsletter-card-meta {
-  color: #FFFFFF;
-}
 
 /* 7. 이미지 */
 .newsletter-card-img-wrapper {
   aspect-ratio: 1 / 1;
   background: #FFFFFF;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 13px;
 }
 
 .newsletter-card-img {
@@ -1471,8 +1526,9 @@ a:focus-visible {
 
 .newsletter-card-title {
   font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 6px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 8px;
   line-height: 1.4;
   color: #000000;
 }
@@ -1482,16 +1538,19 @@ a:focus-visible {
   text-underline-offset: 4px;
 }
 
+
 .newsletter-card-desc {
-  font-size: 13px;
+  font-size: 14px;
   color: #6B6B6B;
-  margin-bottom: 12px;
+  line-height: 1.6;
+  margin-bottom: 13px;
   line-height: 1.5;
 }
 
 .newsletter-card-meta {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
   font-size: 12px;
   color: #9A9A9A;
 }
@@ -1572,22 +1631,25 @@ a:focus-visible {
   }
 
   .newsletter-categories {
-    gap: 6px;
-    margin-bottom: 24px;
+    gap: 0;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
   }
 
   .newsletter-category-btn {
-    padding: 8px 14px;
-    font-size: 11px;
+    padding: 8px 0;
+    margin-right: 20px;
+    font-size: 13px;
   }
 
   .newsletter-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 13px;
+    row-gap: 32px;
   }
 
   .newsletter-title {
-    font-size: 24px;
+    font-size: var(--font-size-h2-mobile);
   }
 }
 
@@ -1659,20 +1721,24 @@ a:focus-visible {
   border: none;
   text-align: left;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 400;
   padding: 8px 0;
   cursor: pointer;
-  color: #000000;
+  color: var(--black);
+  text-decoration: none;
+  transition: all 0.15s ease;
 }
 
 .about-nav-item:hover {
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
 
 .about-nav-item.active {
-  font-weight: 700;
+  font-weight: 400;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 4px;
 }
 
@@ -1680,7 +1746,7 @@ a:focus-visible {
 .about-content {
   margin-left: 50%;
   padding: 64px;
-  border-left: 1px solid #E5E5E5;
+  border-left: 1px solid #000000;
   min-height: calc(100vh - 100px);
 }
 
@@ -1751,8 +1817,8 @@ a:focus-visible {
 }
 
 .about-link-btn:hover {
-  background: var(--lime);
-  color: var(--black);
+  background: var(--primary);
+  color: var(--white-pure);
 }
 
 /* 특허/기술 뱃지 */
@@ -1864,29 +1930,24 @@ a:focus-visible {
   }
 }
 
-/* 좌측 필터 - 고정 (데스크톱만) */
+/* 좌측 필터 - 고정 (데스크톱만) - 이제 사용하지 않음, 인라인 스타일로 처리 */
 @media (min-width: 769px) {
   .store-filter,
   .filter-sidebar {
-    position: fixed !important;
-    top: 100px !important;
-    left: 0 !important;
-    width: 280px !important;
-    height: calc(100vh - 100px) !important;
-    padding: 24px 32px !important;
-    overflow-y: hidden !important;
-    background: #fff !important;
-    z-index: 50 !important;
-    display: block !important;
-    visibility: visible !important;
+    /* 인라인 스타일로 처리하므로 CSS는 비활성화 */
   }
 }
 
-/* 우측 콘텐츠 - 좌측만큼 밀림 */
+/* 우측 콘텐츠 - 데스크톱에서 flex 레이아웃 사용 */
 .store-content {
-  margin-left: 280px !important;
   padding: 32px !important;
-  min-height: calc(100vh - 100px) !important;
+  min-height: calc(100vh - var(--header-h)) !important;
+}
+
+@media (max-width: 768px) {
+  .store-content {
+    margin-left: 0 !important;
+  }
 }
 
 /* 필터 그룹 타이틀 */
@@ -1933,19 +1994,19 @@ a:focus-visible {
 }
 
 .filter-radio:hover .filter-radio-circle {
-  border: 2px solid #000000;
+  border: 2px solid var(--deep-forest);
 }
 
 .filter-radio.selected .filter-radio-circle {
-  border: 2px solid #000000;
-  background: #BFFF00;
+  border: 2px solid var(--deep-forest);
+  background: var(--primary);
 }
 
 .filter-radio.selected .filter-radio-circle::after {
   content: '';
   width: 6px;
   height: 6px;
-  background: #000000;
+  background: var(--white-pure);
   border-radius: 50%;
 }
 
@@ -1976,19 +2037,19 @@ a:focus-visible {
 }
 
 .filter-checkbox:hover .filter-checkbox-box {
-  border: 2px solid #000000;
+  border: 2px solid var(--deep-forest);
 }
 
 .filter-checkbox.selected .filter-checkbox-box {
-  border: 2px solid #000000;
-  background: #BFFF00;
+  border: 2px solid var(--deep-forest);
+  background: var(--primary);
 }
 
 .filter-checkbox.selected .filter-checkbox-box::after {
   content: '✓';
   font-size: 10px;
   font-weight: 700;
-  color: #000000;
+  color: var(--white-pure);
 }
 
 /* ================================================
@@ -2045,10 +2106,10 @@ a:focus-visible {
   }
   
   .filter-count {
-    background: #BFFF00;
-    color: #0D0D0D;
+    background: var(--primary);
+    color: var(--white-pure);
     padding: 2px 8px;
-    border-radius: 10px;
+    border-radius: var(--border-radius-full);
     font-size: 12px;
     font-weight: 700;
     min-width: 20px;
@@ -2403,5 +2464,216 @@ a:focus-visible {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  
+  /* 뱃지 스크롤바 */
+  .badge-scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .badge-scroll-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* ============================================
+   Badge Scrollbar Hide (Desktop)
+   ============================================ */
+.badge-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+.badge-scroll-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* ============================================
+   SLUNCH v2 - OPEN BORDER GRID UTILITIES
+   실선과 여백이 만드는 시원한 개방감
+   ============================================ */
+
+/* 섹션 구분선 - 1px solid Deep Forest */
+.border-section {
+  border: 1px solid var(--deep-forest);
+}
+
+.border-section-top {
+  border-top: 1px solid var(--deep-forest);
+}
+
+.border-section-bottom {
+  border-bottom: 1px solid var(--deep-forest);
+}
+
+.border-section-left {
+  border-left: 1px solid var(--deep-forest);
+}
+
+.border-section-right {
+  border-right: 1px solid var(--deep-forest);
+}
+
+/* 연한 구분선 (카드 내부용) */
+.border-light {
+  border: 1px solid var(--border-color-light);
+}
+
+.border-light-top {
+  border-top: 1px solid var(--border-color-light);
+}
+
+.border-light-bottom {
+  border-bottom: 1px solid var(--border-color-light);
+}
+
+/* Flat Card - 그림자 없이 실선 테두리 */
+.card-flat {
+  background: var(--cream);
+  border: 1px solid var(--deep-forest);
+  border-radius: var(--border-radius-lg);
+  padding: var(--card-padding);
+  transition: border-width 0.2s ease;
+}
+
+.card-flat:hover {
+  border-width: 2px;
+  border-color: var(--primary);
+}
+
+/* 섹션 여백 - 시원하게 넓은 여백 */
+.section-spacious {
+  padding-top: var(--section-padding-desktop);
+  padding-bottom: var(--section-padding-desktop);
+}
+
+@media (max-width: 768px) {
+  .section-spacious {
+    padding-top: var(--section-padding-mobile);
+    padding-bottom: var(--section-padding-mobile);
+  }
+}
+
+/* 카드 내부 넉넉한 패딩 */
+.padding-spacious {
+  padding: var(--card-padding);
+}
+
+/* 배경색 유틸리티 */
+.bg-cream {
+  background-color: var(--cream);
+}
+
+.bg-eggshell {
+  background-color: var(--eggshell);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary-50 {
+  background-color: var(--primary-50);
+}
+
+/* 텍스트 색상 유틸리티 */
+.text-deep-forest {
+  color: var(--deep-forest);
+}
+
+.text-charcoal {
+  color: var(--charcoal);
+}
+
+.text-warm-gray {
+  color: var(--warm-gray);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+/* 버튼 스타일 - Flat & Clean */
+.btn-primary {
+  background: var(--primary);
+  color: var(--white-pure);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 14px 24px;
+  font-weight: var(--font-weight-semibold);
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--deep-forest);
+  border: 1px solid var(--deep-forest);
+  border-radius: var(--border-radius);
+  padding: 14px 24px;
+  font-weight: var(--font-weight-semibold);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--deep-forest);
+  color: var(--white-pure);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--warm-gray);
+  border: none;
+  padding: 14px 24px;
+  font-weight: var(--font-weight-ui);
+  transition: color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  color: var(--primary);
+}
+
+/* 뱃지 스타일 */
+.badge-new {
+  background: var(--corn-yellow);
+  color: var(--deep-forest);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+}
+
+.badge-best {
+  background: var(--primary);
+  color: var(--white-pure);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+}
+
+.badge-soldout {
+  background: var(--muted);
+  color: var(--white-pure);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
+}
+
+.badge-limited {
+  background: var(--tomato-red);
+  color: var(--white-pure);
+  padding: 4px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-semibold);
 }
 
