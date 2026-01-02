@@ -1,21 +1,28 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 
+// 배지 카테고리 정의
+export type BadgeCategory = 'spirit' | 'activity' | 'grade' | 'hidden';
+
 // 배지 타입 정의
-export type BadgeType = 
-  // 스피릿 배지 (8개)
+export type BadgeType =
+  // 스피릿 배지 (16개)
   | 'spirit-bloomist' | 'spirit-mindgrower' | 'spirit-quietroot' | 'spirit-lightgiver'
   | 'spirit-forger' | 'spirit-groundtype' | 'spirit-planter' | 'spirit-strategreen'
   | 'spirit-floret' | 'spirit-joybean' | 'spirit-careleaf' | 'spirit-nurturer'
   | 'spirit-thinkroot' | 'spirit-sparknut' | 'spirit-craftbean' | 'spirit-wildgrain'
   // 활동 배지 (4개)
-  | 'first-recipe' | 'comment-master' | 'recipe-lover' | 'community-star';
+  | 'first-recipe' | 'comment-master' | 'recipe-lover' | 'community-star'
+  // 등급 배지 (5개)
+  | 'grade-seed' | 'grade-sprout' | 'grade-stem' | 'grade-leaf' | 'grade-fruit'
+  // 히든 배지 (5개)
+  | 'hidden-secret-chef' | 'hidden-night-owl' | 'hidden-early-bird' | 'hidden-perfectionist' | 'hidden-explorer';
 
 export interface Badge {
   id: BadgeType;
   name: string;
   description: string;
   icon: string;
-  category: 'spirit' | 'activity';
+  category: BadgeCategory;
   earnedAt?: string;
 }
 
@@ -81,6 +88,18 @@ const ALL_BADGES: Record<BadgeType, Omit<Badge, 'earnedAt'>> = {
   'comment-master': { id: 'comment-master', name: '댓글 마스터', description: '댓글을 5개 이상 작성했습니다', icon: '💬', category: 'activity' },
   'recipe-lover': { id: 'recipe-lover', name: '레시피 러버', description: '레시피를 10개 이상 좋아요했습니다', icon: '❤️', category: 'activity' },
   'community-star': { id: 'community-star', name: '커뮤니티 스타', description: '커뮤니티에 활발히 참여했습니다', icon: '⭐', category: 'activity' },
+  // 등급 배지
+  'grade-seed': { id: 'grade-seed', name: 'Seed 등급', description: '회원가입 완료', icon: '🌰', category: 'grade' },
+  'grade-sprout': { id: 'grade-sprout', name: 'Sprout 등급', description: '첫 주문 완료', icon: '🌱', category: 'grade' },
+  'grade-stem': { id: 'grade-stem', name: 'Stem 등급', description: '누적 5만원 이상 구매', icon: '🌿', category: 'grade' },
+  'grade-leaf': { id: 'grade-leaf', name: 'Leaf 등급', description: '누적 10만원 이상 구매', icon: '🍃', category: 'grade' },
+  'grade-fruit': { id: 'grade-fruit', name: 'Fruit 등급', description: '누적 20만원 이상 구매', icon: '🍎', category: 'grade' },
+  // 히든 배지
+  'hidden-secret-chef': { id: 'hidden-secret-chef', name: '시크릿 셰프', description: '?', icon: '👨‍🍳', category: 'hidden' },
+  'hidden-night-owl': { id: 'hidden-night-owl', name: '올빼미 셰프', description: '?', icon: '🦉', category: 'hidden' },
+  'hidden-early-bird': { id: 'hidden-early-bird', name: '얼리버드', description: '?', icon: '🐦', category: 'hidden' },
+  'hidden-perfectionist': { id: 'hidden-perfectionist', name: '완벽주의자', description: '?', icon: '💎', category: 'hidden' },
+  'hidden-explorer': { id: 'hidden-explorer', name: '탐험가', description: '?', icon: '🧭', category: 'hidden' },
 };
 
 // 스피릿 이름을 배지 ID로 변환
