@@ -15,6 +15,7 @@ import RecipeDetailPage from './pages/RecipeDetailPage';
 import RecipeCategoryPage from './pages/RecipeCategoryPage';
 import ProfilePage from './pages/ProfilePage';
 import EventPage from './pages/EventPage';
+import { SubscriptionPage } from './pages/SubscriptionPage';
 import { ProductDetailPage } from './pages/ProductDetailPage';
 import OrdersPage from './pages/mypage/OrdersPage';
 import BookmarksPage from './pages/mypage/BookmarksPage';
@@ -200,6 +201,7 @@ const AppContent: React.FC = () => {
         />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/event" element={<EventPage />} />
+        <Route path="/subscription" element={<SubscriptionPage />} />
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
         <Route path="/mypage" element={<ProfilePage />} />
         <Route path="/mypage/orders" element={<OrdersPage />} />

@@ -3,6 +3,7 @@ import { ChevronUp, Calendar, FileText, Sparkles, Share2, Download, UserCircle, 
 import { useNavigate } from 'react-router-dom';
 import { VegetableItem } from '../types';
 import { useUser } from '../contexts/UserContext';
+import { DietGridSelect } from './DietGridSelect';
 
 interface SurveyPageProps {
   selectedItems: VegetableItem[];
@@ -623,6 +624,17 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
 
       return { ...prev, [1]: newSelections };
     });
+  };
+
+  // DietCardSwipe 완료 핸들러
+  const handleDietCardComplete = (result: { primaryDiet: string | null; additionalRestrictions: string[] }) => {
+    const dietSelections = [
+      result.primaryDiet,
+      ...result.additionalRestrictions
+    ].filter(Boolean) as string[];
+
+    setAnswers(prev => ({ ...prev, [1]: dietSelections }));
+    setCurrentStep(prev => prev + 1);
   };
 
   // 식단 선택 여부 확인 헬퍼
@@ -1611,152 +1623,79 @@ ${result.description}
     <div className="min-h-screen bg-transparent">
       
       {/* 위로 가기 버튼 (스크롤을 내렸을 때만 표시) */}
-      {showScrollToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
-          style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
-          aria-label="상단으로 이동"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </button>
-      )}
-
-      <div className="flex items-center justify-center min-h-screen p-8">
-        <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
-          {/* 질문 */}
-          <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
-            {currentQuestion.question}
-          </h2>
-          
-          {/* 옵션들 */}
-          <div className="mb-8">
-            {currentQuestion.hasDietCategories ? (
-              // 카테고리가 있는 식단 질문
-              <div className="space-y-4">
-                {DIET_CATEGORIES.map((category, categoryIndex) => {
-                  const isAdditionalCategory = category.category === '건강/알레르기 관련' || category.category === '종교/문화적 식단';
-                  
-                  return (
-                    <div key={category.category}>
-                      {/* 추가 옵션 카테고리 안내 */}
-                      {isAdditionalCategory && categoryIndex === 2 && (
-                        <div className="text-xs text-stone-400 mb-2 pl-1">
-                          ✓ 위 식단과 함께 선택 가능
-                        </div>
-                      )}
-                      
-                      {/* 카테고리 옵션들 */}
-                      <div className="space-y-2">
-                        {category.options.map((option) => {
-                          const isSelected = isDietSelected(option.value);
-                          const isAdditional = ADDITIONAL_DIET_VALUES.includes(option.value);
-                          
-                          return (
-                            <button
-                              key={option.value}
-                              onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-                              className={`w-full p-4 rounded-none border-2 text-left transition-all ${
-                                isSelected
-                                  ? 'border-black'
-                                  : 'border-stone-200 hover:border-stone-300'
-                              }`}
-                              style={isSelected ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
-                            >
-                              <div className="flex items-center gap-3">
-                                {/* 체크박스/라디오 인디케이터 */}
-                                <div className={`flex-shrink-0 w-5 h-5 ${isAdditional ? 'rounded-md' : 'rounded-full'} border-2 flex items-center justify-center ${
-                                  isSelected ? 'border-black' : 'border-stone-300'
-                                }`}
-                                style={isSelected ? { backgroundColor: '#000000' } : {}}
-                                >
-                                  {isSelected && (
-                                    <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
-                                  )}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="font-normal text-stone-800">{option.label}</div>
-                                  <div className="text-sm text-stone-500">{option.description}</div>
-                                </div>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                      
-                      {/* 카테고리 구분선 (마지막 카테고리 제외) */}
-                      {categoryIndex < DIET_CATEGORIES.length - 1 && (
-                        <div className="border-t border-stone-300 my-4"></div>
-                      )}
-                    </div>
-                  );
-                })}
-                
-                {/* 상충 경고 메시지 */}
-                {dietConflictWarning && (
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-none text-sm text-amber-700">
-                    {dietConflictWarning}
-                  </div>
-                )}
-              </div>
-            ) : (
-              // 일반 질문
-              <div className="space-y-3">
-                {currentQuestion.options.map((option) => (
-                  <button
-                    key={option.value}
-                    onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-                    className={`w-full p-4 rounded-none border-2 text-left transition-all ${
-                      answers[currentQuestion.id] === option.value
-                        ? 'border-black'
-                        : 'border-stone-200 hover:border-stone-300'
-                    }`}
-                    style={answers[currentQuestion.id] === option.value ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
-                  >
-                    <div className="font-semibold text-stone-800">{option.label}</div>
-                    <div className="text-sm text-stone-500">{option.description}</div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          
-          {/* 네비게이션 버튼 */}
-          <div className="flex gap-4">
-            {currentStep === 0 ? (
-              // 첫 질문에서는 "처음으로" 버튼
-              <button
-                onClick={scrollToTop}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
-              >
-                처음으로
-              </button>
-            ) : (
-              // 그 외에는 "이전" 버튼
-              <button
-                onClick={handleBack}
-                className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
-              >
-                이전
-              </button>
-            )}
+      {/* 첫 번째 질문(식단)일 때는 DietGridSelect 사용 */}
+      {currentQuestion.hasDietCategories ? (
+        <DietGridSelect
+          onComplete={handleDietCardComplete}
+          onBack={scrollToTop}
+        />
+      ) : (
+        <>
+          {showScrollToTop && (
             <button
-              onClick={handleNext}
-              disabled={currentQuestion.hasDietCategories ? !hasPrimaryDiet() : !answers[currentQuestion.id]}
-              className={`flex-1 py-3 rounded-none font-normal transition-colors ${
-                (currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id])
-                  ? 'text-white hover:opacity-90'
-                  : 'bg-stone-200 text-stone-400 cursor-not-allowed'
-              }`}
-              style={(currentQuestion.hasDietCategories ? hasPrimaryDiet() : answers[currentQuestion.id]) ? { backgroundColor: '#000000', borderRadius: 0 } : { borderRadius: 0 }}
+              onClick={scrollToTop}
+              className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
+              style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
+              aria-label="상단으로 이동"
             >
-              {currentStep < availableQuestions.length - 1 ? '다음' : '결과 보기'}
+              <ChevronUp className="w-5 h-5" />
             </button>
+          )}
+
+          <div className="flex items-center justify-center min-h-screen p-8">
+            <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
+              {/* 질문 */}
+              <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                {currentQuestion.question}
+              </h2>
+
+              {/* 옵션들 */}
+              <div className="mb-8">
+                {/* 일반 질문 */}
+                <div className="space-y-3">
+                  {currentQuestion.options.map((option) => (
+                    <button
+                      key={option.value}
+                      onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
+                      className={`w-full p-4 rounded-none border-2 text-left transition-all ${
+                        answers[currentQuestion.id] === option.value
+                          ? 'border-black'
+                          : 'border-stone-200 hover:border-stone-300'
+                      }`}
+                      style={answers[currentQuestion.id] === option.value ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
+                    >
+                      <div className="font-semibold text-stone-800">{option.label}</div>
+                      <div className="text-sm text-stone-500">{option.description}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 네비게이션 버튼 */}
+              <div className="flex gap-4">
+                <button
+                  onClick={handleBack}
+                  className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
+                >
+                  이전
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={!answers[currentQuestion.id]}
+                  className={`flex-1 py-3 rounded-none font-normal transition-colors ${
+                    answers[currentQuestion.id]
+                      ? 'text-white hover:opacity-90'
+                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
+                  }`}
+                  style={answers[currentQuestion.id] ? { backgroundColor: '#000000', borderRadius: 0 } : { borderRadius: 0 }}
+                >
+                  {currentStep < availableQuestions.length - 1 ? '다음' : '결과 보기'}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
