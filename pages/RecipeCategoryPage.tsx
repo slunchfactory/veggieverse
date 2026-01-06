@@ -216,7 +216,7 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
           @{recipe.author || 'slunch'}
         </span>
 
-        {/* 북마크 수 (완전한 타원) - 우측 하단 정렬 */}
+        {/* 북마크 수 (타원형) - 우측 하단 정렬 */}
         <div style={{
           marginTop: 'auto',
           display: 'flex',
@@ -227,12 +227,11 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              minWidth: '42px',
-              height: '20px',
-              padding: '0 10px',
-              borderRadius: '10px',
-              fontSize: '11px',
-              fontWeight: 500,
+              width: '52px',
+              height: '24px',
+              borderRadius: '50%',
+              fontSize: '12px',
+              fontWeight: 400,
               border: isBookmarkHovered ? 'none' : '1px solid #000',
               background: isBookmarkHovered ? '#000' : 'transparent',
               color: isBookmarkHovered ? '#fff' : '#000',
@@ -401,64 +400,28 @@ const RecipeCategoryPage: React.FC = () => {
             paddingBottom: '80px',
           }}
         >
-          {/* 페이지 헤더 */}
-          <div style={{ padding: '32px 0 24px' }}>
-            <h1 style={{
-              fontSize: '28px',
-              fontWeight: 400,
-              color: '#000',
-              marginBottom: '8px',
-            }}>
-              {category.title}
-            </h1>
-            <p style={{
-              fontSize: '14px',
-              color: '#666',
-            }}>
-              {category.description}
-            </p>
-          </div>
-
-          {/* 탭 필터 */}
-          <div style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: '8px',
-            paddingBottom: '16px',
-            borderBottom: '1px solid #eee',
-          }}>
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                style={{
-                  padding: '8px 16px',
-                  border: '1px solid #000',
-                  background: activeTab === tab.id ? '#000' : '#fff',
-                  color: activeTab === tab.id ? '#fff' : '#000',
-                  fontSize: '13px',
-                  fontWeight: 400,
-                  cursor: 'pointer',
-                  borderRadius: '20px',
-                  transition: 'all 0.15s ease',
-                }}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* 검색 + 결과 수 */}
+          {/* 상단 헤더: 제목 + 검색 + 갯수 */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: '20px 0',
+            alignItems: 'flex-start',
+            padding: '32px 0 20px',
+            gap: '24px',
           }}>
-            <span style={{ fontSize: '14px', color: '#666' }}>
-              {filteredRecipes.length}개의 레시피
-            </span>
-            <div style={{ position: 'relative', width: '200px' }}>
+            <div style={{ flex: 1 }}>
+              <h1 style={{
+                fontSize: '28px',
+                fontWeight: 400,
+                color: '#000',
+                marginBottom: '4px',
+              }}>
+                {category.title}
+              </h1>
+              <span style={{ fontSize: '14px', color: '#666' }}>
+                {filteredRecipes.length}개의 레시피
+              </span>
+            </div>
+            <div style={{ position: 'relative', width: '200px', flexShrink: 0 }}>
               <input
                 type="text"
                 placeholder="검색"
@@ -487,11 +450,36 @@ const RecipeCategoryPage: React.FC = () => {
             </div>
           </div>
 
+          {/* 탭 필터 */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            paddingBottom: '20px',
+          }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  padding: '8px 16px',
+                  border: '1px solid #000',
+                  background: activeTab === tab.id ? '#000' : '#fff',
+                  color: activeTab === tab.id ? '#fff' : '#000',
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  cursor: 'pointer',
+                  borderRadius: '20px',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           {/* 썸네일 그리드 - 4열 */}
-          <div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-            style={{ paddingTop: '8px' }}
-          >
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {displayedRecipes.map((recipe) => (
               <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
