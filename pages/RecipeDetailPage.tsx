@@ -391,8 +391,9 @@ const RecipeDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 메인 콘텐츠 */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 lg:py-12">
+      {/* 메인 콘텐츠 - Outer: 1280px, Inner: 800px centered */}
+      <div className="max-w-[1280px] mx-auto px-5" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+        <div className="max-w-[800px] mx-auto">
 
         {/* 알레르기 정보 */}
         {recipe.allergens && recipe.allergens.length > 0 && (
@@ -404,8 +405,8 @@ const RecipeDetailPage: React.FC = () => {
         )}
 
         {/* 재료 및 영양 정보 (나란히 배치) */}
-        <section className="mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <section style={{ marginBottom: '60px' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '13px' }}>
             {/* 재료 섹션 - 띠지 스타일 */}
             <div className="bg-stone-50 border border-stone-200 rounded-none p-6">
               <div className="mb-4">
@@ -487,13 +488,13 @@ const RecipeDetailPage: React.FC = () => {
             marginLeft: '-50vw',
             width: '100vw',
             borderTop: '1px solid black',
-            marginTop: '32px',
-            marginBottom: '32px',
+            marginTop: '60px',
+            marginBottom: '60px',
           }}
         />
 
         {/* 조리 순서 */}
-        <section className="mb-8">
+        <section style={{ marginBottom: '60px' }}>
           <div className="mb-8">
             <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>조리 순서</h2>
           </div>
@@ -579,12 +580,12 @@ const RecipeDetailPage: React.FC = () => {
             marginLeft: '-50vw',
             width: '100vw',
             borderTop: '1px solid black',
-            marginTop: '64px',
+            marginTop: '60px',
           }}
         />
 
         {/* 댓글 섹션 */}
-        <div ref={commentSectionRef} className="pt-8">
+        <div ref={commentSectionRef} style={{ paddingTop: '60px' }}>
           <CommentSection 
             recipeId={id || '1'} 
             photoReviews={photoReviews}
@@ -600,12 +601,12 @@ const RecipeDetailPage: React.FC = () => {
             marginLeft: '-50vw',
             width: '100vw',
             borderTop: '1px solid black',
-            marginTop: '32px',
+            marginTop: '60px',
           }}
         />
 
         {/* 요리 리뷰 남기기 버튼 (리뷰 섹션 아래) */}
-        <div className="pt-8">
+        <div style={{ paddingTop: '60px' }}>
           <div className="text-center mb-6">
             <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>요리 리뷰 남기기</h2>
             <p className="text-sm text-stone-500 mb-6">이 레시피를 만들어보셨나요? 사진과 함께 후기를 남겨주세요!</p>
@@ -629,14 +630,14 @@ const RecipeDetailPage: React.FC = () => {
               marginLeft: '-50vw',
               width: '100vw',
               borderTop: '1px solid black',
-              marginTop: '48px',
+              marginTop: '60px',
             }}
           />
         )}
 
         {/* 관련 레시피 */}
         {recipe.relatedRecipes && recipe.relatedRecipes.length > 0 && (
-          <section className="pt-8">
+          <section style={{ paddingTop: '60px' }}>
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>비슷한 재료로 만드는 레시피</h2>
               <Link to="/recipe" className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 transition-colors">
@@ -675,8 +676,9 @@ const RecipeDetailPage: React.FC = () => {
           </section>
         )}
 
+        </div>{/* End of max-w-[800px] inner wrapper */}
       </div>
-      
+
       {/* 포토 리뷰 모달 */}
       <PhotoReviewModal
         isOpen={showPhotoReviewModal}

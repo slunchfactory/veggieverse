@@ -376,7 +376,7 @@ const BentoCard: React.FC<{
   );
 };
 
-// Article Detail Modal
+// Article Detail Modal - Split Layout (Magazine Style)
 const ArticleDetail: React.FC<{
   article: Article;
   onClose: () => void;
@@ -395,357 +395,323 @@ const ArticleDetail: React.FC<{
         background: 'var(--cream)',
       }}
     >
-      {/* 커버 이미지 영역 */}
-      <div
+      {/* 닫기 버튼 - Fixed */}
+      <button
+        onClick={onClose}
         style={{
-          position: 'relative',
-          width: '100%',
-          height: '60vh',
-          minHeight: '400px',
+          position: 'fixed',
+          top: '24px',
+          right: '24px',
+          width: '40px',
+          height: '40px',
+          background: 'var(--cream)',
+          border: '1px solid #000',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 110,
         }}
       >
-        <img
-          src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
-          alt={`${article.title} - 커버 이미지`}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
-          loading="eager"
-          onError={(e) => {
-            (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
-          }}
-        />
+        <X size={20} color="#000" />
+      </button>
 
-        {/* 그라데이션 오버레이 */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.2), rgba(0,0,0,0.6))',
-          }}
-        />
+      {/* 1280px Container with Split Layout */}
+      <div className="max-w-[1280px] mx-auto px-5 py-[60px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-[60px]">
 
-        {/* 닫기 버튼 */}
-        <button
-          onClick={onClose}
-          style={{
-            position: 'absolute',
-            top: '24px',
-            right: '24px',
-            width: '40px',
-            height: '40px',
-            background: 'transparent',
-            border: '1px solid #fff',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10,
-          }}
-        >
-          <X size={20} color="#fff" />
-        </button>
+          {/* LEFT: Sticky Cover */}
+          <aside className="lg:sticky lg:top-[100px] h-fit">
+            {/* 커버 이미지 */}
+            <div
+              style={{
+                width: '100%',
+                aspectRatio: '3/4',
+                background: '#E5E5E0',
+                overflow: 'hidden',
+                marginBottom: '20px',
+              }}
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
+                alt={`${article.title} - 커버 이미지`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+                loading="eager"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
+                }}
+              />
+            </div>
 
-        {/* 카테고리 라벨 */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '80px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '100%',
-            maxWidth: '680px',
-            padding: '0 24px',
-            zIndex: 10,
-          }}
-        >
-          <p
-            style={{
-              fontSize: '11px',
-              color: 'rgba(255,255,255,0.9)',
-              letterSpacing: '0.1em',
-              fontWeight: 400,
-            }}
-          >
-            {article.category}
-          </p>
-        </div>
+            {/* 카테고리 */}
+            <p
+              style={{
+                fontSize: '11px',
+                color: '#6B6B6B',
+                letterSpacing: '0.1em',
+                fontWeight: 400,
+                marginBottom: '13px',
+                textTransform: 'uppercase',
+              }}
+            >
+              {article.category}
+            </p>
 
-        {/* 제목 영역 */}
-        <div
-          style={{
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 10,
-          }}
-        >
-          <div
-            style={{
-              maxWidth: '680px',
-              margin: '0 auto',
-              padding: '0 24px 32px',
-            }}
-          >
+            {/* 제목 */}
             <h1
               style={{
                 fontSize: '28px',
                 fontWeight: 400,
-                color: '#fff',
+                color: '#000',
                 lineHeight: 1.3,
-                marginBottom: '12px',
+                marginBottom: '13px',
               }}
             >
               {article.title}
             </h1>
+
+            {/* 부제목 */}
             <p
               style={{
-                fontSize: '16px',
+                fontSize: '15px',
                 fontWeight: 400,
-                color: 'rgba(255,255,255,0.9)',
-                marginBottom: '24px',
+                color: '#6B6B6B',
+                marginBottom: '20px',
+                lineHeight: 1.5,
               }}
             >
               {article.subtitle}
             </p>
+
+            {/* 날짜 & 작성자 */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '16px',
-                fontSize: '14px',
-                color: 'rgba(255,255,255,0.8)',
+                gap: '8px',
+                fontSize: '13px',
+                color: '#9A9A9A',
               }}
             >
               <span>{article.author}</span>
               <span>·</span>
               <span>{article.date}</span>
             </div>
-          </div>
-        </div>
-      </div>
+          </aside>
 
-      {/* 본문 영역 */}
-      <div
-        style={{
-          maxWidth: '680px',
-          margin: '0 auto',
-          padding: '48px 24px',
-        }}
-      >
-        {/* 인용구 */}
-        {article.quote && (
-          <div
-            style={{
-              borderTop: '1px solid #000000',
-              borderBottom: '1px solid #000000',
-              padding: '32px 0',
-              marginBottom: '48px',
-            }}
-          >
-            <p
-              style={{
-                textAlign: 'center',
-                fontSize: '14px',
-                fontWeight: 400,
-                color: '#6B6B6B',
-                lineHeight: 1.8,
-                whiteSpace: 'pre-line',
-              }}
-            >
-              {article.quote}
-            </p>
-          </div>
-        )}
-
-        {/* 본문 */}
-        <article>
-          {article.contentBeforeImages}
-
-          {/* 큰 이미지 */}
-          {article.images?.large && (
-            <div style={{ margin: '48px 0' }}>
+          {/* RIGHT: Scrollable Body */}
+          <main style={{ fontSize: '15px', lineHeight: 1.7, color: '#1a1a1a' }}>
+            {/* 인용구 */}
+            {article.quote && (
               <div
                 style={{
-                  width: '100%',
-                  aspectRatio: '4/3',
-                  background: '#E0E0E0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  borderTop: '1px solid #000000',
+                  borderBottom: '1px solid #000000',
+                  padding: '32px 0',
+                  marginBottom: '60px',
                 }}
               >
-                <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 1</span>
-              </div>
-            </div>
-          )}
-
-          {article.contentAfterImages}
-
-          {/* 작은 이미지 2개 */}
-          {article.images?.small && article.images.small.length > 0 && (
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: '0',
-                margin: '48px 0',
-              }}
-            >
-              {article.images.small.slice(0, 2).map((_, idx) => (
-                <div
-                  key={idx}
-                  style={{
-                    aspectRatio: '1/1',
-                    background: '#E0E0E0',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: idx === 0 ? 'none' : '1px solid #000',
-                    borderTop: 'none',
-                    borderBottom: 'none',
-                    borderRight: 'none',
-                  }}
-                >
-                  <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 {idx + 2}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {article.contentAfterSmallImages}
-        </article>
-
-        {/* 작성자 정보 */}
-        <div
-          style={{
-            borderTop: '1px solid #000000',
-            marginTop: '48px',
-            paddingTop: '24px',
-          }}
-        >
-          <p
-            style={{
-              fontSize: '14px',
-              fontWeight: 400,
-              color: '#000000',
-              marginBottom: '16px',
-            }}
-          >
-            About Author
-          </p>
-          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-            {AUTHOR_AVATAR[article.author] && (
-              <img
-                src={AUTHOR_AVATAR[article.author]}
-                alt={article.author}
-                style={{
-                  width: '64px',
-                  height: '64px',
-                  objectFit: 'cover',
-                  border: '1px solid #000000',
-                }}
-              />
-            )}
-            <div>
-              <p
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  color: '#000000',
-                  marginBottom: '8px',
-                  textDecoration: 'underline',
-                }}
-              >
-                {article.author}
-              </p>
-              {AUTHOR_BIO[article.author] && (
                 <p
                   style={{
-                    fontSize: '13px',
+                    textAlign: 'center',
+                    fontSize: '14px',
                     fontWeight: 400,
                     color: '#6B6B6B',
-                    lineHeight: 1.6,
+                    lineHeight: 1.8,
                     whiteSpace: 'pre-line',
                   }}
                 >
-                  {AUTHOR_BIO[article.author]}
+                  {article.quote}
                 </p>
+              </div>
+            )}
+
+            {/* 본문 */}
+            <article>
+              {article.contentBeforeImages}
+
+              {/* 큰 이미지 */}
+              {article.images?.large && (
+                <div style={{ margin: '60px 0' }}>
+                  <div
+                    style={{
+                      width: '100%',
+                      aspectRatio: '4/3',
+                      background: '#E0E0E0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 1</span>
+                  </div>
+                </div>
+              )}
+
+              {article.contentAfterImages}
+
+              {/* 작은 이미지 2개 */}
+              {article.images?.small && article.images.small.length > 0 && (
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '13px',
+                    margin: '60px 0',
+                  }}
+                >
+                  {article.images.small.slice(0, 2).map((_, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        aspectRatio: '1/1',
+                        background: '#E0E0E0',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 {idx + 2}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {article.contentAfterSmallImages}
+            </article>
+
+            {/* 작성자 정보 */}
+            <div
+              style={{
+                borderTop: '1px solid #000000',
+                marginTop: '60px',
+                paddingTop: '20px',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '13px' }}>
+                {AUTHOR_AVATAR[article.author] && (
+                  <div
+                    style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      background: '#E5E5E0',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <img
+                      src={AUTHOR_AVATAR[article.author]}
+                      alt={article.author}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </div>
+                )}
+                <div>
+                  <p
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      color: '#000000',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    {article.author}
+                  </p>
+                  {AUTHOR_BIO[article.author] && (
+                    <p
+                      style={{
+                        fontSize: '13px',
+                        fontWeight: 400,
+                        color: '#6B6B6B',
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      {AUTHOR_BIO[article.author].split('\n')[0]}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* 네비게이션 */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: '60px',
+                paddingTop: '20px',
+                borderTop: '1px solid #000000',
+              }}
+            >
+              {hasPrev ? (
+                <button
+                  onClick={onPrev}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 0',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    color: '#000000',
+                  }}
+                >
+                  <ChevronLeft size={16} />
+                  <span>이전글</span>
+                </button>
+              ) : (
+                <div />
+              )}
+
+              <button
+                onClick={onClose}
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  border: '1px solid #000000',
+                  cursor: 'pointer',
+                  fontSize: '14px',
+                  color: '#000000',
+                }}
+              >
+                목록
+              </button>
+
+              {hasNext ? (
+                <button
+                  onClick={onNext}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    padding: '12px 0',
+                    background: 'transparent',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: '14px',
+                    color: '#000000',
+                  }}
+                >
+                  <span>다음글</span>
+                  <ChevronRight size={16} />
+                </button>
+              ) : (
+                <div />
               )}
             </div>
-          </div>
-        </div>
+          </main>
 
-        {/* 네비게이션 */}
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '48px',
-            paddingTop: '24px',
-            borderTop: '1px solid #000000',
-          }}
-        >
-          {hasPrev ? (
-            <button
-              onClick={onPrev}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 0',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '14px',
-                color: '#000000',
-              }}
-            >
-              <ChevronLeft size={16} />
-              <span>이전글</span>
-            </button>
-          ) : (
-            <div />
-          )}
-
-          <button
-            onClick={onClose}
-            style={{
-              padding: '12px 24px',
-              background: 'transparent',
-              border: '1px solid #000000',
-              cursor: 'pointer',
-              fontSize: '14px',
-              color: '#000000',
-            }}
-          >
-            목록
-          </button>
-
-          {hasNext ? (
-            <button
-              onClick={onNext}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '12px 0',
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '14px',
-                color: '#000000',
-              }}
-            >
-              <span>다음글</span>
-              <ChevronRight size={16} />
-            </button>
-          ) : (
-            <div />
-          )}
         </div>
       </div>
     </div>
