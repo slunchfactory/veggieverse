@@ -585,9 +585,6 @@ const RecipeSection: React.FC<{
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
-  // OSLO 스타일: 뷰 모드 토글
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [activeImage, setActiveImage] = useState<string>('');
 
   // 스크롤 상태 체크
   const checkScrollState = () => {
@@ -627,13 +624,6 @@ const RecipeSection: React.FC<{
   // 최대 10개 레시피
   const displayRecipes = category.recipes.slice(0, 10);
 
-  // OSLO 스타일: 첫 번째 이미지로 초기화
-  useEffect(() => {
-    if (displayRecipes.length > 0 && !activeImage) {
-      setActiveImage(displayRecipes[0].image);
-    }
-  }, [displayRecipes, activeImage]);
-
   return (
     <section
       id={`recipe-section-${category.id}`}
@@ -646,15 +636,14 @@ const RecipeSection: React.FC<{
         padding: '48px 0 56px',
       }}
     >
-      {/* 2-Column 레이아웃 - 좌측 1440px 정렬 (그리드 모드에서만 표시) */}
-      {viewMode === 'grid' && (
+      {/* 2-Column 레이아웃 */}
       <div
+        className="px-4 md:px-8 lg:px-16"
         style={{
           display: 'flex',
           flexDirection: 'row',
           gap: '32px',
           alignItems: 'flex-start',
-          paddingLeft: 'max(16px, calc((100vw - 1440px) / 2 + 40px))',
         }}
       >
         {/* 왼쪽 영역 - 고정 텍스트 (데스크톱만) */}
@@ -849,137 +838,14 @@ const RecipeSection: React.FC<{
                 </div>
               ))}
 
-              {/* 마지막: 전체보기 버튼 - OSLO 리스트 뷰 토글 */}
+              {/* 마지막: 전체보기 카드 */}
               <div style={{ scrollSnapAlign: 'start', flexShrink: 0 }}>
-                <button
-                  onClick={() => setViewMode('list')}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    minWidth: '200px',
-                    maxWidth: '200px',
-                    height: '300px',
-                    background: '#F5F5F5',
-                    borderRadius: '16px',
-                    border: 'none',
-                    cursor: 'pointer',
-                    transition: 'background 0.2s ease',
-                  }}
-                  className="hover:bg-gray-200"
-                >
-                  <span style={{
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    color: '#666',
-                    letterSpacing: '0.1em',
-                    textTransform: 'uppercase',
-                  }}>
-                    View More
-                  </span>
-                </button>
+                <ViewAllCard categoryId={category.id} categoryTitle={category.title} />
               </div>
             </div>
           </div>
         </div>
       </div>
-      )}
-
-      {/* OSLO 스타일: 인터랙티브 리스트 뷰 */}
-      {viewMode === 'list' && (
-        <div
-          style={{
-            maxWidth: '1440px',
-            margin: '0 auto',
-            padding: '60px 40px',
-          }}
-        >
-          {/* 헤더: Back to Grid 버튼 */}
-          <div style={{ marginBottom: '40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <span style={{ fontSize: '11px', fontWeight: 400, color: '#999', textTransform: 'uppercase', letterSpacing: '0.1em', display: 'block', marginBottom: '8px' }}>
-                {category.subtitle}
-              </span>
-              <h2 style={{ fontSize: '32px', fontWeight: 400, color: '#000' }}>{category.title}</h2>
-            </div>
-            <button
-              onClick={() => setViewMode('grid')}
-              style={{
-                padding: '12px 24px',
-                background: '#000',
-                color: '#fff',
-                border: 'none',
-                fontSize: '13px',
-                fontWeight: 400,
-                cursor: 'pointer',
-              }}
-            >
-              Back to Grid
-            </button>
-          </div>
-
-          {/* 2컬럼 레이아웃: 리스트 + 스티키 이미지 */}
-          <div style={{ display: 'flex', gap: '60px', alignItems: 'flex-start' }}>
-            {/* 왼쪽: 인터랙티브 리스트 */}
-            <div style={{ flex: 1, borderTop: '1px solid #000' }}>
-              {category.recipes.map((recipe) => (
-                <Link
-                  key={recipe.id}
-                  to={`/recipe/${recipe.id}`}
-                  onMouseEnter={() => setActiveImage(recipe.image)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    borderBottom: '1px solid #000',
-                    padding: '24px 12px',
-                    textDecoration: 'none',
-                    transition: 'background-color 0.2s ease',
-                    cursor: 'pointer',
-                  }}
-                  className="group hover:bg-[#CCFF00]"
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    <span style={{ fontSize: '14px', fontWeight: 500, color: '#999' }} className="group-hover:text-black">
-                      #{recipe.category || category.subtitle}
-                    </span>
-                    <h3 style={{ fontSize: '24px', fontWeight: 700, color: '#000', lineHeight: 1.3 }}>
-                      {recipe.title}
-                    </h3>
-                    <p style={{ fontSize: '14px', color: '#666', marginTop: '4px' }} className="group-hover:text-black">
-                      {recipe.description?.slice(0, 50) || `${recipe.author}님의 레시피`}
-                    </p>
-                  </div>
-                  <span style={{ fontSize: '20px', opacity: 0, transition: 'opacity 0.2s' }} className="group-hover:opacity-100">
-                    ↗
-                  </span>
-                </Link>
-              ))}
-            </div>
-
-            {/* 오른쪽: 스티키 프리뷰 이미지 */}
-            <div
-              style={{
-                width: '500px',
-                aspectRatio: '4/5',
-                position: 'sticky',
-                top: '120px',
-                border: '1px solid #000',
-                background: '#f5f5f5',
-                flexShrink: 0,
-              }}
-              className="hidden lg:block"
-            >
-              <img
-                src={activeImage || '/placeholder.jpg'}
-                alt="Recipe Preview"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };
@@ -1358,12 +1224,20 @@ const RecipePage: React.FC = () => {
             </div>
           </section>
 
-          {/* Section 4: 일반 카테고리 섹션들 - RecipeSection 자체에서 1440px 정렬 처리 */}
-          <div className="w-full flex flex-col">
-            {recipeCategories.map((category, index) => (
-              <RecipeSection key={category.id} category={category} index={index} />
-            ))}
-          </div>
+          {/* Section 4: 일반 카테고리 섹션들 - 좌측 1440px 정렬, 우측 오버플로우 */}
+          <section
+            className="w-full py-20"
+            style={{
+              paddingLeft: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+              paddingRight: 0,
+            }}
+          >
+            <div className="w-full flex flex-col">
+              {recipeCategories.map((category, index) => (
+                <RecipeSection key={category.id} category={category} index={index} />
+              ))}
+            </div>
+          </section>
         </main>
       </div>
     );
