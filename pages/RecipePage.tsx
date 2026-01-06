@@ -636,14 +636,15 @@ const RecipeSection: React.FC<{
         padding: '48px 0 56px',
       }}
     >
-      {/* 2-Column 레이아웃 */}
+      {/* 2-Column 레이아웃 - 좌측 1440px 정렬, 우측 오버플로우 */}
       <div
-        className="px-4 md:px-8 lg:px-16"
         style={{
           display: 'flex',
           flexDirection: 'row',
           gap: '32px',
           alignItems: 'flex-start',
+          paddingLeft: 'max(16px, calc((100vw - 1440px) / 2 + 40px))',
+          paddingRight: 0,
         }}
       >
         {/* 왼쪽 영역 - 고정 텍스트 (데스크톱만) */}
