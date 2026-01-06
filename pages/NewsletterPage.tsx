@@ -420,8 +420,9 @@ const ArticleDetail: React.FC<{
       <div className="max-w-[1280px] mx-auto px-5 py-[60px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px]">
 
-          {/* LEFT: Full-Bleed Sticky Image */}
-          <aside className="lg:sticky lg:top-[80px] h-[600px] lg:h-[calc(100vh-120px)] w-full">
+          {/* LEFT: Full-Bleed Sticky Image with Title Overlay */}
+          <aside className="lg:sticky lg:top-[80px] h-[600px] lg:h-[calc(100vh-120px)] w-full relative">
+            {/* 이미지 */}
             <img
               src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
               alt={`${article.title} - 커버 이미지`}
@@ -436,61 +437,94 @@ const ArticleDetail: React.FC<{
                 (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
               }}
             />
+            {/* 하단 검정 그라데이션 오버레이 */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: '50%',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+            {/* 좌측 하단 타이틀 오버레이 */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '32px',
+                left: '24px',
+                right: '24px',
+                zIndex: 10,
+              }}
+            >
+              {/* 카테고리 */}
+              <p
+                style={{
+                  fontSize: '11px',
+                  color: 'rgba(255,255,255,0.8)',
+                  letterSpacing: '0.1em',
+                  fontWeight: 400,
+                  marginBottom: '8px',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {article.category}
+              </p>
+              {/* 제목 */}
+              <h1
+                style={{
+                  fontSize: '28px',
+                  fontWeight: 400,
+                  color: '#fff',
+                  lineHeight: 1.3,
+                  marginBottom: '8px',
+                }}
+              >
+                {article.title}
+              </h1>
+              {/* 부제목 */}
+              <p
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                  color: 'rgba(255,255,255,0.8)',
+                  lineHeight: 1.5,
+                  marginBottom: '12px',
+                }}
+              >
+                {article.subtitle}
+              </p>
+              {/* 날짜 & 작성자 */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '12px',
+                  color: 'rgba(255,255,255,0.6)',
+                }}
+              >
+                <span>{article.author}</span>
+                <span>·</span>
+                <span>{article.date}</span>
+              </div>
+            </div>
           </aside>
 
-          {/* RIGHT: Content with Title & Text */}
-          <main className="flex flex-col lg:pt-[10px]" style={{ fontSize: '15px', lineHeight: 1.7, color: '#1a1a1a' }}>
-            {/* 카테고리 */}
-            <p
-              style={{
-                fontSize: '11px',
-                color: '#6B6B6B',
-                letterSpacing: '0.1em',
-                fontWeight: 400,
-                marginBottom: '13px',
-                textTransform: 'uppercase',
-              }}
-            >
-              {article.category}
-            </p>
-
-            {/* 날짜 */}
-            <span
-              style={{
-                fontSize: '14px',
-                color: '#9A9A9A',
-                marginBottom: '13px',
-                display: 'block',
-              }}
-            >
-              {article.date}
-            </span>
-
-            {/* 제목 */}
-            <h1
-              style={{
-                fontSize: '32px',
-                fontWeight: 400,
-                color: '#000',
-                lineHeight: 1.3,
-                marginBottom: '13px',
-              }}
-            >
-              {article.title}
-            </h1>
-
-            {/* 부제목 */}
-            <p
-              style={{
-                fontSize: '15px',
-                fontWeight: 400,
-                color: '#6B6B6B',
-                marginBottom: '40px',
-                lineHeight: 1.5,
-              }}
-            >
-              {article.subtitle}
-            </p>
+          {/* RIGHT: Scrollable Content (스크롤바 숨김) */}
+          <main
+            className="flex flex-col lg:pt-[10px]"
+            style={{
+              fontSize: '15px',
+              lineHeight: 1.7,
+              color: '#1a1a1a',
+              scrollbarWidth: 'none', /* Firefox */
+              msOverflowStyle: 'none', /* IE/Edge */
+            }}
+          >
+            <style>{`main::-webkit-scrollbar { display: none; }`}</style>
             {/* 인용구 */}
             {article.quote && (
               <div
