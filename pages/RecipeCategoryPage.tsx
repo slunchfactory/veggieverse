@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // 레시피 인터페이스
@@ -11,6 +11,7 @@ interface Recipe {
   image: string;
   author: string;
   likes?: number;
+  category?: string;
 }
 
 // 카테고리 데이터
@@ -20,18 +21,18 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '가장 사랑받는 레시피',
     description: '슬런치 회원들이 가장 많이 찾는 인기 레시피를 모았어요.',
     recipes: [
-      { id: 1, title: '두부 스테이크', image: '/vege_flot_img/mushroom.png', author: '비건셰프', likes: 2847 },
-      { id: 2, title: '아보카도 포케', image: '/vege_flot_img/avocado.png', author: '하와이안', likes: 2634 },
-      { id: 3, title: '레몬 파스타', image: '/vege_flot_img/lemon.png', author: '이탈리안', likes: 2512 },
-      { id: 4, title: '배추 된장국', image: '/vege_flot_img/napa cabbage.png', author: '한식셰프', likes: 2398 },
-      { id: 5, title: '망고 푸딩', image: '/vege_flot_img/coconut.png', author: '디저트왕', likes: 2287 },
-      { id: 6, title: '블루베리 오트밀', image: '/vege_flot_img/blueberry.png', author: '아침요리사', likes: 2156 },
-      { id: 7, title: '토마토 브루스게타', image: '/vege_flot_img/tomato.png', author: '이탈리안', likes: 2089 },
-      { id: 8, title: '바나나 스무디', image: '/vege_flot_img/banana.png', author: '스무디장인', likes: 1987 },
-      { id: 9, title: '당근 케이크', image: '/vege_flot_img/carrot.png', author: '베이커리', likes: 1876 },
-      { id: 10, title: '시금치 샐러드', image: '/vege_flot_img/spinach.png', author: '샐러드마스터', likes: 1765 },
-      { id: 11, title: '호박 수프', image: '/vege_flot_img/pumpkin.png', author: '수프전문', likes: 1654 },
-      { id: 12, title: '브로콜리 볶음', image: '/vege_flot_img/broccoli.png', author: '채소요리사', likes: 1543 },
+      { id: 1, title: '두부 스테이크', description: '고소한 단백질의 정석', image: '/vege_flot_img/mushroom.png', author: '비건셰프', likes: 2847, category: '메인요리' },
+      { id: 2, title: '아보카도 포케', description: '하와이안 스타일 건강식', image: '/vege_flot_img/avocado.png', author: '하와이안', likes: 2634, category: '샐러드' },
+      { id: 3, title: '레몬 파스타', description: '상큼한 지중해 풍미', image: '/vege_flot_img/lemon.png', author: '이탈리안', likes: 2512, category: '파스타' },
+      { id: 4, title: '배추 된장국', description: '구수한 된장의 깊은 맛', image: '/vege_flot_img/napa cabbage.png', author: '한식셰프', likes: 2398, category: '한식' },
+      { id: 5, title: '망고 푸딩', description: '열대의 달콤함을 담아', image: '/vege_flot_img/coconut.png', author: '디저트왕', likes: 2287, category: '디저트' },
+      { id: 6, title: '블루베리 오트밀', description: '건강한 아침 한 그릇', image: '/vege_flot_img/blueberry.png', author: '아침요리사', likes: 2156, category: '아침' },
+      { id: 7, title: '토마토 브루스게타', description: '바삭한 빵과 토마토의 조화', image: '/vege_flot_img/tomato.png', author: '이탈리안', likes: 2089, category: '애피타이저' },
+      { id: 8, title: '바나나 스무디', description: '달콤 부드러운 아침 음료', image: '/vege_flot_img/banana.png', author: '스무디장인', likes: 1987, category: '음료' },
+      { id: 9, title: '당근 케이크', description: '촉촉하고 달콤한 비건 케이크', image: '/vege_flot_img/carrot.png', author: '베이커리', likes: 1876, category: '디저트' },
+      { id: 10, title: '시금치 샐러드', description: '철분 가득 건강 샐러드', image: '/vege_flot_img/spinach.png', author: '샐러드마스터', likes: 1765, category: '샐러드' },
+      { id: 11, title: '호박 수프', description: '달콤 부드러운 가을 수프', image: '/vege_flot_img/pumpkin.png', author: '수프전문', likes: 1654, category: '수프' },
+      { id: 12, title: '브로콜리 볶음', description: '아삭한 식감의 반찬', image: '/vege_flot_img/broccoli.png', author: '채소요리사', likes: 1543, category: '반찬' },
     ],
   },
   new: {
@@ -39,14 +40,14 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '이번 주 새로 올라온 레시피',
     description: '따끈따끈한 신규 레시피를 만나보세요.',
     recipes: [
-      { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', image: '/vege_flot_img/edamame.png', author: '비건셰프', likes: 234 },
-      { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', image: '/vege_flot_img/carrot.png', author: '채식러버', likes: 189 },
-      { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', image: '/vege_flot_img/olive.png', author: '이탈리안', likes: 156 },
-      { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', image: '/vege_flot_img/pistachio.png', author: '홈쿡러', likes: 312 },
-      { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', image: '/vege_flot_img/fig.png', author: '계절요리', likes: 278 },
-      { id: 106, title: '아몬드 밀크 라떼', description: '고소한 식물성 라떼', image: '/vege_flot_img/almond.png', author: '바리스타', likes: 198 },
-      { id: 107, title: '파프리카 샐러드', description: '색감 예쁜 건강식', image: '/vege_flot_img/bell pepper.png', author: '샐러드전문', likes: 223 },
-      { id: 108, title: '사과 시나몬 오트밀', description: '따뜻한 아침 한 그릇', image: '/vege_flot_img/apple.png', author: '아침요리사', likes: 267 },
+      { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', image: '/vege_flot_img/edamame.png', author: '비건셰프', likes: 234, category: '한식' },
+      { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', image: '/vege_flot_img/carrot.png', author: '채식러버', likes: 189, category: '샌드위치' },
+      { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', image: '/vege_flot_img/olive.png', author: '이탈리안', likes: 156, category: '파스타' },
+      { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', image: '/vege_flot_img/pistachio.png', author: '홈쿡러', likes: 312, category: '소스' },
+      { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', image: '/vege_flot_img/fig.png', author: '계절요리', likes: 278, category: '샐러드' },
+      { id: 106, title: '아몬드 밀크 라떼', description: '고소한 식물성 라떼', image: '/vege_flot_img/almond.png', author: '바리스타', likes: 198, category: '음료' },
+      { id: 107, title: '파프리카 샐러드', description: '색감 예쁜 건강식', image: '/vege_flot_img/bell pepper.png', author: '샐러드전문', likes: 223, category: '샐러드' },
+      { id: 108, title: '사과 시나몬 오트밀', description: '따뜻한 아침 한 그릇', image: '/vege_flot_img/apple.png', author: '아침요리사', likes: 267, category: '아침' },
     ],
   },
   lunch: {
@@ -54,16 +55,16 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '맛있는 점심으로 하루 채우기',
     description: '든든하고 건강한 점심 메뉴를 추천해요.',
     recipes: [
-      { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', image: '/vege_flot_img/lettuce.png', author: '점심왕', likes: 445 },
-      { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', image: '/vege_flot_img/potato.png', author: '카레매니아', likes: 389 },
-      { id: 203, title: '비빔국수', description: '새콤달콤 입맛 돋우는', image: '/vege_flot_img/chili pepper.png', author: '면요리사', likes: 521 },
-      { id: 204, title: '샐러드 랩', description: '간편하고 건강한 한 끼', image: '/vege_flot_img/green bean.png', author: '다이어터', likes: 298 },
-      { id: 205, title: '버섯 덮밥', description: '쫄깃한 식감의 영양밥', image: '/vege_flot_img/mushroom.png', author: '버섯사랑', likes: 367 },
-      { id: 206, title: '아보카도 토스트', description: '영양 가득 브런치 메뉴', image: '/vege_flot_img/avocado.png', author: '브런치러버', likes: 412 },
-      { id: 207, title: '토마토 리조또', description: '이탈리안 정통 레시피', image: '/vege_flot_img/tomato.png', author: '리조또장인', likes: 356 },
-      { id: 208, title: '호박 크림 수프', description: '부드럽고 든든한 한 그릇', image: '/vege_flot_img/pumpkin.png', author: '수프마스터', likes: 423 },
-      { id: 209, title: '퀴노아 볼', description: '슈퍼푸드 가득 건강식', image: '/vege_flot_img/quinoa.png', author: '건강식전문', likes: 334 },
-      { id: 210, title: '렌틸콩 수프', description: '단백질 풍부한 한 그릇', image: '/vege_flot_img/lentil.png', author: '수프마스터', likes: 289 },
+      { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', image: '/vege_flot_img/lettuce.png', author: '점심왕', likes: 445, category: '덮밥' },
+      { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', image: '/vege_flot_img/potato.png', author: '카레매니아', likes: 389, category: '카레' },
+      { id: 203, title: '비빔국수', description: '새콤달콤 입맛 돋우는', image: '/vege_flot_img/chili pepper.png', author: '면요리사', likes: 521, category: '면요리' },
+      { id: 204, title: '샐러드 랩', description: '간편하고 건강한 한 끼', image: '/vege_flot_img/green bean.png', author: '다이어터', likes: 298, category: '랩' },
+      { id: 205, title: '버섯 덮밥', description: '쫄깃한 식감의 영양밥', image: '/vege_flot_img/mushroom.png', author: '버섯사랑', likes: 367, category: '덮밥' },
+      { id: 206, title: '아보카도 토스트', description: '영양 가득 브런치 메뉴', image: '/vege_flot_img/avocado.png', author: '브런치러버', likes: 412, category: '토스트' },
+      { id: 207, title: '토마토 리조또', description: '이탈리안 정통 레시피', image: '/vege_flot_img/tomato.png', author: '리조또장인', likes: 356, category: '리조또' },
+      { id: 208, title: '호박 크림 수프', description: '부드럽고 든든한 한 그릇', image: '/vege_flot_img/pumpkin.png', author: '수프마스터', likes: 423, category: '수프' },
+      { id: 209, title: '퀴노아 볼', description: '슈퍼푸드 가득 건강식', image: '/vege_flot_img/quinoa.png', author: '건강식전문', likes: 334, category: '볼' },
+      { id: 210, title: '렌틸콩 수프', description: '단백질 풍부한 한 그릇', image: '/vege_flot_img/lentil.png', author: '수프마스터', likes: 289, category: '수프' },
     ],
   },
   dessert: {
@@ -71,14 +72,14 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '디저트는 내 삶의 낙이야',
     description: '달콤한 비건 디저트로 기분 전환하세요.',
     recipes: [
-      { id: 301, title: '코코넛 푸딩', description: '열대의 달콤함을 담아', image: '/vege_flot_img/coconut.png', author: '디저트왕', likes: 623 },
-      { id: 302, title: '블루베리 타르트', description: '상큼한 보라빛 유혹', image: '/vege_flot_img/blueberry.png', author: '베이커리', likes: 578 },
-      { id: 303, title: '망고스틴 아이스크림', description: '이국적인 과일의 향연', image: '/vege_flot_img/mangosteen.png', author: '아이스크림', likes: 445 },
-      { id: 304, title: '포도 젤리', description: '탱글탱글 보석같은', image: '/vege_flot_img/grape.png', author: '젤리장인', likes: 389 },
-      { id: 305, title: '라즈베리 무스', description: '부드럽고 새콤한', image: '/vege_flot_img/raspberry.png', author: '무스마스터', likes: 512 },
-      { id: 306, title: '딸기 케이크', description: '달콤 상큼 비건 케이크', image: '/vege_flot_img/strawberry.png', author: '케이크장인', likes: 534 },
-      { id: 307, title: '초콜릿 트러플', description: '진한 카카오의 유혹', image: '/vege_flot_img/cacao.png', author: '쇼콜라티에', likes: 467 },
-      { id: 308, title: '바나나 아이스크림', description: '건강한 원재료 그대로', image: '/vege_flot_img/banana.png', author: '아이스크림', likes: 398 },
+      { id: 301, title: '코코넛 푸딩', description: '열대의 달콤함을 담아', image: '/vege_flot_img/coconut.png', author: '디저트왕', likes: 623, category: '푸딩' },
+      { id: 302, title: '블루베리 타르트', description: '상큼한 보라빛 유혹', image: '/vege_flot_img/blueberry.png', author: '베이커리', likes: 578, category: '타르트' },
+      { id: 303, title: '망고스틴 아이스크림', description: '이국적인 과일의 향연', image: '/vege_flot_img/mangosteen.png', author: '아이스크림', likes: 445, category: '아이스크림' },
+      { id: 304, title: '포도 젤리', description: '탱글탱글 보석같은', image: '/vege_flot_img/grape.png', author: '젤리장인', likes: 389, category: '젤리' },
+      { id: 305, title: '라즈베리 무스', description: '부드럽고 새콤한', image: '/vege_flot_img/raspberry.png', author: '무스마스터', likes: 512, category: '무스' },
+      { id: 306, title: '딸기 케이크', description: '달콤 상큼 비건 케이크', image: '/vege_flot_img/strawberry.png', author: '케이크장인', likes: 534, category: '케이크' },
+      { id: 307, title: '초콜릿 트러플', description: '진한 카카오의 유혹', image: '/vege_flot_img/cacao.png', author: '쇼콜라티에', likes: 467, category: '초콜릿' },
+      { id: 308, title: '바나나 아이스크림', description: '건강한 원재료 그대로', image: '/vege_flot_img/banana.png', author: '아이스크림', likes: 398, category: '아이스크림' },
     ],
   },
   korean: {
@@ -86,29 +87,29 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '할머니 손맛이 그리울 때',
     description: '정성 가득 비건 한식 레시피를 만나보세요.',
     recipes: [
-      { id: 401, title: '배추된장국', description: '구수한 된장의 깊은 맛', image: '/vege_flot_img/napa cabbage.png', author: '한식셰프', likes: 734 },
-      { id: 402, title: '마늘종 볶음', description: '밥도둑 반찬의 정석', image: '/vege_flot_img/garlic.png', author: '반찬왕', likes: 623 },
-      { id: 403, title: '생강차', description: '몸을 따뜻하게 해주는', image: '/vege_flot_img/ginger.png', author: '차전문가', likes: 456 },
-      { id: 404, title: '파전', description: '비 오는 날의 필수템', image: '/vege_flot_img/leek.png', author: '전요리사', likes: 589 },
-      { id: 405, title: '고추장 비빔밥', description: '매콤 달콤 환상 조합', image: '/vege_flot_img/pepper.png', author: '비빔밥러버', likes: 678 },
-      { id: 406, title: '김치찌개', description: '비건 김치로 만든 정통맛', image: '/vege_flot_img/chili pepper.png', author: '찌개장인', likes: 712 },
-      { id: 407, title: '잡채', description: '명절의 추억 그대로', image: '/vege_flot_img/spinach.png', author: '명절요리', likes: 567 },
-      { id: 408, title: '호박죽', description: '달콤 부드러운 영양식', image: '/vege_flot_img/pumpkin.png', author: '죽전문가', likes: 489 },
+      { id: 401, title: '배추된장국', description: '구수한 된장의 깊은 맛', image: '/vege_flot_img/napa cabbage.png', author: '한식셰프', likes: 734, category: '국' },
+      { id: 402, title: '마늘종 볶음', description: '밥도둑 반찬의 정석', image: '/vege_flot_img/garlic.png', author: '반찬왕', likes: 623, category: '반찬' },
+      { id: 403, title: '생강차', description: '몸을 따뜻하게 해주는', image: '/vege_flot_img/ginger.png', author: '차전문가', likes: 456, category: '차' },
+      { id: 404, title: '파전', description: '비 오는 날의 필수템', image: '/vege_flot_img/leek.png', author: '전요리사', likes: 589, category: '전' },
+      { id: 405, title: '고추장 비빔밥', description: '매콤 달콤 환상 조합', image: '/vege_flot_img/pepper.png', author: '비빔밥러버', likes: 678, category: '밥' },
+      { id: 406, title: '김치찌개', description: '비건 김치로 만든 정통맛', image: '/vege_flot_img/chili pepper.png', author: '찌개장인', likes: 712, category: '찌개' },
+      { id: 407, title: '잡채', description: '명절의 추억 그대로', image: '/vege_flot_img/spinach.png', author: '명절요리', likes: 567, category: '면' },
+      { id: 408, title: '호박죽', description: '달콤 부드러운 영양식', image: '/vege_flot_img/pumpkin.png', author: '죽전문가', likes: 489, category: '죽' },
     ],
   },
   drink: {
     subtitle: '술안주',
     title: '오늘 한 잔, 안주는 내가 만들게',
-    description: '슬런치가 엄선한 오늘 한 잔, 안주는 내가 만들게 레시피를 만나보세요.',
+    description: '슬런치가 엄선한 술안주 레시피를 만나보세요.',
     recipes: [
-      { id: 501, title: '땅콩 조림', description: '짭짤하고 고소한', image: '/vege_flot_img/peanut.png', author: '술꾼', likes: 445 },
-      { id: 502, title: '옥수수 치즈구이', description: '달콤 짭짤 중독성', image: '/vege_flot_img/corn.png', author: '안주왕', likes: 534 },
-      { id: 503, title: '아스파라거스 구이', description: '고급스러운 바 스타일', image: '/vege_flot_img/asparagus.png', author: '바텐더', likes: 367 },
-      { id: 504, title: '브로콜리 튀김', description: '바삭한 식감의 매력', image: '/vege_flot_img/broccoli.png', author: '튀김장인', likes: 423 },
-      { id: 505, title: '딜 감자튀김', description: '허브 향 가득한', image: '/vege_flot_img/dill.png', author: '감자사랑', likes: 489 },
-      { id: 506, title: '오이 피클', description: '아삭한 곁들임', image: '/vege_flot_img/cucumber.png', author: '피클장인', likes: 378 },
-      { id: 507, title: '버섯 꼬치', description: '담백한 구이 안주', image: '/vege_flot_img/mushroom.png', author: '꼬치전문', likes: 412 },
-      { id: 508, title: '감자전', description: '바삭 쫄깃 전통 안주', image: '/vege_flot_img/potato.png', author: '전요리사', likes: 456 },
+      { id: 501, title: '땅콩 조림', description: '짭짤하고 고소한', image: '/vege_flot_img/peanut.png', author: '술꾼', likes: 445, category: '조림' },
+      { id: 502, title: '옥수수 치즈구이', description: '달콤 짭짤 중독성', image: '/vege_flot_img/corn.png', author: '안주왕', likes: 534, category: '구이' },
+      { id: 503, title: '아스파라거스 구이', description: '고급스러운 바 스타일', image: '/vege_flot_img/asparagus.png', author: '바텐더', likes: 367, category: '구이' },
+      { id: 504, title: '브로콜리 튀김', description: '바삭한 식감의 매력', image: '/vege_flot_img/broccoli.png', author: '튀김장인', likes: 423, category: '튀김' },
+      { id: 505, title: '딜 감자튀김', description: '허브 향 가득한', image: '/vege_flot_img/dill.png', author: '감자사랑', likes: 489, category: '튀김' },
+      { id: 506, title: '오이 피클', description: '아삭한 곁들임', image: '/vege_flot_img/cucumber.png', author: '피클장인', likes: 378, category: '피클' },
+      { id: 507, title: '버섯 꼬치', description: '담백한 구이 안주', image: '/vege_flot_img/mushroom.png', author: '꼬치전문', likes: 412, category: '꼬치' },
+      { id: 508, title: '감자전', description: '바삭 쫄깃 전통 안주', image: '/vege_flot_img/potato.png', author: '전요리사', likes: 456, category: '전' },
     ],
   },
   date: {
@@ -116,21 +117,69 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '오늘 저녁, 특별한 사람과 함께',
     description: '로맨틱한 저녁을 위한 특별 레시피를 준비했어요.',
     recipes: [
-      { id: 601, title: '트러플 리조또', description: '로맨틱한 저녁을 위해', image: '/vege_flot_img/mushroom.png', author: '로맨티스트', likes: 789 },
-      { id: 602, title: '레몬 파스타', description: '상큼한 지중해 풍미', image: '/vege_flot_img/lemon.png', author: '파스타장인', likes: 656 },
-      { id: 603, title: '복숭아 카프레제', description: '여름밤의 상큼함', image: '/vege_flot_img/peach.png', author: '샐러드마스터', likes: 534 },
-      { id: 604, title: '키위 모히또', description: '청량한 칵테일 한 잔', image: '/vege_flot_img/kiwi.png', author: '믹솔로지스트', likes: 612 },
-      { id: 605, title: '리치 샴페인', description: '달콤한 축배를 위해', image: '/vege_flot_img/lychee.png', author: '소믈리에', likes: 567 },
-      { id: 606, title: '와인 페어링 치즈', description: '비건 치즈의 매력', image: '/vege_flot_img/cashew.png', author: '치즈장인', likes: 489 },
-      { id: 607, title: '장미꽃 샐러드', description: '아름다운 플레이팅', image: '/vege_flot_img/radish.png', author: '플레이팅전문', likes: 445 },
-      { id: 608, title: '캔들라이트 수프', description: '따뜻한 분위기 연출', image: '/vege_flot_img/celery.png', author: '수프마스터', likes: 398 },
+      { id: 601, title: '트러플 리조또', description: '로맨틱한 저녁을 위해', image: '/vege_flot_img/mushroom.png', author: '로맨티스트', likes: 789, category: '리조또' },
+      { id: 602, title: '레몬 파스타', description: '상큼한 지중해 풍미', image: '/vege_flot_img/lemon.png', author: '파스타장인', likes: 656, category: '파스타' },
+      { id: 603, title: '복숭아 카프레제', description: '여름밤의 상큼함', image: '/vege_flot_img/peach.png', author: '샐러드마스터', likes: 534, category: '샐러드' },
+      { id: 604, title: '키위 모히또', description: '청량한 칵테일 한 잔', image: '/vege_flot_img/kiwi.png', author: '믹솔로지스트', likes: 612, category: '음료' },
+      { id: 605, title: '리치 샴페인', description: '달콤한 축배를 위해', image: '/vege_flot_img/lychee.png', author: '소믈리에', likes: 567, category: '음료' },
+      { id: 606, title: '와인 페어링 치즈', description: '비건 치즈의 매력', image: '/vege_flot_img/cashew.png', author: '치즈장인', likes: 489, category: '치즈' },
+      { id: 607, title: '장미꽃 샐러드', description: '아름다운 플레이팅', image: '/vege_flot_img/radish.png', author: '플레이팅전문', likes: 445, category: '샐러드' },
+      { id: 608, title: '캔들라이트 수프', description: '따뜻한 분위기 연출', image: '/vege_flot_img/celery.png', author: '수프마스터', likes: 398, category: '수프' },
     ],
   },
 };
 
+const ITEMS_PER_PAGE = 10;
+
 const RecipeCategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const category = categoryId ? categoryData[categoryId] : null;
+
+  // OSLO 스타일: 상태 관리
+  const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [hoveredRecipe, setHoveredRecipe] = useState<Recipe | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // 카테고리별 탭 생성
+  const tabs = useMemo(() => {
+    if (!category) return [];
+    const categories = [...new Set(category.recipes.map(r => r.category).filter(Boolean))];
+    return [
+      { id: 'all', label: '전체' },
+      ...categories.map(c => ({ id: c!, label: `#${c}` }))
+    ];
+  }, [category]);
+
+  // 필터링된 레시피
+  const filteredRecipes = useMemo(() => {
+    if (!category) return [];
+    let recipes = category.recipes;
+
+    // 탭 필터
+    if (activeTab !== 'all') {
+      recipes = recipes.filter(r => r.category === activeTab);
+    }
+
+    // 검색 필터
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      recipes = recipes.filter(r =>
+        r.title.toLowerCase().includes(query) ||
+        r.description?.toLowerCase().includes(query) ||
+        r.author.toLowerCase().includes(query)
+      );
+    }
+
+    return recipes;
+  }, [category, activeTab, searchQuery]);
+
+  // 페이지네이션
+  const totalPages = Math.ceil(filteredRecipes.length / ITEMS_PER_PAGE);
+  const paginatedRecipes = filteredRecipes.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   if (!category) {
     return (
@@ -146,7 +195,7 @@ const RecipeCategoryPage: React.FC = () => {
   }
 
   return (
-    <div style={{ background: 'var(--cream)', minHeight: '100vh' }}>
+    <div style={{ background: '#fff', minHeight: '100vh' }}>
       {/* 상단 네비게이션 */}
       <div
         style={{
@@ -190,42 +239,6 @@ const RecipeCategoryPage: React.FC = () => {
 
       {/* 콘텐츠 영역 */}
       <main style={{ paddingTop: '48px' }}>
-        {/* 히어로 섹션 */}
-        <div
-          style={{
-            padding: '60px 20px',
-            maxWidth: '1440px',
-            margin: '0 auto',
-          }}
-        >
-          <p
-            style={{
-              fontSize: '12px',
-              color: '#E53935',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              marginBottom: '12px',
-            }}
-          >
-            {category.subtitle}
-          </p>
-          <h1
-            style={{
-              fontSize: '28px',
-              fontWeight: 400,
-              color: '#000',
-              marginBottom: '16px',
-              lineHeight: 1.3,
-            }}
-          >
-            {category.title}
-          </h1>
-          <p style={{ fontSize: '14px', color: '#666', maxWidth: '500px' }}>
-            {category.description}
-          </p>
-        </div>
-
-        {/* 레시피 그리드 */}
         <div
           className="px-5 md:px-8 lg:px-14"
           style={{
@@ -234,71 +247,208 @@ const RecipeCategoryPage: React.FC = () => {
             paddingBottom: '80px',
           }}
         >
-          <div
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"
-          >
-            {category.recipes.map((recipe) => (
-              <Link
-                key={recipe.id}
-                to={`/recipe/${recipe.id}`}
-                style={{ textDecoration: 'none' }}
+          {/* 탭 필터 */}
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            padding: '24px 0',
+            borderBottom: '1px solid #eee',
+          }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => { setActiveTab(tab.id); setCurrentPage(1); }}
+                style={{
+                  padding: '8px 16px',
+                  border: '1px solid #000',
+                  background: activeTab === tab.id ? '#000' : '#fff',
+                  color: activeTab === tab.id ? '#fff' : '#000',
+                  fontSize: '13px',
+                  fontWeight: 400,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
               >
-                <div>
-                  {/* 이미지 */}
-                  <div
-                    style={{
-                      aspectRatio: '1/1',
-                      overflow: 'hidden',
-                      marginBottom: '12px',
-                      background: '#f5f5f5',
-                    }}
-                  >
-                    <img
-                      src={getRecipeThumbnailImage(recipe.id)}
-                      alt={recipe.title}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = getFallbackRecipeImage();
-                      }}
-                    />
-                  </div>
-                  {/* 정보 */}
-                  <h3
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      color: '#000',
-                      marginBottom: '4px',
-                    }}
-                  >
-                    {recipe.title}
-                  </h3>
-                  <p style={{ fontSize: '12px', color: '#666', marginBottom: '8px' }}>
-                    @{recipe.author}
-                  </p>
-                  {recipe.likes && (
-                    <span
-                      style={{
-                        display: 'inline-block',
-                        padding: '4px 12px',
-                        border: '1px solid #000',
-                        borderRadius: '20px',
-                        fontSize: '12px',
-                        color: '#000',
-                      }}
-                    >
-                      {recipe.likes.toLocaleString()}
-                    </span>
-                  )}
-                </div>
-              </Link>
+                {tab.label}
+              </button>
             ))}
           </div>
+
+          {/* 검색 입력 */}
+          <div style={{ padding: '24px 0', maxWidth: '300px' }}>
+            <div style={{ position: 'relative' }}>
+              <input
+                type="text"
+                placeholder="검색"
+                value={searchQuery}
+                onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                style={{
+                  width: '100%',
+                  padding: '12px 40px 12px 16px',
+                  border: '1px solid #ddd',
+                  fontSize: '14px',
+                  outline: 'none',
+                }}
+              />
+              <Search
+                size={18}
+                style={{
+                  position: 'absolute',
+                  right: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#999',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* OSLO 스타일 리스트 */}
+          <div style={{ position: 'relative' }}>
+            <div style={{ borderTop: '1px solid #000' }}>
+              {paginatedRecipes.map((recipe) => (
+                <Link
+                  key={recipe.id}
+                  to={`/recipe/${recipe.id}`}
+                  onMouseEnter={() => setHoveredRecipe(recipe)}
+                  onMouseLeave={() => setHoveredRecipe(null)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '24px',
+                    padding: '24px 12px',
+                    borderBottom: '1px solid #ddd',
+                    textDecoration: 'none',
+                    background: hoveredRecipe?.id === recipe.id ? '#CCFF00' : 'transparent',
+                    transition: 'background-color 0.15s ease',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {/* 카테고리 태그 */}
+                  <span style={{
+                    fontSize: '13px',
+                    color: hoveredRecipe?.id === recipe.id ? '#000' : '#666',
+                    minWidth: '80px',
+                    flexShrink: 0,
+                  }}>
+                    #{recipe.category || category.subtitle}
+                  </span>
+
+                  {/* 제목 & 설명 */}
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: 700,
+                      color: '#000',
+                      marginBottom: '8px',
+                      lineHeight: 1.4,
+                    }}>
+                      {recipe.title}
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      color: hoveredRecipe?.id === recipe.id ? '#333' : '#666',
+                      lineHeight: 1.5,
+                    }}>
+                      {recipe.description}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            {/* 호버 시 썸네일 팝업 (우측 고정) */}
+            {hoveredRecipe && (
+              <div
+                style={{
+                  position: 'fixed',
+                  right: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '350px',
+                  aspectRatio: '4/5',
+                  background: '#f5f5f5',
+                  border: '1px solid #000',
+                  overflow: 'hidden',
+                  zIndex: 100,
+                  pointerEvents: 'none',
+                }}
+              >
+                <img
+                  src={getRecipeThumbnailImage(hoveredRecipe.id)}
+                  alt={hoveredRecipe.title}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = getFallbackRecipeImage();
+                  }}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* 페이지네이션 */}
+          {totalPages > 1 && (
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '40px 0',
+            }}>
+              <button
+                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                style={{
+                  padding: '8px',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: currentPage === 1 ? 'default' : 'pointer',
+                  opacity: currentPage === 1 ? 0.3 : 1,
+                }}
+              >
+                <ChevronLeft size={20} />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    border: 'none',
+                    background: 'transparent',
+                    fontSize: '14px',
+                    fontWeight: currentPage === page ? 700 : 400,
+                    color: '#000',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {page}
+                </button>
+              ))}
+
+              <button
+                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                disabled={currentPage === totalPages}
+                style={{
+                  padding: '8px',
+                  border: 'none',
+                  background: 'transparent',
+                  cursor: currentPage === totalPages ? 'default' : 'pointer',
+                  opacity: currentPage === totalPages ? 0.3 : 1,
+                }}
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>
