@@ -391,8 +391,8 @@ const RecipeDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 메인 콘텐츠 - Outer: 1280px, Inner: 800px centered */}
-      <div className="max-w-[1280px] mx-auto px-5" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
+      {/* 메인 콘텐츠 - Outer: 1440px, Inner: 800px centered */}
+      <div className="max-w-[1440px] mx-auto px-10" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
         <div className="max-w-[800px] mx-auto">
 
         {/* 알레르기 정보 */}

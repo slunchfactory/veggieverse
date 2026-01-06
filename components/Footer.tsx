@@ -157,7 +157,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
       </div>
 
       {/* === DESKTOP FOOTER (Visible only >= 768px) === */}
-      <div className="hidden md:block w-full max-w-[1280px] mx-auto px-8 py-12">
+      <div className="hidden md:block w-full max-w-[1440px] mx-auto px-10 py-12">
         {/* Desktop Main Grid - 5 Columns */}
         <div className="grid grid-cols-5 gap-x-12 mb-12">
           {/* Column 1: ABOUT */}

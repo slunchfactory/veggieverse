@@ -416,8 +416,8 @@ const ArticleDetail: React.FC<{
         <X size={20} color="#000" />
       </button>
 
-      {/* 1280px Container with 1:1 Split Layout */}
-      <div className="max-w-[1280px] mx-auto px-5 py-[60px]">
+      {/* 1440px Container with 1:1 Split Layout */}
+      <div className="max-w-[1440px] mx-auto px-10 py-[60px]">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px]">
 
           {/* LEFT: Full-Bleed Sticky Image with Title Overlay */}

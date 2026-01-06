@@ -1096,7 +1096,7 @@ const RecipePage: React.FC = () => {
       <div className="w-full min-h-screen bg-[#FAF9F6] overflow-x-hidden">
         <main className="w-full flex flex-col items-center">
           {/* Section 1: 스피릿 Hero / Title */}
-          <section className="w-full max-w-[1280px] px-5 py-20 text-center" style={{ background: '#EEF2EB' }}>
+          <section className="w-full max-w-[1440px] px-10 py-20 text-center" style={{ background: '#EEF2EB' }}>
               <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
             <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                 {spiritName} 추천 레시피
@@ -1110,7 +1110,7 @@ const RecipePage: React.FC = () => {
             {spiritPickRecipes.length > 0 && (
               <section 
                 id="spirit-pick"
-              className="w-full max-w-[1280px] px-5 py-20"
+              className="w-full max-w-[1440px] px-10 py-20"
                 style={{
                 background: '#EEF2EB',
                 }}
@@ -1134,7 +1134,7 @@ const RecipePage: React.FC = () => {
             )}
 
           {/* Section 3: Recipe Grid (Centered Container) */}
-          <section className="w-full max-w-[1280px] px-5 py-20">
+          <section className="w-full max-w-[1440px] px-10 py-20">
             <div className="w-full flex flex-col">
 
             {/* 큐레이션 섹션 */}
@@ -1207,7 +1207,7 @@ const RecipePage: React.FC = () => {
           </section>
 
           {/* Section 4: 일반 카테고리 섹션들 */}
-          <section className="w-full max-w-[1280px] px-5 py-20">
+          <section className="w-full max-w-[1440px] px-10 py-20">
             <div className="w-full flex flex-col">
             {recipeCategories.map((category, index) => (
               <RecipeSection key={category.id} category={category} index={index} />

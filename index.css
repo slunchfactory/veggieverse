@@ -90,7 +90,7 @@
   --font-primary: var(--font-family);
   --font-accent: var(--font-family);
 
-  /* Typography Scale - 1280px 최적화 */
+  /* Typography Scale - 1440px 최적화 */
   --font-size-display: 40px;
   --font-size-h1: 32px;
   --font-size-h1-mobile: 24px;
@@ -130,16 +130,16 @@
      LAYOUT - Open Border Grid (시원한 여백)
      ========================================== */
 
-  /* Header & Promo Bar Heights - 1280px 최적화 */
+  /* Header & Promo Bar Heights - 1440px 최적화 */
   --promo-h: 28px;
   --header-h: 64px;
   --header-area-h: calc(var(--promo-h) + var(--header-h));
   --header-height: 64px;
   --sidebar-width: 220px;
 
-  /* Grid Gap - 13px 규칙 */
-  --gap-grid: 13px;
-  --gap-card: 13px;
+  /* Grid Gap - 20px 규칙 (1440px 최적화) */
+  --gap-grid: 20px;
+  --gap-card: 20px;
   --gap-section: 60px;
 
   /* Header 반응형 변수 */
@@ -435,10 +435,10 @@ body {
   position: relative;
 }
 
-/* 공통 페이지 좌우 여백 - 최대 너비 1280px 레이아웃 */
+/* 공통 페이지 좌우 여백 - 최대 너비 1440px 레이아웃 */
 .page-container {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -447,15 +447,15 @@ body {
 
 @media (min-width: 768px) {
   .page-container {
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 40px;
+    padding-right: 40px;
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
   .page-container {
-    padding-left: 56px;
-    padding-right: 56px;
+    padding-left: 60px;
+    padding-right: 60px;
   }
 }
 
@@ -467,7 +467,7 @@ body {
 }
 
 .text-container-wide {
-  max-width: 1280px;
+  max-width: 1440px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -565,7 +565,7 @@ img[style*="aspect-ratio"],
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1440px) {
   .thumbnail-grid {
     grid-template-columns: repeat(5, 1fr);
   }
