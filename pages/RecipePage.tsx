@@ -1106,54 +1106,69 @@ const RecipePage: React.FC = () => {
               </p>
             </section>
 
-          {/* Section 2: 스피릿 PICK 섹션 */}
+          {/* Section 2: 스피릿 PICK 섹션 - 좌측 1440px 정렬, 우측 오버플로우 */}
             {spiritPickRecipes.length > 0 && (
-              <section 
+              <section
                 id="spirit-pick"
-              className="w-full max-w-[1440px] px-10 py-20"
+                className="w-full py-20"
                 style={{
-                background: '#EEF2EB',
+                  background: '#EEF2EB',
+                  paddingLeft: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+                  paddingRight: 0,
                 }}
               >
-                  <span 
+                {/* 텍스트 콘텐츠 - 1360px 제한 (1440 - 40*2) */}
+                <div style={{ maxWidth: '1360px', paddingRight: '40px' }}>
+                  <span
                     className="inline-block px-4 py-1.5 text-xs font-normal tracking-wide uppercase mb-3 rounded-none"
                     style={{ backgroundColor: '#3D4A3A', color: '#FFFFFF' }}
                   >
                     스피릿 PICK
                   </span>
-              <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                  <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName} 스피릿이 좋아하는 레시피
                   </h2>
-              <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
+                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
                     {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
                   </p>
-                  <div className="mt-6">
-                    <SpiritRecipeCarousel recipes={spiritPickRecipes} showRank />
+                </div>
+                {/* 캐러셀 - 우측 오버플로우 허용 */}
+                <div className="mt-6">
+                  <SpiritRecipeCarousel recipes={spiritPickRecipes} showRank />
                 </div>
               </section>
             )}
 
-          {/* Section 3: Recipe Grid (Centered Container) */}
-          <section className="w-full max-w-[1440px] px-10 py-20">
-            <div className="w-full flex flex-col">
-
+          {/* Section 3: 큐레이션 섹션 - 좌측 1440px 정렬, 우측 오버플로우 */}
+          <section
+            className="w-full py-20"
+            style={{
+              paddingLeft: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+              paddingRight: 0,
+            }}
+          >
             {/* 큐레이션 섹션 */}
             {displayCategories.length > 0 && (
-                <div style={{ padding: '40px 0' }}>
+              <div style={{ padding: '40px 0' }}>
+                {/* 텍스트 콘텐츠 - 1360px 제한 */}
+                <div style={{ maxWidth: '1360px', paddingRight: '40px' }}>
                   <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName}에게 어울리는 레시피
                   </h2>
                   <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
                     {getSpiritCurationMessage(spiritName)}
                   </p>
-                  <div className="space-y-12">
-                    {displayCategories.map((category) => {
-                      const colors = categoryColors[category.id] || COLORS.lincolnGreen;
-                      return (
-                        <div key={category.id}>
+                </div>
+                <div className="space-y-12">
+                  {displayCategories.map((category) => {
+                    const colors = categoryColors[category.id] || COLORS.lincolnGreen;
+                    return (
+                      <div key={category.id}>
+                        {/* 카테고리 헤더 - 1360px 제한 */}
+                        <div style={{ maxWidth: '1360px', paddingRight: '40px' }}>
                           <div className="flex items-start justify-between mb-2">
                             <div>
-                              <span 
+                              <span
                                 className="inline-block px-3 py-1 text-xs font-semibold tracking-wide uppercase mb-2 rounded-none"
                                 style={{ backgroundColor: colors.bg, color: colors.text }}
                               >
@@ -1167,21 +1182,25 @@ const RecipePage: React.FC = () => {
                               See all
                             </button>
                           </div>
-                          <div className="mt-6">
-                            <SpiritRecipeCarousel recipes={category.recipes} />
-                          </div>
                         </div>
-                      );
-                    })}
-                  </div>
+                        {/* 캐러셀 - 우측 오버플로우 허용 */}
+                        <div className="mt-6">
+                          <SpiritRecipeCarousel recipes={category.recipes} />
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
+              </div>
             )}
 
-            {/* 스피릿 미션 섹션 */}
-              <div 
+            {/* 스피릿 미션 섹션 - 중앙 정렬 콘텐츠 */}
+            <div
               style={{
                 padding: '40px 0',
+                paddingRight: '40px',
                 borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                maxWidth: '1360px',
               }}
             >
               <div className="text-center max-w-2xl mx-auto">
@@ -1189,30 +1208,35 @@ const RecipePage: React.FC = () => {
                   <Trophy className="w-5 h-5 text-emerald-700" />
                   <span className="text-emerald-700 font-semibold">스피릿 미션</span>
                 </div>
-                  <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                   이 레시피를 만들어보고 후기를 남겨주시면
                 </h3>
                 <div className="flex items-center justify-center gap-3 mb-6">
                   <span className="text-4xl">{spiritInfo.emoji}</span>
-                    <span className="text-emerald-700 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{spiritName}</span>
+                  <span className="text-emerald-700 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{spiritName}</span>
                   <span className="text-4xl">배지를 드려요!</span>
                 </div>
-                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
+                <p className="text-stone-600 mb-8 text-center" style={{ fontSize: '16px', fontWeight: 400 }}>
                   레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
                   <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
                 </p>
               </div>
-          </div>
-        </div>
+            </div>
           </section>
 
-          {/* Section 4: 일반 카테고리 섹션들 */}
-          <section className="w-full max-w-[1440px] px-10 py-20">
+          {/* Section 4: 일반 카테고리 섹션들 - 좌측 1440px 정렬, 우측 오버플로우 */}
+          <section
+            className="w-full py-20"
+            style={{
+              paddingLeft: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+              paddingRight: 0,
+            }}
+          >
             <div className="w-full flex flex-col">
-            {recipeCategories.map((category, index) => (
-              <RecipeSection key={category.id} category={category} index={index} />
-            ))}
-          </div>
+              {recipeCategories.map((category, index) => (
+                <RecipeSection key={category.id} category={category} index={index} />
+              ))}
+            </div>
           </section>
         </main>
       </div>
