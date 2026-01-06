@@ -512,17 +512,6 @@ const RecipeCategoryPage: React.FC = () => {
             </div>
           )}
 
-          {/* 더 이상 없을 때 */}
-          {!hasMore && displayedRecipes.length > 0 && (
-            <div style={{
-              textAlign: 'center',
-              padding: '40px 0',
-              color: '#999',
-              fontSize: '14px',
-            }}>
-              모든 레시피를 불러왔습니다
-            </div>
-          )}
 
           {/* 검색 결과 없음 */}
           {displayedRecipes.length === 0 && (
