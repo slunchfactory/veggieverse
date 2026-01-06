@@ -416,37 +416,30 @@ const ArticleDetail: React.FC<{
         <X size={20} color="#000" />
       </button>
 
-      {/* 1280px Container with Split Layout */}
+      {/* 1280px Container with 1:1 Split Layout */}
       <div className="max-w-[1280px] mx-auto px-5 py-[60px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-[60px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px]">
 
-          {/* LEFT: Sticky Cover */}
-          <aside className="lg:sticky lg:top-[100px] h-fit">
-            {/* 커버 이미지 */}
-            <div
+          {/* LEFT: Full-Bleed Sticky Image */}
+          <aside className="lg:sticky lg:top-[80px] h-[600px] lg:h-[calc(100vh-120px)] w-full">
+            <img
+              src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
+              alt={`${article.title} - 커버 이미지`}
               style={{
                 width: '100%',
-                aspectRatio: '3/4',
-                background: '#E5E5E0',
-                overflow: 'hidden',
-                marginBottom: '20px',
+                height: '100%',
+                objectFit: 'cover',
+                border: '1px solid #000',
               }}
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}${article.thumbnail.replace('/', '')}`}
-                alt={`${article.title} - 커버 이미지`}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-                loading="eager"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
-                }}
-              />
-            </div>
+              loading="eager"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
+              }}
+            />
+          </aside>
 
+          {/* RIGHT: Content with Title & Text */}
+          <main className="flex flex-col lg:pt-[10px]" style={{ fontSize: '15px', lineHeight: 1.7, color: '#1a1a1a' }}>
             {/* 카테고리 */}
             <p
               style={{
@@ -461,10 +454,22 @@ const ArticleDetail: React.FC<{
               {article.category}
             </p>
 
+            {/* 날짜 */}
+            <span
+              style={{
+                fontSize: '14px',
+                color: '#9A9A9A',
+                marginBottom: '13px',
+                display: 'block',
+              }}
+            >
+              {article.date}
+            </span>
+
             {/* 제목 */}
             <h1
               style={{
-                fontSize: '28px',
+                fontSize: '32px',
                 fontWeight: 400,
                 color: '#000',
                 lineHeight: 1.3,
@@ -480,31 +485,12 @@ const ArticleDetail: React.FC<{
                 fontSize: '15px',
                 fontWeight: 400,
                 color: '#6B6B6B',
-                marginBottom: '20px',
+                marginBottom: '40px',
                 lineHeight: 1.5,
               }}
             >
               {article.subtitle}
             </p>
-
-            {/* 날짜 & 작성자 */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                fontSize: '13px',
-                color: '#9A9A9A',
-              }}
-            >
-              <span>{article.author}</span>
-              <span>·</span>
-              <span>{article.date}</span>
-            </div>
-          </aside>
-
-          {/* RIGHT: Scrollable Body */}
-          <main style={{ fontSize: '15px', lineHeight: 1.7, color: '#1a1a1a' }}>
             {/* 인용구 */}
             {article.quote && (
               <div
