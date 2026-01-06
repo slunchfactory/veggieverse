@@ -90,20 +90,20 @@
   --font-primary: var(--font-family);
   --font-accent: var(--font-family);
 
-  /* Typography Scale */
-  --font-size-display: 48px;
-  --font-size-h1: 36px;
-  --font-size-h1-mobile: 28px;
-  --font-size-h2: 28px;
-  --font-size-h2-mobile: 22px;
-  --font-size-h3: 20px;
-  --font-size-h3-mobile: 18px;
-  --font-size-product: 16px;
-  --font-size-body: 16px;
-  --font-size-body-mobile: 15px;
-  --font-size-small: 14px;
-  --font-size-caption: 12px;
-  --font-size-ui: 15px;
+  /* Typography Scale - 1280px 최적화 */
+  --font-size-display: 40px;
+  --font-size-h1: 32px;
+  --font-size-h1-mobile: 24px;
+  --font-size-h2: 24px;
+  --font-size-h2-mobile: 20px;
+  --font-size-h3: 18px;
+  --font-size-h3-mobile: 16px;
+  --font-size-product: 15px;
+  --font-size-body: 14px;
+  --font-size-body-mobile: 14px;
+  --font-size-small: 13px;
+  --font-size-caption: 11px;
+  --font-size-ui: 14px;
 
   /* Typography Weights - NO BOLD RULE: 모든 텍스트는 Regular(400) */
   --font-weight-regular: 400;
@@ -130,12 +130,17 @@
      LAYOUT - Open Border Grid (시원한 여백)
      ========================================== */
 
-  /* Header & Promo Bar Heights */
-  --promo-h: 32px;
-  --header-h: 72px;
+  /* Header & Promo Bar Heights - 1280px 최적화 */
+  --promo-h: 28px;
+  --header-h: 64px;
   --header-area-h: calc(var(--promo-h) + var(--header-h));
   --header-height: 64px;
-  --sidebar-width: 240px;
+  --sidebar-width: 220px;
+
+  /* Grid Gap - 13px 규칙 */
+  --gap-grid: 13px;
+  --gap-card: 13px;
+  --gap-section: 60px;
 
   /* Header 반응형 변수 */
   --header-padding-x: 32px;
@@ -430,10 +435,10 @@ body {
   position: relative;
 }
 
-/* 공통 페이지 좌우 여백 - 최대 너비 1080px 레이아웃 */
+/* 공통 페이지 좌우 여백 - 최대 너비 1280px 레이아웃 */
 .page-container {
   width: 100%;
-  max-width: 1080px;
+  max-width: 1280px;
   margin: 0 auto;
   padding-left: 20px;
   padding-right: 20px;
@@ -462,7 +467,7 @@ body {
 }
 
 .text-container-wide {
-  max-width: 1080px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -541,11 +546,11 @@ img[style*="aspect-ratio"],
   display: block;
 }
 
-/* 썸네일 그리드 - 모바일 2열, 데스크톱 반응형 */
+/* 썸네일 그리드 - 모바일 2열, 데스크톱 반응형 (13px 규칙) */
 .thumbnail-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  gap: 13px;
 }
 
 @media (min-width: 768px) {
