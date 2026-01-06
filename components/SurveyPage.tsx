@@ -76,73 +76,81 @@ const checkDietConflict = (selections: string[]): string | null => {
   return null;
 };
 
+// 타로 카드 스타일 질문 데이터
 const QUESTIONS = [
   {
     id: 1,
-    question: '평소 어떻게 먹어요?',
-    hasDietCategories: true, // 카테고리가 있는 특별한 질문
-    options: [] // 옵션은 DIET_CATEGORIES에서 가져옴
+    question: '당신의 식단 유형은?',
+    options: [
+      { label: '만찬', description: '고기, 생선, 채소 가리지 않고 다양하게 즐겨요', value: 'none', tarot: { number: 'I', title: 'The Feast.', image: '/images/tarot/diet-type/feast.png' } },
+      { label: '정원', description: '동물성 식품 없이 식물성으로만 먹어요', value: 'vegan', tarot: { number: 'II', title: 'The Garden.', image: '/images/tarot/diet-type/garden.png' } },
+      { label: '바다', description: '육류는 안 먹지만 해산물은 먹어요', value: 'pescatarian', tarot: { number: 'III', title: 'The Ocean.', image: '/images/tarot/diet-type/ocean.png' } },
+      { label: '새벽', description: '육류는 안 먹지만 가금류는 먹어요', value: 'pollo', tarot: { number: 'IV', title: 'The Dawn.', image: '/images/tarot/diet-type/dawn.png' } },
+      { label: '균형', description: '평소엔 채식, 가끔은 유연하게 먹어요', value: 'flexitarian', tarot: { number: 'V', title: 'The Balance.', image: '/images/tarot/diet-type/balance.png' } },
+    ]
   },
   {
     id: 2,
-    question: '끌리는 요리 무드는?',
+    question: '추가 옵션이 있나요?',
     options: [
-      { label: '클래식', description: '검증된 전통의 맛', value: 'traditional' },
-      { label: '퓨전', description: '경계 없는 조합', value: 'fusion' },
-      { label: '미니멀', description: '최소한의 재료', value: 'simple' },
-      { label: '파인', description: '정교하고 세련된', value: 'gourmet' },
+      { label: '곡물', description: '밀, 보리 등 글루텐을 피해요', value: 'gluten-free', tarot: { number: 'VI', title: 'The Grain.', image: '/images/tarot/diet-option/grain.png' } },
+      { label: '은하수', description: '우유, 치즈 등 유제품을 피해요', value: 'lactose-free', tarot: { number: 'VII', title: 'The Milkyway.', image: '/images/tarot/diet-option/milkyway.png' } },
+      { label: '없음', description: '추가 옵션 없이 진행해요', value: 'none', tarot: { number: '', title: '없음', image: '/images/tarot/card-back.png' } },
     ]
   },
   {
     id: 3,
-    question: '요리에서 가장 중요한 건?',
+    question: '끌리는 요리 무드는?',
     options: [
-      { label: '밸런스', description: '영양의 균형', value: 'nutrition' },
-      { label: '테이스트', description: '맛이 전부', value: 'taste' },
-      { label: '이지', description: '빠르고 간편하게', value: 'convenience' },
-      { label: '디스커버리', description: '새로운 시도', value: 'novelty' },
+      { label: '전통', description: '오래 검증된 레시피, 익숙한 맛이 좋아요', value: 'traditional', tarot: { number: 'VIII', title: 'The Heritage.', image: '/images/tarot/food-mood/heritage.png' } },
+      { label: '연금술', description: '장르의 경계 없이 섞인 맛이 좋아요', value: 'fusion', tarot: { number: 'IX', title: 'The Alchemy.', image: '/images/tarot/food-mood/alchemy.png' } },
+      { label: '고요', description: '재료 본연의 맛, 심플한 구성이 좋아요', value: 'simple', tarot: { number: 'X', title: 'The Silence.', image: '/images/tarot/food-mood/silence.png' } },
+      { label: '장인', description: '섬세하고 정교한 스타일이 좋아요', value: 'gourmet', tarot: { number: 'XI', title: 'The Artisan.', image: '/images/tarot/food-mood/artisan.png' } },
     ]
   },
   {
     id: 4,
-    question: '식사 시간, 어떤 의미예요?',
+    question: '요리에서 가장 중요한 건?',
     options: [
-      { label: '함께', description: '같이 먹는 시간', value: 'family' },
-      { label: '웰니스', description: '건강한 한 끼', value: 'health' },
-      { label: '효율', description: '시간 절약이 우선', value: 'quick' },
-      { label: '탐험', description: '새로운 맛의 발견', value: 'experience' },
+      { label: '저울', description: '탄단지, 영양소 균형이 맞아야 해요', value: 'nutrition', tarot: { number: 'XII', title: 'The Scale.', image: '/images/tarot/priority/scale.png' } },
+      { label: '혀', description: '뭐니뭐니해도 맛있어야 해요', value: 'taste', tarot: { number: 'XIII', title: 'The Tongue.', image: '/images/tarot/priority/tongue.png' } },
+      { label: '바람', description: '빠르고 간편하게 먹을 수 있어야 해요', value: 'convenience', tarot: { number: 'XIV', title: 'The Wind.', image: '/images/tarot/priority/wind.png' } },
+      { label: '나침반', description: '새로운 맛을 시도하고 싶어요', value: 'novelty', tarot: { number: 'XV', title: 'The Compass.', image: '/images/tarot/priority/compass.png' } },
     ]
   },
   {
     id: 5,
-    question: '채식을 선택한 이유는?', // 채식 선택자용
-    isConditional: true, // 조건부 질문
-    condition: (answers: Record<number, string | string[]>) => {
-      const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
-      const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
-      return primaryDiet !== 'none'; // 비건~폴로 선택자에게만 표시
-    },
+    question: '식사 시간, 어떤 의미예요?',
     options: [
-      { label: '건강', description: '나를 위해', value: 'health' },
-      { label: '지구', description: '환경을 위해', value: 'environment' },
-      { label: '생명', description: '동물을 위해', value: 'animal' },
-      { label: '도전', description: '새로운 시도', value: 'curiosity' },
+      { label: '원탁', description: '누군가와 함께 나누는 시간이에요', value: 'family', tarot: { number: 'XVI', title: 'The Table.', image: '/images/tarot/meal-meaning/table.png' } },
+      { label: '생명나무', description: '몸과 마음을 돌보는 시간이에요', value: 'health', tarot: { number: 'XVII', title: 'The Tree.', image: '/images/tarot/meal-meaning/tree.png' } },
+      { label: '모래시계', description: '빠르게 해결하고 다른 일에 집중해요', value: 'quick', tarot: { number: 'XVIII', title: 'The Hourglass.', image: '/images/tarot/meal-meaning/hourglass.png' } },
+      { label: '지도', description: '새로운 맛을 발견하는 탐험이에요', value: 'experience', tarot: { number: 'XIX', title: 'The Map.', image: '/images/tarot/meal-meaning/map.png' } },
     ]
   },
   {
     id: 6,
-    question: '평소 식사 패턴은?', // 논비건용
+    question: '평소 식사 패턴은?',
+    options: [
+      { label: '시계', description: '정해진 시간에 규칙적으로 먹어요', value: 'regular', tarot: { number: 'XX', title: 'The Clock.', image: '/images/tarot/meal-pattern/clock.png' } },
+      { label: '새', description: '배고플 때 자유롭게 먹어요', value: 'flexible', tarot: { number: 'XXI', title: 'The Bird.', image: '/images/tarot/meal-pattern/bird.png' } },
+      { label: '설계자', description: '일주일 식단을 미리 계획해요', value: 'planned', tarot: { number: 'XXII', title: 'The Architect.', image: '/images/tarot/meal-pattern/architect.png' } },
+      { label: '불꽃', description: '그때그때 끌리는 대로 정해요', value: 'spontaneous', tarot: { number: 'XXIII', title: 'The Spark.', image: '/images/tarot/meal-pattern/spark.png' } },
+    ]
+  },
+  {
+    id: 7,
+    question: '채식을 선택한 이유는?',
     isConditional: true,
     condition: (answers: Record<number, string | string[]>) => {
-      const dietSelections = Array.isArray(answers[1]) ? answers[1] : (answers[1] ? [answers[1]] : []);
-      const primaryDiet = dietSelections.find(v => PRIMARY_DIET_VALUES.includes(v)) || 'none';
-      return primaryDiet === 'none'; // 열린 식단 선택자에게만 표시
+      const dietAnswer = answers[1];
+      return dietAnswer && dietAnswer !== 'none'; // 일반 식단이 아닐 때만 표시
     },
     options: [
-      { label: '규칙적', description: '정해진 시간에 먹는 편', value: 'regular' },
-      { label: '자유로움', description: '배고플 때 먹는 편', value: 'flexible' },
-      { label: '계획형', description: '미리 식단을 짜두는 편', value: 'planned' },
-      { label: '즉흥형', description: '그때그때 정하는 편', value: 'spontaneous' },
+      { label: '심장', description: '내 몸의 건강을 위해 선택했어요', value: 'health', tarot: { number: 'XXIV', title: 'The Heart.', image: '/images/tarot/veg-reason/heart.png' } },
+      { label: '대지', description: '환경과 지구를 위해 선택했어요', value: 'environment', tarot: { number: 'XXV', title: 'The Earth.', image: '/images/tarot/veg-reason/earth.png' } },
+      { label: '숨결', description: '동물의 생명을 위해 선택했어요', value: 'animal', tarot: { number: 'XXVI', title: 'The Breath.', image: '/images/tarot/veg-reason/breath.png' } },
+      { label: '문', description: '새로운 도전으로 시작했어요', value: 'curiosity', tarot: { number: 'XXVII', title: 'The Door.', image: '/images/tarot/veg-reason/door.png' } },
     ]
   },
 ];
@@ -575,6 +583,9 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
   const [monsterName, setMonsterName] = useState('');
   const [monsterDescription, setMonsterDescription] = useState('');
 
+  // 타로 카드 호버 상태
+  const [hoveredCard, setHoveredCard] = useState<{ label: string; description: string } | null>(null);
+
   const scrollToTop = () => {
     if (onScrollToTop) {
       onScrollToTop();
@@ -587,10 +598,22 @@ export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSa
   };
 
   const handleOptionSelect = (questionId: number, value: string) => {
-    if (questionId === 1) {
-      // 식단 질문은 다중 선택 로직
-      handleDietSelect(value);
+    const question = QUESTIONS.find(q => q.id === questionId);
+
+    if ((question as any)?.isMultiple) {
+      // 다중 선택 가능한 질문
+      setAnswers(prev => {
+        const currentSelections = Array.isArray(prev[questionId]) ? prev[questionId] as string[] : [];
+        if (currentSelections.includes(value)) {
+          // 이미 선택된 경우 해제
+          return { ...prev, [questionId]: currentSelections.filter(v => v !== value) };
+        } else {
+          // 새로 선택
+          return { ...prev, [questionId]: [...currentSelections, value] };
+        }
+      });
     } else {
+      // 단일 선택 질문
       setAnswers(prev => ({ ...prev, [questionId]: value }));
     }
   };
@@ -1621,81 +1644,288 @@ ${result.description}
 
   return (
     <div className="min-h-screen bg-transparent">
-      
+
       {/* 위로 가기 버튼 (스크롤을 내렸을 때만 표시) */}
-      {/* 첫 번째 질문(식단)일 때는 DietGridSelect 사용 */}
-      {currentQuestion.hasDietCategories ? (
-        <DietGridSelect
-          onComplete={handleDietCardComplete}
-          onBack={scrollToTop}
-        />
-      ) : (
-        <>
-          {showScrollToTop && (
-            <button
-              onClick={scrollToTop}
-              className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
-              style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
-              aria-label="상단으로 이동"
-            >
-              <ChevronUp className="w-5 h-5" />
-            </button>
-          )}
-
-          <div className="flex items-center justify-center min-h-screen p-8">
-            <div className="bg-white rounded-none p-10 max-w-xl w-full shadow-sm">
-              {/* 질문 */}
-              <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
-                {currentQuestion.question}
-              </h2>
-
-              {/* 옵션들 */}
-              <div className="mb-8">
-                {/* 일반 질문 */}
-                <div className="space-y-3">
-                  {currentQuestion.options.map((option) => (
-                    <button
-                      key={option.value}
-                      onClick={() => handleOptionSelect(currentQuestion.id, option.value)}
-                      className={`w-full p-4 rounded-none border-2 text-left transition-all ${
-                        answers[currentQuestion.id] === option.value
-                          ? 'border-black'
-                          : 'border-stone-200 hover:border-stone-300'
-                      }`}
-                      style={answers[currentQuestion.id] === option.value ? { backgroundColor: 'var(--lime)', borderWidth: '2px', padding: '15px' } : {}}
-                    >
-                      <div className="font-semibold text-stone-800">{option.label}</div>
-                      <div className="text-sm text-stone-500">{option.description}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* 네비게이션 버튼 */}
-              <div className="flex gap-4">
-                <button
-                  onClick={handleBack}
-                  className="flex-1 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
-                >
-                  이전
-                </button>
-                <button
-                  onClick={handleNext}
-                  disabled={!answers[currentQuestion.id]}
-                  className={`flex-1 py-3 rounded-none font-normal transition-colors ${
-                    answers[currentQuestion.id]
-                      ? 'text-white hover:opacity-90'
-                      : 'bg-stone-200 text-stone-400 cursor-not-allowed'
-                  }`}
-                  style={answers[currentQuestion.id] ? { backgroundColor: '#000000', borderRadius: 0 } : { borderRadius: 0 }}
-                >
-                  {currentStep < availableQuestions.length - 1 ? '다음' : '결과 보기'}
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
+      {showScrollToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
+          style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
+          aria-label="상단으로 이동"
+        >
+          <ChevronUp className="w-5 h-5" />
+        </button>
       )}
+
+      <div className="flex items-center justify-center min-h-screen p-8">
+        <div className="bg-white rounded-none p-10 max-w-4xl w-full shadow-sm">
+          {/* 질문 */}
+          <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+            {currentQuestion.question}
+          </h2>
+
+          {/* 타로 카드 옵션들 */}
+          <div className="flex flex-col items-center gap-6 mb-8">
+            {/* 5개 이상일 때 2+3 두 줄 레이아웃 */}
+            {currentQuestion.options.length >= 5 ? (
+              <>
+                {/* 첫 번째 줄: 2개 */}
+                <div className="flex justify-center gap-6">
+                  {currentQuestion.options.slice(0, 2).map((option: any) => {
+                    const isMultiple = (currentQuestion as any).isMultiple;
+                    const currentAnswer = answers[currentQuestion.id];
+                    const isSelected = isMultiple
+                      ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                      : currentAnswer === option.value;
+                    const tarot = option.tarot;
+                    const isHovered = hoveredCard?.value === option.value;
+
+                    return (
+                      <div
+                        key={option.value}
+                        className="flex flex-col items-center"
+                        onMouseEnter={() => setHoveredCard(option)}
+                        onMouseLeave={() => setHoveredCard(null)}
+                      >
+                        <div
+                          onClick={() => {
+                            handleOptionSelect(currentQuestion.id, option.value);
+                            if (!isMultiple) {
+                              setTimeout(() => handleNext(), 300);
+                            }
+                          }}
+                          className="cursor-pointer transition-all duration-300"
+                          style={{
+                            width: '160px',
+                            height: '256px',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            boxShadow: isSelected
+                              ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
+                              : '0 8px 24px rgba(0, 0, 0, 0.15)',
+                            transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                            background: '#E5E5E5',
+                          }}
+                        >
+                          {tarot && tarot.image ? (
+                            <div className="w-full h-full relative">
+                              <img
+                                src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
+                                alt={tarot.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (placeholder) placeholder.style.display = 'flex';
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
+                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
+                              >
+                                <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
+                                <span className="text-sm text-stone-600">{tarot.title}</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
+                              <span className="text-lg font-bold text-stone-800">{option.label}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-3 text-center" style={{ width: '160px' }}>
+                          <span className="text-sm font-bold text-stone-800">{option.label}</span>
+                          <div className="text-xs text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '32px' }}>
+                            {option.description}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* 두 번째 줄: 나머지 3개 */}
+                <div className="flex justify-center gap-6">
+                  {currentQuestion.options.slice(2).map((option: any) => {
+                    const isMultiple = (currentQuestion as any).isMultiple;
+                    const currentAnswer = answers[currentQuestion.id];
+                    const isSelected = isMultiple
+                      ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                      : currentAnswer === option.value;
+                    const tarot = option.tarot;
+                    const isHovered = hoveredCard?.value === option.value;
+
+                    return (
+                      <div
+                        key={option.value}
+                        className="flex flex-col items-center"
+                        onMouseEnter={() => setHoveredCard(option)}
+                        onMouseLeave={() => setHoveredCard(null)}
+                      >
+                        <div
+                          onClick={() => {
+                            handleOptionSelect(currentQuestion.id, option.value);
+                            if (!isMultiple) {
+                              setTimeout(() => handleNext(), 300);
+                            }
+                          }}
+                          className="cursor-pointer transition-all duration-300"
+                          style={{
+                            width: '160px',
+                            height: '256px',
+                            borderRadius: '12px',
+                            overflow: 'hidden',
+                            boxShadow: isSelected
+                              ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
+                              : '0 8px 24px rgba(0, 0, 0, 0.15)',
+                            transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                            background: '#E5E5E5',
+                          }}
+                        >
+                          {tarot && tarot.image ? (
+                            <div className="w-full h-full relative">
+                              <img
+                                src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
+                                alt={tarot.title}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
+                                  if (placeholder) placeholder.style.display = 'flex';
+                                }}
+                              />
+                              <div
+                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
+                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
+                              >
+                                <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
+                                <span className="text-sm text-stone-600">{tarot.title}</span>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
+                              <span className="text-lg font-bold text-stone-800">{option.label}</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-3 text-center" style={{ width: '160px' }}>
+                          <span className="text-sm font-bold text-stone-800">{option.label}</span>
+                          <div className="text-xs text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '32px' }}>
+                            {option.description}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            ) : (
+              /* 4개 이하일 때 기존 한 줄 레이아웃 */
+              <div className="flex justify-center gap-6">
+                {currentQuestion.options.map((option: any) => {
+              // 다중 선택 여부에 따라 선택 상태 확인
+              const isMultiple = (currentQuestion as any).isMultiple;
+              const currentAnswer = answers[currentQuestion.id];
+              const isSelected = isMultiple
+                ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                : currentAnswer === option.value;
+              const tarot = option.tarot;
+              const isHovered = hoveredCard?.value === option.value;
+
+              return (
+                <div
+                  key={option.value}
+                  className="flex flex-col items-center"
+                  onMouseEnter={() => setHoveredCard(option)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  {/* 카드 이미지 */}
+                  <div
+                    onClick={() => {
+                      handleOptionSelect(currentQuestion.id, option.value);
+                      // 단일 선택이면 자동으로 다음으로 이동
+                      if (!isMultiple) {
+                        setTimeout(() => handleNext(), 300);
+                      }
+                    }}
+                    className="cursor-pointer transition-all duration-300"
+                    style={{
+                      width: '160px',
+                      height: '256px',
+                      borderRadius: '12px',
+                      overflow: 'hidden',
+                      boxShadow: isSelected
+                        ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
+                        : '0 8px 24px rgba(0, 0, 0, 0.15)',
+                      transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                      background: '#E5E5E5',
+                    }}
+                  >
+                    {tarot && tarot.image ? (
+                      <div className="w-full h-full relative">
+                        <img
+                          src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
+                          alt={tarot.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
+                            if (placeholder) placeholder.style.display = 'flex';
+                          }}
+                        />
+                        {/* 플레이스홀더 (이미지 로드 실패 시) */}
+                        <div
+                          className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
+                          style={{
+                            display: 'none',
+                            background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)'
+                          }}
+                        >
+                          <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
+                          <span className="text-sm text-stone-600">{tarot.title}</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
+                        style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
+                      >
+                        <span className="text-lg font-bold text-stone-800">{option.label}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 카드 제목 (항상 표시) */}
+                  <div className="mt-3 text-center" style={{ width: '160px' }}>
+                    <span className="text-sm font-bold text-stone-800">{option.label}</span>
+                    {/* 설명 (호버 시에만 표시) */}
+                    <div
+                      className="text-xs text-stone-500 mt-1 transition-opacity duration-200"
+                      style={{
+                        opacity: isHovered ? 1 : 0,
+                        height: '32px',
+                      }}
+                    >
+                      {option.description}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+              </div>
+            )}
+          </div>
+
+          {/* 네비게이션 버튼 */}
+          <div className="flex justify-center">
+            <button
+              onClick={handleBack}
+              className="px-8 py-3 border-2 border-stone-300 text-stone-600 rounded-none font-normal hover:bg-stone-50 transition-colors"
+            >
+              이전
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
