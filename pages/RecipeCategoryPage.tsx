@@ -1,6 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, Search, Bookmark, Heart } from 'lucide-react';
 import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // 레시피 인터페이스
@@ -12,6 +12,7 @@ interface Recipe {
   author: string;
   likes?: number;
   category?: string;
+  isNew?: boolean;
 }
 
 // 카테고리 데이터
@@ -40,14 +41,14 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
     title: '이번 주 새로 올라온 레시피',
     description: '따끈따끈한 신규 레시피를 만나보세요.',
     recipes: [
-      { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', image: '/vege_flot_img/edamame.png', author: '비건셰프', likes: 234, category: '한식' },
-      { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', image: '/vege_flot_img/carrot.png', author: '채식러버', likes: 189, category: '샌드위치' },
-      { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', image: '/vege_flot_img/olive.png', author: '이탈리안', likes: 156, category: '파스타' },
-      { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', image: '/vege_flot_img/pistachio.png', author: '홈쿡러', likes: 312, category: '소스' },
-      { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', image: '/vege_flot_img/fig.png', author: '계절요리', likes: 278, category: '샐러드' },
-      { id: 106, title: '아몬드 밀크 라떼', description: '고소한 식물성 라떼', image: '/vege_flot_img/almond.png', author: '바리스타', likes: 198, category: '음료' },
-      { id: 107, title: '파프리카 샐러드', description: '색감 예쁜 건강식', image: '/vege_flot_img/bell pepper.png', author: '샐러드전문', likes: 223, category: '샐러드' },
-      { id: 108, title: '사과 시나몬 오트밀', description: '따뜻한 아침 한 그릇', image: '/vege_flot_img/apple.png', author: '아침요리사', likes: 267, category: '아침' },
+      { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', image: '/vege_flot_img/edamame.png', author: '비건셰프', likes: 234, category: '한식', isNew: true },
+      { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', image: '/vege_flot_img/carrot.png', author: '채식러버', likes: 189, category: '샌드위치', isNew: true },
+      { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', image: '/vege_flot_img/olive.png', author: '이탈리안', likes: 156, category: '파스타', isNew: true },
+      { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', image: '/vege_flot_img/pistachio.png', author: '홈쿡러', likes: 312, category: '소스', isNew: true },
+      { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', image: '/vege_flot_img/fig.png', author: '계절요리', likes: 278, category: '샐러드', isNew: true },
+      { id: 106, title: '아몬드 밀크 라떼', description: '고소한 식물성 라떼', image: '/vege_flot_img/almond.png', author: '바리스타', likes: 198, category: '음료', isNew: true },
+      { id: 107, title: '파프리카 샐러드', description: '색감 예쁜 건강식', image: '/vege_flot_img/bell pepper.png', author: '샐러드전문', likes: 223, category: '샐러드', isNew: true },
+      { id: 108, title: '사과 시나몬 오트밀', description: '따뜻한 아침 한 그릇', image: '/vege_flot_img/apple.png', author: '아침요리사', likes: 267, category: '아침', isNew: true },
     ],
   },
   lunch: {
@@ -129,17 +130,119 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
   },
 };
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_LOAD = 8; // 무한스크롤 시 한 번에 로드할 개수
+
+// 레시피 카드 컴포넌트
+const RecipeCard: React.FC<{ recipe: Recipe; categorySubtitle?: string }> = ({ recipe, categorySubtitle }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <Link
+      to={`/recipe/${recipe.id}`}
+      style={{ textDecoration: 'none' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* 이미지 영역 - 4:3 비율 */}
+      <div style={{
+        width: '100%',
+        aspectRatio: '4 / 3',
+        borderRadius: '8px',
+        overflow: 'hidden',
+        position: 'relative',
+        background: '#f0f0f0',
+      }}>
+        <img
+          src={getRecipeThumbnailImage(recipe.id)}
+          alt={recipe.title}
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            transition: 'transform 0.3s ease',
+            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+          }}
+          loading="lazy"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = getFallbackRecipeImage(recipe.id);
+          }}
+        />
+      </div>
+
+      {/* 텍스트 영역 */}
+      <div style={{ paddingTop: '12px' }}>
+        {/* 카테고리 + New 태그 */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          marginBottom: '6px',
+          fontSize: '12px',
+        }}>
+          <span style={{ color: '#666' }}>Recipe</span>
+          {recipe.isNew && (
+            <>
+              <span style={{ color: '#ccc' }}>·</span>
+              <span style={{ color: '#E53935', fontWeight: 500 }}>New</span>
+            </>
+          )}
+        </div>
+
+        {/* 제목 */}
+        <h3 style={{
+          fontSize: '15px',
+          fontWeight: 500,
+          color: '#000',
+          margin: '0 0 8px 0',
+          lineHeight: 1.4,
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          overflow: 'hidden',
+        }}>
+          {recipe.title}
+        </h3>
+
+        {/* 좋아요 + 북마크 */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            fontSize: '12px',
+            color: '#666',
+          }}>
+            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
+            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
+            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
+            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
+            <Heart size={14} style={{ fill: '#ddd', color: '#ddd' }} />
+            <span style={{ marginLeft: '4px' }}>({recipe.likes || 0})</span>
+          </div>
+          <Bookmark size={18} style={{ color: '#ccc' }} />
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const RecipeCategoryPage: React.FC = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
   const category = categoryId ? categoryData[categoryId] : null;
 
-  // OSLO 스타일: 상태 관리
+  // 상태 관리
   const [activeTab, setActiveTab] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [hoveredRecipe, setHoveredRecipe] = useState<Recipe | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [displayCount, setDisplayCount] = useState(ITEMS_PER_LOAD);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // 무한스크롤 감지용 ref
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // 카테고리별 탭 생성
   const tabs = useMemo(() => {
@@ -174,12 +277,43 @@ const RecipeCategoryPage: React.FC = () => {
     return recipes;
   }, [category, activeTab, searchQuery]);
 
-  // 페이지네이션
-  const totalPages = Math.ceil(filteredRecipes.length / ITEMS_PER_PAGE);
-  const paginatedRecipes = filteredRecipes.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
+  // 현재 표시할 레시피
+  const displayedRecipes = filteredRecipes.slice(0, displayCount);
+  const hasMore = displayCount < filteredRecipes.length;
+
+  // 탭/검색 변경 시 displayCount 리셋
+  useEffect(() => {
+    setDisplayCount(ITEMS_PER_LOAD);
+  }, [activeTab, searchQuery]);
+
+  // 무한스크롤 - IntersectionObserver
+  const loadMore = useCallback(() => {
+    if (isLoading || !hasMore) return;
+
+    setIsLoading(true);
+    // 실제로는 API 호출, 여기서는 시뮬레이션
+    setTimeout(() => {
+      setDisplayCount(prev => prev + ITEMS_PER_LOAD);
+      setIsLoading(false);
+    }, 300);
+  }, [isLoading, hasMore]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          loadMore();
+        }
+      },
+      { threshold: 0.1, rootMargin: '100px' }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, loadMore]);
 
   if (!category) {
     return (
@@ -195,7 +329,7 @@ const RecipeCategoryPage: React.FC = () => {
   }
 
   return (
-    <div style={{ background: '#fff', minHeight: '100vh' }}>
+    <div style={{ background: '#FAF9F6', minHeight: '100vh' }}>
       {/* 상단 네비게이션 */}
       <div
         style={{
@@ -205,17 +339,18 @@ const RecipeCategoryPage: React.FC = () => {
           right: 0,
           zIndex: 45,
           background: '#FFFFFF',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid #E0E0E0',
         }}
       >
         <div
-          className="px-5 md:px-8 lg:px-14"
           style={{
             display: 'flex',
             alignItems: 'center',
             height: '48px',
             maxWidth: '1440px',
             margin: '0 auto',
+            paddingLeft: 'max(20px, calc((100vw - 1440px) / 2 + 40px))',
+            paddingRight: '20px',
           }}
         >
           <Link
@@ -240,25 +375,44 @@ const RecipeCategoryPage: React.FC = () => {
       {/* 콘텐츠 영역 */}
       <main style={{ paddingTop: '48px' }}>
         <div
-          className="px-5 md:px-8 lg:px-14"
           style={{
             maxWidth: '1440px',
             margin: '0 auto',
+            paddingLeft: 'max(20px, calc((100vw - 1440px) / 2 + 40px))',
+            paddingRight: 'max(20px, calc((100vw - 1440px) / 2 + 40px))',
             paddingBottom: '80px',
           }}
         >
+          {/* 페이지 헤더 */}
+          <div style={{ padding: '32px 0 24px' }}>
+            <h1 style={{
+              fontSize: '28px',
+              fontWeight: 400,
+              color: '#000',
+              marginBottom: '8px',
+            }}>
+              {category.title}
+            </h1>
+            <p style={{
+              fontSize: '14px',
+              color: '#666',
+            }}>
+              {category.description}
+            </p>
+          </div>
+
           {/* 탭 필터 */}
           <div style={{
             display: 'flex',
             flexWrap: 'wrap',
             gap: '8px',
-            padding: '24px 0',
+            paddingBottom: '16px',
             borderBottom: '1px solid #eee',
           }}>
             {tabs.map(tab => (
               <button
                 key={tab.id}
-                onClick={() => { setActiveTab(tab.id); setCurrentPage(1); }}
+                onClick={() => setActiveTab(tab.id)}
                 style={{
                   padding: '8px 16px',
                   border: '1px solid #000',
@@ -267,6 +421,7 @@ const RecipeCategoryPage: React.FC = () => {
                   fontSize: '13px',
                   fontWeight: 400,
                   cursor: 'pointer',
+                  borderRadius: '20px',
                   transition: 'all 0.15s ease',
                 }}
               >
@@ -275,24 +430,34 @@ const RecipeCategoryPage: React.FC = () => {
             ))}
           </div>
 
-          {/* 검색 입력 */}
-          <div style={{ padding: '24px 0', maxWidth: '300px' }}>
-            <div style={{ position: 'relative' }}>
+          {/* 검색 + 결과 수 */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '20px 0',
+          }}>
+            <span style={{ fontSize: '14px', color: '#666' }}>
+              {filteredRecipes.length}개의 레시피
+            </span>
+            <div style={{ position: 'relative', width: '200px' }}>
               <input
                 type="text"
                 placeholder="검색"
                 value={searchQuery}
-                onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
                   width: '100%',
-                  padding: '12px 40px 12px 16px',
+                  padding: '10px 36px 10px 14px',
                   border: '1px solid #ddd',
+                  borderRadius: '4px',
                   fontSize: '14px',
                   outline: 'none',
+                  background: '#fff',
                 }}
               />
               <Search
-                size={18}
+                size={16}
                 style={{
                   position: 'absolute',
                   right: '12px',
@@ -304,153 +469,79 @@ const RecipeCategoryPage: React.FC = () => {
             </div>
           </div>
 
-          {/* OSLO 스타일 리스트 */}
-          <div style={{ position: 'relative' }}>
-            <div style={{ borderTop: '1px solid #000' }}>
-              {paginatedRecipes.map((recipe) => (
-                <Link
-                  key={recipe.id}
-                  to={`/recipe/${recipe.id}`}
-                  onMouseEnter={() => setHoveredRecipe(recipe)}
-                  onMouseLeave={() => setHoveredRecipe(null)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '24px',
-                    padding: '24px 12px',
-                    borderBottom: '1px solid #ddd',
-                    textDecoration: 'none',
-                    background: hoveredRecipe?.id === recipe.id ? '#CCFF00' : 'transparent',
-                    transition: 'background-color 0.15s ease',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {/* 카테고리 태그 */}
-                  <span style={{
-                    fontSize: '13px',
-                    color: hoveredRecipe?.id === recipe.id ? '#000' : '#666',
-                    minWidth: '80px',
-                    flexShrink: 0,
-                  }}>
-                    #{recipe.category || category.subtitle}
-                  </span>
-
-                  {/* 제목 & 설명 */}
-                  <div style={{ flex: 1 }}>
-                    <h3 style={{
-                      fontSize: '18px',
-                      fontWeight: 700,
-                      color: '#000',
-                      marginBottom: '8px',
-                      lineHeight: 1.4,
-                    }}>
-                      {recipe.title}
-                    </h3>
-                    <p style={{
-                      fontSize: '14px',
-                      color: hoveredRecipe?.id === recipe.id ? '#333' : '#666',
-                      lineHeight: 1.5,
-                    }}>
-                      {recipe.description}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-
-            {/* 호버 시 썸네일 팝업 (우측 고정) */}
-            {hoveredRecipe && (
-              <div
-                style={{
-                  position: 'fixed',
-                  right: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  width: '350px',
-                  aspectRatio: '4/5',
-                  background: '#f5f5f5',
-                  border: '1px solid #000',
-                  overflow: 'hidden',
-                  zIndex: 100,
-                  pointerEvents: 'none',
-                }}
-              >
-                <img
-                  src={getRecipeThumbnailImage(hoveredRecipe.id)}
-                  alt={hoveredRecipe.title}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = getFallbackRecipeImage();
-                  }}
-                />
-              </div>
-            )}
+          {/* 썸네일 그리드 - 4열 */}
+          <div
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+            style={{ paddingTop: '8px' }}
+          >
+            {displayedRecipes.map((recipe) => (
+              <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                categorySubtitle={category.subtitle}
+              />
+            ))}
           </div>
 
-          {/* 페이지네이션 */}
-          {totalPages > 1 && (
+          {/* 무한스크롤 로딩 트리거 */}
+          {hasMore && (
+            <div
+              ref={loadMoreRef}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '40px 0',
+              }}
+            >
+              {isLoading ? (
+                <div style={{
+                  width: '24px',
+                  height: '24px',
+                  border: '2px solid #ddd',
+                  borderTopColor: '#000',
+                  borderRadius: '50%',
+                  animation: 'spin 0.8s linear infinite',
+                }} />
+              ) : (
+                <span style={{ fontSize: '14px', color: '#999' }}>
+                  스크롤하여 더 보기
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* 더 이상 없을 때 */}
+          {!hasMore && displayedRecipes.length > 0 && (
             <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '8px',
+              textAlign: 'center',
               padding: '40px 0',
+              color: '#999',
+              fontSize: '14px',
             }}>
-              <button
-                onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                style={{
-                  padding: '8px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: currentPage === 1 ? 'default' : 'pointer',
-                  opacity: currentPage === 1 ? 0.3 : 1,
-                }}
-              >
-                <ChevronLeft size={20} />
-              </button>
+              모든 레시피를 불러왔습니다
+            </div>
+          )}
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                <button
-                  key={page}
-                  onClick={() => setCurrentPage(page)}
-                  style={{
-                    width: '36px',
-                    height: '36px',
-                    border: 'none',
-                    background: 'transparent',
-                    fontSize: '14px',
-                    fontWeight: currentPage === page ? 700 : 400,
-                    color: '#000',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {page}
-                </button>
-              ))}
-
-              <button
-                onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                style={{
-                  padding: '8px',
-                  border: 'none',
-                  background: 'transparent',
-                  cursor: currentPage === totalPages ? 'default' : 'pointer',
-                  opacity: currentPage === totalPages ? 0.3 : 1,
-                }}
-              >
-                <ChevronRight size={20} />
-              </button>
+          {/* 검색 결과 없음 */}
+          {displayedRecipes.length === 0 && (
+            <div style={{
+              textAlign: 'center',
+              padding: '80px 0',
+              color: '#666',
+            }}>
+              <p style={{ fontSize: '16px', marginBottom: '8px' }}>검색 결과가 없습니다</p>
+              <p style={{ fontSize: '14px', color: '#999' }}>다른 키워드로 검색해보세요</p>
             </div>
           )}
         </div>
       </main>
+
+      {/* 스피너 애니메이션 */}
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
