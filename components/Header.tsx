@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({
             justifyContent: 'space-between',
             height: '100%',
             padding: '0 16px',
-            maxWidth: '1400px',
+            maxWidth: '1440px',
             margin: '0 auto',
             position: 'relative',
           }}

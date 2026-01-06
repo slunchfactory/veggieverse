@@ -71,25 +71,25 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           height: '48px',
-          maxWidth: '1400px',
+          maxWidth: '1440px',
           margin: '0 auto',
           overflow: 'visible',
+          position: 'relative',
         }}
       >
-        {/* Left: Category Tabs (Horizontal Scroll) */}
+        {/* Center: Category Tabs (Horizontal Scroll) */}
         <div
           ref={scrollRef}
           className="no-scrollbar"
           style={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: '24px',
             overflowX: 'auto',
             overflowY: 'visible',
-            flex: 1,
-            marginRight: '16px',
             height: '100%',
           }}
         >
@@ -124,8 +124,8 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
           ))}
         </div>
 
-        {/* Right: Filter & Sort */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
+        {/* Right: Filter & Sort (Absolute positioned) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0, position: 'absolute', right: '20px' }}>
           {/* Filter Button */}
           {showFilter && (
             <button

@@ -784,7 +784,7 @@ export const NewsletterPage: React.FC = () => {
       />
 
       {/* 아티클 그리드 - 여백 기반, 반응형 (Fixed TopControlBar 높이만큼 여백) */}
-      <div className="px-4 md:px-8 lg:px-16 py-8 max-w-[1400px] mx-auto" style={{ paddingTop: '64px' }}>
+      <div className="px-4 md:px-8 lg:px-16 py-8 max-w-[1440px] mx-auto" style={{ paddingTop: '64px' }}>
         {filteredArticles.length === 0 ? (
           <div
             style={{

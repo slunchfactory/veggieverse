@@ -75,22 +75,23 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({ children }) => {
           style={{
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             height: '48px',
-            maxWidth: '1400px',
+            maxWidth: '1440px',
             margin: '0 auto',
           }}
         >
-          {/* 탭 리스트 (가로 스크롤) */}
+          {/* 탭 리스트 (중앙 정렬) */}
           <div
             ref={scrollRef}
             className="no-scrollbar"
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '24px',
               overflowX: 'auto',
               overflowY: 'visible',
-              flex: 1,
               height: '100%',
             }}
           >

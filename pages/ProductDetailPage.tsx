@@ -977,7 +977,7 @@ export const ProductDetailPage: React.FC = () => {
           padding: '12px 16px',
         }}
       >
-        <div style={{ display: 'flex', gap: '12px', maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ display: 'flex', gap: '12px', maxWidth: '1440px', margin: '0 auto' }}>
           <button
             onClick={() => setIsLiked(!isLiked)}
             style={{

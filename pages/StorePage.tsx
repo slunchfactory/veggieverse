@@ -803,7 +803,7 @@ export const StorePage: React.FC = () => {
       )}
 
       {/* 메인 콘텐츠 - Full Width (Fixed TopControlBar 높이만큼 여백) */}
-      <main style={{ padding: '24px 16px', paddingTop: '72px', maxWidth: '1400px', margin: '0 auto' }}>
+      <main style={{ padding: '24px 16px', paddingTop: '72px', maxWidth: '1440px', margin: '0 auto' }}>
         {/* 상품 그리드 - 반응형 */}
         <div
           className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6"

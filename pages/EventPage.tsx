@@ -107,7 +107,7 @@ const EventPage: React.FC = () => {
       />
 
       {/* Event Grid */}
-      <div className="px-4 md:px-8 lg:px-16 py-8 max-w-[1400px] mx-auto" style={{ paddingTop: '64px' }}>
+      <div className="px-4 md:px-8 lg:px-16 py-8 max-w-[1440px] mx-auto" style={{ paddingTop: '64px' }}>
         {filteredEvents.length === 0 ? (
           <div
             style={{

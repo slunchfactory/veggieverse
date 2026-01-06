@@ -22,7 +22,7 @@ const AboutPage: React.FC = () => {
       />
 
       {/* 콘텐츠 영역 - Full Width (Fixed TopControlBar 높이만큼 여백) */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', paddingTop: '48px' }}>
+      <div style={{ maxWidth: '1440px', margin: '0 auto', paddingTop: '48px' }}>
         {activeSection === 'story' && <StorySection />}
         {activeSection === 'branch' && <BranchSection />}
         {activeSection === 'b2b' && <B2BSection />}

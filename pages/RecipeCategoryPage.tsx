@@ -165,7 +165,7 @@ const RecipeCategoryPage: React.FC = () => {
             display: 'flex',
             alignItems: 'center',
             height: '48px',
-            maxWidth: '1400px',
+            maxWidth: '1440px',
             margin: '0 auto',
           }}
         >
@@ -194,7 +194,7 @@ const RecipeCategoryPage: React.FC = () => {
         <div
           style={{
             padding: '60px 20px',
-            maxWidth: '1400px',
+            maxWidth: '1440px',
             margin: '0 auto',
           }}
         >
@@ -229,7 +229,7 @@ const RecipeCategoryPage: React.FC = () => {
         <div
           className="px-5 md:px-8 lg:px-14"
           style={{
-            maxWidth: '1400px',
+            maxWidth: '1440px',
             margin: '0 auto',
             paddingBottom: '80px',
           }}
