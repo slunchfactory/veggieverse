@@ -53,117 +53,50 @@ interface ChatPanelProps {
 
 export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => {
   const [avatarError, setAvatarError] = useState(false);
-  const [touchStart, setTouchStart] = useState<number | null>(null);
 
   // 챗봇이 열렸을 때는 버튼을 숨김
   if (isOpen) return null;
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.touches[0].clientY);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart === null) return;
-    const touchEnd = e.changedTouches[0].clientY;
-    const diff = touchStart - touchEnd;
-    if (diff > 50) {
-      onToggle();
-    }
-    setTouchStart(null);
-  };
-
   return (
-    <div
-      className="fixed bottom-0 left-0 right-0 z-[90] cursor-pointer"
-      style={{ background: '#3fa945' }}
-        onClick={onToggle}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {/* 캐릭터 빼꼼 */}
-        {avatarError ? (
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '100%',
-              left: '16px',
-              width: '56px',
-              height: '56px',
-              marginBottom: '-8px',
-              background: '#fff',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '28px',
-              border: '2px solid #3fa945',
-            }}
-          >
-            🍉
-          </div>
-        ) : (
-          <img
-            src={AVATAR_IMG}
-            alt="챗봇"
-            style={{
-              position: 'absolute',
-              bottom: '100%',
-              left: '16px',
-              width: '56px',
-              height: '56px',
-              marginBottom: '-8px',
-              objectFit: 'cover',
-              borderRadius: '50%',
-              border: '2px solid #3fa945',
-              background: '#fff',
-            }}
-            onError={() => setAvatarError(true)}
-            draggable={false}
-          />
-        )}
-
-        {/* 배너 텍스트 + 스피릿 찾기 버튼 */}
-        <div style={{
-          padding: '14px 16px 14px 80px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px',
-        }}>
-          <p
-            style={{
-              color: '#fff',
-              fontSize: '13px',
-              fontWeight: 400,
-              margin: 0,
-              lineHeight: 1.4,
-              flex: 1,
-            }}
-          >
-            지금 내 기분에 맞는 레시피와 메뉴 추천해드릴게요
-          </p>
-          <Link
-            to="/"
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              background: '#fff',
-              color: '#3fa945',
-              fontSize: '12px',
-              fontWeight: 500,
-              borderRadius: '4px',
-              textDecoration: 'none',
-              whiteSpace: 'nowrap',
-              flexShrink: 0,
-            }}
-          >
-            🥗 나의 스피릿 찾기
-          </Link>
+    <button
+      onClick={onToggle}
+      className="fixed bottom-6 right-6 z-[90] w-14 h-14 rounded-full shadow-lg cursor-pointer transition-transform hover:scale-105"
+      style={{
+        background: '#fff',
+        border: '1px solid #000',
+        padding: 0,
+        overflow: 'hidden',
+      }}
+      aria-label="챗봇 열기"
+    >
+      {avatarError ? (
+        <div
+          style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '28px',
+            background: '#f5f5f5',
+          }}
+        >
+          🥗
         </div>
-    </div>
+      ) : (
+        <img
+          src={AVATAR_IMG}
+          alt="챗봇"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+          onError={() => setAvatarError(true)}
+          draggable={false}
+        />
+      )}
+    </button>
   );
 };
 
@@ -239,7 +172,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
         <div className="flex border-b border-black px-4 gap-4">
           {[
             { key: 'chat', label: '대화' },
-            { key: 'profile', label: '내 취향/기억' },
+            { key: 'profile', label: '나의 스피릿' },
             { key: 'saved', label: '북마크' },
           ].map(t => (
             <button
@@ -293,6 +226,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
 
           {tab === 'profile' && (
             <div className="space-y-3">
+              {/* 나의 스피릿 찾기 버튼 */}
+              <Link
+                to="/"
+                className="flex items-center justify-center gap-2 w-full py-3 border border-black bg-black text-white font-normal hover:bg-white hover:text-black transition-colors"
+                style={{ fontSize: '14px' }}
+              >
+                🥗 나의 스피릿 찾기
+              </Link>
+
               <div className="p-3 border border-black bg-white">
                 <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>식단 유형</p>
                 <p className="text-sm font-normal text-black" style={{ fontSize: '14px' }}>비건 / 저염 / 고단백</p>
@@ -424,7 +366,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
         <div className="flex border-b border-black px-4 gap-4">
           {[
             { key: 'chat', label: '대화' },
-            { key: 'profile', label: '내 취향/기억' },
+            { key: 'profile', label: '나의 스피릿' },
             { key: 'saved', label: '북마크' },
           ].map(t => (
             <button
@@ -478,6 +420,15 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
 
           {tab === 'profile' && (
             <div className="space-y-3">
+              {/* 나의 스피릿 찾기 버튼 */}
+              <Link
+                to="/"
+                className="flex items-center justify-center gap-2 w-full py-3 border border-black bg-black text-white font-normal hover:bg-white hover:text-black transition-colors"
+                style={{ fontSize: '14px' }}
+              >
+                🥗 나의 스피릿 찾기
+              </Link>
+
               <div className="p-3 border border-black bg-white">
                 <p className="text-xs text-black font-normal mb-1" style={{ fontSize: '13px' }}>식단 유형</p>
                 <p className="text-sm font-normal text-black" style={{ fontSize: '14px' }}>비건 / 저염 / 고단백</p>
