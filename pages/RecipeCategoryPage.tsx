@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ChevronLeft, Search, Bookmark, Heart } from 'lucide-react';
+import { ChevronLeft, Search } from 'lucide-react';
 import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
 
 // 레시피 인터페이스
@@ -132,25 +132,38 @@ const categoryData: Record<string, { subtitle: string; title: string; descriptio
 
 const ITEMS_PER_LOAD = 8; // 무한스크롤 시 한 번에 로드할 개수
 
-// 레시피 카드 컴포넌트
-const RecipeCard: React.FC<{ recipe: Recipe; categorySubtitle?: string }> = ({ recipe, categorySubtitle }) => {
-  const [isHovered, setIsHovered] = useState(false);
+// Editorial 스타일 레시피 카드 (RecipePage와 동일)
+const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
+  const [isCardHovered, setIsCardHovered] = useState(false);
+  const [isBookmarkHovered, setIsBookmarkHovered] = useState(false);
 
   return (
     <Link
       to={`/recipe/${recipe.id}`}
-      style={{ textDecoration: 'none' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#FFFFFF',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        cursor: 'pointer',
+        textDecoration: 'none',
+        transition: 'transform 0.2s ease',
+        transform: isCardHovered ? 'scale(1.03)' : 'scale(1)',
+        transformOrigin: 'center center',
+      }}
+      onMouseEnter={() => setIsCardHovered(true)}
+      onMouseLeave={() => setIsCardHovered(false)}
     >
-      {/* 이미지 영역 - 4:3 비율 */}
+      {/* 이미지 영역 - 1:1 비율 */}
       <div style={{
         width: '100%',
-        aspectRatio: '4 / 3',
-        borderRadius: '8px',
+        aspectRatio: '1 / 1',
         overflow: 'hidden',
-        position: 'relative',
         background: '#f0f0f0',
+        flexShrink: 0,
+        borderTopLeftRadius: '16px',
+        borderTopRightRadius: '16px',
       }}>
         <img
           src={getRecipeThumbnailImage(recipe.id)}
@@ -159,8 +172,6 @@ const RecipeCard: React.FC<{ recipe: Recipe; categorySubtitle?: string }> = ({ r
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            transition: 'transform 0.3s ease',
-            transform: isHovered ? 'scale(1.05)' : 'scale(1)',
           }}
           loading="lazy"
           onError={(e) => {
@@ -170,61 +181,68 @@ const RecipeCard: React.FC<{ recipe: Recipe; categorySubtitle?: string }> = ({ r
         />
       </div>
 
-      {/* 텍스트 영역 */}
-      <div style={{ paddingTop: '12px' }}>
-        {/* 카테고리 + New 태그 */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '6px',
-          marginBottom: '6px',
-          fontSize: '12px',
-        }}>
-          <span style={{ color: '#666' }}>Recipe</span>
-          {recipe.isNew && (
-            <>
-              <span style={{ color: '#ccc' }}>·</span>
-              <span style={{ color: '#E53935', fontWeight: 500 }}>New</span>
-            </>
-          )}
-        </div>
-
+      {/* 하단: Typography */}
+      <div style={{
+        padding: '12px 16px 16px',
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        minHeight: '100px',
+      }}>
         {/* 제목 */}
         <h3 style={{
-          fontSize: '15px',
-          fontWeight: 500,
+          fontSize: '18px',
+          fontWeight: 700,
+          margin: 0,
           color: '#000',
-          margin: '0 0 8px 0',
-          lineHeight: 1.4,
+          lineHeight: 1.3,
+          marginBottom: '4px',
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           overflow: 'hidden',
+          textDecoration: isCardHovered ? 'underline' : 'none',
+          textUnderlineOffset: '2px',
         }}>
           {recipe.title}
         </h3>
 
-        {/* 좋아요 + 북마크 */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+        {/* @작성자 */}
+        <span style={{
+          fontSize: '12px',
+          fontWeight: 400,
+          color: '#888',
         }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            fontSize: '12px',
-            color: '#666',
-          }}>
-            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
-            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
-            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
-            <Heart size={14} style={{ fill: '#FFD700', color: '#FFD700' }} />
-            <Heart size={14} style={{ fill: '#ddd', color: '#ddd' }} />
-            <span style={{ marginLeft: '4px' }}>({recipe.likes || 0})</span>
-          </div>
-          <Bookmark size={18} style={{ color: '#ccc' }} />
+          @{recipe.author || 'slunch'}
+        </span>
+
+        {/* 북마크 수 (완전한 타원) - 우측 하단 정렬 */}
+        <div style={{
+          marginTop: 'auto',
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              minWidth: '42px',
+              height: '20px',
+              padding: '0 10px',
+              borderRadius: '10px',
+              fontSize: '11px',
+              fontWeight: 500,
+              border: isBookmarkHovered ? 'none' : '1px solid #000',
+              background: isBookmarkHovered ? '#000' : 'transparent',
+              color: isBookmarkHovered ? '#fff' : '#000',
+              transition: 'all 0.2s ease',
+            }}
+            onMouseEnter={() => setIsBookmarkHovered(true)}
+            onMouseLeave={() => setIsBookmarkHovered(false)}
+          >
+            {recipe.likes?.toLocaleString() || 0}
+          </span>
         </div>
       </div>
     </Link>
@@ -475,11 +493,7 @@ const RecipeCategoryPage: React.FC = () => {
             style={{ paddingTop: '8px' }}
           >
             {displayedRecipes.map((recipe) => (
-              <RecipeCard
-                key={recipe.id}
-                recipe={recipe}
-                categorySubtitle={category.subtitle}
-              />
+              <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
 
