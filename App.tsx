@@ -22,6 +22,38 @@ import BookmarksPage from './pages/mypage/BookmarksPage';
 import WishlistPage from './pages/mypage/WishlistPage';
 import ReviewsPage from './pages/mypage/ReviewsPage';
 import ProfileEditPage from './pages/mypage/ProfileEditPage';
+import MyHome from './pages/mypage/MyHome';
+import MyInfo from './pages/mypage/MyInfo';
+import MyOrders from './pages/mypage/MyOrders';
+
+// About pages
+import AboutStory from './pages/About/AboutStory';
+import AboutBranch from './pages/About/AboutBranch';
+import AboutB2B from './pages/About/AboutB2B';
+
+// SpiritFinder pages
+import SpiritFinder from './pages/SpiritFinder';
+import SpiritFinderStep from './pages/SpiritFinder/SpiritFinderStep';
+
+// Store pages
+import StoreList from './pages/Store/StoreList';
+import StoreDetail from './pages/Store/StoreDetail';
+
+// Subscription page (new folder structure)
+import Subscription from './pages/Subscription';
+
+// Recipe pages (new folder structure)
+import RecipeList from './pages/Recipe/RecipeList';
+import RecipeDetail from './pages/Recipe/RecipeDetail';
+
+// Newsletter pages
+import NewsletterList from './pages/Newsletter/NewsletterList';
+import NewsletterDetail from './pages/Newsletter/NewsletterDetail';
+
+// Event pages
+import EventList from './pages/Event/EventList';
+import EventDetail from './pages/Event/EventDetail';
+
 import { ChatWidget, ChatTrigger, ChatPanel } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -182,29 +214,41 @@ const AppContent: React.FC = () => {
         <Route path="/" element={<VeganTestPage onSaveProfile={saveProfile} headerOffset={showTopBanner ? 96 : 64} />} />
         {/* 쇼핑몰 메인 */}
         <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
-        <Route path="/store" element={<StorePage />} />
+        <Route path="/store" element={<StoreList />} />
+        <Route path="/store/detail/:id" element={<StoreDetail />} />
         <Route path="/store/product/:productId" element={<ProductDetailPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/about/story" element={<AboutStory />} />
+        <Route path="/about/branch" element={<AboutBranch />} />
+        <Route path="/about/b2b" element={<AboutB2B />} />
         <Route path="/brand" element={<BrandPage />} />
-        <Route path="/newsletter" element={<NewsletterPage />} />
+
+        {/* Spirit Finder */}
+        <Route path="/spirit" element={<SpiritFinder />} />
+        <Route path="/spirit/step" element={<SpiritFinderStep />} />
+
+        <Route path="/newsletter" element={<NewsletterList />} />
+        <Route path="/newsletter/:id" element={<NewsletterDetail />} />
         <Route path="/community" element={<CommunityPage />} />
-        <Route path="/recipe" element={<RecipePage />} />
+        <Route path="/recipe" element={<RecipeList />} />
         <Route path="/recipe/category/:categoryId" element={<RecipeCategoryPage />} />
         <Route path="/recipe/hall-of-fame" element={<RecipeHallOfFamePage />} />
-        <Route 
-          path="/recipe/:id" 
+        <Route
+          path="/recipe/:id"
           element={
             <ErrorBoundary>
-              <RecipeDetailPage />
+              <RecipeDetail />
             </ErrorBoundary>
-          } 
+          }
         />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/event" element={<EventPage />} />
-        <Route path="/subscription" element={<SubscriptionPage />} />
+        <Route path="/event" element={<EventList />} />
+        <Route path="/event/:id" element={<EventDetail />} />
+        <Route path="/subscription" element={<Subscription />} />
         <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
-        <Route path="/mypage" element={<ProfilePage />} />
-        <Route path="/mypage/orders" element={<OrdersPage />} />
+        <Route path="/mypage" element={<MyHome />} />
+        <Route path="/mypage/info" element={<MyInfo />} />
+        <Route path="/mypage/orders" element={<MyOrders />} />
         <Route path="/mypage/bookmarks" element={<BookmarksPage />} />
         <Route path="/mypage/wishlist" element={<WishlistPage />} />
         <Route path="/mypage/reviews" element={<ReviewsPage />} />

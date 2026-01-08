@@ -60,7 +60,7 @@ export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => 
   return (
     <button
       onClick={onToggle}
-      className="fixed bottom-6 right-6 z-[90] w-14 h-14 rounded-full shadow-lg cursor-pointer transition-transform hover:scale-105"
+      className="fixed bottom-[120px] right-6 z-[90] w-14 h-14 rounded-full shadow-lg cursor-pointer transition-transform hover:scale-105"
       style={{
         background: '#fff',
         border: '1px solid #000',

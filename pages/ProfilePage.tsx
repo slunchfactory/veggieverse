@@ -130,7 +130,7 @@ const ProfilePage: React.FC = () => {
           borderBottom: '1px solid #000',
         }}
       >
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 16px' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }}>
           <nav style={{ display: 'flex', gap: '24px' }}>
             {navItems.map((item) => (
               <button
@@ -155,7 +155,7 @@ const ProfilePage: React.FC = () => {
         </div>
       </div>
 
-      <main style={{ maxWidth: '900px', margin: '0 auto', padding: '40px 16px 80px' }}>
+      <main style={{ maxWidth: '1440px', margin: '0 auto', padding: '40px 16px 80px' }}>
 
         {/* [TAB 1] HOME: 메인 대시보드 */}
         {activeTab === 'HOME' && (
