@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Branch - 슬런치 팩토리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+      <a href="index.html" class="logo">SLUNCH</a>
+      <a href="mypage.html" class="cart-link">(0)</a>
+    </div>
+  </header>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header"><button class="nav-close" id="navClose">&times;</button></div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item active">About</a>
+      <a href="recipe.html" class="nav-item">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <!-- About 탭 -->
+    <section style="padding: 80px 20px 20px; background: #fff;">
+      <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 16px;">
+        <a href="about-story.html" style="padding: 8px 16px; border: 1px solid #ddd; color: #666; text-decoration: none; font-size: 14px;">Story</a>
+        <a href="about-branch.html" style="padding: 8px 16px; background: #000; color: #fff; text-decoration: none; font-size: 14px;">Branch</a>
+        <a href="about-b2b.html" style="padding: 8px 16px; border: 1px solid #ddd; color: #666; text-decoration: none; font-size: 14px;">B2B</a>
+      </div>
+    </section>
+
+    <section style="padding: 60px 20px; background: #FDFBF7;">
+      <div style="max-width: 800px; margin: 0 auto;">
+        <h1 style="font-size: 32px; font-weight: 400; margin-bottom: 24px;">매장 안내</h1>
+        <p style="font-size: 16px; color: #666; line-height: 1.8; margin-bottom: 40px;">
+          슬런치 팩토리 매장에서 직접 만나보세요.
+        </p>
+
+        <!-- 강남점 -->
+        <div style="background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 24px;">
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600" alt="강남점" style="width: 100%; height: 200px; object-fit: cover;">
+          <div style="padding: 24px;">
+            <h2 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">강남점</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 8px;">📍 서울특별시 강남구 테헤란로 123, 1층</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 8px;">🕐 월-금 11:00 - 20:00 / 주말 휴무</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 16px;">📞 02-1234-5678</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://naver.me/example" target="_blank" style="padding: 8px 16px; background: #03C75A; color: #fff; text-decoration: none; font-size: 13px; border-radius: 4px;">네이버 지도</a>
+              <a href="https://smartstore.naver.com/example" target="_blank" style="padding: 8px 16px; background: #000; color: #fff; text-decoration: none; font-size: 13px; border-radius: 4px;">스마트스토어</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 성수점 -->
+        <div style="background: #fff; border-radius: 12px; overflow: hidden; margin-bottom: 24px;">
+          <img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=600" alt="성수점" style="width: 100%; height: 200px; object-fit: cover;">
+          <div style="padding: 24px;">
+            <h2 style="font-size: 20px; font-weight: 500; margin-bottom: 12px;">성수점</h2>
+            <p style="font-size: 14px; color: #666; margin-bottom: 8px;">📍 서울특별시 성동구 성수이로 45, 2층</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 8px;">🕐 매일 10:00 - 21:00</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 16px;">📞 02-9876-5432</p>
+            <div style="display: flex; gap: 8px;">
+              <a href="https://naver.me/example2" target="_blank" style="padding: 8px 16px; background: #03C75A; color: #fff; text-decoration: none; font-size: 13px; border-radius: 4px;">네이버 지도</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-container"><div class="footer-logo">SLUNCH FACTORY</div><div class="footer-copyright"><p>&copy; 2024 Slunch Factory.</p></div></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

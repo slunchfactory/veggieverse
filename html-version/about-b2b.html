@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B2B - 슬런치 팩토리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+      <a href="index.html" class="logo">SLUNCH</a>
+      <a href="mypage.html" class="cart-link">(0)</a>
+    </div>
+  </header>
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header"><button class="nav-close" id="navClose">&times;</button></div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item active">About</a>
+      <a href="recipe.html" class="nav-item">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <!-- About 탭 -->
+    <section style="padding: 80px 20px 20px; background: #fff;">
+      <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 16px;">
+        <a href="about-story.html" style="padding: 8px 16px; border: 1px solid #ddd; color: #666; text-decoration: none; font-size: 14px;">Story</a>
+        <a href="about-branch.html" style="padding: 8px 16px; border: 1px solid #ddd; color: #666; text-decoration: none; font-size: 14px;">Branch</a>
+        <a href="about-b2b.html" style="padding: 8px 16px; background: #000; color: #fff; text-decoration: none; font-size: 14px;">B2B</a>
+      </div>
+    </section>
+
+    <section style="padding: 60px 20px; background: #FDFBF7;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="font-size: 32px; font-weight: 400; margin-bottom: 24px;">B2B 문의</h1>
+        <p style="font-size: 16px; color: #666; line-height: 1.8; margin-bottom: 40px;">
+          기업, 호텔, 케이터링 등 대량 주문 및 협업 문의를 환영합니다.
+        </p>
+
+        <div style="background: #fff; border-radius: 12px; padding: 32px; margin-bottom: 24px;">
+          <h2 style="font-size: 18px; font-weight: 500; margin-bottom: 20px;">제휴 서비스</h2>
+          <ul style="list-style: none; padding: 0;">
+            <li style="padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #666;">✓ 기업 단체 급식 / 케이터링</li>
+            <li style="padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #666;">✓ 호텔 / 리조트 비건 메뉴 컨설팅</li>
+            <li style="padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #666;">✓ 대량 밀키트 납품</li>
+            <li style="padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; color: #666;">✓ 브랜드 콜라보레이션</li>
+            <li style="padding: 12px 0; font-size: 14px; color: #666;">✓ 수출 / 해외 파트너십</li>
+          </ul>
+        </div>
+
+        <div style="background: #fff; border-radius: 12px; padding: 32px;">
+          <h2 style="font-size: 18px; font-weight: 500; margin-bottom: 20px;">문의하기</h2>
+          <p style="font-size: 14px; color: #666; margin-bottom: 16px;">
+            아래 이메일로 문의해 주시면 담당자가 빠르게 연락드리겠습니다.
+          </p>
+          <a href="mailto:export@slunch.co.kr" style="display: inline-block; padding: 16px 32px; background: #000; color: #fff; text-decoration: none; font-size: 15px; border-radius: 4px;">
+            📧 export@slunch.co.kr
+          </a>
+          <p style="font-size: 13px; color: #999; margin-top: 16px;">
+            * 영업일 기준 1-2일 내 회신드립니다.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-container"><div class="footer-logo">SLUNCH FACTORY</div><div class="footer-copyright"><p>&copy; 2024 Slunch Factory.</p></div></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

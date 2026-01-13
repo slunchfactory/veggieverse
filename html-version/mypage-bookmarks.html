@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>찜한 상품 - 슬런치 팩토리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <a href="mypage.html" style="padding: 8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+      <a href="index.html" class="logo">SLUNCH</a>
+      <a href="mypage.html" class="cart-link">(0)</a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section style="padding: 80px 20px 20px; background: #fff;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="font-size: 24px; font-weight: 400; margin-bottom: 24px;">찜한 상품</h1>
+      </div>
+    </section>
+
+    <section style="padding: 20px; background: #FDFBF7; min-height: 400px;">
+      <div style="max-width: 600px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;">
+        <!-- 찜한 상품 1 -->
+        <a href="store-product.html?id=1" style="background: #fff; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; position: relative;">
+          <button style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: #fff; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#E53935" stroke="#E53935" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+          <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" alt="상품" style="width: 100%; aspect-ratio: 1; object-fit: cover;">
+          <div style="padding: 16px;">
+            <h3 style="font-size: 14px; margin-bottom: 4px;">비건 도시락 세트</h3>
+            <p style="font-size: 15px; font-weight: 600;">12,900원</p>
+          </div>
+        </a>
+
+        <!-- 찜한 상품 2 -->
+        <a href="store-product.html?id=2" style="background: #fff; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; position: relative;">
+          <button style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: #fff; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#E53935" stroke="#E53935" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+          <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="상품" style="width: 100%; aspect-ratio: 1; object-fit: cover;">
+          <div style="padding: 16px;">
+            <h3 style="font-size: 14px; margin-bottom: 4px;">그린 샐러드 밀키트</h3>
+            <p style="font-size: 15px; font-weight: 600;">8,900원</p>
+          </div>
+        </a>
+
+        <!-- 찜한 상품 3 -->
+        <a href="store-product.html?id=3" style="background: #fff; border-radius: 12px; overflow: hidden; text-decoration: none; color: inherit; position: relative;">
+          <button style="position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; background: #fff; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#E53935" stroke="#E53935" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          </button>
+          <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400" alt="상품" style="width: 100%; aspect-ratio: 1; object-fit: cover;">
+          <div style="padding: 16px;">
+            <h3 style="font-size: 14px; margin-bottom: 4px;">비건 파스타 밀키트</h3>
+            <p style="font-size: 15px; font-weight: 600;">11,500원</p>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-container"><div class="footer-logo">SLUNCH FACTORY</div><div class="footer-copyright"><p>&copy; 2024 Slunch Factory.</p></div></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>

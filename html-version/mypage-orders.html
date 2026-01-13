@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주문 내역 - 슬런치 팩토리</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <a href="mypage.html" style="padding: 8px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+      <a href="index.html" class="logo">SLUNCH</a>
+      <a href="mypage.html" class="cart-link">(0)</a>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <section style="padding: 80px 20px 20px; background: #fff;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h1 style="font-size: 24px; font-weight: 400; margin-bottom: 24px;">주문 내역</h1>
+      </div>
+    </section>
+
+    <section style="padding: 20px; background: #FDFBF7; min-height: 400px;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <!-- 주문 아이템 1 -->
+        <div style="background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+            <span style="font-size: 13px; color: #666;">2024.01.15</span>
+            <span style="font-size: 13px; color: #4CAF50; font-weight: 500;">배송완료</span>
+          </div>
+          <div style="display: flex; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200" alt="상품" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 15px; margin-bottom: 4px;">비건 도시락 세트</h3>
+              <p style="font-size: 13px; color: #666; margin-bottom: 8px;">12,900원 · 수량 2개</p>
+              <p style="font-size: 14px; font-weight: 500;">25,800원</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <button style="flex: 1; padding: 10px; background: #fff; border: 1px solid #ddd; font-size: 13px; border-radius: 4px; cursor: pointer;">배송조회</button>
+            <button style="flex: 1; padding: 10px; background: #000; color: #fff; border: none; font-size: 13px; border-radius: 4px; cursor: pointer;">리뷰쓰기</button>
+          </div>
+        </div>
+
+        <!-- 주문 아이템 2 -->
+        <div style="background: #fff; border-radius: 12px; padding: 20px; margin-bottom: 16px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+            <span style="font-size: 13px; color: #666;">2024.01.10</span>
+            <span style="font-size: 13px; color: #4CAF50; font-weight: 500;">배송완료</span>
+          </div>
+          <div style="display: flex; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200" alt="상품" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 15px; margin-bottom: 4px;">그린 샐러드 밀키트</h3>
+              <p style="font-size: 13px; color: #666; margin-bottom: 8px;">8,900원 · 수량 1개</p>
+              <p style="font-size: 14px; font-weight: 500;">8,900원</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <button style="flex: 1; padding: 10px; background: #fff; border: 1px solid #ddd; font-size: 13px; border-radius: 4px; cursor: pointer;">배송조회</button>
+            <button style="flex: 1; padding: 10px; background: #000; color: #fff; border: none; font-size: 13px; border-radius: 4px; cursor: pointer;">리뷰쓰기</button>
+          </div>
+        </div>
+
+        <!-- 주문 아이템 3 -->
+        <div style="background: #fff; border-radius: 12px; padding: 20px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 16px;">
+            <span style="font-size: 13px; color: #666;">2024.01.05</span>
+            <span style="font-size: 13px; color: #FF9800; font-weight: 500;">배송중</span>
+          </div>
+          <div style="display: flex; gap: 16px;">
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=200" alt="상품" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+            <div style="flex: 1;">
+              <h3 style="font-size: 15px; margin-bottom: 4px;">비건 파스타 밀키트</h3>
+              <p style="font-size: 13px; color: #666; margin-bottom: 8px;">11,500원 · 수량 1개</p>
+              <p style="font-size: 14px; font-weight: 500;">11,500원</p>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <button style="flex: 1; padding: 10px; background: #fff; border: 1px solid #ddd; font-size: 13px; border-radius: 4px; cursor: pointer;">배송조회</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="footer-container"><div class="footer-logo">SLUNCH FACTORY</div><div class="footer-copyright"><p>&copy; 2024 Slunch Factory.</p></div></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
