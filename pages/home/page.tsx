@@ -1334,57 +1334,77 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             </h2>
 
           {/* 4열 그리드 */}
-          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '24px' }}>
             {[
-              { id: 1, category: 'HEALTH', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', isNew: false },
-              { id: 2, category: 'CULTURE', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', isNew: false },
-              { id: 3, category: 'FOOD', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', isNew: false },
-              { id: 4, category: 'LIFE', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', isNew: false },
+              { id: 1, category: 'Health', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', author: 'Josin', date: '2024.12.10' },
+              { id: 2, category: 'Culture', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', author: 'Huna', date: '2024.12.05' },
+              { id: 3, category: 'Food', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', author: 'ChaCha', date: '2024.11.28' },
+              { id: 4, category: 'Life', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', author: 'Jin', date: '2024.11.20' },
             ].map((article) => (
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
-                {/* 이미지 */}
-                <div 
+                {/* 이미지 - 4:3 비율 */}
+                <div
                   className="relative w-full overflow-hidden"
-                  style={{ aspectRatio: '1/1', backgroundColor: '#333333', borderRadius: '0', marginBottom: '16px' }}
+                  style={{ aspectRatio: '4/3', backgroundColor: '#E5E5E0', borderRadius: '4px', marginBottom: '16px' }}
                 >
                   {/* 플레이스홀더 */}
                 </div>
-                {/* 카테고리 */}
-                <p 
-                  style={{ 
+                {/* 카테고리 - 대문자 */}
+                <p
+                  style={{
                     fontSize: '11px',
                     fontWeight: 400,
                     letterSpacing: '0.05em',
-                    color: '#666666',
-                    marginBottom: '8px'
+                    color: '#6B6B6B',
+                    marginBottom: '8px',
+                    textTransform: 'uppercase'
                   }}
                 >
                   {article.category}
                 </p>
                 {/* 제목 */}
-                <h3 
+                <h3
                   className="group-hover:underline line-clamp-2"
-                  style={{ 
+                  style={{
                     fontSize: '16px',
                     fontWeight: 400,
-                    lineHeight: 1.4,
+                    lineHeight: 1.3,
                     color: '#000000',
-                    marginBottom: '8px'
+                    marginBottom: '6px'
                   }}
                 >
                   {article.title}
                 </h3>
                 {/* 설명 */}
-                <p 
-                  className="line-clamp-2"
-                  style={{ 
+                <p
+                  className="line-clamp-1"
+                  style={{
                     fontSize: '13px',
+                    fontWeight: 400,
                     lineHeight: 1.5,
-                    color: '#666666'
+                    color: '#6B6B6B',
+                    marginBottom: '12px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
                   }}
                 >
                   {article.subtitle}
                 </p>
+                {/* 메타 정보 - 작성자 · 날짜 */}
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    fontSize: '12px',
+                    color: '#9A9A9A'
+                  }}
+                >
+                  <span>{article.author}</span>
+                  <span>·</span>
+                  <span>{article.date}</span>
+                </div>
               </Link>
             ))}
           </div>
