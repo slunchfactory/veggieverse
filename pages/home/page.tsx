@@ -1103,41 +1103,29 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       >
         {/* 섹션 헤더 */}
         <div className="page-container mb-12">
-          <div className="flex justify-between items-end">
-            <div>
-              <h2
-                className="text-stone-900 mb-2 font-normal"
-                style={{
-                  fontSize: 'clamp(28px, 4vw, 40px)',
-                  fontWeight: 400,
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.1,
-                  fontStyle: 'italic',
-                }}
-              >
-                featured recipes
-              </h2>
-              <p
-                className="text-stone-500"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: 400,
-                }}
-              >
-                places that stay with you
-              </p>
-            </div>
-            <Link
-              to="/recipe"
+          <div className="max-w-3xl">
+            <h2
+              className="text-stone-900 mb-4 text-left font-normal"
               style={{
-                fontSize: '13px',
-                color: '#6B6B6B',
-                textDecoration: 'underline',
-                textUnderlineOffset: '4px',
+                fontSize: 'var(--font-size-h2)',
+                fontWeight: 400,
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h2)',
               }}
             >
-              view journal
-            </Link>
+              누군가의 테이블에서 영감을
+            </h2>
+            <p
+              className="text-stone-600 text-left"
+              style={{
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 400,
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+              }}
+            >
+              슬런치 멤버들이 직접 만들고 공유하는 레시피.
+            </p>
           </div>
         </div>
 
@@ -1151,7 +1139,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               }
               .infinite-scroll-track {
                 display: flex;
-                gap: 16px;
+                gap: 12px;
                 animation: scrollLeft 60s linear infinite;
                 width: fit-content;
               }
