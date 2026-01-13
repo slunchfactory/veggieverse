@@ -1090,174 +1090,231 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </section>
 
       {/* ============================================
-          SECTION 2: Best Menu/Goods (4:5 Grid)
+          SECTION 2: Featured Recipes - Infinite Rolling Mosaic
           ============================================ */}
-      <section className="scroll-snap-section-flex bg-white" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
-        <div className="page-container">
-          <div className="mb-12 max-w-3xl">
-            <h2 
-              className="text-stone-900 mb-4 text-left font-normal"
-              style={{ 
-                fontSize: 'var(--font-size-h2)',
-                fontWeight: 400,
-                letterSpacing: 'var(--letter-spacing-tight)',
-                lineHeight: 'var(--line-height-h2)'
-              }}
-            >
-              누군가의 테이블에서 영감을
-            </h2>
-            <p 
-              className="text-stone-600 text-left"
-              style={{ 
-                fontSize: 'var(--font-size-body)',
-                fontWeight: 400,
-                lineHeight: 'var(--line-height-body)',
-                letterSpacing: 'var(--letter-spacing-tight)'
-              }}
-            >
-              슬런치 멤버들이 직접 만들고 공유하는 레시피.
-            </p>
-          </div>
-          
-          {/* 레시피 썸네일 그리드 - 모바일 2열, 데스크톱 5열 */}
-          <div className="grid grid-cols-2 lg:grid-cols-5" style={{ gap: '24px' }}>
-            {[
-              { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', author: '비건셰프', likes: 234 },
-              { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', author: '채식러버', likes: 189 },
-              { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', author: '점심왕', likes: 445 },
-              { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', author: '카레매니아', likes: 389 },
-              { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', author: '이탈리안', likes: 156 },
-            ].map((recipe) => {
-              return (
-                <Link 
-                  key={recipe.id} 
-                  to={`/recipe/${recipe.id}`}
-                  style={{
-                    display: 'block',
-                    background: 'var(--cream)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {/* 이미지 영역 - 1:1 비율, 둥근 모서리 */}
-                  <div style={{
-                    width: '100%',
-                    aspectRatio: '1 / 1',
-                    background: '#f5f5f5',
-                    overflow: 'hidden',
-                    position: 'relative',
-                    borderRadius: '4px',
-                  }}>
-                    <img
-                      src={getRecipeThumbnailImage(recipe.id)}
-                      alt={recipe.title}
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                      }}
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = getFallbackRecipeImage(recipe.id);
-                      }}
-                    />
-                  </div>
-
-                  {/* 텍스트 영역 - 테두리 없음, 여백으로 구분 */}
-                  <div style={{ paddingTop: '12px' }}>
-                    {/* 제목 + 좋아요 */}
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      gap: '8px',
-                      marginBottom: '4px',
-                    }}>
-                      <h3 style={{
-                        fontSize: '15px',
-                        fontWeight: 400,
-                        margin: 0,
-                        color: '#000',
-                        lineHeight: 1.3,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        flex: 1,
-                      }}>
-                        {recipe.title}
-                      </h3>
-                      <span style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        fontSize: '11px',
-                        color: '#6B6B6B',
-                        flexShrink: 0,
-                      }}>
-                        <Heart className="w-3 h-3" style={{ color: '#E53935', fill: '#E53935' }} />
-                        {recipe.likes?.toLocaleString() || 0}
-                      </span>
-                    </div>
-
-                    {/* 설명 - 2줄 */}
-                    <p style={{
-                      fontSize: '13px',
-                      color: '#6B6B6B',
-                      margin: '0 0 8px 0',
-                      lineHeight: 1.4,
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitLineClamp: 2,
-                      WebkitBoxOrient: 'vertical',
-                    }}>
-                      {recipe.description}
-                    </p>
-
-                    {/* 저자 */}
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#6B6B6B',
-                    }}>
-                      <span>@{recipe.author || '슬런치'}</span>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* View all 버튼 */}
-          <div style={{ textAlign: 'center', marginTop: '48px' }}>
-            <Link 
+      <section
+        className="scroll-snap-section-flex"
+        style={{
+          paddingTop: '80px',
+          paddingBottom: '80px',
+          backgroundColor: '#FDFBF7',
+          overflow: 'hidden',
+        }}
+      >
+        {/* 섹션 헤더 */}
+        <div className="page-container mb-12">
+          <div className="flex justify-between items-end">
+            <div>
+              <h2
+                className="text-stone-900 mb-2 font-normal"
+                style={{
+                  fontSize: 'clamp(28px, 4vw, 40px)',
+                  fontWeight: 400,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
+                  fontStyle: 'italic',
+                }}
+              >
+                featured recipes
+              </h2>
+              <p
+                className="text-stone-500"
+                style={{
+                  fontSize: '14px',
+                  fontWeight: 400,
+                }}
+              >
+                places that stay with you
+              </p>
+            </div>
+            <Link
               to="/recipe"
               style={{
-                display: 'inline-block',
-                padding: '12px 24px',
-                border: 'none',
-                backgroundColor: '#B2B2B2',
-                color: '#FFFFFF',
-                fontSize: '15px',
-                fontWeight: 400,
-                textDecoration: 'none',
-                transition: 'all 0.15s ease',
-                minHeight: '44px',
-                minWidth: '120px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#8C451D';
-                e.currentTarget.style.color = '#FFFFFF';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#B2B2B2';
-                e.currentTarget.style.color = '#FFFFFF';
+                fontSize: '13px',
+                color: '#6B6B6B',
+                textDecoration: 'underline',
+                textUnderlineOffset: '4px',
               }}
             >
-              View all
+              view journal
             </Link>
           </div>
+        </div>
+
+        {/* 무한 롤링 컨테이너 */}
+        <div style={{ position: 'relative', width: '100%' }}>
+          <style>
+            {`
+              @keyframes scrollLeft {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .infinite-scroll-track {
+                display: flex;
+                gap: 16px;
+                animation: scrollLeft 60s linear infinite;
+                width: fit-content;
+              }
+              .infinite-scroll-track:hover {
+                animation-play-state: paused;
+              }
+            `}
+          </style>
+
+          <div className="infinite-scroll-track">
+            {/* 20개 원본 + 20개 복제 = 40개 아이템 */}
+            {[...Array(2)].map((_, setIndex) => (
+              <React.Fragment key={setIndex}>
+                {[
+                  { id: 1, title: '프렌치 컨트리사이드의 모녀 여행', author: '슬런치키친', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400&h=600&fit=crop', type: 'tall' },
+                  { id: 2, title: '그리스 섬으로 떠나는 힐링 솔로 여행', author: '베지러버', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop', type: 'wide' },
+                  { id: 3, title: '긴 저녁을 즐기는 커플을 위한 시칠리아', author: '그린테이블', image: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 4, title: '해질녘 그리스 섬에서의 허니문', author: '비건셰프', image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&h=500&fit=crop', type: 'tall' },
+                  { id: 5, title: '토스카나 와인 투어', author: '채식요리사', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=350&fit=crop', type: 'wide' },
+                  { id: 6, title: '프로방스 라벤더 필드', author: '슬로우푸드', image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 7, title: '아말피 해안의 레몬 정원', author: '자연식탁', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=350&h=500&fit=crop', type: 'tall' },
+                  { id: 8, title: '산토리니 블루돔 아래에서', author: '플랜트베이스', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=550&h=380&fit=crop', type: 'wide' },
+                  { id: 9, title: '포르투갈 해안 마을의 아침', author: '홀푸드러버', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 10, title: '크로아티아 두브로브니크 성벽', author: '그린라이프', image: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=380&h=520&fit=crop', type: 'tall' },
+                  { id: 11, title: '스페인 바르셀로나 가우디 투어', author: '채식일기', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=520&h=360&fit=crop', type: 'wide' },
+                  { id: 12, title: '모로코 마라케시의 수크', author: '비건매거진', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 13, title: '이탈리아 친퀘테레 하이킹', author: '건강한식탁', image: 'https://images.unsplash.com/photo-1482049016gy-2d1bbd7cef2a?w=360&h=500&fit=crop', type: 'tall' },
+                  { id: 14, title: '프랑스 니스의 해변 산책', author: '자연주의자', image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&h=340&fit=crop', type: 'wide' },
+                  { id: 15, title: '터키 카파도키아 열기구', author: '에코키친', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 16, title: '그리스 미코노스의 풍차', author: '비건쿡', image: 'https://images.unsplash.com/photo-1484980972926-edee96e0960d?w=370&h=510&fit=crop', type: 'tall' },
+                  { id: 17, title: '포르투 도우루 강변의 저녁', author: '플랜트키친', image: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?w=540&h=370&fit=crop', type: 'wide' },
+                  { id: 18, title: '이스탄불 보스포러스 해협', author: '그린셰프', image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=400&fit=crop', type: 'standard' },
+                  { id: 19, title: '몬테네그로 코토르 만', author: '베지테이블', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=350&h=480&fit=crop', type: 'tall' },
+                  { id: 20, title: '슬로베니아 블레드 호수', author: '슬런치팩토리', image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=480&h=330&fit=crop', type: 'wide' },
+                ].map((recipe, index) => {
+                  // 카드 사이즈 결정
+                  const getCardStyle = () => {
+                    switch (recipe.type) {
+                      case 'tall':
+                        return { width: '220px', height: '320px' };
+                      case 'wide':
+                        return { width: '320px', height: '220px' };
+                      default:
+                        return { width: '240px', height: '240px' };
+                    }
+                  };
+                  const cardStyle = getCardStyle();
+
+                  return (
+                    <Link
+                      key={`${setIndex}-${recipe.id}`}
+                      to={`/recipe/${recipe.id}`}
+                      style={{
+                        display: 'block',
+                        flexShrink: 0,
+                        ...cardStyle,
+                        position: 'relative',
+                        overflow: 'hidden',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      {/* 이미지 */}
+                      <img
+                        src={recipe.image}
+                        alt={recipe.title}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                        loading="lazy"
+                      />
+
+                      {/* 그라데이션 오버레이 */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          height: '60%',
+                          background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)',
+                        }}
+                      />
+
+                      {/* 텍스트 오버레이 */}
+                      <div
+                        style={{
+                          position: 'absolute',
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          padding: '16px',
+                          color: '#fff',
+                        }}
+                      >
+                        <p
+                          style={{
+                            fontSize: '10px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.1em',
+                            marginBottom: '6px',
+                            opacity: 0.8,
+                          }}
+                        >
+                          @{recipe.author}
+                        </p>
+                        <h3
+                          style={{
+                            fontSize: recipe.type === 'wide' ? '14px' : '13px',
+                            fontWeight: 400,
+                            lineHeight: 1.3,
+                            margin: 0,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                          }}
+                        >
+                          {recipe.title}
+                        </h3>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+
+        {/* 네비게이션 화살표 */}
+        <div className="page-container mt-8 flex justify-end gap-4">
+          <button
+            style={{
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid #000',
+              background: 'transparent',
+              cursor: 'pointer',
+              fontSize: '18px',
+            }}
+          >
+            ←
+          </button>
+          <button
+            style={{
+              width: '40px',
+              height: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              border: '1px solid #000',
+              background: 'transparent',
+              cursor: 'pointer',
+              fontSize: '18px',
+            }}
+          >
+            →
+          </button>
         </div>
       </section>
 
