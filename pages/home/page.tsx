@@ -949,33 +949,31 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     objectFit: 'cover',
                   }}
                 />
-                {/* 텍스트 오버레이 */}
+                {/* 텍스트 - 플랫 */}
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '24px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                    bottom: '24px',
+                    left: '24px',
                   }}
                 >
                   <h3
-                    className="text-stone-900 mb-2"
                     style={{
                       fontSize: '20px',
                       fontWeight: 500,
-                      letterSpacing: '-0.01em'
+                      letterSpacing: '-0.01em',
+                      color: '#1a1a1a',
+                      marginBottom: '4px'
                     }}
                   >
                     주 14끼 식단
                   </h3>
                   <p
-                    className="text-stone-600"
                     style={{
                       fontSize: '14px',
                       fontWeight: 400,
-                      lineHeight: '1.6'
+                      lineHeight: '1.6',
+                      color: '#666'
                     }}
                   >
                     하루 2끼, 일주일치 완벽한 식단
@@ -1003,33 +1001,31 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     objectFit: 'cover',
                   }}
                 />
-                {/* 텍스트 오버레이 */}
+                {/* 텍스트 - 플랫 */}
                 <div
                   style={{
                     position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    padding: '24px',
-                    background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                    bottom: '24px',
+                    left: '24px',
                   }}
                 >
                   <h3
-                    className="text-stone-900 mb-2"
                     style={{
                       fontSize: '20px',
                       fontWeight: 500,
-                      letterSpacing: '-0.01em'
+                      letterSpacing: '-0.01em',
+                      color: '#1a1a1a',
+                      marginBottom: '4px'
                     }}
                   >
                     신선 새벽 배송
                   </h3>
                   <p
-                    className="text-stone-600"
                     style={{
                       fontSize: '14px',
                       fontWeight: 400,
-                      lineHeight: '1.6'
+                      lineHeight: '1.6',
+                      color: '#666'
                     }}
                   >
                     매주 월요일 아침, 문 앞까지 신선하게
@@ -1058,33 +1054,31 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   objectFit: 'cover',
                 }}
               />
-              {/* 텍스트 오버레이 */}
+              {/* 텍스트 - 플랫 */}
               <div
                 style={{
                   position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  padding: '24px',
-                  background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                  bottom: '24px',
+                  left: '24px',
                 }}
               >
                 <h3
-                  className="text-stone-900 mb-2"
                   style={{
                     fontSize: '20px',
                     fontWeight: 500,
-                    letterSpacing: '-0.01em'
+                    letterSpacing: '-0.01em',
+                    color: '#1a1a1a',
+                    marginBottom: '4px'
                   }}
                 >
                   영양 밸런스 완벽 설계
                 </h3>
                 <p
-                  className="text-stone-600"
                   style={{
                     fontSize: '14px',
                     fontWeight: 400,
-                    lineHeight: '1.6'
+                    lineHeight: '1.6',
+                    color: '#666'
                   }}
                 >
                   전문가와 AI가 설계한 균형 잡힌 식단
