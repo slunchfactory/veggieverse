@@ -916,33 +916,19 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             </p>
           </div>
           
-          {/* 좌우 2열 레이아웃 */}
-          <div 
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: '24px',
-            }}
-            className="grid-cols-1 md:grid-cols-2"
+          {/* 반응형 그리드: 모바일 1열 3행, 데스크탑 3열 1행 */}
+          <div
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            {/* 좌측: 14끼 식단 + 신선 새벽배송 스택 */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '24px',
-                height: '100%',
-              }}
-            >
-              {/* 영역 1: 주 14끼 식단 */}
+            {/* 영역 1: 주 14끼 식단 */}
+            <div className="bg-white flex flex-col">
+              {/* 이미지 */}
               <div
-                className="bg-white flex flex-col"
                 style={{
                   border: '1px solid #eee',
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  flex: '1 1 0',
-                  position: 'relative',
+                  aspectRatio: '4/3',
                 }}
               >
                 <img
@@ -954,47 +940,42 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     objectFit: 'cover',
                   }}
                 />
-                {/* 텍스트 - 플랫 */}
-                <div
+              </div>
+              {/* 텍스트 - 이미지 아래 */}
+              <div style={{ paddingTop: '12px' }}>
+                <h3
                   style={{
-                    position: 'absolute',
-                    bottom: '24px',
-                    left: '24px',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em',
+                    color: '#1a1a1a',
+                    marginBottom: '4px'
                   }}
                 >
-                  <h3
-                    style={{
-                      fontSize: '20px',
-                      fontWeight: 500,
-                      letterSpacing: '-0.01em',
-                      color: '#1a1a1a',
-                      marginBottom: '4px'
-                    }}
-                  >
-                    주 14끼 식단
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      lineHeight: '1.6',
-                      color: '#666'
-                    }}
-                  >
-                    하루 2끼, 일주일치 완벽한 식단
-                  </p>
-                </div>
+                  주 14끼 식단
+                </h3>
+                <p
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    lineHeight: '1.6',
+                    color: '#666'
+                  }}
+                >
+                  하루 2끼, 일주일치 완벽한 식단
+                </p>
               </div>
+            </div>
 
-              {/* 영역 2: 신선 새벽 배송 */}
+            {/* 영역 2: 신선 새벽 배송 */}
+            <div className="bg-white flex flex-col">
+              {/* 이미지 */}
               <div
-                className="bg-white flex flex-col"
                 style={{
                   border: '1px solid #eee',
                   borderRadius: '12px',
                   overflow: 'hidden',
-                  flex: '1 1 0',
-                  position: 'relative',
+                  aspectRatio: '4/3',
                 }}
               >
                 <img
@@ -1006,70 +987,59 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     objectFit: 'cover',
                   }}
                 />
-                {/* 텍스트 - 플랫 */}
-                <div
+              </div>
+              {/* 텍스트 - 이미지 아래 */}
+              <div style={{ paddingTop: '12px' }}>
+                <h3
                   style={{
-                    position: 'absolute',
-                    bottom: '24px',
-                    left: '24px',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em',
+                    color: '#1a1a1a',
+                    marginBottom: '4px'
                   }}
                 >
-                  <h3
-                    style={{
-                      fontSize: '20px',
-                      fontWeight: 500,
-                      letterSpacing: '-0.01em',
-                      color: '#1a1a1a',
-                      marginBottom: '4px'
-                    }}
-                  >
-                    신선 새벽 배송
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      lineHeight: '1.6',
-                      color: '#666'
-                    }}
-                  >
-                    매주 월요일 아침, 문 앞까지 신선하게
-                  </p>
-                </div>
+                  신선 새벽 배송
+                </h3>
+                <p
+                  style={{
+                    fontSize: '12px',
+                    fontWeight: 400,
+                    lineHeight: '1.6',
+                    color: '#666'
+                  }}
+                >
+                  매주 월요일 아침, 문 앞까지 신선하게
+                </p>
               </div>
             </div>
 
             {/* 영역 3: 영양 밸런스 완벽 설계 */}
-            <div
-              className="bg-white flex flex-col"
-              style={{
-                border: '1px solid #eee',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                height: '100%',
-                position: 'relative',
-              }}
-            >
-              <img
-                src={`${import.meta.env.BASE_URL}balance.png`}
-                alt="영양 밸런스 완벽 설계"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                }}
-              />
-              {/* 텍스트 - 플랫 */}
+            <div className="bg-white flex flex-col">
+              {/* 이미지 */}
               <div
                 style={{
-                  position: 'absolute',
-                  bottom: '24px',
-                  left: '24px',
+                  border: '1px solid #eee',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  aspectRatio: '4/3',
                 }}
               >
+                <img
+                  src={`${import.meta.env.BASE_URL}balance.png`}
+                  alt="영양 밸런스 완벽 설계"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </div>
+              {/* 텍스트 - 이미지 아래 */}
+              <div style={{ paddingTop: '12px' }}>
                 <h3
                   style={{
-                    fontSize: '20px',
+                    fontSize: '16px',
                     fontWeight: 500,
                     letterSpacing: '-0.01em',
                     color: '#1a1a1a',
@@ -1080,7 +1050,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 </h3>
                 <p
                   style={{
-                    fontSize: '14px',
+                    fontSize: '12px',
                     fontWeight: 400,
                     lineHeight: '1.6',
                     color: '#666'
