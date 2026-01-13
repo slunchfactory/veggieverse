@@ -12,7 +12,7 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
   };
 
   return (
-    <footer className="bg-black text-white w-full" style={{ borderTop: '1px solid var(--black)' }}>
+    <footer className="text-white w-full" style={{ backgroundColor: '#DCFD4A', borderTop: '1px solid var(--black)' }}>
       {/* === MOBILE FOOTER (Visible only < 768px) === */}
       <div className="block md:hidden px-5 py-10">
         {/* Mobile 2-Column Grid */}

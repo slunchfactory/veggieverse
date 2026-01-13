@@ -276,7 +276,7 @@ body {
   overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--white);
+  background: #D7D7D7;
   color: var(--black);
   font-family: var(--font-family);
   position: relative;

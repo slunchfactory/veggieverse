@@ -26,7 +26,8 @@ import MyHome from './pages/mypage/MyHome';
 import MyInfo from './pages/mypage/MyInfo';
 import MyOrders from './pages/mypage/MyOrders';
 
-// About pages
+// About pages (nested routing)
+import AboutLayout from './pages/About/AboutLayout';
 import AboutStory from './pages/About/AboutStory';
 import AboutBranch from './pages/About/AboutBranch';
 import AboutB2B from './pages/About/AboutB2B';
@@ -39,10 +40,7 @@ import SpiritFinderStep from './pages/SpiritFinder/SpiritFinderStep';
 import StoreList from './pages/Store/StoreList';
 import StoreDetail from './pages/Store/StoreDetail';
 
-// Subscription page (new folder structure)
-import Subscription from './pages/Subscription';
-
-// Recipe pages (new folder structure)
+// Recipe pages
 import RecipeList from './pages/Recipe/RecipeList';
 import RecipeDetail from './pages/Recipe/RecipeDetail';
 
@@ -89,11 +87,11 @@ const Layout: React.FC<{
 
   // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
   return (
-    <div className="min-h-screen min-w-[360px] flex flex-col" style={{ backgroundColor: 'var(--cream)', ...headerAreaStyle }}>
+    <div className="min-h-screen min-w-[360px] flex flex-col" style={{ backgroundColor: '#D7D7D7', ...headerAreaStyle }}>
       {/* === FIXED TOP CONTAINER === */}
       <div
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ backgroundColor: 'var(--cream)' }}
+        style={{ backgroundColor: '#D7D7D7' }}
       >
         {/* 1. Promo Banner (Conditional) */}
         {showTopBanner && <TopBanner onClose={onCloseBanner} />}
@@ -149,8 +147,6 @@ const AppContent: React.FC = () => {
       setUserProfile(JSON.parse(savedProfile));
     }
   }, []);
-
-  // ScrollToTop 컴포넌트에서 처리하므로 여기서는 제거
 
   // 프로필 저장 함수
   const saveProfile = useCallback((profileImage: string, veganType: string) => {
@@ -210,27 +206,54 @@ const AppContent: React.FC = () => {
       shouldShowFooter={shouldShowFooter}
     >
       <Routes>
-        {/* 메인 페이지 = 비건 테스트 */}
-        <Route path="/" element={<VeganTestPage onSaveProfile={saveProfile} headerOffset={showTopBanner ? 96 : 64} />} />
-        {/* 쇼핑몰 메인 */}
-        <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
-        <Route path="/store" element={<StoreList />} />
-        <Route path="/store/detail/:id" element={<StoreDetail />} />
-        <Route path="/store/product/:productId" element={<ProductDetailPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/about/story" element={<AboutStory />} />
-        <Route path="/about/branch" element={<AboutBranch />} />
-        <Route path="/about/b2b" element={<AboutB2B />} />
+        {/* ============================================
+            1. 온보딩 - 나의 스피릿 찾기
+            ============================================ */}
+        <Route path="/" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/spirit" element={<SpiritFinder headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/spirit/step" element={<SpiritFinderStep headerOffset={showTopBanner ? 96 : 64} />} />
+
+        {/* ============================================
+            2. About
+            ============================================ */}
+        <Route path="/about" element={<AboutLayout />}>
+          <Route index element={<AboutStory />} />
+          <Route path="story" element={<AboutStory />} />
+          <Route path="branch" element={<AboutBranch />} />
+          <Route path="b2b" element={<AboutB2B />} />
+        </Route>
         <Route path="/brand" element={<BrandPage />} />
 
-        {/* Spirit Finder */}
-        <Route path="/spirit" element={<SpiritFinder />} />
-        <Route path="/spirit/step" element={<SpiritFinderStep />} />
+        {/* ============================================
+            3. 상업적 경험 및 개인화 쇼핑 (Store)
+            ============================================ */}
+        <Route path="/store" element={<StorePage />} />
+        <Route path="/store/list" element={<StoreList />} />
+        <Route path="/store/ai-recommendation" element={<ComingSoonPage title="AI 상품 추천" description="사용자 취향 및 알러지 필터링 기반 추천" />} />
+        <Route path="/store/goal-based" element={<ComingSoonPage title="목표별 큐레이션" description="저염/저당/제로미트 등 목표별 상품 추천" />} />
+        <Route path="/store/detail/:id" element={<StoreDetail />} />
+        <Route path="/store/product/:productId" element={<ProductDetailPage />} />
+        <Route path="/store/inquiry-guide" element={<ComingSoonPage title="상품문의 방법" />} />
 
-        <Route path="/newsletter" element={<NewsletterList />} />
-        <Route path="/newsletter/:id" element={<NewsletterDetail />} />
-        <Route path="/community" element={<CommunityPage />} />
-        <Route path="/recipe" element={<RecipeList />} />
+        {/* ============================================
+            4. 구독 (Subscribe)
+            ============================================ */}
+        <Route path="/subscribe" element={<SubscriptionPage />} />
+        <Route path="/subscribe/home" element={<ComingSoonPage title="구독 홈" description="타겟별 구독 서비스 관문" />} />
+        <Route path="/subscribe/office" element={<ComingSoonPage title="오피스 팩" description="직장인 타겟: 간편 고영양 식단" />} />
+        <Route path="/subscribe/silver" element={<ComingSoonPage title="실버 케어" description="독거 노인/효도 선물: 맞춤 영양 식단" />} />
+        <Route path="/subscribe/diet" element={<ComingSoonPage title="챌린지 다이어트" description="3040 여성: 단기 체중 관리" />} />
+        <Route path="/subscribe/detail/:id" element={<ComingSoonPage title="구독 상세" />} />
+        {/* 기존 subscription 경로도 유지 (하위 호환성) */}
+        <Route path="/subscription" element={<SubscriptionPage />} />
+
+        {/* ============================================
+            5. 콘텐츠 및 정보 제공 (Recipe)
+            ============================================ */}
+        <Route path="/recipe" element={<RecipePage />} />
+        <Route path="/recipe/list" element={<RecipeList />} />
+        <Route path="/recipe/ai-diet-planner" element={<ComingSoonPage title="AI 맞춤 식단" description="목표 달성별 레시피 추천" />} />
+        <Route path="/recipe/allergy-free" element={<ComingSoonPage title="알러지 프리 레시피" description="개인 프로필 기반 자동 필터링" />} />
         <Route path="/recipe/category/:categoryId" element={<RecipeCategoryPage />} />
         <Route path="/recipe/hall-of-fame" element={<RecipeHallOfFamePage />} />
         <Route
@@ -241,17 +264,46 @@ const AppContent: React.FC = () => {
             </ErrorBoundary>
           }
         />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/event" element={<EventList />} />
+        {/* 기존 RecipeDetailPage 경로도 유지 */}
+        <Route path="/recipe/detail/:id" element={<RecipeDetailPage />} />
+
+        {/* ============================================
+            6. 이벤트 및 뉴스레터
+            ============================================ */}
+        <Route path="/event" element={<EventPage />} />
+        <Route path="/event/list" element={<EventList />} />
         <Route path="/event/:id" element={<EventDetail />} />
-        <Route path="/subscription" element={<Subscription />} />
-        <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
+        
+        <Route path="/newsletter" element={<NewsletterPage />} />
+        <Route path="/newsletter/list" element={<NewsletterList />} />
+        <Route path="/newsletter/:id" element={<NewsletterDetail />} />
+
+        {/* ============================================
+            7. 개인화 관리 및 보상 (MyPage)
+            ============================================ */}
         <Route path="/mypage" element={<MyHome />} />
-        <Route path="/mypage/info" element={<MyInfo />} />
+        <Route path="/mypage/home" element={<MyHome />} />
+        <Route path="/mypage/ai-analysis" element={<ComingSoonPage title="AI 분석 리포트" description="식습관 분석 및 건강 지표 피드백" />} />
         <Route path="/mypage/orders" element={<MyOrders />} />
+        <Route path="/mypage/delivery" element={<ComingSoonPage title="배송 관리" />} />
+        <Route path="/mypage/favorites" element={<BookmarksPage />} />
         <Route path="/mypage/bookmarks" element={<BookmarksPage />} />
         <Route path="/mypage/wishlist" element={<WishlistPage />} />
         <Route path="/mypage/reviews" element={<ReviewsPage />} />
+        <Route path="/mypage/info" element={<MyInfo />} />
+        <Route path="/mypage/info/edit-profile" element={<ProfileEditPage />} />
+        <Route path="/mypage/info/addresses" element={<ComingSoonPage title="배송지 관리" />} />
+        <Route path="/mypage/info/health-profile" element={<ComingSoonPage title="취향/건강 프로필" description="채식 단계 및 알러지 관리" />} />
+        <Route path="/mypage/badges" element={<ComingSoonPage title="활동배지 리스트" />} />
+        <Route path="/mypage/badges/criteria" element={<ComingSoonPage title="배지 지급 조건 안내" />} />
+
+        {/* ============================================
+            기타 페이지 (하위 호환성 유지)
+            ============================================ */}
+        <Route path="/shop" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/community" element={<CommunityPage />} />
+        <Route path="/cart" element={<ComingSoonPage title="장바구니" />} />
         <Route path="/mypage/edit" element={<ProfileEditPage />} />
         <Route path="/mypage/cancel-return" element={<ComingSoonPage title="취소/반품" />} />
         <Route path="/mypage/receipt" element={<ComingSoonPage title="영수증 발급" />} />
@@ -267,9 +319,13 @@ const AppContent: React.FC = () => {
 };
 
 // Coming Soon 페이지
-const ComingSoonPage: React.FC<{ title: string }> = ({ title }) => (
+const ComingSoonPage: React.FC<{ title: string; description?: string }> = ({ title, description }) => (
   <div className="min-h-[60vh] flex items-center justify-center">
     <div className="text-center">
+      <h1 className="text-2xl font-bold mb-4" style={{ color: '#3D3A36' }}>{title}</h1>
+      {description && (
+        <p className="text-stone-500 mb-2" style={{ fontSize: '14px', lineHeight: '1.6' }}>{description}</p>
+      )}
       <p className="text-stone-500" style={{ fontSize: '14px', lineHeight: '1.6' }}>페이지 준비 중입니다.</p>
     </div>
   </div>

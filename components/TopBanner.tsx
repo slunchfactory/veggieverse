@@ -11,7 +11,7 @@ export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
       className="promo-bar relative w-full"
       style={{ 
         height: 'var(--promo-h)',
-        backgroundColor: '#000000',
+        backgroundColor: '#8C451D',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -21,7 +21,7 @@ export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
       <div 
         className="w-full flex items-center justify-center relative"
         style={{ 
-          color: '#ffffff',
+          color: '#DCFD4A',
           fontSize: '12px',
           lineHeight: 1.2,
           whiteSpace: 'nowrap',
@@ -38,6 +38,7 @@ export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            color: '#DCFD4A'
           }}
         >
           🎁 슬런치가 처음이신 고객님은 지금 가입하고 할인쿠폰 받아가세요!
@@ -46,7 +47,7 @@ export const TopBanner: React.FC<TopBannerProps> = ({ onClose }) => {
           onClick={onClose}
           className="absolute right-2 px-1 hover:opacity-80 flex items-center justify-center"
           style={{ 
-            color: '#ffffff',
+            color: '#DCFD4A',
             fontSize: '14px',
             lineHeight: 1,
             minWidth: '24px',

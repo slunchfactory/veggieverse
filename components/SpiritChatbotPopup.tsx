@@ -4,7 +4,7 @@ import { useUser } from '../contexts/UserContext';
 import { PhotoReviewModal } from './PhotoReviewModal';
 import { BadgeAcquisitionModal } from './BadgeAcquisitionModal';
 import { ALL_BADGES, spiritNameToBadgeId } from '../contexts/UserContext';
-import { PhotoReview } from './CommentSection';
+import { PhotoReview } from './PhotoReviewModal';
 
 const AVATAR_IMG = '/veggieverse/characters/slunch-character.png';
 const AVATAR_VIDEO = '/veggieverse/characters/slunch-character-move.mp4';

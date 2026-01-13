@@ -564,7 +564,7 @@ const generatePersonalityDescription = (
 export const SurveyPage: React.FC<SurveyPageProps> = ({ selectedItems = [], onSaveProfile, showScrollToTop = false, onScrollToTop }) => {
   const navigate = useNavigate();
   const { login, user } = useUser();
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(true); // 항상 시작된 상태로
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showResult, setShowResult] = useState(false);
@@ -1026,62 +1026,7 @@ ${result.description}
     };
   }, [showShareModal, result]);
 
-  // 시작 전 화면
-  if (!started) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
-        <div className="flex items-center justify-center min-h-screen p-8">
-          <div className="bg-white rounded-none p-12 max-w-lg w-full shadow-sm text-center">
-            {/* 상단 네비게이션 */}
-            <button
-              onClick={scrollToTop}
-              className="text-sm text-stone-400 hover:text-stone-600 mb-6 flex items-center gap-1 mx-auto"
-              aria-label="다시 선택하기"
-            >
-              <ChevronUp className="w-4 h-4" aria-hidden="true" />
-              다시 선택하기
-            </button>
-            
-            <div className="text-6xl mb-6">🥗</div>
-            <h2 className="text-stone-800 mb-4 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
-              마이 테이스트 스피릿
-            </h2>
-            <p className="text-stone-500 mb-8">
-              5가지만 골라보세요.
-            </p>
-            
-            {selectedItems.length > 0 && (
-              <div className="flex justify-center gap-3 mb-8">
-                {selectedItems.map(item => (
-                  <div key={item.id} className="w-14 h-14 rounded-none overflow-hidden shadow-md border-2 border-white">
-                    <img src={item.imageUrl} alt={item.name} className="w-full h-full object-contain bg-stone-50" />
-                  </div>
-                ))}
-              </div>
-            )}
-            
-            <button
-              onClick={() => {
-                try {
-                  setStarted(true);
-                  generateMonster(); // 시작하기 클릭 시 이미지 생성 시작
-                } catch (error) {
-                  if (import.meta.env.DEV) {
-                    console.error('Error starting survey:', error);
-                  }
-                  setStarted(true); // 에러가 발생해도 시작은 진행
-                }
-              }}
-              className="w-full py-4 bg-black text-white rounded-none font-normal hover:bg-lime hover:text-black transition-colors"
-              style={{ backgroundColor: 'var(--black)', color: 'var(--white-pure)' }}
-            >
-              시작하기
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // 시작 전 화면 제거 - 바로 설문 시작
 
   // 결과 화면
   if (showResult) {
@@ -1644,6 +1589,52 @@ ${result.description}
 
   return (
     <div className="min-h-screen bg-transparent">
+      {/* 상단 고정 헤더 */}
+      <div 
+        className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200"
+        style={{
+          padding: '16px 20px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+        }}
+      >
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <h2 
+            className="text-stone-900 font-normal"
+            style={{ 
+              fontSize: 'clamp(18px, 2vw, 24px)',
+              fontWeight: 400,
+              letterSpacing: '-0.02em',
+            }}
+          >
+            마이테이스트 스피릿 찾기
+          </h2>
+          
+          {/* 진행 게이지 */}
+          <div className="flex items-center gap-3">
+            <span 
+              className="text-stone-600 text-sm"
+              style={{ minWidth: '60px', textAlign: 'right' }}
+            >
+              {currentStep + 1} / {availableQuestions.length}
+            </span>
+            <div 
+              className="bg-gray-200 rounded-full"
+              style={{
+                width: '200px',
+                height: '8px',
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                className="bg-black h-full transition-all duration-300 ease-out"
+                style={{
+                  width: `${progress}%`,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* 위로 가기 버튼 (스크롤을 내렸을 때만 표시) */}
       {showScrollToTop && (
@@ -1657,7 +1648,7 @@ ${result.description}
         </button>
       )}
 
-      <div className="flex items-center justify-center min-h-screen p-8">
+      <div className="flex items-center justify-center min-h-screen p-8" style={{ paddingTop: '100px' }}>
         <div className="bg-white rounded-none p-10 max-w-4xl w-full shadow-sm">
           {/* 질문 */}
           <h2 className="text-center text-stone-800 mb-8 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>

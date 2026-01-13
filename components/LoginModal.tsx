@@ -16,7 +16,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('로그인', { email, password, rememberMe });
+    // TODO: 실제 로그인 API 연동
     if (onLoginSuccess) {
       onLoginSuccess();
     }
@@ -24,7 +24,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
   };
 
   const handleSocialLogin = (provider: 'kakao' | 'naver' | 'google' | 'apple') => {
-    console.log(`${provider} 로그인`);
+    // TODO: 소셜 로그인 API 연동
     if (onLoginSuccess) {
       onLoginSuccess();
     }

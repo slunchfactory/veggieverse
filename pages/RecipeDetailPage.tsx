@@ -131,10 +131,13 @@ const RecipeDetailPage: React.FC = () => {
   };
   
   // 토스트 추가
-  const addToast = (toast: Omit<ToastProps, 'id'>) => {
+  const addToast = (toast: Omit<ToastProps, 'id' | 'onClose'>) => {
     const newToast: ToastProps = {
       ...toast,
       id: `toast-${Date.now()}-${Math.random()}`,
+      onClose: (id: string) => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+      },
     };
     setToasts(prev => [...prev, newToast]);
   };

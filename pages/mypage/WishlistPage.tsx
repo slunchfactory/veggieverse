@@ -138,6 +138,7 @@ const WishlistPage: React.FC = () => {
                         e.stopPropagation();
                         removeFromWishlist(product.id);
                       }}
+                      aria-label={`${product.name} 찜 목록에서 삭제`}
                       style={{
                         position: 'absolute',
                         top: '8px',

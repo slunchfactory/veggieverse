@@ -1,6 +1,8 @@
 // 재료 이름 → 프로젝트 내 이미지 자동 매핑 유틸리티
 // 안정적인 로컬 이미지 사용
 
+import React from 'react';
+
 const ingredientIconMap: Record<string, string> = {
   // 버섯류
   '버섯': 'mushroom.png',
@@ -236,7 +238,7 @@ export const getIngredientIcon = (ingredientName: string): string => {
 /**
  * 이미지 로드 실패 시 폴백 이미지로 대체하는 핸들러
  */
-export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+export const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
   const target = e.target as HTMLImageElement;
   // 이미 폴백 이미지면 더 이상 처리하지 않음
   if (target.src.includes(DEFAULT_ICON)) {

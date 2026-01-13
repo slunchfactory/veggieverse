@@ -1,7 +1,40 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import { X, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { X, ArrowRight, Heart } from 'lucide-react';
 import { getHomeProductImage } from '../utils/productImages';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
+import { VegetableItem } from '../types';
+import { PRODUCE_ITEMS } from '../constants';
+import { SurveyPage } from '../components/SurveyPage';
+import { Footer } from '../components/Footer';
+
+// 밝은 색상인지 판단하는 헬퍼 함수
+const isLightColor = (hexColor: string): boolean => {
+  const hex = hexColor.replace('#', '');
+  const r = parseInt(hex.substr(0, 2), 16);
+  const g = parseInt(hex.substr(2, 2), 16);
+  const b = parseInt(hex.substr(4, 2), 16);
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luminance > 0.6;
+};
+
+interface FloatingItem extends VegetableItem {
+  size: number;
+  labelColor: string;
+  labelOffsetX: number;
+  labelOffsetY: number;
+  labelRotation: number;
+  animationDuration: number;
+  animationDelay: number;
+  floatAmplitude: number;
+  rotationDuration: number;
+  driftX: number;
+  driftY: number;
+  rotateDirection: number;
+  zIndex: number;
+  vx: number;
+  vy: number;
+}
 
 // 무드 슬라이더 이미지 데이터
 const MOOD_SLIDES = [
@@ -100,16 +133,18 @@ const MoodSlider: React.FC = () => {
             <div className="w-1/2 h-full overflow-hidden">
               <img 
                 src={slide.leftImage}
-                alt=""
+                alt={`슬라이드 ${index + 1} 좌측 이미지`}
                 className="w-full h-full object-cover"
+                loading={index === 0 ? 'eager' : 'lazy'}
               />
             </div>
             {/* 우측 이미지 */}
             <div className="w-1/2 h-full overflow-hidden">
               <img 
                 src={slide.rightImage}
-                alt=""
+                alt={`슬라이드 ${index + 1} 우측 이미지`}
                 className="w-full h-full object-cover"
+                loading={index === 0 ? 'eager' : 'lazy'}
               />
             </div>
           </div>
@@ -356,157 +391,504 @@ interface HomePageProps {
   headerOffset?: number;
 }
 
-const SPIRIT_MODAL_HIDE_KEY = 'spiritModal_hideUntil';
-
 export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
-  const [showToast, setShowToast] = useState(true);
-  const [scrollY, setScrollY] = useState(0);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const conceptRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+  const [items, setItems] = useState<FloatingItem[]>([]);
+  const [selectedItems, setSelectedItems] = useState<FloatingItem[]>([]);
+  const [step, setStep] = useState<1 | 2 | 3>(2); // Step 2: 재료 선택, Step 3: 설문 (Step 1 제거)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+  const [hoveredItemId, setHoveredItemId] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // 스크롤 위치 추적 (Parallax 효과용)
+  // 초기 아이템 생성 - 랜덤 위치 배치 (퍼센트 기반)
   useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const isMobile = window.innerWidth < 640;
+    const sizeMultiplier = isMobile ? 0.78 : 1;
+    const baseSize = 90;
+    
+    const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
+      // 랜덤 위치 배치 (퍼센트 기반, 10% ~ 90% 범위)
+      const xPercent = 10 + Math.random() * 80; // 10% ~ 90%
+      const yPercent = 10 + Math.random() * 80; // 10% ~ 90%
+      // 더 다양한 크기 (0.6 ~ 2.5 배)
+      const scale = (0.6 + Math.random() * 1.9) * sizeMultiplier;
+      
+      return {
+        id: `produce-${index}`,
+        name: produce.name,
+        x: xPercent, // 퍼센트 값으로 저장
+        y: yPercent, // 퍼센트 값으로 저장
+        scale,
+        rotation: Math.random() * 360,
+        imageUrl: produce.image,
+        color: '',
+        size: baseSize,
+        labelColor: produce.color,
+        labelOffsetX: (Math.random() - 0.5) * 30,
+        labelOffsetY: -20,
+        labelRotation: (Math.random() - 0.5) * 20,
+        animationDuration: 4 + Math.random() * 2, // 4~6초
+        animationDelay: Math.random() * 2, // 0~2초 딜레이
+        floatAmplitude: 20 + Math.random() * 15,
+        rotationDuration: 22 + Math.random() * 12,
+        driftX: (Math.random() - 0.5) * 70,
+        driftY: (Math.random() - 0.5) * 50,
+        rotateDirection: Math.random() > 0.5 ? 1 : -1,
+        zIndex: 1 + index, // 텍스트 뒤에 배치
+        vx: 0,
+        vy: 0,
+      };
+    });
+    setItems(initialItems);
+  }, [headerOffset]);
+
+  const handleItemClick = useCallback((item: FloatingItem, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    setSelectedItems(prev => {
+      const isSelected = prev.some(i => i.id === item.id);
+      if (isSelected) {
+        // 선택 해제 - 애니메이션 재개
+        return prev.filter(i => i.id !== item.id);
+      } else if (prev.length < 3) {
+        // 선택 - 해당 위치에서 멈춤
+        return [...prev, item];
+      }
+      return prev;
+    });
   }, []);
 
-  // 하루동안 안보기 체크
-  useEffect(() => {
-    const hideUntil = localStorage.getItem(SPIRIT_MODAL_HIDE_KEY);
-    if (hideUntil && Date.now() < parseInt(hideUntil)) {
-      setShowToast(false);
+  const removeSelection = useCallback((itemId: string) => {
+    setSelectedItems(prev => prev.filter(i => i.id !== itemId));
+  }, []);
+
+
+  const goToNextStep = useCallback(() => {
+    if (selectedItems.length === 3) {
+      localStorage.setItem('spirit-finder-selected-items', JSON.stringify(selectedItems));
+      // 0.5초 딜레이 후 자동 전환
+      setTimeout(() => {
+        setStep(3);
+      }, 500);
     }
-  }, []);
+  }, [selectedItems]);
 
-  const dismissToast = () => {
-    setShowToast(false);
-  };
+  // 3칸 완성 시 자동 전환 제거 (버튼 클릭으로 전환)
 
-  const dismissForToday = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-    localStorage.setItem(SPIRIT_MODAL_HIDE_KEY, tomorrow.getTime().toString());
-    setShowToast(false);
-  };
+  // 자유 부유 모션은 CSS 애니메이션으로만 처리 (원래 방식)
+
 
   return (
     <div className="min-h-screen w-full" style={{ backgroundColor: '#ffffff', width: '100%' }}>
-      {/* 비건 테스트 모달 팝업 */}
-      {showToast && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/50 z-40 transition-opacity duration-300"
-            onClick={dismissToast}
-          />
-          <div 
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="test-modal-title"
-          >
-            <div
-              className="relative bg-black pointer-events-auto animate-fadeIn overflow-hidden rounded-2xl"
-              style={{
-                width: '90%',
-                maxWidth: '380px',
-                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              <div className="flex flex-col">
-                <Link
-                  to="/"
-                  onClick={dismissToast}
-                  className="relative w-full overflow-hidden bg-black rounded-t-2xl cursor-pointer block"
+      {/* ============================================
+          HERO SECTION - 나의 슬로우 스피릿 찾기
+          ============================================ */}
+      <section 
+        ref={containerRef}
+        className="relative w-full"
+        style={{ 
+          minHeight: 'calc(100vh - 96px)',
+          height: step === 3 ? 'auto' : 'calc(100vh - 96px)',
+          backgroundColor: step === 3 ? '#ffffff' : 'transparent',
+          backgroundImage: step === 3 ? 'none' : 'url(/veggieverse/images/bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat',
+          position: 'relative',
+          overflow: 'hidden',
+          paddingTop: 'clamp(40px, 8vw, 80px)',
+          paddingLeft: 'clamp(20px, 5vw, 60px)',
+          paddingRight: 'clamp(20px, 5vw, 60px)',
+          paddingBottom: '0',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        {/* 둥실둥실 애니메이션 keyframes - 더 넓은 범위, 프레임 밖으로도 */}
+        <style>
+          {items.map((item, index) => {
+            const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
+            // 각 야채마다 다른 이동 경로 생성 (매우 넓은 범위, 프레임 밖으로도)
+            const moveX1 = (Math.random() - 0.5) * 120;
+            const moveY1 = (Math.random() - 0.5) * 120;
+            const moveX2 = (Math.random() - 0.5) * 150;
+            const moveY2 = (Math.random() - 0.5) * 150;
+            const moveX3 = (Math.random() - 0.5) * 130;
+            const moveY3 = (Math.random() - 0.5) * 130;
+            const moveX4 = (Math.random() - 0.5) * 100;
+            const moveY4 = (Math.random() - 0.5) * 100;
+            
+            // 더 느린 애니메이션 (10~18초)
+            const duration = 10 + Math.random() * 8;
+            const delay = Math.random() * 4; // 0~4초 딜레이
+            
+            return `
+              @keyframes float-${itemId} {
+                0% { 
+                  transform: translate(0, 0); 
+                }
+                20% { 
+                  transform: translate(${moveX1}px, ${moveY1}px); 
+                }
+                40% { 
+                  transform: translate(${moveX2}px, ${moveY2}px); 
+                }
+                60% { 
+                  transform: translate(${moveX3}px, ${moveY3}px); 
+                }
+                80% { 
+                  transform: translate(${moveX4}px, ${moveY4}px); 
+                }
+                100% { 
+                  transform: translate(0, 0); 
+                }
+              }
+              .vegetable-${itemId} {
+                animation: float-${itemId} ${duration}s ease-in-out infinite;
+                animation-delay: ${delay}s;
+                will-change: transform;
+              }
+            `;
+          }).join('')}
+        </style>
+
+
+        {/* 야채 플로팅 영역 */}
+        <div className="flex-1 relative" style={{ minHeight: '300px' }}>
+          {step !== 3 && items.map((item) => {
+            const isSelected = selectedItems.some(i => i.id === item.id);
+            const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
+            return (
+              <div
+                key={item.id}
+                onClick={() => handleItemClick(item)}
+                onMouseEnter={() => setHoveredItemId(item.id)}
+                onMouseLeave={() => setHoveredItemId(null)}
+                className="absolute group cursor-pointer"
+                style={{
+                  left: `${item.x}%`, // 퍼센트 값 사용
+                  top: `${item.y}%`, // 퍼센트 값 사용
+                  width: `${item.size * item.scale}px`,
+                  height: `${item.size * item.scale}px`,
+                  transform: 'translate(-50%, -50%)',
+                  zIndex: isSelected ? 20 : item.zIndex || 1, // 호버 시 z-index 변경 제거
+                  pointerEvents: 'auto',
+                  willChange: isSelected ? 'auto' : 'transform',
+                  isolation: 'isolate', // stacking context 분리
+                }}
+              >
+                <div
+                  className={`w-full h-full ${!isSelected ? `vegetable-${itemId}` : ''}`}
                   style={{
-                    aspectRatio: '1/1',
-                    isolation: 'isolate'
+                    animation: isSelected ? 'none' : undefined,
+                    position: 'relative',
+                    willChange: isSelected ? 'auto' : 'transform',
                   }}
                 >
+                  {/* 원본 이미지 (항상 렌더링) */}
                   <img
-                    src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&q=80&w=800"
-                    alt="비건 음식 - 클릭하여 테스트 시작"
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    src={item.imageUrl}
+                    alt={item.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-contain absolute inset-0"
                     style={{
-                      transform: 'translateZ(0) scale(1.05)',
-                      backfaceVisibility: 'hidden',
-                      WebkitBackfaceVisibility: 'hidden',
-                      width: '100%',
-                      height: '100%'
+                      opacity: (isSelected || hoveredItemId === item.id) ? 0 : 1,
+                      zIndex: 1,
+                    }}
+                    draggable={false}
+                  />
+                  
+                  {/* 컬러 실루엣 (호버 또는 선택 시 표시) */}
+                  <div 
+                    className="w-full h-full absolute inset-0"
+                    style={{
+                      backgroundColor: item.labelColor,
+                      WebkitMaskImage: `url(${item.imageUrl})`,
+                      WebkitMaskSize: 'contain',
+                      WebkitMaskRepeat: 'no-repeat',
+                      WebkitMaskPosition: 'center',
+                      maskImage: `url(${item.imageUrl})`,
+                      maskSize: 'contain',
+                      maskRepeat: 'no-repeat',
+                      maskPosition: 'center',
+                      filter: isSelected ? 'drop-shadow(0 0 0 3px #000000)' : 'none',
+                      opacity: (isSelected || hoveredItemId === item.id) ? 1 : 0,
+                      zIndex: 2,
+                      pointerEvents: 'none',
                     }}
                   />
-                </Link>
-
-                <div className="w-full bg-black p-8 flex flex-col justify-center rounded-b-2xl">
-                  <div className="flex flex-col items-center text-center gap-3">
-                    <h2 id="test-modal-title" className="text-[18px] font-semibold text-white flex items-center gap-2">
-                      <span aria-hidden="true">🥗</span> 나의 스피릿 찾기
-                    </h2>
-                    <span className="text-[14px] text-white/70 leading-relaxed">
-                      좋아하는 채소 3개를 선택하고 나만의 비건 페르소나를 발견해보세요!
+                  
+                  {/* 호버 시 야채 이름 표시 (이미지 안에) */}
+                  <div
+                    className="absolute inset-0 flex items-center justify-center"
+                    style={{
+                      zIndex: 30,
+                      pointerEvents: 'none',
+                      opacity: (hoveredItemId === item.id && !isSelected) ? 1 : 0,
+                    }}
+                  >
+                    <span
+                      className="text-white text-sm font-medium px-3 py-1.5 rounded"
+                      style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        backdropFilter: 'blur(4px)',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                      }}
+                    >
+                      {item.name}
                     </span>
-
-                    {/* 하단 버튼 영역 */}
-                    <div style={{ display: 'flex', gap: '12px', marginTop: '16px' }}>
-                      <button
-                        onClick={dismissForToday}
-                        style={{
-                          padding: '8px 16px',
-                          fontSize: '13px',
-                          fontWeight: 400,
-                          color: 'rgba(255,255,255,0.6)',
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        오늘 하루동안 안보기
-                      </button>
-                      <button
-                        onClick={dismissToast}
-                        style={{
-                          padding: '8px 16px',
-                          fontSize: '13px',
-                          fontWeight: 400,
-                          color: 'rgba(255,255,255,0.6)',
-                          background: 'transparent',
-                          border: 'none',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        닫기
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* 서브헤드라인 (본문 위로 이동) */}
+        <p 
+          className="mb-4 md:mb-6 z-30 relative text-center mx-auto"
+          style={{ 
+            fontSize: 'clamp(16px, 2vw, 20px)',
+            fontWeight: 700,
+            lineHeight: '1.6',
+            letterSpacing: '-0.01em',
+            maxWidth: '700px',
+            paddingLeft: '40px',
+            paddingRight: '40px',
+            color: '#DCFD4A',
+          }}
+        >
+          "뭐 먹지?" 고민은 내려놓고, 나에게 맞는 한 끼를 발견하세요.<br />끌리는 재료 3 가지만 고르면, 당신의 취향에 꼭 맞는 테이블이 완성됩니다.
+        </p>
+
+        {/* 본문 (중앙 정렬) */}
+        <p 
+          className="text-stone-600 mb-8 md:mb-12 z-30 relative text-center mx-auto"
+          style={{ 
+            fontSize: '16px',
+            fontWeight: 400,
+            lineHeight: '1.8',
+            letterSpacing: '-0.01em',
+            maxWidth: '800px',
+            paddingLeft: '40px',
+            paddingRight: '40px',
+          }}
+        >
+          슬런치는 맛있는 한 끼가 거창할 필요 없다고 믿습니다. 바쁜 하루 속에서도 나를 위한 시간, 천천히 음미하는 식사. 우리는 당신의 취향과 라이프스타일에 맞춰 매일의 식탁을 설계합니다. 건강을 위해 맛을 포기하거나, 맛을 위해 건강을 타협하지 않아도 됩니다. 그냥 맛있게 먹었을 뿐인데, 몸도 마음도 가벼워지는 경험. 슬런치가 그 테이블을 열어드릴게요.
+        </p>
+
+        {/* 테이블 열기 영역 - 항상 표시 (야채 선택 전 20px 노출) */}
+        {step === 2 && (
+          <>
+            <style>
+              {`
+                @keyframes slideUpPush {
+                  from {
+                    transform: translate(-50%, calc(100% + 20px));
+                  }
+                  to {
+                    transform: translate(-50%, 0);
+                  }
+                }
+                @keyframes pullUpPage {
+                  from {
+                    transform: translateY(0);
+                  }
+                  to {
+                    transform: translateY(-100%);
+                  }
+                }
+              `}
+            </style>
+            
+            {/* 마름모 형태 박스 - 야채 선택 시에만 표시 */}
+            {selectedItems.length >= 1 && (
+              <div 
+                className="absolute z-40"
+                style={{
+                  width: '860px',
+                  maxWidth: '100%',
+                  left: '50%',
+                  bottom: '0',
+                  transform: 'translate(-50%, 0)',
+                  animation: 'slideUpPush 0.5s ease-out',
+                  overflow: 'hidden',
+                }}
+              >
+                {/* 마름모 형태 배경 - 상단 라운딩 포함 */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    zIndex: 1,
+                    backgroundColor: '#DCFD4A',
+                    borderTopLeftRadius: '16px',
+                    borderTopRightRadius: '16px',
+                    clipPath: 'polygon(3.49% 0, 96.51% 0, 100% 100%, 0 100%)',
+                  }}
+                />
+                {/* 상단 라운딩 오버레이 - clipPath 위에 표시 */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: '3.49%',
+                    right: '3.51%',
+                    height: '16px',
+                    backgroundColor: '#DCFD4A',
+                    borderTopLeftRadius: '16px',
+                    borderTopRightRadius: '16px',
+                    zIndex: 3,
+                    pointerEvents: 'none',
+                  }}
+                />
+                
+                {/* 내용 영역 */}
+                <div 
+                  className="mx-auto"
+                  style={{
+                    width: '100%',
+                    padding: '0',
+                    position: 'relative',
+                    zIndex: 2,
+                  }}
+                >
+                <div 
+                  className="flex flex-col md:flex-row items-center justify-center gap-3"
+                  style={{
+                    padding: '20px',
+                  }}
+                >
+                  {/* 선택된 야채 실루엣 3개 */}
+                  <div className="flex items-center gap-2">
+                    {selectedItems.map((item, index) => (
+                      <div
+                        key={item.id}
+                        className="relative"
+                        style={{
+                          width: '60px',
+                          height: '60px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                        }}
+                      >
+                        <div
+                          className="w-full h-full"
+                          style={{
+                            backgroundColor: item.labelColor,
+                            WebkitMaskImage: `url(${item.imageUrl})`,
+                            WebkitMaskSize: 'contain',
+                            WebkitMaskRepeat: 'no-repeat',
+                            WebkitMaskPosition: 'center',
+                            maskImage: `url(${item.imageUrl})`,
+                            maskSize: 'contain',
+                            maskRepeat: 'no-repeat',
+                            maskPosition: 'center',
+                          }}
+                        />
+                        {/* X 버튼 - 삭제 가능 (갈색) */}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removeSelection(item.id);
+                          }}
+                          className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center rounded-full z-10"
+                          style={{
+                            cursor: 'pointer',
+                            backgroundColor: '#8C451D',
+                          }}
+                          aria-label="선택 해제"
+                        >
+                          <X className="w-3 h-3 text-white" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* 나의 슬로우 스피릿 찾기 버튼 */}
+                  <button
+                    onClick={() => {
+                      if (selectedItems.length >= 1) {
+                        localStorage.setItem('spirit-finder-selected-items', JSON.stringify(selectedItems));
+                        navigate('/spirit/step');
+                      }
+                    }}
+                    disabled={selectedItems.length < 1}
+                    style={{
+                      display: 'inline-block',
+                      padding: '12px 24px',
+                      border: 'none',
+                      backgroundColor: selectedItems.length >= 1 ? '#8C451D' : '#ccc',
+                      color: '#FFFFFF',
+                      fontSize: '15px',
+                      fontWeight: 400,
+                      textDecoration: 'none',
+                      transition: 'all 0.15s ease',
+                      minHeight: '44px',
+                      minWidth: '120px',
+                      cursor: selectedItems.length >= 1 ? 'pointer' : 'not-allowed',
+                    }}
+                    onMouseEnter={(e) => {
+                      if (selectedItems.length >= 1) {
+                        e.currentTarget.style.backgroundColor = '#8C451D';
+                        e.currentTarget.style.color = '#FFFFFF';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = selectedItems.length >= 1 ? '#8C451D' : '#ccc';
+                      e.currentTarget.style.color = '#FFFFFF';
+                    }}
+                  >
+                    나의 슬로우 스피릿 찾기
+                  </button>
+                </div>
+              </div>
+            </div>
+            )}
+          </>
+        )}
+
+        {/* Step 3: 설문 페이지 (12px 바가 끌어올림) */}
+        {step === 3 && (
+          <div
+            className="fixed inset-0 z-50"
+            style={{
+              transform: 'translateY(100%)',
+              animation: 'pullUpPage 0.6s ease-out forwards',
+              backgroundColor: '#DCFD4A',
+            }}
+          >
+            <div style={{ paddingTop: '20px', paddingBottom: '40px', minHeight: '100vh' }}>
+              <SurveyPage 
+                selectedItems={selectedItems} 
+              />
             </div>
           </div>
-        </>
-      )}
-      
+        )}
+      </section>
 
       {/* ============================================
-          HERO SECTION - 1:1 Split Mood Image Slider
-          ============================================ */}
-      <MoodSlider />
-
-      {/* ============================================
-          SECTION 1: We are Slunch Factory (Concept)
+          SLUNCH WEEKLY - 2x2 그리드
           ============================================ */}
       <section 
-        ref={conceptRef}
-        className="scroll-snap-section-flex bg-[#faf9f7] relative overflow-hidden"
-        style={{ paddingTop: '80px', paddingBottom: '80px' }}
+        className="bg-white w-full px-5 md:px-20" 
+        style={{ 
+          paddingTop: '120px', 
+          paddingBottom: '120px'
+        }}
       >
-
-        <div className="page-container relative z-10">
-          <div className="max-w-3xl">
+        <div className="page-container">
+          {/* 섹션 헤더 */}
+          <div className="mb-12 max-w-3xl">
             <h2 
-              className="text-stone-900 mb-6 text-left"
+              className="text-stone-900 mb-4 text-left font-normal"
               style={{ 
                 fontSize: 'var(--font-size-h2)',
                 fontWeight: 400,
@@ -514,10 +896,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 lineHeight: 'var(--line-height-h2)'
               }}
             >
-              We are Slunch Factory
+              Slunch Weekly
             </h2>
             <p 
-              className="text-stone-700 mb-8 text-left"
+              className="text-stone-600 text-left"
               style={{ 
                 fontSize: 'var(--font-size-body)',
                 fontWeight: 400,
@@ -525,178 +907,187 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 letterSpacing: 'var(--letter-spacing-tight)'
               }}
             >
-              슬런치 팩토리는 건강한 비건 식단을 통해 일상에 새로운 맛과 경험을 전달합니다.
-              <br />
-              채소들의 이야기로 만든 특별한 요리와 함께, 당신만의 비건 우주를 만들어가세요.
+              하루 2끼, 균형 잡힌 식단을 문 앞까지. 내 몸을 위한 가장 쉬운 선택
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* ============================================
-          SLUNCH WEEKLY - Dedicated Feature Section (Lofa Style)
-          ============================================ */}
-      <section 
-        className="relative overflow-visible bg-white w-full"
-        style={{ 
-          borderTop: '1px solid #000000',
-          borderBottom: '1px solid #000000'
-        }}
-      >
-        <div className="w-full">
-          <div className="flex flex-col lg:flex-row">
-            {/* 왼쪽 영역 (50%) - 이미지 */}
+          
+          {/* 좌우 2열 레이아웃 */}
+          <div 
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '24px',
+            }}
+            className="grid-cols-1 md:grid-cols-2"
+          >
+            {/* 좌측: 14끼 식단 + 신선 새벽배송 스택 */}
             <div 
-              className="w-full lg:w-[50%] relative border-r border-[#000000]"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '24px',
+                height: '100%',
+              }}
             >
+              {/* 영역 1: 주 14끼 식단 */}
               <div 
-                className="w-full overflow-hidden relative"
-                style={{ 
-                  aspectRatio: '3/4', 
-                  backgroundColor: '#f5f5f5'
+                className="bg-white flex flex-col"
+                style={{
+                  border: '1px solid #eee',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  flex: '1 1 0',
                 }}
               >
-                {/* 도시락/패키지 이미지 자리 */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-[#000000] text-sm font-normal">슬런치 위클리 패키지 이미지</span>
-                </div>
-                
+                <h3 
+                  className="text-stone-900 mb-2"
+                  style={{ 
+                    fontSize: '20px',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em'
+                  }}
+                >
+                  주 14끼 식단
+                </h3>
+                <p 
+                  className="text-stone-600 mb-4"
+                  style={{ 
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    lineHeight: '1.6'
+                  }}
+                >
+                  하루 2끼, 일주일치 완벽한 식단
+                </p>
+                <div 
+                  className="mx-auto"
+                  style={{ 
+                    width: '60%',
+                    aspectRatio: '1 / 1',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #FFE5E5 0%, #FFB3D9 100%)',
+                    marginTop: 'auto'
+                  }}
+                />
+              </div>
+              
+              {/* 영역 2: 신선 새벽 배송 */}
+              <div 
+                className="bg-white flex flex-col"
+                style={{
+                  border: '1px solid #eee',
+                  borderRadius: '12px',
+                  padding: '24px',
+                  flex: '1 1 0',
+                }}
+              >
+                <h3 
+                  className="text-stone-900 mb-2"
+                  style={{ 
+                    fontSize: '20px',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em'
+                  }}
+                >
+                  신선 새벽 배송
+                </h3>
+                <p 
+                  className="text-stone-600 mb-4"
+                  style={{ 
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    lineHeight: '1.6'
+                  }}
+                >
+                  매주 월요일 아침, 문 앞까지 신선하게
+                </p>
+                <div 
+                  className="mx-auto"
+                  style={{ 
+                    width: '60%',
+                    aspectRatio: '1 / 1',
+                    borderRadius: '12px',
+                    background: 'linear-gradient(135deg, #C8E6C9 0%, #1B5E20 100%)',
+                    marginTop: 'auto'
+                  }}
+                />
               </div>
             </div>
             
-            {/* 오른쪽 영역 (50%) - 텍스트 & CTA */}
-            <div className="w-full lg:w-[50%] flex flex-col justify-center p-6 lg:p-12">
-              <h2 
-                className="text-[#000000] mb-6 font-normal"
+            {/* 영역 3: 영양 밸런스 완벽 설계 */}
+            <div 
+              className="bg-white flex flex-col"
+              style={{
+                border: '1px solid #eee',
+                borderRadius: '12px',
+                padding: '24px',
+                height: '100%',
+              }}
+            >
+              <h3 
+                className="text-stone-900 mb-2"
                 style={{ 
-                  fontSize: 'var(--font-size-h2)',
-                  fontWeight: 400,
-                  letterSpacing: 'var(--letter-spacing-tight)',
-                  lineHeight: 'var(--line-height-h2)'
+                  fontSize: '20px',
+                  fontWeight: 500,
+                  letterSpacing: '-0.01em'
                 }}
               >
-                고민 없는 건강한 일주일,<br />
-                Slunch Weekly
-              </h2>
-              
+                영양 밸런스 완벽 설계
+              </h3>
               <p 
-                className="text-[#000000] mb-10 text-left"
+                className="text-stone-600 mb-4"
                 style={{ 
-                  fontSize: 'var(--font-size-body)',
+                  fontSize: '14px',
                   fontWeight: 400,
-                  lineHeight: 'var(--line-height-body)',
-                  letterSpacing: 'var(--letter-spacing-tight)'
+                  lineHeight: '1.6'
                 }}
               >
-                하루 2끼, 균형 잡힌 비건 식단을 문 앞까지.<br />
-                내 몸을 위한 가장 쉬운 선택.
+                전문가와 AI가 설계한 균형 잡힌 식단
               </p>
-              
-              {/* Key Points */}
-              <div className="space-y-5 mb-10">
-                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
-                  <span className="text-2xl leading-none">🥗</span>
-                  <div>
-                    <p 
-                      className="text-[#000000] mb-1" 
-                      style={{ 
-                        fontSize: 'var(--font-size-body)',
-                        fontWeight: 500,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      주 14끼 식단
-                    </p>
-                    <p 
-                      className="text-[#000000]"
-                      style={{ 
-                        fontSize: 'var(--font-size-ui)',
-                        fontWeight: 400,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      하루 2끼, 일주일치 완벽한 식단
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4 border-b border-[#000000] pb-4">
-                  <span className="text-2xl leading-none">🚚</span>
-                  <div>
-                    <p 
-                      className="text-[#000000] mb-1" 
-                      style={{ 
-                        fontSize: 'var(--font-size-body)',
-                        fontWeight: 500,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      신선 새벽 배송
-                    </p>
-                    <p 
-                      className="text-[#000000]"
-                      style={{ 
-                        fontSize: 'var(--font-size-ui)',
-                        fontWeight: 400,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      매주 아침, 문 앞까지 신선하게
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-4">
-                  <span className="text-2xl leading-none">🌱</span>
-                  <div>
-                    <p 
-                      className="text-[#000000] mb-1" 
-                      style={{ 
-                        fontSize: 'var(--font-size-body)',
-                        fontWeight: 500,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      영양 밸런스 완벽 설계
-                    </p>
-                    <p 
-                      className="text-[#000000]"
-                      style={{ 
-                        fontSize: 'var(--font-size-ui)',
-                        fontWeight: 400,
-                        letterSpacing: 'var(--letter-spacing-tight)'
-                      }}
-                    >
-                      전문가가 설계한 균형 잡힌 식단
-                    </p>
-                  </div>
-                </div>
-              </div>
-              
-              {/* CTA Button - Outline Style */}
-              <Link
-                to="/store"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 font-normal text-[#000000] transition-all w-full lg:w-auto border border-[#000000] hover:bg-[#000000] hover:text-white"
+              <div 
+                className="mx-auto"
                 style={{ 
-                  borderRadius: '0',
-                  fontSize: 'var(--font-size-ui)',
-                  fontWeight: 400,
-                  letterSpacing: '-0.01em',
-                  minHeight: '44px' /* Touch target minimum */
+                  width: '60%',
+                  aspectRatio: '1 / 1',
+                  borderRadius: '12px',
+                  background: 'linear-gradient(135deg, #E1BEE7 0%, #9C27B0 50%, #4CAF50 100%)',
+                  marginTop: 'auto'
                 }}
-              >
-                이번 주 식단 보러가기
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              />
             </div>
+          </div>
+          
+          {/* 하단 CTA 버튼 */}
+          <div style={{ textAlign: 'center', marginTop: '48px' }}>
+            <Link 
+              to="/subscribe"
+              style={{
+                display: 'inline-block',
+                padding: '12px 24px',
+                border: 'none',
+                backgroundColor: '#B2B2B2',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                fontWeight: 400,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease',
+                minHeight: '44px',
+                minWidth: '120px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#8C451D';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#B2B2B2';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+            >
+              슬런치 위클리 보러가기
+            </Link>
           </div>
         </div>
       </section>
-
-      {/* ============================================
-          Recipe Video Split Section (from Store)
-          ============================================ */}
-      <RecipeVideoHero />
 
       {/* ============================================
           SECTION 2: Best Menu/Goods (4:5 Grid)
@@ -713,7 +1104,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 lineHeight: 'var(--line-height-h2)'
               }}
             >
-              오늘의 기분엔 이 메뉴!
+              누군가의 테이블에서 영감을
             </h2>
             <p 
               className="text-stone-600 text-left"
@@ -724,104 +1115,114 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 letterSpacing: 'var(--letter-spacing-tight)'
               }}
             >
-              슬런치 팩토리의 인기 메뉴와 굿즈를 만나보세요
+              슬런치 멤버들이 직접 만들고 공유하는 레시피.
             </p>
           </div>
           
-          {/* 4:5 비율 그리드 - 모바일 2열, 데스크톱 4열 */}
-          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
-            {FEATURED_ITEMS.map((item, idx) => {
-              const imageUrl = getHomeProductImage(idx);
-              // 할인 정보 (예시 데이터)
-              const originalPrice = Math.round(item.price * 1.25);
-              const discountRate = Math.round(((originalPrice - item.price) / originalPrice) * 100);
+          {/* 레시피 썸네일 그리드 - 모바일 2열, 데스크톱 5열 */}
+          <div className="grid grid-cols-2 lg:grid-cols-5" style={{ gap: '24px' }}>
+            {[
+              { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', author: '비건셰프', likes: 234 },
+              { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', author: '채식러버', likes: 189 },
+              { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', author: '점심왕', likes: 445 },
+              { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', author: '카레매니아', likes: 389 },
+              { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', author: '이탈리안', likes: 156 },
+            ].map((recipe) => {
               return (
                 <Link 
-                  key={item.id} 
-                  to="/store" 
-                  className="group cursor-pointer"
+                  key={recipe.id} 
+                  to={`/recipe/${recipe.id}`}
+                  style={{
+                    display: 'block',
+                    background: 'var(--cream)',
+                    cursor: 'pointer',
+                  }}
                 >
-                  <div 
-                    className="w-full overflow-hidden relative"
-                    style={{ 
-                      aspectRatio: '4/5', 
-                      backgroundColor: '#F5F5F5',
-                      borderRadius: '0'
-                    }}
-                  >
-                    {imageUrl ? (
-                      <img 
-                        src={imageUrl}
-                        alt={item.name}
-                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).style.display = 'none';
-                        }}
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-stone-400 text-xs">IMG</span>
-                      </div>
-                    )}
-                  </div>
-                  {/* 상품명 */}
-                  <h3 
-                    className="group-hover:underline line-clamp-1"
-                    style={{ 
-                      fontSize: '16px',
-                      fontWeight: 400,
-                      color: '#000000',
-                      marginTop: '16px',
-                      marginBottom: '6px'
-                    }}
-                  >
-                    {item.name.replace('슬런치 ', '')}
-                  </h3>
-                  {/* 설명 */}
-                  <p 
-                    style={{ 
-                      fontSize: '14px',
-                      fontWeight: 400,
-                      color: '#6B6B6B',
-                      marginBottom: '10px'
-                    }}
-                  >
-                    {item.microCopy}
-                  </p>
-                  {/* 원래 가격 */}
-                  <p 
-                    style={{ 
-                      fontSize: '13px',
-                      fontWeight: 400,
-                      color: '#999999',
-                      textDecoration: 'line-through',
-                      marginBottom: '4px'
-                    }}
-                  >
-                    {originalPrice.toLocaleString()}원
-                  </p>
-                  {/* 할인율 + 할인가 */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span
+                  {/* 이미지 영역 - 1:1 비율, 둥근 모서리 */}
+                  <div style={{
+                    width: '100%',
+                    aspectRatio: '1 / 1',
+                    background: '#f5f5f5',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    borderRadius: '4px',
+                  }}>
+                    <img
+                      src={getRecipeThumbnailImage(recipe.id)}
+                      alt={recipe.title}
                       style={{
-                        fontSize: '16px',
-                        fontWeight: 600,
-                        color: '#87b5e1'
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
                       }}
-                    >
-                      {discountRate}%
-                    </span>
-                    <span 
-                      style={{ 
-                        fontSize: '16px',
+                      loading="lazy"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = getFallbackRecipeImage(recipe.id);
+                      }}
+                    />
+                  </div>
+
+                  {/* 텍스트 영역 - 테두리 없음, 여백으로 구분 */}
+                  <div style={{ paddingTop: '12px' }}>
+                    {/* 제목 + 좋아요 */}
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                      marginBottom: '4px',
+                    }}>
+                      <h3 style={{
+                        fontSize: '15px',
                         fontWeight: 400,
-                        color: '#000000'
-                      }}
-                    >
-                      {item.price.toLocaleString()}원
-                    </span>
+                        margin: 0,
+                        color: '#000',
+                        lineHeight: 1.3,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        flex: 1,
+                      }}>
+                        {recipe.title}
+                      </h3>
+                      <span style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '3px',
+                        fontSize: '11px',
+                        color: '#6B6B6B',
+                        flexShrink: 0,
+                      }}>
+                        <Heart className="w-3 h-3" style={{ color: '#E53935', fill: '#E53935' }} />
+                        {recipe.likes?.toLocaleString() || 0}
+                      </span>
+                    </div>
+
+                    {/* 설명 - 2줄 */}
+                    <p style={{
+                      fontSize: '13px',
+                      color: '#6B6B6B',
+                      margin: '0 0 8px 0',
+                      lineHeight: 1.4,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical',
+                    }}>
+                      {recipe.description}
+                    </p>
+
+                    {/* 저자 */}
+                    <div style={{
+                      fontSize: '12px',
+                      color: '#6B6B6B',
+                    }}>
+                      <span>@{recipe.author || '슬런치'}</span>
+                    </div>
                   </div>
                 </Link>
               );
@@ -831,12 +1232,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           {/* View all 버튼 */}
           <div style={{ textAlign: 'center', marginTop: '48px' }}>
             <Link 
-              to="/store"
+              to="/recipe"
               style={{
                 display: 'inline-block',
                 padding: '12px 24px',
-                border: '1px solid #000000',
-                color: '#000000',
+                border: 'none',
+                backgroundColor: '#B2B2B2',
+                color: '#FFFFFF',
                 fontSize: '15px',
                 fontWeight: 400,
                 textDecoration: 'none',
@@ -845,12 +1247,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 minWidth: '120px'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#000000';
+                e.currentTarget.style.backgroundColor = '#8C451D';
                 e.currentTarget.style.color = '#FFFFFF';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.backgroundColor = '#B2B2B2';
+                e.currentTarget.style.color = '#FFFFFF';
               }}
             >
               View all
@@ -865,22 +1267,22 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           ============================================ */}
       <section 
         className="scroll-snap-section-flex"
-        style={{ backgroundColor: '#000000', padding: '80px 0' }}
+        style={{ backgroundColor: '#D7D7D7', padding: '80px 0' }}
       >
         <div className="page-container">
           {/* 섹션 제목 */}
-          <h2 
-            style={{ 
-              fontSize: '24px',
-              fontWeight: 400,
-              letterSpacing: '-0.02em',
-              lineHeight: 1.2,
-              color: '#FFFFFF',
-              marginBottom: '32px'
-            }}
-          >
-            뉴스레터
-          </h2>
+            <h2 
+              style={{ 
+                fontSize: '24px',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.2,
+                color: '#000000',
+                marginBottom: '32px'
+              }}
+            >
+              뉴스레터
+            </h2>
 
           {/* 4열 그리드 */}
           <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '13px' }}>
@@ -904,20 +1306,20 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     fontSize: '11px',
                     fontWeight: 400,
                     letterSpacing: '0.05em',
-                    color: '#6B6B6B',
+                    color: '#666666',
                     marginBottom: '8px'
                   }}
                 >
                   {article.category}
                 </p>
-                {/* 제목 - 흰색 */}
+                {/* 제목 */}
                 <h3 
                   className="group-hover:underline line-clamp-2"
                   style={{ 
                     fontSize: '16px',
                     fontWeight: 400,
                     lineHeight: 1.4,
-                    color: '#FFFFFF',
+                    color: '#000000',
                     marginBottom: '8px'
                   }}
                 >
@@ -929,7 +1331,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   style={{ 
                     fontSize: '13px',
                     lineHeight: 1.5,
-                    color: '#999999'
+                    color: '#666666'
                   }}
                 >
                   {article.subtitle}
@@ -945,7 +1347,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               style={{
                 display: 'inline-block',
                 padding: '12px 24px',
-                border: '1px solid #FFFFFF',
+                border: 'none',
+                backgroundColor: '#B2B2B2',
                 color: '#FFFFFF',
                 fontSize: '15px',
                 fontWeight: 400,
@@ -955,13 +1358,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 minWidth: '120px'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#3fa945';
-                e.currentTarget.style.borderColor = '#3fa945';
-                e.currentTarget.style.color = '#000000';
+                e.currentTarget.style.backgroundColor = '#8C451D';
+                e.currentTarget.style.color = '#FFFFFF';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.borderColor = '#FFFFFF';
+                e.currentTarget.style.backgroundColor = '#B2B2B2';
                 e.currentTarget.style.color = '#FFFFFF';
               }}
             >
@@ -970,6 +1371,88 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           </div>
         </div>
       </section>
+
+      {/* ============================================
+          이미지 영역
+          ============================================ */}
+      <section className="w-full" style={{ backgroundColor: '#000000', paddingTop: '0', paddingBottom: '0' }}>
+        <div 
+          style={{ 
+            width: '100%',
+            height: '980px',
+            backgroundColor: '#D7D7D7',
+            borderRadius: '0'
+          }}
+        />
+      </section>
+
+      {/* ============================================
+          하단 CTA 섹션 - 지금 시작해보세요
+          ============================================ */}
+      <section className="w-full" style={{ backgroundColor: '#000000', paddingTop: '80px', paddingBottom: '80px' }}>
+        <div className="page-container">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 
+              className="mb-6 font-normal"
+              style={{ 
+                fontSize: 'var(--font-size-h2)',
+                fontWeight: 400,
+                letterSpacing: 'var(--letter-spacing-tight)',
+                lineHeight: 'var(--line-height-h2)',
+                color: '#FFFFFF'
+              }}
+            >
+              지금 시작해보세요
+            </h2>
+            <p 
+              className="mb-10 max-w-2xl mx-auto"
+              style={{ 
+                fontSize: 'var(--font-size-body)',
+                fontWeight: 400,
+                lineHeight: 'var(--line-height-body)',
+                letterSpacing: 'var(--letter-spacing-tight)',
+                color: '#FFFFFF'
+              }}
+            >
+              슬런치와 함께 느긋한 식탁 문화를 경험하고, AI가 제안하는 개인화된 건강 관리를 시작해보세요.
+              <br />
+              첫 방문 고객을 위한 특별 할인 혜택도 준비되어 있습니다.
+            </p>
+            <button
+              onClick={() => {
+                containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              style={{
+                display: 'inline-block',
+                padding: '12px 24px',
+                border: 'none',
+                backgroundColor: '#B2B2B2',
+                color: '#FFFFFF',
+                fontSize: '15px',
+                fontWeight: 400,
+                textDecoration: 'none',
+                transition: 'all 0.15s ease',
+                minHeight: '44px',
+                minWidth: '120px',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#8C451D';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#B2B2B2';
+                e.currentTarget.style.color = '#FFFFFF';
+              }}
+            >
+              지금 테스트하고 식단 추천받기
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };

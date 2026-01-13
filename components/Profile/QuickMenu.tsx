@@ -30,6 +30,7 @@ const QuickMenu: React.FC = () => {
           return (
             <button
               key={index}
+              aria-label={item.label}
               style={{
                 display: 'flex',
                 flexDirection: 'column',

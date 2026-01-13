@@ -184,7 +184,7 @@ const ReviewsPage: React.FC = () => {
                               overflow: 'hidden',
                             }}
                           >
-                            <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={img} alt={`${review.productName} 리뷰 사진 ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} loading="lazy" />
                           </div>
                         ))}
                       </div>

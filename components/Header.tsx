@@ -55,8 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
         style={{
           height: 'var(--header-h)',
           zIndex: 50,
-          borderBottom: '1px solid #000',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: '#DCFD4A',
           position: 'relative',
         }}
       >
@@ -95,10 +94,18 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Center: Logo (Absolute Centered) */}
           <Link
             to="/"
+            onClick={(e) => {
+              // 타로 리딩 중이면 명시적으로 navigate
+              if (window.location.pathname.includes('/spirit/step')) {
+                e.preventDefault();
+                navigate('/');
+              }
+            }}
             style={{
               position: 'absolute',
               left: '50%',
               transform: 'translateX(-50%)',
+              zIndex: 51,
             }}
           >
             <img

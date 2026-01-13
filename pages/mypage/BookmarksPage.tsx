@@ -131,6 +131,7 @@ const BookmarksPage: React.FC = () => {
                         e.stopPropagation();
                         removeBookmark(recipe.id);
                       }}
+                      aria-label={`${recipe.title} 북마크 삭제`}
                       style={{
                         position: 'absolute',
                         top: '8px',

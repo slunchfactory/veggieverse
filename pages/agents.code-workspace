@@ -1,0 +1,35 @@
+{
+	"folders": [
+		{
+			"path": "../agents"
+		},
+		{
+			"path": "../components"
+		},
+		{
+			"path": "../constants"
+		},
+		{
+			"path": "../contexts"
+		},
+		{
+			"path": "../data"
+		},
+		{
+			"path": "../dist"
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../public"
+		},
+		{
+			"path": "../services"
+		},
+		{
+			"path": "../utils"
+		}
+	],
+	"settings": {}
+}

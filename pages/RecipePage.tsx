@@ -1162,7 +1162,7 @@ const RecipePage: React.FC = () => {
                 </div>
                 <div className="space-y-12">
                   {displayCategories.map((category) => {
-                    const colors = categoryColors[category.id] || COLORS.lincolnGreen;
+                    const colors = categoryColors[category.id] || COLORS.green;
                     return (
                       <div key={category.id}>
                         {/* 카테고리 헤더 - 1360px 제한 */}
