@@ -1166,26 +1166,30 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             {[...Array(2)].map((_, setIndex) => (
               <React.Fragment key={setIndex}>
                 {[
-                  { id: 1, title: '프렌치 컨트리사이드의 모녀 여행', author: '슬런치키친', image: 'https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=400&h=600&fit=crop', type: 'tall' },
-                  { id: 2, title: '그리스 섬으로 떠나는 힐링 솔로 여행', author: '베지러버', image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop', type: 'wide' },
-                  { id: 3, title: '긴 저녁을 즐기는 커플을 위한 시칠리아', author: '그린테이블', image: 'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 4, title: '해질녘 그리스 섬에서의 허니문', author: '비건셰프', image: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&h=500&fit=crop', type: 'tall' },
-                  { id: 5, title: '토스카나 와인 투어', author: '채식요리사', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=350&fit=crop', type: 'wide' },
-                  { id: 6, title: '프로방스 라벤더 필드', author: '슬로우푸드', image: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 7, title: '아말피 해안의 레몬 정원', author: '자연식탁', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=350&h=500&fit=crop', type: 'tall' },
-                  { id: 8, title: '산토리니 블루돔 아래에서', author: '플랜트베이스', image: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?w=550&h=380&fit=crop', type: 'wide' },
-                  { id: 9, title: '포르투갈 해안 마을의 아침', author: '홀푸드러버', image: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 10, title: '크로아티아 두브로브니크 성벽', author: '그린라이프', image: 'https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=380&h=520&fit=crop', type: 'tall' },
-                  { id: 11, title: '스페인 바르셀로나 가우디 투어', author: '채식일기', image: 'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=520&h=360&fit=crop', type: 'wide' },
-                  { id: 12, title: '모로코 마라케시의 수크', author: '비건매거진', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 13, title: '이탈리아 친퀘테레 하이킹', author: '건강한식탁', image: 'https://images.unsplash.com/photo-1482049016gy-2d1bbd7cef2a?w=360&h=500&fit=crop', type: 'tall' },
-                  { id: 14, title: '프랑스 니스의 해변 산책', author: '자연주의자', image: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&h=340&fit=crop', type: 'wide' },
-                  { id: 15, title: '터키 카파도키아 열기구', author: '에코키친', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 16, title: '그리스 미코노스의 풍차', author: '비건쿡', image: 'https://images.unsplash.com/photo-1484980972926-edee96e0960d?w=370&h=510&fit=crop', type: 'tall' },
-                  { id: 17, title: '포르투 도우루 강변의 저녁', author: '플랜트키친', image: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?w=540&h=370&fit=crop', type: 'wide' },
-                  { id: 18, title: '이스탄불 보스포러스 해협', author: '그린셰프', image: 'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400&h=400&fit=crop', type: 'standard' },
-                  { id: 19, title: '몬테네그로 코토르 만', author: '베지테이블', image: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=350&h=480&fit=crop', type: 'tall' },
-                  { id: 20, title: '슬로베니아 블레드 호수', author: '슬런치팩토리', image: 'https://images.unsplash.com/photo-1432139555190-58524dae6a55?w=480&h=330&fit=crop', type: 'wide' },
+                  // 신규 레시피 (5개)
+                  { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', author: '비건셰프', type: 'tall' },
+                  { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', author: '채식러버', type: 'wide' },
+                  { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', author: '이탈리안', type: 'standard' },
+                  { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', author: '홈쿡러', type: 'tall' },
+                  { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', author: '계절요리', type: 'wide' },
+                  // 점심 레시피 (5개)
+                  { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', author: '점심왕', type: 'standard' },
+                  { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', author: '카레매니아', type: 'tall' },
+                  { id: 203, title: '비빔국수', description: '새콤달콤 입맛 돋우는', author: '면요리사', type: 'wide' },
+                  { id: 204, title: '샐러드 랩', description: '간편하고 건강한 한 끼', author: '다이어터', type: 'standard' },
+                  { id: 205, title: '버섯 덮밥', description: '쫄깃한 식감의 영양밥', author: '버섯사랑', type: 'tall' },
+                  // 디저트 레시피 (5개)
+                  { id: 301, title: '코코넛 푸딩', description: '열대의 달콤함을 담아', author: '디저트왕', type: 'wide' },
+                  { id: 302, title: '블루베리 타르트', description: '상큼한 보라빛 유혹', author: '베이커리', type: 'standard' },
+                  { id: 303, title: '망고스틴 아이스크림', description: '이국적인 과일의 향연', author: '아이스크림', type: 'tall' },
+                  { id: 304, title: '포도 젤리', description: '탱글탱글 보석같은', author: '젤리장인', type: 'wide' },
+                  { id: 305, title: '라즈베리 무스', description: '부드럽고 새콤한', author: '무스마스터', type: 'standard' },
+                  // 한식 레시피 (5개)
+                  { id: 401, title: '배추된장국', description: '구수한 된장의 깊은 맛', author: '한식셰프', type: 'tall' },
+                  { id: 402, title: '마늘종 볶음', description: '밥도둑 반찬의 정석', author: '반찬왕', type: 'wide' },
+                  { id: 403, title: '생강차', description: '몸을 따뜻하게 해주는', author: '차전문가', type: 'standard' },
+                  { id: 404, title: '파전', description: '비 오는 날의 필수템', author: '전요리사', type: 'tall' },
+                  { id: 405, title: '고추장 비빔밥', description: '매콤 달콤 환상 조합', author: '비빔밥러버', type: 'wide' },
                 ].map((recipe, index) => {
                   // 카드 사이즈 결정
                   const getCardStyle = () => {
@@ -1215,7 +1219,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     >
                       {/* 이미지 */}
                       <img
-                        src={recipe.image}
+                        src={getRecipeThumbnailImage(recipe.id)}
                         alt={recipe.title}
                         style={{
                           width: '100%',
@@ -1223,6 +1227,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                           objectFit: 'cover',
                         }}
                         loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = getFallbackRecipeImage(recipe.id);
+                        }}
                       />
 
                       {/* 그라데이션 오버레이 */}
