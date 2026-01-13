@@ -1279,38 +1279,34 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           </div>
         </div>
 
-        {/* 네비게이션 화살표 */}
-        <div className="page-container mt-8 flex justify-end gap-4">
-          <button
+        {/* View all 버튼 */}
+        <div style={{ textAlign: 'center', marginTop: '48px' }}>
+          <Link
+            to="/recipe"
             style={{
-              width: '40px',
-              height: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid #000',
-              background: 'transparent',
-              cursor: 'pointer',
-              fontSize: '18px',
+              display: 'inline-block',
+              padding: '12px 24px',
+              border: 'none',
+              backgroundColor: '#B2B2B2',
+              color: '#FFFFFF',
+              fontSize: '15px',
+              fontWeight: 400,
+              textDecoration: 'none',
+              transition: 'all 0.15s ease',
+              minHeight: '44px',
+              minWidth: '120px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#8C451D';
+              e.currentTarget.style.color = '#FFFFFF';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = '#B2B2B2';
+              e.currentTarget.style.color = '#FFFFFF';
             }}
           >
-            ←
-          </button>
-          <button
-            style={{
-              width: '40px',
-              height: '40px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px solid #000',
-              background: 'transparent',
-              cursor: 'pointer',
-              fontSize: '18px',
-            }}
-          >
-            →
-          </button>
+            View all
+          </Link>
         </div>
       </section>
 
