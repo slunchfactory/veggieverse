@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기">
+  <title>Spirit Finder - 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
+      </a>
+      <div class="header-right">
+        <a href="index.html" class="skip-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION DRAWER -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header">
+      <button class="nav-close" id="navClose">&times;</button>
+    </div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item">About</a>
+      <a href="recipe.html" class="nav-item">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="event.html" class="nav-item">Event</a>
+      <a href="newsletter.html" class="nav-item">Newsletter</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+      <a href="spirit.html" class="nav-item active">Spirit Finder</a>
+      <a href="mypage.html" class="nav-item">My Page</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content spirit-main">
+    <!-- 플로팅 야채 영역 -->
+    <section class="spirit-floating-area">
+      <div class="spirit-intro-text">
+        <h1>마음에 드는 야채 3개를 선택하세요</h1>
+        <p>선택한 야채로 당신의 비건 스피릿을 알아볼게요</p>
+      </div>
+
+      <!-- 플로팅 야채들 -->
+      <div class="spirit-veggies">
+        <div class="spirit-veggie" data-name="토마토" data-color="#FF6B6B" style="left: 12%; top: 25%;">
+          <img src="https://via.placeholder.com/100/FF6B6B/fff?text=🍅" alt="토마토">
+        </div>
+        <div class="spirit-veggie" data-name="브로콜리" data-color="#4ECDC4" style="left: 28%; top: 55%;">
+          <img src="https://via.placeholder.com/110/4ECDC4/fff?text=🥦" alt="브로콜리">
+        </div>
+        <div class="spirit-veggie" data-name="레몬" data-color="#FFE66D" style="left: 45%; top: 20%;">
+          <img src="https://via.placeholder.com/90/FFE66D/333?text=🍋" alt="레몬">
+        </div>
+        <div class="spirit-veggie" data-name="아보카도" data-color="#A8E6CF" style="left: 62%; top: 45%;">
+          <img src="https://via.placeholder.com/105/A8E6CF/333?text=🥑" alt="아보카도">
+        </div>
+        <div class="spirit-veggie" data-name="당근" data-color="#FF8C42" style="left: 78%; top: 22%;">
+          <img src="https://via.placeholder.com/95/FF8C42/fff?text=🥕" alt="당근">
+        </div>
+        <div class="spirit-veggie" data-name="버섯" data-color="#C9B99A" style="left: 18%; top: 75%;">
+          <img src="https://via.placeholder.com/100/C9B99A/333?text=🍄" alt="버섯">
+        </div>
+        <div class="spirit-veggie" data-name="포도" data-color="#9B59B6" style="left: 52%; top: 70%;">
+          <img src="https://via.placeholder.com/95/9B59B6/fff?text=🍇" alt="포도">
+        </div>
+        <div class="spirit-veggie" data-name="오렌지" data-color="#F39C12" style="left: 75%; top: 65%;">
+          <img src="https://via.placeholder.com/90/F39C12/fff?text=🍊" alt="오렌지">
+        </div>
+        <div class="spirit-veggie" data-name="가지" data-color="#8E44AD" style="left: 35%; top: 35%;">
+          <img src="https://via.placeholder.com/100/8E44AD/fff?text=🍆" alt="가지">
+        </div>
+        <div class="spirit-veggie" data-name="옥수수" data-color="#F1C40F" style="left: 88%; top: 45%;">
+          <img src="https://via.placeholder.com/95/F1C40F/333?text=🌽" alt="옥수수">
+        </div>
+      </div>
+
+      <!-- 하단 선택 바 -->
+      <div class="spirit-selection-bar">
+        <div class="selected-slots">
+          <div class="slot" id="slot1"><span>1</span></div>
+          <div class="slot" id="slot2"><span>2</span></div>
+          <div class="slot" id="slot3"><span>3</span></div>
+        </div>
+        <div class="bar-divider"></div>
+        <a href="spirit-question-diet.html" class="start-btn disabled" id="startBtn">
+          시작하기
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    // Spirit Finder 야채 선택 기능
+    document.addEventListener('DOMContentLoaded', function() {
+      const veggies = document.querySelectorAll('.spirit-veggie');
+      const slots = [
+        document.getElementById('slot1'),
+        document.getElementById('slot2'),
+        document.getElementById('slot3')
+      ];
+      const startBtn = document.getElementById('startBtn');
+      let selectedCount = 0;
+      let selectedVeggies = [];
+
+      veggies.forEach(veggie => {
+        veggie.addEventListener('click', function() {
+          const name = this.dataset.name;
+          const color = this.dataset.color;
+          const imgSrc = this.querySelector('img').src;
+
+          if (this.classList.contains('selected')) {
+            // 선택 해제
+            this.classList.remove('selected');
+            const idx = selectedVeggies.findIndex(v => v.name === name);
+            if (idx > -1) {
+              selectedVeggies.splice(idx, 1);
+              selectedCount--;
+            }
+          } else if (selectedCount < 3) {
+            // 선택
+            this.classList.add('selected');
+            selectedVeggies.push({ name, color, imgSrc });
+            selectedCount++;
+          }
+
+          // 슬롯 업데이트
+          updateSlots();
+          updateStartButton();
+        });
+      });
+
+      function updateSlots() {
+        slots.forEach((slot, idx) => {
+          if (selectedVeggies[idx]) {
+            slot.innerHTML = `<img src="${selectedVeggies[idx].imgSrc}" alt="${selectedVeggies[idx].name}" style="width: 40px; height: 40px; object-fit: contain;">`;
+            slot.classList.add('filled');
+          } else {
+            slot.innerHTML = `<span>${idx + 1}</span>`;
+            slot.classList.remove('filled');
+          }
+        });
+      }
+
+      function updateStartButton() {
+        if (selectedCount === 3) {
+          startBtn.classList.remove('disabled');
+        } else {
+          startBtn.classList.add('disabled');
+        }
+      }
+    });
+  </script>
+
+  <style>
+    /* Spirit Page Specific Styles */
+    .spirit-main {
+      background: #fff;
+      min-height: calc(100vh - 64px);
+      position: relative;
+      overflow: hidden;
+    }
+    .spirit-floating-area {
+      position: relative;
+      height: calc(100vh - 64px);
+      width: 100%;
+    }
+    .spirit-intro-text {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+    }
+    .spirit-intro-text h1 {
+      font-size: 24px;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .spirit-intro-text p {
+      font-size: 14px;
+      color: #666;
+    }
+    .spirit-veggies {
+      position: absolute;
+      inset: 0;
+      top: 120px;
+      bottom: 120px;
+    }
+    .spirit-veggie {
+      position: absolute;
+      cursor: pointer;
+      transition: transform 0.3s, opacity 0.3s;
+      animation: float 4s ease-in-out infinite;
+    }
+    .spirit-veggie:nth-child(odd) {
+      animation-delay: -2s;
+    }
+    .spirit-veggie img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+    @media (min-width: 768px) {
+      .spirit-veggie img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+    .spirit-veggie:hover {
+      transform: scale(1.1);
+    }
+    .spirit-veggie.selected {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .spirit-selection-bar {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #FDFBF7;
+      border: 1px solid #000;
+      padding: 12px 24px;
+      z-index: 100;
+    }
+    .selected-slots {
+      display: flex;
+      gap: 12px;
+    }
+    .slot {
+      width: 56px;
+      height: 56px;
+      border: 1px dashed #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+    }
+    .slot.filled {
+      border-style: solid;
+      background: #F7F4EF;
+    }
+    .slot span {
+      color: #6B6B6B;
+      font-size: 12px;
+    }
+    .bar-divider {
+      width: 1px;
+      height: 32px;
+      background: #000;
+    }
+    .start-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 400;
+      background: #000;
+      color: #fff;
+      border: 1px solid #000;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .start-btn.disabled {
+      background: transparent;
+      color: #6B6B6B;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .skip-btn {
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</body>
+</html>

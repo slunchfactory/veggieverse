@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>당신의 스피릿 결과 | 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="spirit-question.css">
+</head>
+<body>
+  <header class="header" style="background: #DCFD4A;">
+    <div class="header-container">
+      <a href="spirit-question-reason.html" class="back-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </a>
+      <span style="font-size: 14px; font-weight: 500;">나의 스피릿</span>
+      <a href="index.html" class="close-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </a>
+    </div>
+  </header>
+
+  <main class="result-main">
+    <!-- 결과 히어로 -->
+    <section class="result-hero">
+      <div class="result-emoji">🌿</div>
+      <p class="result-type">INFP</p>
+      <h1 class="result-name">Mindgrower</h1>
+      <p class="result-desc">
+        내 기준이 확실해요. 조용히 생각 많은 편이죠.<br>
+        건강하고 깔끔한 것을 좋아하는 당신!
+      </p>
+    </section>
+
+    <!-- 특성 -->
+    <section class="result-section">
+      <h2 class="result-section-title">나의 특성</h2>
+      <div class="result-traits">
+        <span class="trait-tag">건강 지향</span>
+        <span class="trait-tag">미니멀</span>
+        <span class="trait-tag">감성적</span>
+        <span class="trait-tag">자기 돌봄</span>
+        <span class="trait-tag">조용한 시간</span>
+      </div>
+
+      <h2 class="result-section-title">추천 레시피 스타일</h2>
+      <p style="font-size: 14px; color: #666; line-height: 1.6; margin: 0;">
+        깔끔하고 건강한 레시피가 잘 맞아요.
+        재료 본연의 맛을 살린 심플한 요리나,
+        혼자 조용히 즐기기 좋은 편안한 메뉴를 추천드려요.
+      </p>
+    </section>
+
+    <!-- 액션 버튼 -->
+    <div class="result-actions">
+      <a href="recipe.html" class="result-btn primary">
+        나에게 맞는 레시피 보러가기
+      </a>
+      <a href="index.html" class="result-btn secondary">
+        홈으로
+      </a>
+    </div>
+
+    <!-- 공유 -->
+    <section class="result-section" style="text-align: center; padding-top: 0;">
+      <p style="font-size: 13px; color: #999; margin-bottom: 16px;">결과 공유하기</p>
+      <div style="display: flex; justify-content: center; gap: 16px;">
+        <button style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #E0E0E0; background: #fff; cursor: pointer; font-size: 20px;">
+          📋
+        </button>
+        <button style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #E0E0E0; background: #fff; cursor: pointer; font-size: 20px;">
+          💬
+        </button>
+        <button style="width: 48px; height: 48px; border-radius: 50%; border: 1px solid #E0E0E0; background: #fff; cursor: pointer; font-size: 20px;">
+          📸
+        </button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

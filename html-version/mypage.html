@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Page - 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="index.html" class="logo">SLUNCH</a>
+      <div class="header-right">
+        <a href="mypage.html" class="cart-link">(0)</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header"><button class="nav-close" id="navClose">&times;</button></div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item">About</a>
+      <a href="recipe.html" class="nav-item">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+      <a href="spirit.html" class="nav-item">Spirit Finder</a>
+      <a href="mypage.html" class="nav-item active">My Page</a>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <section style="padding: 100px 20px 40px; background: #FDFBF7;">
+      <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+        <div style="width: 100px; height: 100px; background: #E0E0E0; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px;">👤</div>
+        <h1 style="font-size: 24px; font-weight: 400; margin-bottom: 8px;">로그인이 필요해요</h1>
+        <p style="font-size: 14px; color: #666; margin-bottom: 24px;">슬런치 팩토리의 모든 기능을 이용해보세요.</p>
+        <a href="#" style="display: inline-block; padding: 12px 32px; background: #000; color: #fff; text-decoration: none; font-size: 14px;">로그인</a>
+        <p style="font-size: 13px; color: #999; margin-top: 16px;">아직 회원이 아니신가요? <a href="#" style="color: #000;">회원가입</a></p>
+      </div>
+    </section>
+
+    <section style="padding: 40px 20px; background: #fff;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h2 style="font-size: 18px; font-weight: 500; margin-bottom: 20px;">마이 메뉴</h2>
+        <div style="display: grid; gap: 1px; background: #eee;">
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>주문 내역</span><span style="color: #999;">›</span></a>
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>찜한 상품</span><span style="color: #999;">›</span></a>
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>저장한 레시피</span><span style="color: #999;">›</span></a>
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>나의 후기</span><span style="color: #999;">›</span></a>
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>배송지 관리</span><span style="color: #999;">›</span></a>
+          <a href="#" style="display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; text-decoration: none; color: #1a1a1a;"><span>회원 정보 수정</span><span style="color: #999;">›</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 40px 20px; background: #FDFBF7;">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h2 style="font-size: 18px; font-weight: 500; margin-bottom: 20px;">나의 스피릿</h2>
+        <a href="spirit.html" style="display: block; padding: 24px; background: #fff; border: 1px solid #eee; border-radius: 12px; text-decoration: none; color: #1a1a1a;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <span style="font-size: 40px;">🌿</span>
+            <div>
+              <p style="font-size: 12px; color: #999; margin-bottom: 4px;">아직 스피릿을 찾지 않았어요</p>
+              <p style="font-size: 16px; font-weight: 500;">나의 스피릿 찾으러 가기 →</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">SLUNCH FACTORY</div>
+      <div class="footer-info"><p>슬런치팩토리 주식회사</p></div>
+      <div class="footer-copyright"><p>&copy; 2024 Slunch Factory.</p></div>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
