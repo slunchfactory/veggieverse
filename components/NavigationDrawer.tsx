@@ -36,7 +36,7 @@ const menuItems: MenuItem[] = [
       { name: '세트', path: '/store?productType=세트' },
     ],
   },
-  { name: 'Subscription', path: '/subscription' },
+  { name: 'Subscription', path: '/subscribe' },
   { name: 'Recipe', path: '/recipe' },
   { name: 'Newsletter', path: '/newsletter' },
   { name: 'Event', path: '/event' },
