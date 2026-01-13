@@ -1656,85 +1656,119 @@ ${result.description}
           </h2>
 
           {/* 타로 카드 옵션들 */}
-          <div className="flex flex-col items-center gap-6 mb-8">
-            {/* 5개 이상일 때 2+3 두 줄 레이아웃 */}
-            {currentQuestion.options.length >= 5 ? (
-              <>
-                {/* 첫 번째 줄: 2개 */}
-                <div className="flex justify-center gap-6">
-                  {currentQuestion.options.slice(0, 2).map((option: any) => {
-                    const isMultiple = (currentQuestion as any).isMultiple;
-                    const currentAnswer = answers[currentQuestion.id];
-                    const isSelected = isMultiple
-                      ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
-                      : currentAnswer === option.value;
-                    const tarot = option.tarot;
-                    const isHovered = hoveredCard?.value === option.value;
+          <style>{`
+            .hide-scrollbar::-webkit-scrollbar { display: none; }
+            .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+          `}</style>
 
-                    return (
-                      <div
-                        key={option.value}
-                        className="flex flex-col items-center"
-                        onMouseEnter={() => setHoveredCard(option)}
-                        onMouseLeave={() => setHoveredCard(null)}
-                      >
-                        <div
-                          onClick={() => {
-                            handleOptionSelect(currentQuestion.id, option.value);
-                            if (!isMultiple) {
-                              setTimeout(() => handleNext(), 300);
-                            }
-                          }}
-                          className="cursor-pointer transition-all duration-300"
-                          style={{
-                            width: '160px',
-                            height: '256px',
-                            borderRadius: '12px',
-                            overflow: 'hidden',
-                            boxShadow: isSelected
-                              ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
-                              : '0 8px 24px rgba(0, 0, 0, 0.15)',
-                            transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                            background: '#E5E5E5',
-                          }}
-                        >
-                          {tarot && tarot.image ? (
-                            <div className="w-full h-full relative">
-                              <img
-                                src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
-                                alt={tarot.title}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                              >
-                                <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                                <span className="text-sm text-stone-600">{tarot.title}</span>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
-                              <span className="text-lg font-bold text-stone-800">{option.label}</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="mt-3 text-center" style={{ width: '160px' }}>
+          <div className="mb-8">
+            {/* ========== (A) 모바일 전용 뷰: 가로 스크롤 1줄 ========== */}
+            <div
+              className="flex md:hidden overflow-x-auto flex-nowrap gap-4 px-4 pb-4 hide-scrollbar"
+              style={{ scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}
+            >
+              {currentQuestion.options.map((option: any) => {
+                const isMultiple = (currentQuestion as any).isMultiple;
+                const currentAnswer = answers[currentQuestion.id];
+                const isSelected = isMultiple
+                  ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                  : currentAnswer === option.value;
+                const tarot = option.tarot;
+                return (
+                  <div
+                    key={option.value}
+                    className="flex-shrink-0 flex flex-col items-center"
+                    style={{ scrollSnapAlign: 'center' }}
+                  >
+                    <div
+                      onClick={() => {
+                        handleOptionSelect(currentQuestion.id, option.value);
+                        if (!isMultiple) setTimeout(() => handleNext(), 300);
+                      }}
+                      className="cursor-pointer transition-all duration-300"
+                      style={{
+                        width: '140px',
+                        height: '224px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        boxShadow: isSelected ? '0 0 0 2px #1A1A1A' : '0 4px 12px rgba(0,0,0,0.15)',
+                        transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+                        background: '#E5E5E5',
+                      }}
+                    >
+                      {tarot?.image ? (
+                        <img src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`} alt={tarot.title} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200">
                           <span className="text-sm font-bold text-stone-800">{option.label}</span>
-                          <div className="text-xs text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '32px' }}>
-                            {option.description}
+                        </div>
+                      )}
+                    </div>
+                    <div className="mt-2 text-center" style={{ width: '140px' }}>
+                      <span className="text-xs font-bold text-stone-800">{option.label}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ========== (B) 데스크탑 전용 뷰: 2+3 그리드 ========== */}
+            <div className="hidden md:flex flex-col items-center gap-6">
+              {/* 첫 번째 줄: 2개 */}
+              <div className="flex justify-center gap-6">
+                {currentQuestion.options.slice(0, 2).map((option: any) => {
+                  const isMultiple = (currentQuestion as any).isMultiple;
+                  const currentAnswer = answers[currentQuestion.id];
+                  const isSelected = isMultiple
+                    ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                    : currentAnswer === option.value;
+                  const tarot = option.tarot;
+                  const isHovered = hoveredCard?.value === option.value;
+                  return (
+                    <div
+                      key={option.value}
+                      className="flex flex-col items-center"
+                      onMouseEnter={() => setHoveredCard(option)}
+                      onMouseLeave={() => setHoveredCard(null)}
+                    >
+                      <div
+                        onClick={() => {
+                          handleOptionSelect(currentQuestion.id, option.value);
+                          if (!isMultiple) setTimeout(() => handleNext(), 300);
+                        }}
+                        className="cursor-pointer transition-all duration-300"
+                        style={{
+                          width: '160px',
+                          height: '256px',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          boxShadow: isSelected
+                            ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
+                            : '0 8px 24px rgba(0, 0, 0, 0.15)',
+                          transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                          background: '#E5E5E5',
+                        }}
+                      >
+                        {tarot?.image ? (
+                          <img src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`} alt={tarot.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
+                            <span className="text-lg font-bold text-stone-800">{option.label}</span>
                           </div>
+                        )}
+                      </div>
+                      <div className="mt-3 text-center" style={{ width: '160px' }}>
+                        <span className="text-sm font-bold text-stone-800">{option.label}</span>
+                        <div className="text-xs text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '32px' }}>
+                          {option.description}
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-                {/* 두 번째 줄: 나머지 3개 */}
+                    </div>
+                  );
+                })}
+              </div>
+              {/* 두 번째 줄: 나머지 (3개 이상일 경우) */}
+              {currentQuestion.options.length > 2 && (
                 <div className="flex justify-center gap-6">
                   {currentQuestion.options.slice(2).map((option: any) => {
                     const isMultiple = (currentQuestion as any).isMultiple;
@@ -1744,7 +1778,6 @@ ${result.description}
                       : currentAnswer === option.value;
                     const tarot = option.tarot;
                     const isHovered = hoveredCard?.value === option.value;
-
                     return (
                       <div
                         key={option.value}
@@ -1755,9 +1788,7 @@ ${result.description}
                         <div
                           onClick={() => {
                             handleOptionSelect(currentQuestion.id, option.value);
-                            if (!isMultiple) {
-                              setTimeout(() => handleNext(), 300);
-                            }
+                            if (!isMultiple) setTimeout(() => handleNext(), 300);
                           }}
                           className="cursor-pointer transition-all duration-300"
                           style={{
@@ -1772,26 +1803,8 @@ ${result.description}
                             background: '#E5E5E5',
                           }}
                         >
-                          {tarot && tarot.image ? (
-                            <div className="w-full h-full relative">
-                              <img
-                                src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
-                                alt={tarot.title}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                              >
-                                <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                                <span className="text-sm text-stone-600">{tarot.title}</span>
-                              </div>
-                            </div>
+                          {tarot?.image ? (
+                            <img src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`} alt={tarot.title} className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
                               <span className="text-lg font-bold text-stone-800">{option.label}</span>
@@ -1808,102 +1821,8 @@ ${result.description}
                     );
                   })}
                 </div>
-              </>
-            ) : (
-              /* 4개 이하일 때 기존 한 줄 레이아웃 */
-              <div className="flex justify-center gap-6">
-                {currentQuestion.options.map((option: any) => {
-              // 다중 선택 여부에 따라 선택 상태 확인
-              const isMultiple = (currentQuestion as any).isMultiple;
-              const currentAnswer = answers[currentQuestion.id];
-              const isSelected = isMultiple
-                ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
-                : currentAnswer === option.value;
-              const tarot = option.tarot;
-              const isHovered = hoveredCard?.value === option.value;
-
-              return (
-                <div
-                  key={option.value}
-                  className="flex flex-col items-center"
-                  onMouseEnter={() => setHoveredCard(option)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                >
-                  {/* 카드 이미지 */}
-                  <div
-                    onClick={() => {
-                      handleOptionSelect(currentQuestion.id, option.value);
-                      // 단일 선택이면 자동으로 다음으로 이동
-                      if (!isMultiple) {
-                        setTimeout(() => handleNext(), 300);
-                      }
-                    }}
-                    className="cursor-pointer transition-all duration-300"
-                    style={{
-                      width: '160px',
-                      height: '256px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      boxShadow: isSelected
-                        ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
-                        : '0 8px 24px rgba(0, 0, 0, 0.15)',
-                      transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                      background: '#E5E5E5',
-                    }}
-                  >
-                    {tarot && tarot.image ? (
-                      <div className="w-full h-full relative">
-                        <img
-                          src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
-                          alt={tarot.title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                            if (placeholder) placeholder.style.display = 'flex';
-                          }}
-                        />
-                        {/* 플레이스홀더 (이미지 로드 실패 시) */}
-                        <div
-                          className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                          style={{
-                            display: 'none',
-                            background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)'
-                          }}
-                        >
-                          <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                          <span className="text-sm text-stone-600">{tarot.title}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
-                        style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                      >
-                        <span className="text-lg font-bold text-stone-800">{option.label}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 카드 제목 (항상 표시) */}
-                  <div className="mt-3 text-center" style={{ width: '160px' }}>
-                    <span className="text-sm font-bold text-stone-800">{option.label}</span>
-                    {/* 설명 (호버 시에만 표시) */}
-                    <div
-                      className="text-xs text-stone-500 mt-1 transition-opacity duration-200"
-                      style={{
-                        opacity: isHovered ? 1 : 0,
-                        height: '32px',
-                      }}
-                    >
-                      {option.description}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* 네비게이션 버튼 */}

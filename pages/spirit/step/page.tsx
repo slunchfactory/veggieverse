@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import { ChevronUp, ChevronLeft, Calendar, FileText, Sparkles, Share2, Download, UserCircle, Check, X, Link2 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { VegetableItem } from '../../../types';
 import { useUser } from '../../../contexts/UserContext';
 import { DietGridSelect } from '../../../components/DietGridSelect';
@@ -162,6 +162,25 @@ const getAvailableQuestions = (answers: Record<number, string | string[]>): type
     return true;
   }) as typeof QUESTIONS;
 };
+
+// URL Slug 매핑 (Question ID <-> Slug)
+const QUESTION_SLUGS: Record<number, string> = {
+  1: 'diet',      // 당신의 식단 유형은?
+  2: 'option',    // 추가 옵션이 있나요?
+  3: 'mood',      // 끌리는 요리 무드는?
+  4: 'priority',  // 요리에서 가장 중요한 건?
+  5: 'meaning',   // 식사 시간, 어떤 의미예요?
+  6: 'pattern',   // 평소 식사 패턴은?
+  7: 'reason',    // 채식을 선택한 이유는?
+};
+
+// Slug -> Question ID 역매핑
+const SLUG_TO_QUESTION_ID: Record<string, number> = Object.fromEntries(
+  Object.entries(QUESTION_SLUGS).map(([id, slug]) => [slug, parseInt(id)])
+);
+
+// Slug 배열 (순서대로)
+const QUESTION_SLUG_ORDER = ['diet', 'option', 'mood', 'priority', 'meaning', 'pattern', 'reason'];
 
 // 16가지 비건 유형
 const VEGAN_TYPES = [
@@ -560,8 +579,13 @@ const generatePersonalityDescription = (
 
 const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }) => {
   const navigate = useNavigate();
+  const { stepId } = useParams<{ stepId: string }>();
+  const location = useLocation();
   const { login, user } = useUser();
-  
+
+  // 현재 경로가 결과 페이지인지 확인
+  const isResultPage = location.pathname.includes('/spirit/result');
+
   // localStorage에서 선택된 아이템 읽기
   const [selectedItems, setSelectedItems] = useState<VegetableItem[]>(() => {
     try {
@@ -576,7 +600,7 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
     }
     return [];
   });
-  
+
   // 프로필 저장 함수
   const onSaveProfile = useCallback((profileImage: string, veganType: string) => {
     const profile = {
@@ -586,11 +610,57 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
     };
     localStorage.setItem('veggieverse-profile', JSON.stringify(profile));
   }, []);
-  
+
   const [started, setStarted] = useState(true);
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
-  const [showResult, setShowResult] = useState(false);
+
+  // localStorage에서 답변 읽기 (URL 기반 네비게이션을 위한 persistence)
+  const [answers, setAnswers] = useState<Record<number, string | string[]>>(() => {
+    try {
+      const saved = localStorage.getItem('spirit-finder-answers');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+    } catch (e) {
+      if (import.meta.env.DEV) {
+        console.error('Failed to load answers:', e);
+      }
+    }
+    return {};
+  });
+
+  // 답변이 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    if (Object.keys(answers).length > 0) {
+      localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
+    }
+  }, [answers]);
+
+  // 조건에 맞는 질문만 필터링 (answers에 의존)
+  const availableQuestions = useMemo(() => {
+    return getAvailableQuestions(answers);
+  }, [answers]);
+
+  // URL의 stepId로부터 현재 단계(currentStep) 계산
+  const currentStep = useMemo(() => {
+    // Legacy route (/spirit/step) 또는 stepId가 없는 경우 첫 번째 질문
+    if (!stepId || location.pathname === '/spirit/step') {
+      return 0;
+    }
+
+    // stepId를 question ID로 변환
+    const questionId = SLUG_TO_QUESTION_ID[stepId];
+    if (!questionId) {
+      return 0; // 유효하지 않은 slug면 첫 번째 질문
+    }
+
+    // availableQuestions에서 해당 질문의 인덱스 찾기
+    const index = availableQuestions.findIndex(q => q.id === questionId);
+    return index >= 0 ? index : 0;
+  }, [stepId, availableQuestions, location.pathname]);
+
+  // showResult 상태를 URL로부터 파생
+  const showResult = isResultPage;
+
   const [dietConflictWarning, setDietConflictWarning] = useState<string | null>(null);
   const [profileSaved, setProfileSaved] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -675,7 +745,12 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
     ].filter(Boolean) as string[];
 
     setAnswers(prev => ({ ...prev, [1]: dietSelections }));
-    setCurrentStep(prev => prev + 1);
+    // 다음 질문으로 URL 이동
+    const nextQuestion = availableQuestions[1];
+    if (nextQuestion) {
+      const nextSlug = QUESTION_SLUGS[nextQuestion.id];
+      navigate(`/spirit/question/${nextSlug}`);
+    }
   };
 
   // 식단 선택 여부 확인 헬퍼
@@ -696,34 +771,29 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
     return PRIMARY_DIET_VALUES.includes(selections as string);
   };
 
-  // 조건에 맞는 질문만 필터링
-  const availableQuestions = useMemo(() => {
-    return getAvailableQuestions(answers);
-  }, [answers]);
-
+  // URL 기반 다음 질문으로 이동
   const handleNext = () => {
     if (currentStep < availableQuestions.length - 1) {
-      setCurrentStep(prev => prev + 1);
+      // 다음 질문의 slug를 찾아서 navigate
+      const nextQuestion = availableQuestions[currentStep + 1];
+      const nextSlug = QUESTION_SLUGS[nextQuestion.id];
+      navigate(`/spirit/question/${nextSlug}`);
     } else {
-      // 마지막 질문 완료 시 결과 화면으로
-      // 이미지 생성이 아직 진행 중이면 그대로 두고, 완료되지 않았으면 완료 처리
-      if (isGeneratingImage) {
-        // 이미 생성 중이면 그대로 진행
-      } else {
-        // 아직 시작하지 않았거나 완료되었으면 완료 상태로 설정
-        setIsGeneratingImage(false);
-      }
-      // 결과 화면 표시
-      setShowResult(true);
+      // 마지막 질문 완료 시 결과 페이지로
+      navigate('/spirit/result');
     }
   };
 
+  // URL 기반 이전 질문으로 이동 (브라우저 뒤로가기 지원)
   const handleBack = () => {
     if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
+      // 이전 질문의 slug를 찾아서 navigate
+      const prevQuestion = availableQuestions[currentStep - 1];
+      const prevSlug = QUESTION_SLUGS[prevQuestion.id];
+      navigate(`/spirit/question/${prevSlug}`);
     } else {
-      // 첫 번째 질문일 때는 메인 페이지로 이동
-      navigate('/');
+      // 첫 번째 질문일 때는 인트로 페이지로 이동
+      navigate('/spirit');
     }
   };
 
@@ -1583,8 +1653,8 @@ ${result.description}
           <p className="text-stone-500 mb-4">질문을 불러오는 중...</p>
           <button
             onClick={() => {
-              setCurrentStep(0);
-              setStarted(true);
+              // 첫 번째 질문으로 이동
+              navigate('/spirit/question/diet');
             }}
             className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
           >
@@ -1603,8 +1673,8 @@ ${result.description}
           <p className="text-stone-500 mb-4">질문을 찾을 수 없습니다.</p>
           <button
             onClick={() => {
-              setCurrentStep(0);
-              setStarted(true);
+              // 첫 번째 질문으로 이동
+              navigate('/spirit/question/diet');
             }}
             className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
           >
@@ -1632,19 +1702,19 @@ ${result.description}
         </button>
       )}
 
-      <div className="flex items-center justify-center min-h-screen p-8" style={{ backgroundColor: '#B2B2B2' }}>
-        <div className="rounded-none p-10 relative" style={{ backgroundColor: 'transparent', width: '1000px', maxWidth: '100%' }}>
+      <div className="flex items-center justify-center min-h-screen p-4 md:p-8" style={{ backgroundColor: '#B2B2B2' }}>
+        <div className="rounded-none px-2 py-6 md:p-10 relative" style={{ backgroundColor: 'transparent', width: '1000px', maxWidth: '100%' }}>
           {/* 질문 영역 - 상단 고정 */}
-          <div 
-            className="relative" 
-            style={{ 
-              marginBottom: '80px',
+          <div
+            className="relative px-2 md:px-0"
+            style={{
+              marginBottom: '40px',
               position: 'sticky',
-              top: '96px',
+              top: '70px',
               zIndex: 10,
               backgroundColor: '#B2B2B2',
-              paddingTop: '20px',
-              paddingBottom: '20px',
+              paddingTop: '16px',
+              paddingBottom: '16px',
             }}
           >
             {/* 이전 버튼 - 질문과 중앙정렬, 좌측 */}
@@ -1652,11 +1722,10 @@ ${result.description}
               onClick={handleBack}
               className="absolute flex items-center justify-center transition-colors"
               style={{
-                width: '30px',
-                height: '30px',
+                width: '28px',
+                height: '28px',
                 borderRadius: '50%',
-                top: '50%',
-                transform: 'translateY(-50%)',
+                top: '20px',
                 left: '0',
                 backgroundColor: '#8C451D',
                 border: 'none',
@@ -1667,11 +1736,11 @@ ${result.description}
               onFocus={(e) => e.target.blur()}
               aria-label="이전"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
-            
+
             {/* 질문 */}
-            <h2 className="text-center text-stone-800 font-normal" style={{ fontSize: 'calc(var(--font-size-h2) * 1.2)', fontWeight: 400, marginBottom: '16px' }}>
+            <h2 className="text-center text-stone-800 font-normal px-8 md:px-0 text-base md:text-xl" style={{ fontWeight: 400, marginBottom: '12px' }}>
               {currentQuestion.question}
             </h2>
             
@@ -1693,84 +1762,185 @@ ${result.description}
           </div>
 
           {/* 타로 카드 옵션들 */}
-          <div className="flex flex-col items-center gap-6 mb-8">
-            {/* 5개 이상일 때 2+3 두 줄 레이아웃 */}
-            {currentQuestion.options.length >= 5 ? (
-              <>
-                {/* 첫 번째 줄: 2개 */}
-                <div className="flex justify-center gap-6">
-                  {currentQuestion.options.slice(0, 2).map((option: any) => {
-                    const isMultiple = (currentQuestion as any).isMultiple;
-                    const currentAnswer = answers[currentQuestion.id];
-                    const isSelected = isMultiple
-                      ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
-                      : currentAnswer === option.value;
-                    const tarot = option.tarot;
-                    const isHovered = hoveredCard?.value === option.value;
+          <style>{`
+            .hide-scrollbar::-webkit-scrollbar { display: none; }
+            .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            .drag-scroll { cursor: grab; }
+            .drag-scroll:active { cursor: grabbing; }
+            .drag-scroll.dragging { scroll-snap-type: none !important; }
+          `}</style>
 
-                    return (
-                      <div
-                        key={option.value}
-                        className="flex flex-col items-center"
-                        onMouseEnter={() => setHoveredCard(option)}
-                        onMouseLeave={() => setHoveredCard(null)}
-                      >
-                        <div
-                          onClick={() => {
-                            handleOptionSelect(currentQuestion.id, option.value);
-                            if (!isMultiple) {
-                              setTimeout(() => handleNext(), 300);
-                            }
-                          }}
-                          className="cursor-pointer transition-all duration-300"
-                          style={{
-                            width: '192px',
-                            height: '307px',
-                            borderRadius: '12px',
-                            overflow: 'hidden',
-                            boxShadow: 'none',
-                            border: isSelected ? '2px solid #DCFD4A' : 'none',
-                            transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                            background: '#E5E5E5',
-                          }}
-                        >
-                          {tarot && tarot.image ? (
-                            <div className="w-full h-full relative">
-                              <img
-                                src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
-                                alt={tarot.title}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                              >
-                                <span className="text-3xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                                <span className="text-base text-stone-600">{tarot.title}</span>
-                              </div>
-                            </div>
-                          ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
-                              <span className="text-xl font-bold text-stone-800">{option.label}</span>
-                            </div>
-                          )}
+          <div className="mb-8">
+            {/* ========== (A) 모바일 전용 뷰: 가로 스크롤 1줄 ========== */}
+            <div
+              className="flex md:hidden overflow-x-auto flex-nowrap gap-3 pb-4 hide-scrollbar drag-scroll"
+              style={{
+                scrollSnapType: 'x mandatory',
+                WebkitOverflowScrolling: 'touch',
+                paddingLeft: '0',
+                paddingRight: '0',
+                marginLeft: '-8px',
+                marginRight: '-8px',
+                width: 'calc(100% + 16px)',
+              }}
+              onMouseDown={(e) => {
+                const container = e.currentTarget;
+                container.classList.add('dragging');
+                const startX = e.pageX - container.offsetLeft;
+                const scrollLeft = container.scrollLeft;
+
+                const onMouseMove = (moveEvent: MouseEvent) => {
+                  moveEvent.preventDefault();
+                  const x = moveEvent.pageX - container.offsetLeft;
+                  const walk = (x - startX) * 1.5;
+                  container.scrollLeft = scrollLeft - walk;
+                };
+
+                const onMouseUp = () => {
+                  container.classList.remove('dragging');
+                  document.removeEventListener('mousemove', onMouseMove);
+                  document.removeEventListener('mouseup', onMouseUp);
+                  // Re-enable snap after drag
+                  setTimeout(() => {
+                    container.style.scrollSnapType = 'x mandatory';
+                  }, 100);
+                };
+
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+              }}
+              onTouchStart={(e) => {
+                const container = e.currentTarget;
+                container.classList.add('dragging');
+              }}
+              onTouchEnd={(e) => {
+                const container = e.currentTarget;
+                container.classList.remove('dragging');
+                setTimeout(() => {
+                  container.style.scrollSnapType = 'x mandatory';
+                }, 100);
+              }}
+            >
+              {currentQuestion.options.map((option: any, index: number) => {
+                const isMultiple = (currentQuestion as any).isMultiple;
+                const currentAnswer = answers[currentQuestion.id];
+                const isSelected = isMultiple
+                  ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                  : currentAnswer === option.value;
+                const tarot = option.tarot;
+                const isFirst = index === 0;
+                const isLast = index === currentQuestion.options.length - 1;
+                return (
+                  <div
+                    key={option.value}
+                    className="flex-shrink-0 flex flex-col items-center"
+                    style={{
+                      scrollSnapAlign: 'center',
+                      marginLeft: isFirst ? '12px' : '0',
+                      marginRight: isLast ? '12px' : '0',
+                    }}
+                  >
+                    <div
+                      onClick={() => {
+                        handleOptionSelect(currentQuestion.id, option.value);
+                        if (!isMultiple) setTimeout(() => handleNext(), 300);
+                      }}
+                      className="cursor-pointer transition-all duration-300"
+                      style={{
+                        width: '130px',
+                        height: '208px',
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        border: isSelected ? '2px solid #DCFD4A' : 'none',
+                        transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+                        background: '#E5E5E5',
+                      }}
+                    >
+                      {tarot?.image ? (
+                        <img
+                          src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                          alt={tarot.title}
+                          className="w-full h-full object-cover pointer-events-none"
+                          draggable={false}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200">
+                          <span className="text-sm font-bold text-stone-800">{option.label}</span>
                         </div>
-                        <div className="mt-3 text-center" style={{ width: '192px' }}>
-                          <span className="text-base font-bold text-stone-800">{option.label}</span>
-                          <div className="text-sm text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '38px' }}>
-                            {option.description}
+                      )}
+                    </div>
+                    <div className="mt-2 text-center" style={{ width: '130px' }}>
+                      <span className="text-xs font-bold text-stone-800">{option.label}</span>
+                      {/* 모바일에서는 설명 항상 표시 */}
+                      <div className="text-xs text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
+                        {option.description}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ========== (B) 데스크탑 전용 뷰: 2+3 그리드 ========== */}
+            <div className="hidden md:flex flex-col items-center gap-6">
+              {/* 첫 번째 줄: 2개 */}
+              <div className="flex justify-center gap-6">
+                {currentQuestion.options.slice(0, 2).map((option: any) => {
+                  const isMultiple = (currentQuestion as any).isMultiple;
+                  const currentAnswer = answers[currentQuestion.id];
+                  const isSelected = isMultiple
+                    ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
+                    : currentAnswer === option.value;
+                  const tarot = option.tarot;
+                  const isHovered = hoveredCard?.value === option.value;
+                  return (
+                    <div
+                      key={option.value}
+                      className="flex flex-col items-center"
+                      onMouseEnter={() => setHoveredCard(option)}
+                      onMouseLeave={() => setHoveredCard(null)}
+                    >
+                      <div
+                        onClick={() => {
+                          handleOptionSelect(currentQuestion.id, option.value);
+                          if (!isMultiple) setTimeout(() => handleNext(), 300);
+                        }}
+                        className="cursor-pointer transition-all duration-300"
+                        style={{
+                          width: '192px',
+                          height: '307px',
+                          borderRadius: '12px',
+                          overflow: 'hidden',
+                          boxShadow: 'none',
+                          border: isSelected ? '2px solid #DCFD4A' : 'none',
+                          transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                          background: '#E5E5E5',
+                        }}
+                      >
+                        {tarot?.image ? (
+                          <img
+                            src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                            alt={tarot.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
+                            <span className="text-xl font-bold text-stone-800">{option.label}</span>
                           </div>
+                        )}
+                      </div>
+                      <div className="mt-3 text-center" style={{ width: '192px' }}>
+                        <span className="text-base font-bold text-stone-800">{option.label}</span>
+                        <div className="text-sm text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '38px' }}>
+                          {option.description}
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-                {/* 두 번째 줄: 나머지 3개 */}
+                    </div>
+                  );
+                })}
+              </div>
+              {/* 두 번째 줄: 나머지 (3개 이상일 경우) */}
+              {currentQuestion.options.length > 2 && (
                 <div className="flex justify-center gap-6">
                   {currentQuestion.options.slice(2).map((option: any) => {
                     const isMultiple = (currentQuestion as any).isMultiple;
@@ -1780,7 +1950,6 @@ ${result.description}
                       : currentAnswer === option.value;
                     const tarot = option.tarot;
                     const isHovered = hoveredCard?.value === option.value;
-
                     return (
                       <div
                         key={option.value}
@@ -1791,9 +1960,7 @@ ${result.description}
                         <div
                           onClick={() => {
                             handleOptionSelect(currentQuestion.id, option.value);
-                            if (!isMultiple) {
-                              setTimeout(() => handleNext(), 300);
-                            }
+                            if (!isMultiple) setTimeout(() => handleNext(), 300);
                           }}
                           className="cursor-pointer transition-all duration-300"
                           style={{
@@ -1807,26 +1974,12 @@ ${result.description}
                             background: '#E5E5E5',
                           }}
                         >
-                          {tarot && tarot.image ? (
-                            <div className="w-full h-full relative">
-                              <img
-                                src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
-                                alt={tarot.title}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.currentTarget.style.display = 'none';
-                                  const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }}
-                              />
-                              <div
-                                className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                                style={{ display: 'none', background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                              >
-                                <span className="text-3xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                                <span className="text-base text-stone-600">{tarot.title}</span>
-                              </div>
-                            </div>
+                          {tarot?.image ? (
+                            <img
+                              src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                              alt={tarot.title}
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
                               <span className="text-xl font-bold text-stone-800">{option.label}</span>
@@ -1843,102 +1996,8 @@ ${result.description}
                     );
                   })}
                 </div>
-              </>
-            ) : (
-              /* 4개 이하일 때 기존 한 줄 레이아웃 */
-              <div className="flex justify-center gap-6">
-                {currentQuestion.options.map((option: any) => {
-              // 다중 선택 여부에 따라 선택 상태 확인
-              const isMultiple = (currentQuestion as any).isMultiple;
-              const currentAnswer = answers[currentQuestion.id];
-              const isSelected = isMultiple
-                ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
-                : currentAnswer === option.value;
-              const tarot = option.tarot;
-              const isHovered = hoveredCard?.value === option.value;
-
-              return (
-                <div
-                  key={option.value}
-                  className="flex flex-col items-center"
-                  onMouseEnter={() => setHoveredCard(option)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                >
-                  {/* 카드 이미지 */}
-                  <div
-                    onClick={() => {
-                      handleOptionSelect(currentQuestion.id, option.value);
-                      // 단일 선택이면 자동으로 다음으로 이동
-                      if (!isMultiple) {
-                        setTimeout(() => handleNext(), 300);
-                      }
-                    }}
-                    className="cursor-pointer transition-all duration-300"
-                    style={{
-                      width: '160px',
-                      height: '256px',
-                      borderRadius: '12px',
-                      overflow: 'hidden',
-                      boxShadow: isSelected
-                        ? '0 0 0 1px #1A1A1A, 0 16px 40px rgba(0, 0, 0, 0.25)'
-                        : '0 8px 24px rgba(0, 0, 0, 0.15)',
-                      transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                      background: '#E5E5E5',
-                    }}
-                  >
-                    {tarot && tarot.image ? (
-                      <div className="w-full h-full relative">
-                        <img
-                          src={`${import.meta.env.BASE_URL}${tarot.image.replace(/^\//, '')}`}
-                          alt={tarot.title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                            const placeholder = e.currentTarget.nextElementSibling as HTMLElement;
-                            if (placeholder) placeholder.style.display = 'flex';
-                          }}
-                        />
-                        {/* 플레이스홀더 (이미지 로드 실패 시) */}
-                        <div
-                          className="absolute inset-0 flex-col items-center justify-center p-4 text-center"
-                          style={{
-                            display: 'none',
-                            background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)'
-                          }}
-                        >
-                          <span className="text-2xl font-bold text-stone-800 mb-2">{tarot.number}</span>
-                          <span className="text-sm text-stone-600">{tarot.title}</span>
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className="w-full h-full flex flex-col items-center justify-center p-4 text-center"
-                        style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}
-                      >
-                        <span className="text-lg font-bold text-stone-800">{option.label}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 카드 제목 (항상 표시) */}
-                  <div className="mt-3 text-center" style={{ width: '192px' }}>
-                    <span className="text-base font-bold text-stone-800">{option.label}</span>
-                    {/* 설명 (호버 시에만 표시) */}
-                    <div
-                      className="text-sm text-stone-500 mt-1 transition-opacity duration-200"
-                      style={{
-                        opacity: isHovered ? 1 : 0,
-                        height: '38px',
-                      }}
-                    >
-                      {option.description}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -232,6 +232,10 @@ const AppContent: React.FC = () => {
             ============================================ */}
         <Route path="/" element={<HomePage headerOffset={showTopBanner ? 96 : 64} />} />
         <Route path="/spirit" element={<SpiritFinder headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/spirit/intro" element={<SpiritFinder headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/spirit/question/:stepId" element={<SpiritFinderStep headerOffset={showTopBanner ? 96 : 64} />} />
+        <Route path="/spirit/result" element={<SpiritFinderStep headerOffset={showTopBanner ? 96 : 64} />} />
+        {/* Legacy route for backwards compatibility */}
         <Route path="/spirit/step" element={<SpiritFinderStep headerOffset={showTopBanner ? 96 : 64} />} />
 
         {/* ============================================

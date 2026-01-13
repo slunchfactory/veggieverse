@@ -122,9 +122,11 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
 
   const goToStep = useCallback(() => {
     if (selectedItems.length === 3) {
-      // 선택된 아이템을 localStorage에 저장하고 단계별 설문으로 이동
+      // 선택된 아이템을 localStorage에 저장하고 첫 번째 질문으로 이동
       localStorage.setItem('spirit-finder-selected-items', JSON.stringify(selectedItems));
-      navigate('/spirit/step');
+      // 기존 답변 초기화
+      localStorage.removeItem('spirit-finder-answers');
+      navigate('/spirit/question/diet');
     }
   }, [selectedItems, navigate]);
 

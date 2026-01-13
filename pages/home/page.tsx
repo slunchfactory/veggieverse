@@ -702,9 +702,9 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 }
               `}
             </style>
-            
-            {/* 마름모 형태 박스 - 야채 선택 시에만 표시 */}
-            {selectedItems.length >= 1 && (
+
+            {/* 마름모 형태 박스 - DEBUG: 항상 표시 (Figma 캡처용) */}
+            {(selectedItems.length >= 1 || true) && (
               <div 
                 className="absolute z-40"
                 style={{
@@ -764,9 +764,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     padding: '20px',
                   }}
                 >
-                  {/* 선택된 야채 실루엣 3개 */}
+                  {/* 선택된 야채 실루엣 3개 - DEBUG: mock 데이터 추가 */}
                   <div className="flex items-center gap-2">
-                    {selectedItems.map((item, index) => (
+                    {(selectedItems.length > 0 ? selectedItems : [
+                      { id: 'mock1', labelColor: '#FF6B6B', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/tomato.png` },
+                      { id: 'mock2', labelColor: '#4ECDC4', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/broccoli.png` },
+                      { id: 'mock3', labelColor: '#FFE66D', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/lemon.png` },
+                    ]).map((item, index) => (
                       <div
                         key={item.id}
                         className="relative"
@@ -812,7 +816,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     ))}
                   </div>
                   
-                  {/* 나의 슬로우 스피릿 찾기 버튼 */}
+                  {/* 나의 슬로우 스피릿 찾기 버튼 - DEBUG: 항상 활성화 */}
                   <button
                     onClick={() => {
                       if (selectedItems.length >= 1) {
@@ -820,12 +824,12 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                         navigate('/spirit/step');
                       }
                     }}
-                    disabled={selectedItems.length < 1}
+                    disabled={false}
                     style={{
                       display: 'inline-block',
                       padding: '12px 24px',
                       border: 'none',
-                      backgroundColor: selectedItems.length >= 1 ? '#8C451D' : '#ccc',
+                      backgroundColor: '#8C451D',
                       color: '#FFFFFF',
                       fontSize: '15px',
                       fontWeight: 400,
@@ -833,16 +837,14 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       transition: 'all 0.15s ease',
                       minHeight: '44px',
                       minWidth: '120px',
-                      cursor: selectedItems.length >= 1 ? 'pointer' : 'not-allowed',
+                      cursor: 'pointer',
                     }}
                     onMouseEnter={(e) => {
-                      if (selectedItems.length >= 1) {
-                        e.currentTarget.style.backgroundColor = '#8C451D';
-                        e.currentTarget.style.color = '#FFFFFF';
-                      }
+                      e.currentTarget.style.backgroundColor = '#6B3514';
+                      e.currentTarget.style.color = '#FFFFFF';
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = selectedItems.length >= 1 ? '#8C451D' : '#ccc';
+                      e.currentTarget.style.backgroundColor = '#8C451D';
                       e.currentTarget.style.color = '#FFFFFF';
                     }}
                   >
