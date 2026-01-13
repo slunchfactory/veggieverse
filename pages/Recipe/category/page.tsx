@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ChevronLeft, Search } from 'lucide-react';
-import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../../utils/recipeImages';
 
 // 레시피 인터페이스
 interface Recipe {

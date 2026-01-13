@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { X, ArrowRight, Heart } from 'lucide-react';
-import { getHomeProductImage } from '../utils/productImages';
-import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
-import { VegetableItem } from '../types';
-import { PRODUCE_ITEMS } from '../constants';
-import { SurveyPage } from '../components/SurveyPage';
-import { Footer } from '../components/Footer';
+import { getHomeProductImage } from '../../utils/productImages';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../utils/recipeImages';
+import { VegetableItem } from '../../types';
+import { PRODUCE_ITEMS } from '../../constants';
+import { SurveyPage } from '../../components/SurveyPage';
+import { Footer } from '../../components/Footer';
 
 // 밝은 색상인지 판단하는 헬퍼 함수
 const isLightColor = (hexColor: string): boolean => {

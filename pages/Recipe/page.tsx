@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Plus, Upload, Trophy, X, Bookmark, Heart } from 'lucide-react';
-import { COLORS } from '../constants/colors';
-import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
-import HallOfFameMarquee from '../components/HallOfFameMarquee';
-import { PopularRecipes } from '../components/PopularRecipes';
-import { TopControlBar, TabItem } from '../components/TopControlBar';
+import { COLORS } from '../../constants/colors';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../utils/recipeImages';
+import HallOfFameMarquee from '../../components/HallOfFameMarquee';
+import { PopularRecipes } from '../../components/PopularRecipes';
+import { TopControlBar, TabItem } from '../../components/TopControlBar';
 
 // 카테고리별 레시피 데이터
 interface Recipe {

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useMemo, useCallback, useEffect } from 'react';
 import { ChevronUp, ChevronLeft, Calendar, FileText, Sparkles, Share2, Download, UserCircle, Check, X, Link2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { VegetableItem } from '../../types';
-import { useUser } from '../../contexts/UserContext';
-import { DietGridSelect } from '../../components/DietGridSelect';
+import { VegetableItem } from '../../../types';
+import { useUser } from '../../../contexts/UserContext';
+import { DietGridSelect } from '../../../components/DietGridSelect';
 
 interface SpiritFinderStepProps {
   headerOffset?: number;

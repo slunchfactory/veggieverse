@@ -1,9 +1,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { Sparkles, ChevronDown, Check, Heart, X, SlidersHorizontal } from 'lucide-react';
-import { getProductThumbnailImages } from '../utils/productImages';
-import { Badge } from '../components/ui/Badge';
-import { TopControlBar, TabItem, SortOption } from '../components/TopControlBar';
+import { getProductThumbnailImages } from '../../utils/productImages';
+import { Badge } from '../../components/ui/Badge';
+import { TopControlBar, TabItem, SortOption } from '../../components/TopControlBar';
 
 // 상품 타입 정의
 interface Product {

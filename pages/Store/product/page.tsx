@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, ChevronUp, Minus, Plus, ShoppingCart, Heart, Truck, Info } from 'lucide-react';
-import { getProductThumbnailImages } from '../utils/productImages';
+import { getProductThumbnailImages } from '../../../utils/productImages';
 
 // 상품 타입 정의
 interface Product {

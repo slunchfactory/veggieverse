@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bookmark, X } from 'lucide-react';
-import MyPageLayout from '../../components/MyPageLayout';
-import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../utils/recipeImages';
+import MyPageLayout from '../../../components/MyPageLayout';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../../utils/recipeImages';
 
 // 북마크 레시피 타입
 interface BookmarkedRecipe {

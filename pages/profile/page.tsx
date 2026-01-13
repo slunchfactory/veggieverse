@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Settings, Edit3 } from 'lucide-react';
-import { useUser, BadgeType } from '../contexts/UserContext';
-import { ActivityBadgeSection } from '../components/Badge';
-import { ProfileStats } from '../components/Profile';
-import { CouponRegisterModal, EventDetailModal, BadgeDetailModal, OrderDetailModal } from '../components/modals';
+import { useUser, BadgeType } from '../../contexts/UserContext';
+import { ActivityBadgeSection } from '../../components/Badge';
+import { ProfileStats } from '../../components/Profile';
+import { CouponRegisterModal, EventDetailModal, BadgeDetailModal, OrderDetailModal } from '../../components/modals';
 
 // 탭 타입 정의
 type TabType = 'HOME' | 'ORDER' | 'WISHLIST' | 'REVIEW' | 'INFO';

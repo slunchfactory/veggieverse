@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Star, MessageSquare } from 'lucide-react';
-import MyPageLayout from '../../components/MyPageLayout';
+import MyPageLayout from '../../../components/MyPageLayout';
 
 // 리뷰 타입
 interface Review {

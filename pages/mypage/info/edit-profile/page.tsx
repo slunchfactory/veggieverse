@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { User, Lock, ChevronDown } from 'lucide-react';
-import { useUser } from '../../contexts/UserContext';
-import MyPageLayout from '../../components/MyPageLayout';
+import { useUser } from '../../../../contexts/UserContext';
+import MyPageLayout from '../../../../components/MyPageLayout';
 
 // 채식 유형 옵션
 const VEGAN_TYPES = [

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TopControlBar, TabItem } from '../components/TopControlBar';
+import { TopControlBar, TabItem } from '../../components/TopControlBar';
 
 const eventTabs: TabItem[] = [
   { id: 'all', label: 'All' },

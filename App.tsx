@@ -2,55 +2,76 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { HomePage } from './pages/HomePage';
-import { StorePage } from './pages/StorePage';
-import { BrandPage } from './pages/BrandPage';
-import { CommunityPage } from './pages/CommunityPage';
-import { NewsletterPage } from './pages/NewsletterPage';
-import AboutPage from './pages/AboutPage';
-import { VeganTestPage } from './pages/VeganTestPage';
-import RecipePage from './pages/RecipePage';
-import RecipeHallOfFamePage from './pages/RecipeHallOfFamePage';
-import RecipeDetailPage from './pages/RecipeDetailPage';
-import RecipeCategoryPage from './pages/RecipeCategoryPage';
-import ProfilePage from './pages/ProfilePage';
-import EventPage from './pages/EventPage';
-import { SubscriptionPage } from './pages/SubscriptionPage';
-import { ProductDetailPage } from './pages/ProductDetailPage';
-import OrdersPage from './pages/mypage/OrdersPage';
-import BookmarksPage from './pages/mypage/BookmarksPage';
-import WishlistPage from './pages/mypage/WishlistPage';
-import ReviewsPage from './pages/mypage/ReviewsPage';
-import ProfileEditPage from './pages/mypage/ProfileEditPage';
-import MyHome from './pages/mypage/MyHome';
-import MyInfo from './pages/mypage/MyInfo';
-import MyOrders from './pages/mypage/MyOrders';
 
-// About pages (nested routing) - App Router style structure
+// ============================================
+// Home & Root pages - App Router style
+// ============================================
+import { HomePage } from './pages/home/page';
+import { BrandPage } from './pages/brand/page';
+import { CommunityPage } from './pages/community/page';
+import ProfilePage from './pages/profile/page';
+
+// ============================================
+// About pages - App Router style
+// ============================================
 import AboutLayout from './pages/about/layout';
 import AboutStoryPage from './pages/about/story/page';
 import AboutBranchPage from './pages/about/branch/page';
 import AboutB2BPage from './pages/about/b2b/page';
 
-// SpiritFinder pages
-import SpiritFinder from './pages/SpiritFinder';
-import SpiritFinderStep from './pages/SpiritFinder/SpiritFinderStep';
+// ============================================
+// Spirit pages - App Router style
+// ============================================
+import SpiritFinder from './pages/spirit/page';
+import SpiritFinderStep from './pages/spirit/step/page';
 
-// Store pages
-import StoreList from './pages/Store/StoreList';
-import StoreDetail from './pages/Store/StoreDetail';
+// ============================================
+// Store pages - App Router style
+// ============================================
+import { StorePage } from './pages/store/page';
+import StoreList from './pages/store/list/page';
+import StoreDetail from './pages/store/detail/page';
+import { ProductDetailPage } from './pages/store/product/page';
 
-// Recipe pages
-import RecipeList from './pages/Recipe/RecipeList';
-import RecipeDetail from './pages/Recipe/RecipeDetail';
+// ============================================
+// Recipe pages - App Router style
+// ============================================
+import RecipePage from './pages/recipe/page';
+import RecipeList from './pages/recipe/list/page';
+import RecipeDetail from './pages/recipe/detail/page';
+import RecipeCategoryPage from './pages/recipe/category/page';
+import RecipeHallOfFamePage from './pages/recipe/hall-of-fame/page';
+import RecipeDetailPage from './pages/recipe/detail-legacy/page';
 
-// Newsletter pages
-import NewsletterList from './pages/Newsletter/NewsletterList';
-import NewsletterDetail from './pages/Newsletter/NewsletterDetail';
+// ============================================
+// Event pages - App Router style
+// ============================================
+import EventPage from './pages/event/page';
+import EventList from './pages/event/list/page';
+import EventDetail from './pages/event/detail/page';
 
-// Event pages
-import EventList from './pages/Event/EventList';
-import EventDetail from './pages/Event/EventDetail';
+// ============================================
+// Newsletter pages - App Router style
+// ============================================
+import { NewsletterPage } from './pages/newsletter/page';
+import NewsletterList from './pages/newsletter/list/page';
+import NewsletterDetail from './pages/newsletter/detail/page';
+
+// ============================================
+// Subscribe pages - App Router style
+// ============================================
+import { SubscriptionPage } from './pages/subscribe/page';
+
+// ============================================
+// MyPage pages - App Router style
+// ============================================
+import MyHome from './pages/mypage/page';
+import MyOrders from './pages/mypage/orders/page';
+import BookmarksPage from './pages/mypage/bookmarks/page';
+import WishlistPage from './pages/mypage/wishlist/page';
+import ReviewsPage from './pages/mypage/reviews/page';
+import MyInfo from './pages/mypage/info/page';
+import ProfileEditPage from './pages/mypage/info/edit-profile/page';
 
 import { ChatWidget, ChatTrigger, ChatPanel } from './components/ChatWidget';
 import { TopBanner } from './components/TopBanner';

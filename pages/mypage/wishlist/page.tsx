@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Heart, X } from 'lucide-react';
-import MyPageLayout from '../../components/MyPageLayout';
-import { getProductThumbnailImages } from '../../utils/productImages';
+import MyPageLayout from '../../../components/MyPageLayout';
+import { getProductThumbnailImages } from '../../../utils/productImages';
 
 // 관심상품 타입
 interface WishlistProduct {

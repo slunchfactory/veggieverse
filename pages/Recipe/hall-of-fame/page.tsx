@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Crown, Medal, Trophy, Heart, Eye } from 'lucide-react';
-import { COLORS } from '../constants/colors';
-import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
+import { COLORS } from '../../../constants/colors';
+import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../../utils/recipeImages';
 
 // Top 20 인기 레시피 데이터
 const hallOfFameRecipes = [

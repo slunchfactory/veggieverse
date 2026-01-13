@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Share2, Clock, ChefHat, Users, Sparkles, Lightbulb, ChevronRight, ChevronLeft, ChevronUp, ChevronDown, MessageCircle, CheckCircle2, Camera } from 'lucide-react';
-import { getIngredientIcon } from '../utils/ingredientIcon';
-import { getRecipeHeroImage, getRecipeThumbnailImage, getFallbackRecipeImage } from '../utils/recipeImages';
-import { CommentSection } from '../components/CommentSection';
-import { SpiritMissionCard } from '../components/SpiritMissionCard';
-import { getDetailedRecipe, Recipe, allRecipes } from '../data/recipes';
-import { useUser } from '../contexts/UserContext';
-import { ToastContainer, ToastProps } from '../components/Toast';
-import { DEFAULT_RECIPE_IMAGE } from '../data/recipeDetails';
-import { PhotoReviewModal, PhotoReview } from '../components/PhotoReviewModal';
-import { TopControlBar, TabItem } from '../components/TopControlBar';
+import { getIngredientIcon } from '../../../utils/ingredientIcon';
+import { getRecipeHeroImage, getRecipeThumbnailImage, getFallbackRecipeImage } from '../../../utils/recipeImages';
+import { CommentSection } from '../../../components/CommentSection';
+import { SpiritMissionCard } from '../../../components/SpiritMissionCard';
+import { getDetailedRecipe, Recipe, allRecipes } from '../../../data/recipes';
+import { useUser } from '../../../contexts/UserContext';
+import { ToastContainer, ToastProps } from '../../../components/Toast';
+import { DEFAULT_RECIPE_IMAGE } from '../../../data/recipeDetails';
+import { PhotoReviewModal, PhotoReview } from '../../../components/PhotoReviewModal';
+import { TopControlBar, TabItem } from '../../../components/TopControlBar';
 
 // 레시피 카테고리 탭 데이터
 const recipeTabs: TabItem[] = [

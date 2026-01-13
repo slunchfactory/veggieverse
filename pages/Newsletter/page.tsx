@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { TopControlBar, TabItem } from '../components/TopControlBar';
+import { TopControlBar, TabItem } from '../../components/TopControlBar';
 
 const newsletterTabs: TabItem[] = [
   { id: 'all', label: 'All' },
