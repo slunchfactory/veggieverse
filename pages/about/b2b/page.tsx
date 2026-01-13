@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mail, Award } from 'lucide-react';
 
-const AboutB2B: React.FC = () => {
+const AboutB2BPage: React.FC = () => {
   return (
     <div>
       {/* Factory Section */}
@@ -218,4 +218,4 @@ const AboutB2B: React.FC = () => {
   );
 };
 
-export default AboutB2B;
+export default AboutB2BPage;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { MapPin, Phone, Clock, ExternalLink } from 'lucide-react';
 
-const AboutBranch: React.FC = () => {
+const AboutBranchPage: React.FC = () => {
   return (
     <div>
       {/* Hongdae Store */}
@@ -214,4 +214,4 @@ const AboutBranch: React.FC = () => {
   );
 };
 
-export default AboutBranch;
+export default AboutBranchPage;

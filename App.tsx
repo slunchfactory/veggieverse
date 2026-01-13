@@ -26,11 +26,11 @@ import MyHome from './pages/mypage/MyHome';
 import MyInfo from './pages/mypage/MyInfo';
 import MyOrders from './pages/mypage/MyOrders';
 
-// About pages (nested routing)
-import AboutLayout from './pages/About/AboutLayout';
-import AboutStory from './pages/About/AboutStory';
-import AboutBranch from './pages/About/AboutBranch';
-import AboutB2B from './pages/About/AboutB2B';
+// About pages (nested routing) - App Router style structure
+import AboutLayout from './pages/about/layout';
+import AboutStoryPage from './pages/about/story/page';
+import AboutBranchPage from './pages/about/branch/page';
+import AboutB2BPage from './pages/about/b2b/page';
 
 // SpiritFinder pages
 import SpiritFinder from './pages/SpiritFinder';
@@ -217,10 +217,10 @@ const AppContent: React.FC = () => {
             2. About
             ============================================ */}
         <Route path="/about" element={<AboutLayout />}>
-          <Route index element={<AboutStory />} />
-          <Route path="story" element={<AboutStory />} />
-          <Route path="branch" element={<AboutBranch />} />
-          <Route path="b2b" element={<AboutB2B />} />
+          <Route index element={<AboutStoryPage />} />
+          <Route path="story" element={<AboutStoryPage />} />
+          <Route path="branch" element={<AboutBranchPage />} />
+          <Route path="b2b" element={<AboutB2BPage />} />
         </Route>
         <Route path="/brand" element={<BrandPage />} />
 

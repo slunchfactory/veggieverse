@@ -1,6 +1,6 @@
 import React from 'react';
 
-const AboutStory: React.FC = () => {
+const AboutStoryPage: React.FC = () => {
   return (
     <div>
       {/* Hero Grid */}
@@ -170,4 +170,4 @@ const AboutStory: React.FC = () => {
   );
 };
 
-export default AboutStory;
+export default AboutStoryPage;
