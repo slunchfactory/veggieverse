@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="슬런치 팩토리 - 비건 레시피">
+  <title>Recipe - 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
+      </a>
+      <div class="header-right">
+        <a href="mypage.html" class="cart-link">(0)</a>
+        <a href="mypage.html" class="user-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION DRAWER -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header">
+      <button class="nav-close" id="navClose">&times;</button>
+    </div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item">About</a>
+      <a href="recipe.html" class="nav-item active">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="event.html" class="nav-item">Event</a>
+      <a href="newsletter.html" class="nav-item">Newsletter</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+      <a href="spirit.html" class="nav-item">Spirit Finder</a>
+      <a href="mypage.html" class="nav-item">My Page</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- 히어로 섹션 -->
+    <section class="recipe-hero">
+      <div class="page-container">
+        <h1 class="recipe-hero-title">비건 레시피</h1>
+        <p class="recipe-hero-desc">
+          슬런치 팩토리의 다양한 비건 레시피를 만나보세요.<br>
+          건강하고 맛있는 요리를 직접 만들어보세요.
+        </p>
+      </div>
+    </section>
+
+    <!-- 카테고리 탭 -->
+    <section class="section" style="background: #fff; padding: 20px;">
+      <div class="page-container">
+        <div class="recipe-tabs">
+          <button class="recipe-tab active" data-category="all">전체</button>
+          <button class="recipe-tab" data-category="new">신규</button>
+          <button class="recipe-tab" data-category="lunch">점심</button>
+          <button class="recipe-tab" data-category="dessert">디저트</button>
+          <button class="recipe-tab" data-category="korean">한식</button>
+          <button class="recipe-tab" data-category="drink">술안주</button>
+          <button class="recipe-tab" data-category="date">데이트</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 인기 레시피 -->
+    <section class="section" style="background: #FDFBF7; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">POPULAR</span>
+          <h2 class="section-title">인기 레시피</h2>
+        </div>
+
+        <div class="recipe-grid">
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="두부 스테이크">
+              <span class="recipe-rank">#1</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">두부 스테이크</h3>
+              <p class="recipe-card-desc">크리미한 버섯 소스와 구운 채소를 곁들인</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@비건셰프</span>
+                <span class="recipe-likes">♥ 734</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400" alt="비건 파스타">
+              <span class="recipe-rank">#2</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">비건 파스타</h3>
+              <p class="recipe-card-desc">발사믹 토마토 소스와 신선한 바질을 곁들인</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@이탈리안</span>
+                <span class="recipe-likes">♥ 656</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400" alt="아보카도 샐러드">
+              <span class="recipe-rank">#3</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">아보카도 샐러드 볼</h3>
+              <p class="recipe-card-desc">구운 감자 웨지와 신선한 채소를 곁들인</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@다이어터</span>
+                <span class="recipe-likes">♥ 623</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=400" alt="버섯 리조또">
+              <span class="recipe-rank">#4</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">버섯 리조또</h3>
+              <p class="recipe-card-desc">치즈 풍미 가득한 크리미 리조또</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@리조또장인</span>
+                <span class="recipe-likes">♥ 589</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400" alt="채소 볶음밥">
+              <span class="recipe-rank">#5</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">채소 볶음밥</h3>
+              <p class="recipe-card-desc">브로콜리와 당근을 곁들인 건강한 한 끼</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@점심왕</span>
+                <span class="recipe-likes">♥ 521</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400" alt="레몬 허브 샐러드">
+              <span class="recipe-rank">#6</span>
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">레몬 허브 샐러드</h3>
+              <p class="recipe-card-desc">상큼한 레몬 드레싱과 신선한 허브를 곁들인</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@샐러드마스터</span>
+                <span class="recipe-likes">♥ 478</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="#" class="btn btn-outline">레시피 더보기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 카테고리: 점심 -->
+    <section class="section" style="background: #fff; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">LUNCH</span>
+          <h2 class="section-title">맛있는 점심으로 하루 채우기</h2>
+        </div>
+
+        <div class="recipe-grid">
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="두부 덮밥">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">두부 덮밥</h3>
+              <p class="recipe-card-desc">든든한 단백질 한 그릇</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@점심왕</span>
+                <span class="recipe-likes">♥ 445</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=400" alt="야채 카레">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">야채 카레</h3>
+              <p class="recipe-card-desc">향신료 가득한 건강식</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@카레매니아</span>
+                <span class="recipe-likes">♥ 389</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1552611052-33e04de081de?w=400" alt="비빔국수">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">비빔국수</h3>
+              <p class="recipe-card-desc">새콤달콤 입맛 돋우는</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@면요리사</span>
+                <span class="recipe-likes">♥ 521</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 카테고리: 디저트 -->
+    <section class="section" style="background: #FFF8F0; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">DESSERT</span>
+          <h2 class="section-title">디저트는 내 삶의 낙이야</h2>
+        </div>
+
+        <div class="recipe-grid">
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400" alt="코코넛 푸딩">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">코코넛 푸딩</h3>
+              <p class="recipe-card-desc">열대의 달콤함을 담아</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@디저트왕</span>
+                <span class="recipe-likes">♥ 623</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=400" alt="블루베리 타르트">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">블루베리 타르트</h3>
+              <p class="recipe-card-desc">상큼한 보라빛 유혹</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@베이커리</span>
+                <span class="recipe-likes">♥ 578</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1501959915551-4e8d30928317?w=400" alt="망고 스무디 볼">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">망고 스무디 볼</h3>
+              <p class="recipe-card-desc">열대 과일과 그래놀라를 곁들인</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@스무디러버</span>
+                <span class="recipe-likes">♥ 445</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 카테고리: 한식 -->
+    <section class="section" style="background: #fff; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">KOREAN</span>
+          <h2 class="section-title">할머니 손맛이 그리울 때</h2>
+        </div>
+
+        <div class="recipe-grid">
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=400" alt="배추된장국">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">배추된장국</h3>
+              <p class="recipe-card-desc">구수한 된장의 깊은 맛</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@한식셰프</span>
+                <span class="recipe-likes">♥ 734</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400" alt="파전">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">파전</h3>
+              <p class="recipe-card-desc">비 오는 날의 필수템</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@전요리사</span>
+                <span class="recipe-likes">♥ 589</span>
+              </div>
+            </div>
+          </a>
+
+          <a href="#" class="recipe-card">
+            <div class="recipe-card-image">
+              <img src="https://images.unsplash.com/photo-1553163147-622ab57be1c7?w=400" alt="고추장 비빔밥">
+            </div>
+            <div class="recipe-card-content">
+              <h3 class="recipe-card-title">고추장 비빔밥</h3>
+              <p class="recipe-card-desc">매콤 달콤 환상 조합</p>
+              <div class="recipe-card-meta">
+                <span class="recipe-author">@비빔밥러버</span>
+                <span class="recipe-likes">♥ 678</span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 레시피 업로드 CTA -->
+    <section class="section" style="background: #DCFD4A; padding: 80px 20px; text-align: center;">
+      <div class="page-container">
+        <div class="cta-icon">+</div>
+        <h2 style="font-size: 24px; font-weight: 400; margin-bottom: 16px;">나만의 레시피를 공유해보세요</h2>
+        <p style="font-size: 16px; color: #666; margin-bottom: 32px;">
+          당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.
+        </p>
+        <a href="#" class="btn btn-primary">레시피 작성하기</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">SLUNCH FACTORY</div>
+      <div class="footer-info">
+        <p>슬런치팩토리 주식회사 | 대표: 홍길동</p>
+        <p>사업자등록번호: 123-45-67890</p>
+        <p>서울특별시 강남구 테헤란로 123</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="recipe.html" class="footer-link">Recipe</a>
+        <a href="store.html" class="footer-link">Store</a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 Slunch Factory. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <style>
+    /* Recipe Page Specific Styles */
+    .recipe-hero {
+      padding: 120px 20px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, #DCFD4A 0%, #FDFBF7 100%);
+    }
+    .recipe-hero-title {
+      font-size: 40px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+    .recipe-hero-desc {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #666;
+    }
+    .recipe-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+    .recipe-tab {
+      padding: 8px 20px;
+      font-size: 14px;
+      color: #666;
+      background: #f5f5f5;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .recipe-tab:hover {
+      background: #e0e0e0;
+    }
+    .recipe-tab.active {
+      background: #1a1a1a;
+      color: #fff;
+    }
+    .section-label {
+      display: block;
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .recipe-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .recipe-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s;
+    }
+    .recipe-card:hover {
+      transform: translateY(-4px);
+    }
+    .recipe-card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+    .recipe-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .recipe-rank {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #000;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 2px;
+    }
+    .recipe-card-content {
+      padding-top: 12px;
+    }
+    .recipe-card-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .recipe-card-desc {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .recipe-card-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #999;
+    }
+    .recipe-likes {
+      color: #E53935;
+    }
+    .cta-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 24px;
+      color: #666;
+    }
+  </style>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="슬런치 팩토리 - 비건 푸드 플랫폼">
+  <title>VeggieVerse - 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
+      </a>
+      <div class="header-right">
+        <a href="#" class="cart-link">(0)</a>
+        <a href="#" class="user-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION DRAWER -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header">
+      <button class="nav-close" id="navClose">&times;</button>
+    </div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item active">Home</a>
+      <a href="about.html" class="nav-item">About</a>
+      <a href="menu.html" class="nav-item">Menu</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- HERO: 플로팅 야채 섹션 -->
+    <section class="hero-floating">
+      <div class="floating-area">
+        <div class="floating-item" style="left: 10%; top: 20%; width: 80px; animation-delay: 0s;">
+          <img src="images/vege/tomato.png" alt="토마토" onerror="this.src='https://via.placeholder.com/80/FF6B6B/fff?text=🍅'">
+          <span class="label" style="background: #FF6B6B; color: #fff;">토마토</span>
+        </div>
+        <div class="floating-item" style="left: 25%; top: 45%; width: 100px; animation-delay: 0.5s;">
+          <img src="images/vege/broccoli.png" alt="브로콜리" onerror="this.src='https://via.placeholder.com/100/4ECDC4/fff?text=🥦'">
+          <span class="label" style="background: #4ECDC4; color: #fff;">브로콜리</span>
+        </div>
+        <div class="floating-item" style="left: 50%; top: 15%; width: 70px; animation-delay: 1s;">
+          <img src="images/vege/lemon.png" alt="레몬" onerror="this.src='https://via.placeholder.com/70/FFE66D/333?text=🍋'">
+          <span class="label" style="background: #FFE66D; color: #333;">레몬</span>
+        </div>
+        <div class="floating-item" style="left: 70%; top: 35%; width: 90px; animation-delay: 1.5s;">
+          <img src="images/vege/avocado.png" alt="아보카도" onerror="this.src='https://via.placeholder.com/90/A8E6CF/333?text=🥑'">
+          <span class="label" style="background: #A8E6CF; color: #333;">아보카도</span>
+        </div>
+        <div class="floating-item" style="left: 85%; top: 20%; width: 75px; animation-delay: 2s;">
+          <img src="images/vege/carrot.png" alt="당근" onerror="this.src='https://via.placeholder.com/75/FF8C42/fff?text=🥕'">
+          <span class="label" style="background: #FF8C42; color: #fff;">당근</span>
+        </div>
+        <div class="floating-item" style="left: 15%; top: 65%; width: 85px; animation-delay: 2.5s;">
+          <img src="images/vege/mushroom.png" alt="버섯" onerror="this.src='https://via.placeholder.com/85/C9B99A/333?text=🍄'">
+          <span class="label" style="background: #C9B99A; color: #333;">버섯</span>
+        </div>
+        <div class="floating-item" style="left: 55%; top: 60%; width: 80px; animation-delay: 3s;">
+          <img src="images/vege/grape.png" alt="포도" onerror="this.src='https://via.placeholder.com/80/9B59B6/fff?text=🍇'">
+          <span class="label" style="background: #9B59B6; color: #fff;">포도</span>
+        </div>
+        <div class="floating-item" style="left: 80%; top: 55%; width: 70px; animation-delay: 3.5s;">
+          <img src="images/vege/orange.png" alt="오렌지" onerror="this.src='https://via.placeholder.com/70/F39C12/fff?text=🍊'">
+          <span class="label" style="background: #F39C12; color: #fff;">오렌지</span>
+        </div>
+      </div>
+
+      <!-- Spirit Finder 패널 -->
+      <div class="spirit-panel">
+        <div class="spirit-panel-content">
+          <div class="selected-veggies">
+            <div class="veggie-slot">
+              <img src="images/vege/tomato.png" alt="" onerror="this.src='https://via.placeholder.com/50/FF6B6B/fff?text=🍅'">
+            </div>
+            <div class="veggie-slot">
+              <img src="images/vege/broccoli.png" alt="" onerror="this.src='https://via.placeholder.com/50/4ECDC4/fff?text=🥦'">
+            </div>
+            <div class="veggie-slot">
+              <img src="images/vege/lemon.png" alt="" onerror="this.src='https://via.placeholder.com/50/FFE66D/333?text=🍋'">
+            </div>
+          </div>
+          <a href="about.html" class="spirit-btn">나의 슬로우 스피릿 찾기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLUNCH WEEKLY 섹션 -->
+    <section class="section" style="background: #fff; padding: 120px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <h2 class="section-title">Slunch Weekly</h2>
+          <p class="section-subtitle">하루 2끼, 균형 잡힌 식단을 문 앞까지</p>
+        </div>
+
+        <div class="weekly-grid">
+          <div class="weekly-card">
+            <img src="images/14meals.png" alt="주 14끼 식단" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400'">
+            <div class="weekly-card-content">
+              <h3 class="weekly-card-title">주 14끼 식단</h3>
+              <p class="weekly-card-desc">하루 2끼, 일주일치 완벽한 식단</p>
+            </div>
+          </div>
+          <div class="weekly-card">
+            <img src="images/dawn.png" alt="신선 새벽 배송" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400'">
+            <div class="weekly-card-content">
+              <h3 class="weekly-card-title">신선 새벽 배송</h3>
+              <p class="weekly-card-desc">매주 월요일 아침, 문 앞까지</p>
+            </div>
+          </div>
+          <div class="weekly-card">
+            <img src="images/balance.png" alt="영양 밸런스" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400'">
+            <div class="weekly-card-content">
+              <h3 class="weekly-card-title">영양 밸런스 완벽 설계</h3>
+              <p class="weekly-card-desc">전문가가 설계한 균형 잡힌 식단</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="menu.html" class="btn btn-secondary">메뉴 보러가기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 레시피 카드 섹션 -->
+    <section class="section" style="background: #FDFBF7; padding: 80px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <h2 class="section-title">누군가의 테이블에서 영감을</h2>
+          <p class="section-subtitle">슬런치 멤버들이 직접 만들고 공유하는 레시피</p>
+        </div>
+
+        <div class="card-grid">
+          <a href="menu.html" class="card">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="두부 스테이크" class="card-image">
+            <div class="card-content">
+              <span class="card-category">점심</span>
+              <h3 class="card-title">두부 스테이크</h3>
+              <p class="card-description">고단백 비건 메인 요리</p>
+            </div>
+          </a>
+          <a href="menu.html" class="card">
+            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400" alt="비건 파스타" class="card-image">
+            <div class="card-content">
+              <span class="card-category">데이트</span>
+              <h3 class="card-title">비건 파스타</h3>
+              <p class="card-description">토마토 베이스의 담백한 맛</p>
+            </div>
+          </a>
+          <a href="menu.html" class="card">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400" alt="아보카도 샐러드" class="card-image">
+            <div class="card-content">
+              <span class="card-category">점심</span>
+              <h3 class="card-title">아보카도 샐러드 볼</h3>
+              <p class="card-description">건강한 한 끼</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="menu.html" class="btn btn-outline">레시피 더보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">SLUNCH FACTORY</div>
+      <div class="footer-info">
+        <p>슬런치팩토리 주식회사 | 대표: 홍길동</p>
+        <p>사업자등록번호: 123-45-67890</p>
+        <p>서울특별시 강남구 테헤란로 123</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="menu.html" class="footer-link">Menu</a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 Slunch Factory. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

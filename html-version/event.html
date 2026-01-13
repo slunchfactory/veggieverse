@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="슬런치 팩토리 - 이벤트">
+  <title>Event - 슬런치 팩토리</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-container">
+      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
+      </a>
+      <div class="header-right">
+        <a href="mypage.html" class="cart-link">(0)</a>
+        <a href="mypage.html" class="user-btn">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="8" r="4"></circle>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- NAVIGATION DRAWER -->
+  <div class="nav-overlay" id="navOverlay"></div>
+  <nav class="nav-drawer" id="navDrawer">
+    <div class="nav-header">
+      <button class="nav-close" id="navClose">&times;</button>
+    </div>
+    <div class="nav-menu">
+      <a href="index.html" class="nav-item">Home</a>
+      <a href="about.html" class="nav-item">About</a>
+      <a href="recipe.html" class="nav-item">Recipe</a>
+      <a href="store.html" class="nav-item">Store</a>
+      <a href="event.html" class="nav-item active">Event</a>
+      <a href="newsletter.html" class="nav-item">Newsletter</a>
+      <a href="subscribe.html" class="nav-item">Subscribe</a>
+      <a href="spirit.html" class="nav-item">Spirit Finder</a>
+      <a href="mypage.html" class="nav-item">My Page</a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- 히어로 섹션 -->
+    <section class="event-hero">
+      <div class="page-container">
+        <h1 class="event-hero-title">이벤트</h1>
+        <p class="event-hero-desc">
+          슬런치 팩토리의 다양한 이벤트에 참여하세요.<br>
+          특별한 혜택과 경험이 여러분을 기다립니다.
+        </p>
+      </div>
+    </section>
+
+    <!-- 진행중인 이벤트 -->
+    <section class="section" style="background: #FDFBF7; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">NOW</span>
+          <h2 class="section-title">진행중인 이벤트</h2>
+        </div>
+
+        <div class="event-grid">
+          <a href="#" class="event-card featured">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=800" alt="신규 가입 이벤트">
+              <span class="event-badge">HOT</span>
+            </div>
+            <div class="event-content">
+              <span class="event-date">2024.01.01 - 2024.01.31</span>
+              <h3 class="event-title">신규 가입 웰컴 쿠폰</h3>
+              <p class="event-desc">지금 가입하시면 첫 주문 30% 할인 쿠폰을 드려요!</p>
+            </div>
+          </a>
+
+          <a href="#" class="event-card">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600" alt="레시피 챌린지">
+              <span class="event-badge">D-7</span>
+            </div>
+            <div class="event-content">
+              <span class="event-date">2024.01.15 - 2024.02.15</span>
+              <h3 class="event-title">나만의 비건 레시피 챌린지</h3>
+              <p class="event-desc">레시피를 공유하고 상품을 받아가세요.</p>
+            </div>
+          </a>
+
+          <a href="#" class="event-card">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=600" alt="구독 할인">
+            </div>
+            <div class="event-content">
+              <span class="event-date">2024.01.01 - 상시</span>
+              <h3 class="event-title">첫 구독 50% 할인</h3>
+              <p class="event-desc">정기구독 첫 달 반값에 시작하세요.</p>
+            </div>
+          </a>
+
+          <a href="#" class="event-card">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=600" alt="친구 초대">
+            </div>
+            <div class="event-content">
+              <span class="event-date">2024.01.01 - 상시</span>
+              <h3 class="event-title">친구 초대하고 적립금 받기</h3>
+              <p class="event-desc">친구도 나도 5,000원 적립금!</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 종료된 이벤트 -->
+    <section class="section" style="background: #fff; padding: 60px 20px;">
+      <div class="page-container">
+        <div class="section-header">
+          <span class="section-label">ENDED</span>
+          <h2 class="section-title">종료된 이벤트</h2>
+        </div>
+
+        <div class="event-grid ended">
+          <a href="#" class="event-card ended">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=600" alt="종료된 이벤트">
+              <div class="event-ended-overlay">종료</div>
+            </div>
+            <div class="event-content">
+              <span class="event-date">2023.12.01 - 2023.12.31</span>
+              <h3 class="event-title">연말 감사 이벤트</h3>
+              <p class="event-desc">한 해 동안 함께해주셔서 감사합니다.</p>
+            </div>
+          </a>
+
+          <a href="#" class="event-card ended">
+            <div class="event-image">
+              <img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=600" alt="종료된 이벤트">
+              <div class="event-ended-overlay">종료</div>
+            </div>
+            <div class="event-content">
+              <span class="event-date">2023.11.01 - 2023.11.30</span>
+              <h3 class="event-title">비건데이 특별 할인</h3>
+              <p class="event-desc">11월 한 달간 전 상품 20% 할인</p>
+            </div>
+          </a>
+        </div>
+
+        <div class="text-center mt-12">
+          <a href="#" class="btn btn-outline">이벤트 더보기</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">SLUNCH FACTORY</div>
+      <div class="footer-info">
+        <p>슬런치팩토리 주식회사 | 대표: 홍길동</p>
+        <p>사업자등록번호: 123-45-67890</p>
+        <p>서울특별시 강남구 테헤란로 123</p>
+      </div>
+      <div class="footer-links">
+        <a href="index.html" class="footer-link">Home</a>
+        <a href="about.html" class="footer-link">About</a>
+        <a href="recipe.html" class="footer-link">Recipe</a>
+        <a href="store.html" class="footer-link">Store</a>
+      </div>
+      <div class="footer-copyright">
+        <p>&copy; 2024 Slunch Factory. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+  <style>
+    /* Event Page Specific Styles */
+    .event-hero {
+      padding: 120px 20px 80px;
+      text-align: center;
+      background: linear-gradient(180deg, #DCFD4A 0%, #FDFBF7 100%);
+    }
+    .event-hero-title {
+      font-size: 40px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: #1a1a1a;
+    }
+    .event-hero-desc {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #666;
+    }
+    .section-label {
+      display: block;
+      font-size: 11px;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+    }
+    .event-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .event-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .event-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .event-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .event-card.featured {
+      grid-column: 1 / -1;
+    }
+    .event-card.featured .event-image {
+      aspect-ratio: 21/9;
+    }
+    .event-card.ended {
+      opacity: 0.6;
+    }
+    .event-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #f0f0f0;
+    }
+    .event-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .event-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #E53935;
+      color: #fff;
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 4px;
+    }
+    .event-ended-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+    }
+    .event-content {
+      padding: 20px;
+    }
+    .event-date {
+      font-size: 12px;
+      color: #999;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .event-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: #1a1a1a;
+      margin-bottom: 8px;
+    }
+    .event-desc {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.5;
+    }
+  </style>
+</body>
+</html>
