@@ -1,5 +1,6 @@
 {
   "name": "veggieverse",
+  "homepage": "https://slunchfactory.github.io/veggieverse",
   "private": true,
   "version": "0.0.0",
   "type": "module",
