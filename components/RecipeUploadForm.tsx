@@ -101,7 +101,7 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
         title: formData.title,
         ingredients: formData.ingredients.split('\n').filter(Boolean),
         description: formData.description,
-        image: formData.imagePreview || '/vege_flot_img/mushroom.png',
+        image: formData.imagePreview || '/veggieverse/vege_flot_img/mushroom.png',
         author: user.username,
         authorId: user.id,
         authorSpirit: user.spiritName,

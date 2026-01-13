@@ -79,60 +79,60 @@ const QUESTIONS = [
     id: 1,
     question: '당신의 식단 유형은?',
     options: [
-      { label: '만찬', description: '고기, 생선, 채소 가리지 않고 다양하게 즐겨요', value: 'none', tarot: { number: 'I', title: 'The Feast.', image: '/images/tarot/diet-type/feast.png' } },
-      { label: '정원', description: '동물성 식품 없이 식물성으로만 먹어요', value: 'vegan', tarot: { number: 'II', title: 'The Garden.', image: '/images/tarot/diet-type/garden.png' } },
-      { label: '바다', description: '육류는 안 먹지만 해산물은 먹어요', value: 'pescatarian', tarot: { number: 'III', title: 'The Ocean.', image: '/images/tarot/diet-type/ocean.png' } },
-      { label: '새벽', description: '육류는 안 먹지만 가금류는 먹어요', value: 'pollo', tarot: { number: 'IV', title: 'The Dawn.', image: '/images/tarot/diet-type/dawn.png' } },
-      { label: '균형', description: '평소엔 채식, 가끔은 유연하게 먹어요', value: 'flexitarian', tarot: { number: 'V', title: 'The Balance.', image: '/images/tarot/diet-type/balance.png' } },
+      { label: '만찬', description: '고기, 생선, 채소 가리지 않고 다양하게 즐겨요', value: 'none', tarot: { number: 'I', title: 'The Feast.', image: '/veggieverse/images/tarot/diet-type/feast.png' } },
+      { label: '정원', description: '동물성 식품 없이 식물성으로만 먹어요', value: 'vegan', tarot: { number: 'II', title: 'The Garden.', image: '/veggieverse/images/tarot/diet-type/garden.png' } },
+      { label: '바다', description: '육류는 안 먹지만 해산물은 먹어요', value: 'pescatarian', tarot: { number: 'III', title: 'The Ocean.', image: '/veggieverse/images/tarot/diet-type/ocean.png' } },
+      { label: '새벽', description: '육류는 안 먹지만 가금류는 먹어요', value: 'pollo', tarot: { number: 'IV', title: 'The Dawn.', image: '/veggieverse/images/tarot/diet-type/dawn.png' } },
+      { label: '균형', description: '평소엔 채식, 가끔은 유연하게 먹어요', value: 'flexitarian', tarot: { number: 'V', title: 'The Balance.', image: '/veggieverse/images/tarot/diet-type/balance.png' } },
     ]
   },
   {
     id: 2,
     question: '추가 옵션이 있나요?',
     options: [
-      { label: '곡물', description: '밀, 보리 등 글루텐을 피해요', value: 'gluten-free', tarot: { number: 'VI', title: 'The Grain.', image: '/images/tarot/diet-option/grain.png' } },
-      { label: '은하수', description: '우유, 치즈 등 유제품을 피해요', value: 'lactose-free', tarot: { number: 'VII', title: 'The Milkyway.', image: '/images/tarot/diet-option/milkyway.png' } },
-      { label: '없음', description: '추가 옵션 없이 진행해요', value: 'none', tarot: { number: '', title: '없음', image: '/images/tarot/card-back.png' } },
+      { label: '곡물', description: '밀, 보리 등 글루텐을 피해요', value: 'gluten-free', tarot: { number: 'VI', title: 'The Grain.', image: '/veggieverse/images/tarot/diet-option/grain.png' } },
+      { label: '은하수', description: '우유, 치즈 등 유제품을 피해요', value: 'lactose-free', tarot: { number: 'VII', title: 'The Milkyway.', image: '/veggieverse/images/tarot/diet-option/milkyway.png' } },
+      { label: '없음', description: '추가 옵션 없이 진행해요', value: 'none', tarot: { number: '', title: '없음', image: '/veggieverse/images/tarot/card-back.png' } },
     ]
   },
   {
     id: 3,
     question: '끌리는 요리 무드는?',
     options: [
-      { label: '전통', description: '오래 검증된 레시피, 익숙한 맛이 좋아요', value: 'traditional', tarot: { number: 'VIII', title: 'The Heritage.', image: '/images/tarot/food-mood/heritage.png' } },
-      { label: '연금술', description: '장르의 경계 없이 섞인 맛이 좋아요', value: 'fusion', tarot: { number: 'IX', title: 'The Alchemy.', image: '/images/tarot/food-mood/alchemy.png' } },
-      { label: '고요', description: '재료 본연의 맛, 심플한 구성이 좋아요', value: 'simple', tarot: { number: 'X', title: 'The Silence.', image: '/images/tarot/food-mood/silence.png' } },
-      { label: '장인', description: '섬세하고 정교한 스타일이 좋아요', value: 'gourmet', tarot: { number: 'XI', title: 'The Artisan.', image: '/images/tarot/food-mood/artisan.png' } },
+      { label: '전통', description: '오래 검증된 레시피, 익숙한 맛이 좋아요', value: 'traditional', tarot: { number: 'VIII', title: 'The Heritage.', image: '/veggieverse/images/tarot/food-mood/heritage.png' } },
+      { label: '연금술', description: '장르의 경계 없이 섞인 맛이 좋아요', value: 'fusion', tarot: { number: 'IX', title: 'The Alchemy.', image: '/veggieverse/images/tarot/food-mood/alchemy.png' } },
+      { label: '고요', description: '재료 본연의 맛, 심플한 구성이 좋아요', value: 'simple', tarot: { number: 'X', title: 'The Silence.', image: '/veggieverse/images/tarot/food-mood/silence.png' } },
+      { label: '장인', description: '섬세하고 정교한 스타일이 좋아요', value: 'gourmet', tarot: { number: 'XI', title: 'The Artisan.', image: '/veggieverse/images/tarot/food-mood/artisan.png' } },
     ]
   },
   {
     id: 4,
     question: '요리에서 가장 중요한 건?',
     options: [
-      { label: '저울', description: '탄단지, 영양소 균형이 맞아야 해요', value: 'nutrition', tarot: { number: 'XII', title: 'The Scale.', image: '/images/tarot/priority/scale.png' } },
-      { label: '혀', description: '뭐니뭐니해도 맛있어야 해요', value: 'taste', tarot: { number: 'XIII', title: 'The Tongue.', image: '/images/tarot/priority/tongue.png' } },
-      { label: '바람', description: '빠르고 간편하게 먹을 수 있어야 해요', value: 'convenience', tarot: { number: 'XIV', title: 'The Wind.', image: '/images/tarot/priority/wind.png' } },
-      { label: '나침반', description: '새로운 맛을 시도하고 싶어요', value: 'novelty', tarot: { number: 'XV', title: 'The Compass.', image: '/images/tarot/priority/compass.png' } },
+      { label: '저울', description: '탄단지, 영양소 균형이 맞아야 해요', value: 'nutrition', tarot: { number: 'XII', title: 'The Scale.', image: '/veggieverse/images/tarot/priority/scale.png' } },
+      { label: '혀', description: '뭐니뭐니해도 맛있어야 해요', value: 'taste', tarot: { number: 'XIII', title: 'The Tongue.', image: '/veggieverse/images/tarot/priority/tongue.png' } },
+      { label: '바람', description: '빠르고 간편하게 먹을 수 있어야 해요', value: 'convenience', tarot: { number: 'XIV', title: 'The Wind.', image: '/veggieverse/images/tarot/priority/wind.png' } },
+      { label: '나침반', description: '새로운 맛을 시도하고 싶어요', value: 'novelty', tarot: { number: 'XV', title: 'The Compass.', image: '/veggieverse/images/tarot/priority/compass.png' } },
     ]
   },
   {
     id: 5,
     question: '식사 시간, 어떤 의미예요?',
     options: [
-      { label: '원탁', description: '누군가와 함께 나누는 시간이에요', value: 'family', tarot: { number: 'XVI', title: 'The Table.', image: '/images/tarot/meal-meaning/table.png' } },
-      { label: '생명나무', description: '몸과 마음을 돌보는 시간이에요', value: 'health', tarot: { number: 'XVII', title: 'The Tree.', image: '/images/tarot/meal-meaning/tree.png' } },
-      { label: '모래시계', description: '빠르게 해결하고 다른 일에 집중해요', value: 'quick', tarot: { number: 'XVIII', title: 'The Hourglass.', image: '/images/tarot/meal-meaning/hourglass.png' } },
-      { label: '지도', description: '새로운 맛을 발견하는 탐험이에요', value: 'experience', tarot: { number: 'XIX', title: 'The Map.', image: '/images/tarot/meal-meaning/map.png' } },
+      { label: '원탁', description: '누군가와 함께 나누는 시간이에요', value: 'family', tarot: { number: 'XVI', title: 'The Table.', image: '/veggieverse/images/tarot/meal-meaning/table.png' } },
+      { label: '생명나무', description: '몸과 마음을 돌보는 시간이에요', value: 'health', tarot: { number: 'XVII', title: 'The Tree.', image: '/veggieverse/images/tarot/meal-meaning/tree.png' } },
+      { label: '모래시계', description: '빠르게 해결하고 다른 일에 집중해요', value: 'quick', tarot: { number: 'XVIII', title: 'The Hourglass.', image: '/veggieverse/images/tarot/meal-meaning/hourglass.png' } },
+      { label: '지도', description: '새로운 맛을 발견하는 탐험이에요', value: 'experience', tarot: { number: 'XIX', title: 'The Map.', image: '/veggieverse/images/tarot/meal-meaning/map.png' } },
     ]
   },
   {
     id: 6,
     question: '평소 식사 패턴은?',
     options: [
-      { label: '시계', description: '정해진 시간에 규칙적으로 먹어요', value: 'regular', tarot: { number: 'XX', title: 'The Clock.', image: '/images/tarot/meal-pattern/clock.png' } },
-      { label: '새', description: '배고플 때 자유롭게 먹어요', value: 'flexible', tarot: { number: 'XXI', title: 'The Bird.', image: '/images/tarot/meal-pattern/bird.png' } },
-      { label: '설계자', description: '일주일 식단을 미리 계획해요', value: 'planned', tarot: { number: 'XXII', title: 'The Architect.', image: '/images/tarot/meal-pattern/architect.png' } },
-      { label: '불꽃', description: '그때그때 끌리는 대로 정해요', value: 'spontaneous', tarot: { number: 'XXIII', title: 'The Spark.', image: '/images/tarot/meal-pattern/spark.png' } },
+      { label: '시계', description: '정해진 시간에 규칙적으로 먹어요', value: 'regular', tarot: { number: 'XX', title: 'The Clock.', image: '/veggieverse/images/tarot/meal-pattern/clock.png' } },
+      { label: '새', description: '배고플 때 자유롭게 먹어요', value: 'flexible', tarot: { number: 'XXI', title: 'The Bird.', image: '/veggieverse/images/tarot/meal-pattern/bird.png' } },
+      { label: '설계자', description: '일주일 식단을 미리 계획해요', value: 'planned', tarot: { number: 'XXII', title: 'The Architect.', image: '/veggieverse/images/tarot/meal-pattern/architect.png' } },
+      { label: '불꽃', description: '그때그때 끌리는 대로 정해요', value: 'spontaneous', tarot: { number: 'XXIII', title: 'The Spark.', image: '/veggieverse/images/tarot/meal-pattern/spark.png' } },
     ]
   },
   {
@@ -144,10 +144,10 @@ const QUESTIONS = [
       return dietAnswer && dietAnswer !== 'none'; // 일반 식단이 아닐 때만 표시
     },
     options: [
-      { label: '심장', description: '내 몸의 건강을 위해 선택했어요', value: 'health', tarot: { number: 'XXIV', title: 'The Heart.', image: '/images/tarot/veg-reason/heart.png' } },
-      { label: '대지', description: '환경과 지구를 위해 선택했어요', value: 'environment', tarot: { number: 'XXV', title: 'The Earth.', image: '/images/tarot/veg-reason/earth.png' } },
-      { label: '숨결', description: '동물의 생명을 위해 선택했어요', value: 'animal', tarot: { number: 'XXVI', title: 'The Breath.', image: '/images/tarot/veg-reason/breath.png' } },
-      { label: '문', description: '새로운 도전으로 시작했어요', value: 'curiosity', tarot: { number: 'XXVII', title: 'The Door.', image: '/images/tarot/veg-reason/door.png' } },
+      { label: '심장', description: '내 몸의 건강을 위해 선택했어요', value: 'health', tarot: { number: 'XXIV', title: 'The Heart.', image: '/veggieverse/images/tarot/veg-reason/heart.png' } },
+      { label: '대지', description: '환경과 지구를 위해 선택했어요', value: 'environment', tarot: { number: 'XXV', title: 'The Earth.', image: '/veggieverse/images/tarot/veg-reason/earth.png' } },
+      { label: '숨결', description: '동물의 생명을 위해 선택했어요', value: 'animal', tarot: { number: 'XXVI', title: 'The Breath.', image: '/veggieverse/images/tarot/veg-reason/breath.png' } },
+      { label: '문', description: '새로운 도전으로 시작했어요', value: 'curiosity', tarot: { number: 'XXVII', title: 'The Door.', image: '/veggieverse/images/tarot/veg-reason/door.png' } },
     ]
   },
 ];

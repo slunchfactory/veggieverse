@@ -55,7 +55,7 @@ const ARTICLES: Article[] = [
     subtitle: '번아웃을 겪고 나서야 깨달은 것들',
     author: 'Josin',
     date: '2024.12.10',
-    thumbnail: '/article-1.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400',
     quote: '요즘 나는 알람을 30분 늦춰놨다. 그 30분 동안 천장을 보며 멍하니 있는다.\n아무것도 안 하는 시간. 그게 하루 중 제일 좋다.',
     contentBeforeImages: (
       <>
@@ -68,8 +68,8 @@ const ARTICLES: Article[] = [
       </>
     ),
     images: {
-      large: '/newsletter/articles/image1.jpg',
-      small: ['/newsletter/articles/image2.jpg', '/newsletter/articles/image3.jpg'],
+      large: '/veggieverse/newsletter/articles/image1.jpg',
+      small: ['/veggieverse/newsletter/articles/image2.jpg', '/veggieverse/newsletter/articles/image3.jpg'],
     },
     contentAfterImages: (
       <>
@@ -106,7 +106,7 @@ const ARTICLES: Article[] = [
     subtitle: '초고령 사회를 앞둔 Z세대의 고민',
     author: 'Huna',
     date: '2024.12.05',
-    thumbnail: '/article-2.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400',
     quote: '2060년의 나에게 편지를 쓴다면 이렇게 쓸 것 같다.\n그때도 계속 배우고 있길. 그리고 아직도 할머니한테 전화하고 있길.',
     contentBeforeImages: (
       <>
@@ -119,8 +119,8 @@ const ARTICLES: Article[] = [
       </>
     ),
     images: {
-      large: '/newsletter/articles/image1.jpg',
-      small: ['/newsletter/articles/image2.jpg', '/newsletter/articles/image3.jpg'],
+      large: '/veggieverse/newsletter/articles/image1.jpg',
+      small: ['/veggieverse/newsletter/articles/image2.jpg', '/veggieverse/newsletter/articles/image3.jpg'],
     },
     contentAfterImages: (
       <>
@@ -146,7 +146,7 @@ const ARTICLES: Article[] = [
     subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유',
     author: 'ChaCha',
     date: '2024.11.28',
-    thumbnail: '/article-3.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400',
     quote: '냉장고를 열면 한 끼가 보인다는 말이 이제 조금 이해가 된다.\n거창한 요리를 할 필요 없다. 있는 재료로, 먹을 만큼만, 내 입맛대로. 그게 집밥이다.',
     contentBeforeImages: (
       <>
@@ -156,8 +156,8 @@ const ARTICLES: Article[] = [
       </>
     ),
     images: {
-      large: '/newsletter/articles/image1.jpg',
-      small: ['/newsletter/articles/image2.jpg', '/newsletter/articles/image3.jpg'],
+      large: '/veggieverse/newsletter/articles/image1.jpg',
+      small: ['/veggieverse/newsletter/articles/image2.jpg', '/veggieverse/newsletter/articles/image3.jpg'],
     },
     contentAfterImages: (
       <>
@@ -183,7 +183,7 @@ const ARTICLES: Article[] = [
     subtitle: '소개팅에서 영화 이야기 잘하는 법',
     author: 'Jin',
     date: '2024.11.20',
-    thumbnail: '/article-4.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1543362906-acfc16c67564?w=400',
     quote: '다음 소개팅에서는 이렇게 물어봐야겠다.\n\'최근 본 영화 중에 제일 웃겼던 장면이 뭐예요?\'',
     contentBeforeImages: (
       <>
@@ -193,8 +193,8 @@ const ARTICLES: Article[] = [
       </>
     ),
     images: {
-      large: '/newsletter/articles/image1.jpg',
-      small: ['/newsletter/articles/image2.jpg', '/newsletter/articles/image3.jpg'],
+      large: '/veggieverse/newsletter/articles/image1.jpg',
+      small: ['/veggieverse/newsletter/articles/image2.jpg', '/veggieverse/newsletter/articles/image3.jpg'],
     },
     contentAfterImages: (
       <>
@@ -220,7 +220,7 @@ const ARTICLES: Article[] = [
     subtitle: '3만원으로 완성하는 크리스마스 선물',
     author: 'Josin',
     date: '2024.11.15',
-    thumbnail: '/article-5.jpg',
+    thumbnail: 'https://images.unsplash.com/photo-1540914124281-342587941389?w=400',
     quote: '어제 편의점에 들렀다. 핫초코 스틱 3개, 마시멜로 한 봉지, 그리고 엽서 한 장.\n합계 7천원.',
     contentBeforeImages: (
       <>
@@ -230,8 +230,8 @@ const ARTICLES: Article[] = [
       </>
     ),
     images: {
-      large: '/newsletter/articles/image1.jpg',
-      small: ['/newsletter/articles/image2.jpg', '/newsletter/articles/image3.jpg'],
+      large: '/veggieverse/newsletter/articles/image1.jpg',
+      small: ['/veggieverse/newsletter/articles/image2.jpg', '/veggieverse/newsletter/articles/image3.jpg'],
     },
     contentAfterImages: (
       <>

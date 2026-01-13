@@ -838,6 +838,9 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                       minHeight: '44px',
                       minWidth: '120px',
                       cursor: 'pointer',
+                      position: 'relative',
+                      zIndex: 100,
+                      pointerEvents: 'auto',
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = '#6B3514';

@@ -63,7 +63,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           authorBadges: [{ id: 'spirit-bloomist', emoji: '🌻' }],
           content: '정말 맛있게 만들었어요! 레시피대로 따라했는데 완벽했어요. 가족들이 모두 좋아하시네요. 특히 양념이 정말 맛있었어요. 다음에도 또 만들어볼게요! ❤️',
           rating: 5,
-          image: '/vege_flot_img/tomato.png', // 임시 이미지
+          image: '/veggieverse/vege_flot_img/tomato.png', // 임시 이미지
           createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2일 전
         },
         {
@@ -74,7 +74,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           authorBadges: [{ id: 'spirit-groundtype', emoji: '🥦' }],
           content: '레시피가 정말 자세해서 초보자인 저도 쉽게 만들 수 있었어요. 재료도 간단하고 만들기도 편해서 자주 만들어 먹고 있어요. 강력 추천합니다! ✨',
           rating: 5,
-          image: '/vege_flot_img/carrot.png', // 임시 이미지
+          image: '/veggieverse/vege_flot_img/carrot.png', // 임시 이미지
           createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5일 전
         },
         {
@@ -85,7 +85,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           authorBadges: [{ id: 'spirit-mindgrower', emoji: '🌿' }],
           content: '처음 만들어봤는데 생각보다 어렵지 않았어요. 다만 조금 더 간을 맞춰서 만들면 좋을 것 같아요. 전체적으로는 만족스러워요! 🐰',
           rating: 4,
-          image: '/vege_flot_img/pepper.png', // 임시 이미지
+          image: '/veggieverse/vege_flot_img/pepper.png', // 임시 이미지
           createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(), // 7일 전
         },
       ];

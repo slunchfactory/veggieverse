@@ -213,7 +213,7 @@ const ingredientIconMap: Record<string, string> = {
 
 // 기본 이미지 (매칭되지 않을 때)
 const DEFAULT_ICON = 'lettuce.png';
-const BASE_PATH = '/vege_flot_img';
+const BASE_PATH = '/veggieverse/vege_flot_img';
 
 /**
  * 재료 이름을 기반으로 적절한 아이콘 경로를 반환합니다.

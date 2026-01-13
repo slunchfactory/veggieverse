@@ -107,7 +107,7 @@ const RecipeDetailPage: React.FC = () => {
   // 기본 작성자 정보 (실제로는 레시피 데이터에서 가져와야 함)
   const author = {
     name: recipe.author || '비건셰프',
-    avatar: '/vege_flot_img/avocado.png',
+    avatar: '/veggieverse/vege_flot_img/avocado.png',
     date: '2025년 12월 8일',
   };
   

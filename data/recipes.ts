@@ -168,8 +168,8 @@ export const getDetailedRecipe = (id: number | string): Recipe | null => {
       title: '크리미 버섯 리조또',
       subtitle: '트러플 오일과 파마산 치즈를 곁들인',
       description: '부드럽고 크리미한 이 버섯 리조또는 당신의 저녁 식탁을 풍요롭게 만들어줄 거예요.',
-      image: '/vege_flot_img/mushroom.png',
-      heroImage: '/vege_flot_img/mushroom.png',
+      image: '/veggieverse/vege_flot_img/mushroom.png',
+      heroImage: '/veggieverse/vege_flot_img/mushroom.png',
       author: '비건셰프',
       likes: 1847,
       tags: ['고단백', '지중해식', '식이섬유', '간편조리', '원팟요리'],
@@ -250,10 +250,10 @@ export const getDetailedRecipe = (id: number | string): Recipe | null => {
         protein: 14,
       },
       relatedRecipes: [
-        { id: 2, title: '아스파라거스 리조또', description: '봄의 향기를 담은', image: '/vege_flot_img/asparagus.png' },
-        { id: 3, title: '레몬 허브 리조또', description: '상큼한 지중해 스타일', image: '/vege_flot_img/lemon.png' },
-        { id: 4, title: '토마토 바질 리조또', description: '이탈리안 클래식', image: '/vege_flot_img/tomato.png' },
-        { id: 5, title: '호박 리조또', description: '달콤하고 고소한', image: '/vege_flot_img/sweet potato.png' },
+        { id: 2, title: '아스파라거스 리조또', description: '봄의 향기를 담은', image: '/veggieverse/vege_flot_img/asparagus.png' },
+        { id: 3, title: '레몬 허브 리조또', description: '상큼한 지중해 스타일', image: '/veggieverse/vege_flot_img/lemon.png' },
+        { id: 4, title: '토마토 바질 리조또', description: '이탈리안 클래식', image: '/veggieverse/vege_flot_img/tomato.png' },
+        { id: 5, title: '호박 리조또', description: '달콤하고 고소한', image: '/veggieverse/vege_flot_img/sweet potato.png' },
       ],
     };
   }
