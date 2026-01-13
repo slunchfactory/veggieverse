@@ -1366,10 +1366,10 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           {/* 4열 그리드 */}
           <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '24px' }}>
             {[
-              { id: 1, category: 'Health', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', author: 'Josin', date: '2024.12.10' },
-              { id: 2, category: 'Culture', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', author: 'Huna', date: '2024.12.05' },
-              { id: 3, category: 'Food', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', author: 'ChaCha', date: '2024.11.28' },
-              { id: 4, category: 'Life', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', author: 'Jin', date: '2024.11.20' },
+              { id: 1, category: 'Health', title: '멈춰야 보이는 것들', subtitle: '번아웃을 겪고 나서야 깨달은 것들', author: 'Josin', date: '2024.12.10', thumbnail: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80' },
+              { id: 2, category: 'Culture', title: '2060년, 나는 마흔이 된다', subtitle: '초고령 사회를 앞둔 Z세대의 고민', author: 'Huna', date: '2024.12.05', thumbnail: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=600&q=80' },
+              { id: 3, category: 'Food', title: '냉장고를 열면 한 끼가 보인다', subtitle: '배달 앱 골드 등급이 집밥을 시작한 이유', author: 'ChaCha', date: '2024.11.28', thumbnail: 'https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80' },
+              { id: 4, category: 'Life', title: '"그 영화 재밌어" 다음에 할 말', subtitle: '소개팅에서 영화 이야기 잘하는 법', author: 'Jin', date: '2024.11.20', thumbnail: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80' },
             ].map((article) => (
               <Link key={article.id} to="/newsletter" className="cursor-pointer group">
                 {/* 이미지 - 4:3 비율 */}
@@ -1377,7 +1377,11 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                   className="relative w-full overflow-hidden"
                   style={{ aspectRatio: '4/3', backgroundColor: '#E5E5E0', borderRadius: '4px', marginBottom: '16px' }}
                 >
-                  {/* 플레이스홀더 */}
+                  <img
+                    src={article.thumbnail}
+                    alt={article.title}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                 </div>
                 {/* 카테고리 - 대문자 */}
                 <p
@@ -1475,12 +1479,13 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           이미지 영역
           ============================================ */}
       <section className="w-full" style={{ backgroundColor: '#000000', paddingTop: '0', paddingBottom: '0' }}>
-        <div 
-          style={{ 
+        <img
+          src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=1920&q=80"
+          alt="건강한 식탁"
+          style={{
             width: '100%',
             height: '980px',
-            backgroundColor: '#D7D7D7',
-            borderRadius: '0'
+            objectFit: 'cover',
           }}
         />
       </section>
