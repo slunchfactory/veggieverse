@@ -921,7 +921,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             className="grid-cols-1 md:grid-cols-2"
           >
             {/* 좌측: 14끼 식단 + 신선 새벽배송 스택 */}
-            <div 
+            <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -930,130 +930,166 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               }}
             >
               {/* 영역 1: 주 14끼 식단 */}
-              <div 
+              <div
                 className="bg-white flex flex-col"
                 style={{
                   border: '1px solid #eee',
                   borderRadius: '12px',
-                  padding: '24px',
+                  overflow: 'hidden',
                   flex: '1 1 0',
+                  position: 'relative',
                 }}
               >
-                <h3 
-                  className="text-stone-900 mb-2"
-                  style={{ 
-                    fontSize: '20px',
-                    fontWeight: 500,
-                    letterSpacing: '-0.01em'
-                  }}
-                >
-                  주 14끼 식단
-                </h3>
-                <p 
-                  className="text-stone-600 mb-4"
-                  style={{ 
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    lineHeight: '1.6'
-                  }}
-                >
-                  하루 2끼, 일주일치 완벽한 식단
-                </p>
-                <div 
-                  className="mx-auto"
-                  style={{ 
-                    width: '60%',
-                    aspectRatio: '1 / 1',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #FFE5E5 0%, #FFB3D9 100%)',
-                    marginTop: 'auto'
+                <img
+                  src={`${import.meta.env.BASE_URL}14meals.png`}
+                  alt="주 14끼 식단"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
                   }}
                 />
+                {/* 텍스트 오버레이 */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '24px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                  }}
+                >
+                  <h3
+                    className="text-stone-900 mb-2"
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 500,
+                      letterSpacing: '-0.01em'
+                    }}
+                  >
+                    주 14끼 식단
+                  </h3>
+                  <p
+                    className="text-stone-600"
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      lineHeight: '1.6'
+                    }}
+                  >
+                    하루 2끼, 일주일치 완벽한 식단
+                  </p>
+                </div>
               </div>
-              
+
               {/* 영역 2: 신선 새벽 배송 */}
-              <div 
+              <div
                 className="bg-white flex flex-col"
                 style={{
                   border: '1px solid #eee',
                   borderRadius: '12px',
-                  padding: '24px',
+                  overflow: 'hidden',
                   flex: '1 1 0',
+                  position: 'relative',
                 }}
               >
-                <h3 
-                  className="text-stone-900 mb-2"
-                  style={{ 
-                    fontSize: '20px',
-                    fontWeight: 500,
-                    letterSpacing: '-0.01em'
-                  }}
-                >
-                  신선 새벽 배송
-                </h3>
-                <p 
-                  className="text-stone-600 mb-4"
-                  style={{ 
-                    fontSize: '14px',
-                    fontWeight: 400,
-                    lineHeight: '1.6'
-                  }}
-                >
-                  매주 월요일 아침, 문 앞까지 신선하게
-                </p>
-                <div 
-                  className="mx-auto"
-                  style={{ 
-                    width: '60%',
-                    aspectRatio: '1 / 1',
-                    borderRadius: '12px',
-                    background: 'linear-gradient(135deg, #C8E6C9 0%, #1B5E20 100%)',
-                    marginTop: 'auto'
+                <img
+                  src={`${import.meta.env.BASE_URL}dawn.png`}
+                  alt="신선 새벽 배송"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
                   }}
                 />
+                {/* 텍스트 오버레이 */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: '24px',
+                    background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                  }}
+                >
+                  <h3
+                    className="text-stone-900 mb-2"
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 500,
+                      letterSpacing: '-0.01em'
+                    }}
+                  >
+                    신선 새벽 배송
+                  </h3>
+                  <p
+                    className="text-stone-600"
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: 400,
+                      lineHeight: '1.6'
+                    }}
+                  >
+                    매주 월요일 아침, 문 앞까지 신선하게
+                  </p>
+                </div>
               </div>
             </div>
-            
+
             {/* 영역 3: 영양 밸런스 완벽 설계 */}
-            <div 
+            <div
               className="bg-white flex flex-col"
               style={{
                 border: '1px solid #eee',
                 borderRadius: '12px',
-                padding: '24px',
+                overflow: 'hidden',
                 height: '100%',
+                position: 'relative',
               }}
             >
-              <h3 
-                className="text-stone-900 mb-2"
-                style={{ 
-                  fontSize: '20px',
-                  fontWeight: 500,
-                  letterSpacing: '-0.01em'
-                }}
-              >
-                영양 밸런스 완벽 설계
-              </h3>
-              <p 
-                className="text-stone-600 mb-4"
-                style={{ 
-                  fontSize: '14px',
-                  fontWeight: 400,
-                  lineHeight: '1.6'
-                }}
-              >
-                전문가와 AI가 설계한 균형 잡힌 식단
-              </p>
-              <div 
-                className="mx-auto"
-                style={{ 
-                  width: '60%',
-                  aspectRatio: '1 / 1',
-                  borderRadius: '12px',
-                  background: 'linear-gradient(135deg, #E1BEE7 0%, #9C27B0 50%, #4CAF50 100%)',
-                  marginTop: 'auto'
+              <img
+                src={`${import.meta.env.BASE_URL}balance.png`}
+                alt="영양 밸런스 완벽 설계"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
                 }}
               />
+              {/* 텍스트 오버레이 */}
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  padding: '24px',
+                  background: 'linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.8) 60%, transparent 100%)',
+                }}
+              >
+                <h3
+                  className="text-stone-900 mb-2"
+                  style={{
+                    fontSize: '20px',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em'
+                  }}
+                >
+                  영양 밸런스 완벽 설계
+                </h3>
+                <p
+                  className="text-stone-600"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: 400,
+                    lineHeight: '1.6'
+                  }}
+                >
+                  전문가와 AI가 설계한 균형 잡힌 식단
+                </p>
+              </div>
             </div>
           </div>
           
