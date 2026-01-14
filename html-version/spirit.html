@@ -1,316 +1,386 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기">
-  <title>Spirit Finder - 슬런치 팩토리</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-container">
-      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
-        </svg>
-      </button>
-      <a href="index.html" class="logo">
-        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
-      </a>
-      <div class="header-right">
-        <a href="index.html" class="skip-btn">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
+    <title>Spirit Finder - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index.css">
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root {
+        --header-h: 64px;
+        --cream: #F7F4EF;
+      }
+      body {
+        overflow: hidden;
+      }
+      .spirit-container {
+        position: relative;
+        height: calc(100vh - var(--header-h));
+        width: 100%;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      .floating-item {
+        position: absolute;
+        cursor: pointer;
+        transition: transform 0.3s;
+        touch-action: none;
+      }
+      .floating-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+      .floating-item:hover {
+        transform: scale(1.05);
+      }
+      .floating-item.selected img {
+        opacity: 0;
+      }
+      .floating-item .silhouette {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .floating-item.selected .silhouette {
+        opacity: 1;
+      }
+      .floating-item .label {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+      }
+      .floating-item:hover .label {
+        opacity: 1;
+      }
+      .selection-bar {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: var(--cream);
+        border: 1px solid #000;
+        padding: 12px 24px;
+        z-index: 100;
+      }
+      .slot {
+        width: 56px;
+        height: 56px;
+        border: 1px dashed #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        position: relative;
+      }
+      .slot.filled {
+        border-style: solid;
+        background: #F7F4EF;
+      }
+      .slot .remove-btn {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 20px;
+        height: 20px;
+        background: #000;
+        border: 1px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+      }
+      .slot .remove-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: white;
+      }
+      .close-btn {
+        position: fixed;
+        right: 16px;
+        top: calc(var(--header-h) + 16px);
+        z-index: 90;
+        padding: 8px;
+        background: var(--cream);
+        border: 1px solid #000;
+        cursor: pointer;
+      }
+      .bottom-gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1) 100%);
+        pointer-events: none;
+        z-index: 5;
+      }
+      /* 플로팅 애니메이션 */
+      @keyframes float-drift {
+        0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        25% { transform: translate3d(20px, -30px, 0) rotate(5deg); }
+        50% { transform: translate3d(-10px, -50px, 0) rotate(0deg); }
+        75% { transform: translate3d(-20px, -20px, 0) rotate(-5deg); }
+      }
+      .float-anim {
+        animation: float-drift 20s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body style="background: #D7D7D7;">
+    <!-- HEADER -->
+    <header style="height: var(--header-h); z-index: 50; background-color: #DCFD4A; position: fixed; top: 0; left: 0; right: 0;">
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; max-width: 1440px; margin: 0 auto; position: relative;">
+        <a href="index.html" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
           </svg>
         </a>
+        <a href="index.html" style="position: absolute; left: 50%; transform: translateX(-50%); z-index: 51;">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY" style="height: 36px; display: block; object-fit: contain;">
+        </a>
+        <div style="width: 40px;"></div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <!-- NAVIGATION DRAWER -->
-  <div class="nav-overlay" id="navOverlay"></div>
-  <nav class="nav-drawer" id="navDrawer">
-    <div class="nav-header">
-      <button class="nav-close" id="navClose">&times;</button>
-    </div>
-    <div class="nav-menu">
-      <a href="index.html" class="nav-item">Home</a>
-      <a href="about.html" class="nav-item">About</a>
-      <a href="recipe.html" class="nav-item">Recipe</a>
-      <a href="store.html" class="nav-item">Store</a>
-      <a href="event.html" class="nav-item">Event</a>
-      <a href="newsletter.html" class="nav-item">Newsletter</a>
-      <a href="subscribe.html" class="nav-item">Subscribe</a>
-      <a href="spirit.html" class="nav-item active">Spirit Finder</a>
-      <a href="mypage.html" class="nav-item">My Page</a>
-    </div>
-  </nav>
+    <!-- X 버튼 (스킵) -->
+    <a href="index.html" class="close-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </a>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content spirit-main">
-    <!-- 플로팅 야채 영역 -->
-    <section class="spirit-floating-area">
-      <div class="spirit-intro-text">
-        <h1>마음에 드는 야채 3개를 선택하세요</h1>
-        <p>선택한 야채로 당신의 비건 스피릿을 알아볼게요</p>
-      </div>
+    <!-- MAIN CONTAINER -->
+    <div class="spirit-container" style="margin-top: var(--header-h);">
+      <!-- 하단 그라데이션 -->
+      <div class="bottom-gradient"></div>
 
       <!-- 플로팅 야채들 -->
-      <div class="spirit-veggies">
-        <div class="spirit-veggie" data-name="토마토" data-color="#FF6B6B" style="left: 12%; top: 25%;">
-          <img src="https://via.placeholder.com/100/FF6B6B/fff?text=🍅" alt="토마토">
-        </div>
-        <div class="spirit-veggie" data-name="브로콜리" data-color="#4ECDC4" style="left: 28%; top: 55%;">
-          <img src="https://via.placeholder.com/110/4ECDC4/fff?text=🥦" alt="브로콜리">
-        </div>
-        <div class="spirit-veggie" data-name="레몬" data-color="#FFE66D" style="left: 45%; top: 20%;">
-          <img src="https://via.placeholder.com/90/FFE66D/333?text=🍋" alt="레몬">
-        </div>
-        <div class="spirit-veggie" data-name="아보카도" data-color="#A8E6CF" style="left: 62%; top: 45%;">
-          <img src="https://via.placeholder.com/105/A8E6CF/333?text=🥑" alt="아보카도">
-        </div>
-        <div class="spirit-veggie" data-name="당근" data-color="#FF8C42" style="left: 78%; top: 22%;">
-          <img src="https://via.placeholder.com/95/FF8C42/fff?text=🥕" alt="당근">
-        </div>
-        <div class="spirit-veggie" data-name="버섯" data-color="#C9B99A" style="left: 18%; top: 75%;">
-          <img src="https://via.placeholder.com/100/C9B99A/333?text=🍄" alt="버섯">
-        </div>
-        <div class="spirit-veggie" data-name="포도" data-color="#9B59B6" style="left: 52%; top: 70%;">
-          <img src="https://via.placeholder.com/95/9B59B6/fff?text=🍇" alt="포도">
-        </div>
-        <div class="spirit-veggie" data-name="오렌지" data-color="#F39C12" style="left: 75%; top: 65%;">
-          <img src="https://via.placeholder.com/90/F39C12/fff?text=🍊" alt="오렌지">
-        </div>
-        <div class="spirit-veggie" data-name="가지" data-color="#8E44AD" style="left: 35%; top: 35%;">
-          <img src="https://via.placeholder.com/100/8E44AD/fff?text=🍆" alt="가지">
-        </div>
-        <div class="spirit-veggie" data-name="옥수수" data-color="#F1C40F" style="left: 88%; top: 45%;">
-          <img src="https://via.placeholder.com/95/F1C40F/333?text=🌽" alt="옥수수">
-        </div>
+      <div id="veggieContainer">
+        <!-- JavaScript로 생성 -->
       </div>
 
       <!-- 하단 선택 바 -->
-      <div class="spirit-selection-bar">
-        <div class="selected-slots">
-          <div class="slot" id="slot1"><span>1</span></div>
-          <div class="slot" id="slot2"><span>2</span></div>
-          <div class="slot" id="slot3"><span>3</span></div>
+      <div class="selection-bar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="slot0" class="slot" data-index="0"><span style="color: #6B6B6B; font-size: 12px;">1</span></div>
+          <div id="slot1" class="slot" data-index="1"><span style="color: #6B6B6B; font-size: 12px;">2</span></div>
+          <div id="slot2" class="slot" data-index="2"><span style="color: #6B6B6B; font-size: 12px;">3</span></div>
         </div>
-        <div class="bar-divider"></div>
-        <a href="spirit-question-diet.html" class="start-btn disabled" id="startBtn">
+        <div style="width: 1px; height: 32px; background: #000;"></div>
+        <button id="startBtn" disabled style="
+          padding: 10px 20px;
+          font-size: 14px;
+          font-weight: 400;
+          background: transparent;
+          color: #6B6B6B;
+          border: 1px solid #000;
+          cursor: not-allowed;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        ">
           시작하기
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"></polyline>
+            <path d="M6 9l6 6 6-6"/>
           </svg>
-        </a>
+        </button>
       </div>
-    </section>
-  </main>
+    </div>
 
-  <script src="script.js"></script>
-  <script>
-    // Spirit Finder 야채 선택 기능
-    document.addEventListener('DOMContentLoaded', function() {
-      const veggies = document.querySelectorAll('.spirit-veggie');
-      const slots = [
-        document.getElementById('slot1'),
-        document.getElementById('slot2'),
-        document.getElementById('slot3')
+    <script>
+      // 야채 데이터
+      const PRODUCE_ITEMS = [
+        { name: "Asparagus", image: "../public/vege_flot_img/asparagus.png", color: "#7CB342" },
+        { name: "Avocado", image: "../public/vege_flot_img/avocado.png", color: "#558B2F" },
+        { name: "Blueberry", image: "../public/vege_flot_img/blueberry.png", color: "#5C6BC0" },
+        { name: "Broccoli", image: "../public/vege_flot_img/broccoli.png", color: "#2E7D32" },
+        { name: "Carrot", image: "../public/vege_flot_img/carrot.png", color: "#EF6C00" },
+        { name: "Coconut", image: "../public/vege_flot_img/coconut.png", color: "#8D6E63" },
+        { name: "Corn", image: "../public/vege_flot_img/corn.png", color: "#FBC02D" },
+        { name: "Dill", image: "../public/vege_flot_img/dill.png", color: "#66BB6A" },
+        { name: "Fig", image: "../public/vege_flot_img/fig.png", color: "#6A1B9A" },
+        { name: "Grape", image: "../public/vege_flot_img/grape.png", color: "#7B1FA2" },
+        { name: "Kiwi", image: "../public/vege_flot_img/kiwi.png", color: "#8BC34A" },
+        { name: "Lemon", image: "../public/vege_flot_img/lemon.png", color: "#FFEB3B" },
+        { name: "Lettuce", image: "../public/vege_flot_img/lettuce.png", color: "#81C784" },
+        { name: "Lychee", image: "../public/vege_flot_img/lychee.png", color: "#F48FB1" },
+        { name: "Mango", image: "../public/vege_flot_img/mango.png", color: "#FFB300" },
+        { name: "Mushroom", image: "../public/vege_flot_img/mushroom.png", color: "#A1887F" },
+        { name: "Olive", image: "../public/vege_flot_img/olive.png", color: "#827717" },
+        { name: "Orange", image: "../public/vege_flot_img/orange.png", color: "#FF9800" },
+        { name: "Peanut", image: "../public/vege_flot_img/peanut.png", color: "#D7CCC8" },
+        { name: "Pineapple", image: "../public/vege_flot_img/pineapple.png", color: "#FDD835" },
+        { name: "Pistachio", image: "../public/vege_flot_img/pistachio.png", color: "#AED581" },
+        { name: "Raspberry", image: "../public/vege_flot_img/raspberry.png", color: "#E91E63" },
+        { name: "Tomato", image: "../public/vege_flot_img/tomato.png", color: "#E53935" },
+        { name: "Watermelon", image: "../public/vege_flot_img/watermelon.png", color: "#EF5350" },
       ];
+
+      let selectedItems = [];
+      const container = document.getElementById('veggieContainer');
       const startBtn = document.getElementById('startBtn');
-      let selectedCount = 0;
-      let selectedVeggies = [];
 
-      veggies.forEach(veggie => {
-        veggie.addEventListener('click', function() {
-          const name = this.dataset.name;
-          const color = this.dataset.color;
-          const imgSrc = this.querySelector('img').src;
+      // 밝은 색상 판별
+      function isLightColor(hex) {
+        const r = parseInt(hex.slice(1,3), 16);
+        const g = parseInt(hex.slice(3,5), 16);
+        const b = parseInt(hex.slice(5,7), 16);
+        return (0.299*r + 0.587*g + 0.114*b) / 255 > 0.6;
+      }
 
-          if (this.classList.contains('selected')) {
-            // 선택 해제
-            this.classList.remove('selected');
-            const idx = selectedVeggies.findIndex(v => v.name === name);
-            if (idx > -1) {
-              selectedVeggies.splice(idx, 1);
-              selectedCount--;
-            }
-          } else if (selectedCount < 3) {
-            // 선택
-            this.classList.add('selected');
-            selectedVeggies.push({ name, color, imgSrc });
-            selectedCount++;
-          }
+      // 야채 요소 생성
+      function createVeggies() {
+        const containerWidth = window.innerWidth;
+        const containerHeight = window.innerHeight - 64; // header height
 
-          // 슬롯 업데이트
-          updateSlots();
-          updateStartButton();
-        });
-      });
+        PRODUCE_ITEMS.forEach((item, index) => {
+          const size = 80 + Math.random() * 80;
+          const x = Math.random() * (containerWidth - size);
+          const y = Math.random() * (containerHeight - 200);
+          const animDelay = -Math.random() * 20;
 
-      function updateSlots() {
-        slots.forEach((slot, idx) => {
-          if (selectedVeggies[idx]) {
-            slot.innerHTML = `<img src="${selectedVeggies[idx].imgSrc}" alt="${selectedVeggies[idx].name}" style="width: 40px; height: 40px; object-fit: contain;">`;
-            slot.classList.add('filled');
-          } else {
-            slot.innerHTML = `<span>${idx + 1}</span>`;
-            slot.classList.remove('filled');
-          }
+          const el = document.createElement('div');
+          el.className = 'floating-item float-anim';
+          el.dataset.name = item.name;
+          el.dataset.color = item.color;
+          el.dataset.image = item.image;
+          el.style.cssText = `
+            left: ${x}px;
+            top: ${y}px;
+            width: ${size}px;
+            height: ${size}px;
+            animation-delay: ${animDelay}s;
+            animation-duration: ${15 + Math.random() * 10}s;
+            z-index: ${10 + index};
+          `;
+
+          el.innerHTML = `
+            <div class="silhouette" style="
+              background-color: ${item.color};
+              -webkit-mask-image: url('${item.image}');
+              -webkit-mask-size: contain;
+              -webkit-mask-repeat: no-repeat;
+              -webkit-mask-position: center;
+              mask-image: url('${item.image}');
+              mask-size: contain;
+              mask-repeat: no-repeat;
+              mask-position: center;
+            "></div>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="label">
+              <span style="
+                font-size: 13px;
+                font-weight: 600;
+                background: ${item.color}dd;
+                color: ${isLightColor(item.color) ? '#000' : '#fff'};
+                padding: 8px 20px;
+                border-radius: 9999px;
+                backdrop-filter: blur(4px);
+                border: 1px solid rgba(255,255,255,0.35);
+              ">${item.name}</span>
+            </div>
+          `;
+
+          el.addEventListener('click', () => toggleSelect(el, item));
+          container.appendChild(el);
         });
       }
 
-      function updateStartButton() {
-        if (selectedCount === 3) {
-          startBtn.classList.remove('disabled');
-        } else {
-          startBtn.classList.add('disabled');
+      // 선택 토글
+      function toggleSelect(el, item) {
+        const isSelected = el.classList.contains('selected');
+
+        if (isSelected) {
+          el.classList.remove('selected');
+          selectedItems = selectedItems.filter(i => i.name !== item.name);
+        } else if (selectedItems.length < 3) {
+          el.classList.add('selected');
+          selectedItems.push({ ...item, element: el });
+        }
+
+        updateSlots();
+        updateButton();
+      }
+
+      // 슬롯 업데이트
+      function updateSlots() {
+        for (let i = 0; i < 3; i++) {
+          const slot = document.getElementById('slot' + i);
+          const item = selectedItems[i];
+
+          if (item) {
+            slot.className = 'slot filled';
+            slot.innerHTML = `
+              <img src="${item.image}" alt="${item.name}" style="width: 40px; height: 40px; object-fit: contain;">
+              <div class="remove-btn" onclick="removeSelection(${i}); event.stopPropagation();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </div>
+            `;
+          } else {
+            slot.className = 'slot';
+            slot.innerHTML = `<span style="color: #6B6B6B; font-size: 12px;">${i + 1}</span>`;
+          }
         }
       }
-    });
-  </script>
 
-  <style>
-    /* Spirit Page Specific Styles */
-    .spirit-main {
-      background: #fff;
-      min-height: calc(100vh - 64px);
-      position: relative;
-      overflow: hidden;
-    }
-    .spirit-floating-area {
-      position: relative;
-      height: calc(100vh - 64px);
-      width: 100%;
-    }
-    .spirit-intro-text {
-      position: absolute;
-      top: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      z-index: 10;
-    }
-    .spirit-intro-text h1 {
-      font-size: 24px;
-      font-weight: 400;
-      color: #1a1a1a;
-      margin-bottom: 8px;
-    }
-    .spirit-intro-text p {
-      font-size: 14px;
-      color: #666;
-    }
-    .spirit-veggies {
-      position: absolute;
-      inset: 0;
-      top: 120px;
-      bottom: 120px;
-    }
-    .spirit-veggie {
-      position: absolute;
-      cursor: pointer;
-      transition: transform 0.3s, opacity 0.3s;
-      animation: float 4s ease-in-out infinite;
-    }
-    .spirit-veggie:nth-child(odd) {
-      animation-delay: -2s;
-    }
-    .spirit-veggie img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      border-radius: 50%;
-    }
-    @media (min-width: 768px) {
-      .spirit-veggie img {
-        width: 100px;
-        height: 100px;
+      // 선택 해제
+      window.removeSelection = function(index) {
+        if (selectedItems[index]) {
+          selectedItems[index].element.classList.remove('selected');
+          selectedItems.splice(index, 1);
+          updateSlots();
+          updateButton();
+        }
+      };
+
+      // 버튼 상태 업데이트
+      function updateButton() {
+        if (selectedItems.length === 3) {
+          startBtn.disabled = false;
+          startBtn.style.background = '#000';
+          startBtn.style.color = '#fff';
+          startBtn.style.cursor = 'pointer';
+        } else {
+          startBtn.disabled = true;
+          startBtn.style.background = 'transparent';
+          startBtn.style.color = '#6B6B6B';
+          startBtn.style.cursor = 'not-allowed';
+        }
       }
-    }
-    .spirit-veggie:hover {
-      transform: scale(1.1);
-    }
-    .spirit-veggie.selected {
-      opacity: 0.5;
-      transform: scale(0.9);
-    }
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
-    .spirit-selection-bar {
-      position: fixed;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: #FDFBF7;
-      border: 1px solid #000;
-      padding: 12px 24px;
-      z-index: 100;
-    }
-    .selected-slots {
-      display: flex;
-      gap: 12px;
-    }
-    .slot {
-      width: 56px;
-      height: 56px;
-      border: 1px dashed #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: transparent;
-    }
-    .slot.filled {
-      border-style: solid;
-      background: #F7F4EF;
-    }
-    .slot span {
-      color: #6B6B6B;
-      font-size: 12px;
-    }
-    .bar-divider {
-      width: 1px;
-      height: 32px;
-      background: #000;
-    }
-    .start-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 400;
-      background: #000;
-      color: #fff;
-      border: 1px solid #000;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .start-btn.disabled {
-      background: transparent;
-      color: #6B6B6B;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-    .skip-btn {
-      padding: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  </style>
-</body>
+
+      // 시작하기 버튼 클릭
+      startBtn.addEventListener('click', () => {
+        if (selectedItems.length === 3) {
+          // 선택 데이터 저장
+          localStorage.setItem('spirit-finder-selected-items', JSON.stringify(
+            selectedItems.map(i => ({ name: i.name, image: i.image, color: i.color }))
+          ));
+          // 질문 페이지로 이동
+          window.location.href = 'spirit-question.html';
+        }
+      });
+
+      // 초기화
+      createVeggies();
+    </script>
+  </body>
 </html>

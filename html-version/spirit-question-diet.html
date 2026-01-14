@@ -1,58 +1,274 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spirit Finder - Diet | 슬런치 팩토리</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="spirit-question.css">
-</head>
-<body>
-  <header class="header">
-    <div class="header-container">
-      <a href="spirit.html" class="back-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </a>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 14.28%;"></div>
-      </div>
-      <a href="index.html" class="close-btn">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </a>
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
+    <title>Spirit Finder - 질문 1 - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index.css">
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root {
+        --lime: #DCFD4A;
+        --brown: #8C451D;
+      }
+      body {
+        background: #B2B2B2;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      .question-container {
+        min-height: 100vh;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .content-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        padding: 24px 8px;
+      }
+      .question-area {
+        position: sticky;
+        top: 16px;
+        z-index: 10;
+        background: #B2B2B2;
+        padding: 16px 0;
+        margin-bottom: 40px;
+      }
+      .question-header {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+      }
+      .back-btn {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--brown);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--lime);
+      }
+      .back-btn:focus { outline: none; }
+      .question-text {
+        font-size: 16px;
+        font-weight: 400;
+        color: #44403c;
+        text-align: center;
+        padding: 0 40px;
+      }
+      @media (min-width: 768px) {
+        .question-text { font-size: 20px; }
+      }
+      .progress-line {
+        width: 100%;
+        height: 1px;
+        background: #000;
+        margin-top: 16px;
+      }
+      .progress-fill {
+        height: 4px;
+        background: #000;
+        transition: width 0.3s ease;
+        margin-top: 0;
+      }
+      .mobile-scroll {
+        display: flex;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 0 12px 16px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        width: calc(100% + 32px);
+        margin-left: -16px;
+        cursor: grab;
+      }
+      .mobile-scroll:active { cursor: grabbing; }
+      .mobile-scroll::-webkit-scrollbar { display: none; }
+      .mobile-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+      .desktop-grid {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+      }
+      .desktop-row {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+      }
+      @media (min-width: 768px) {
+        .mobile-scroll { display: none !important; }
+        .desktop-grid { display: flex !important; }
+      }
+      .card-wrapper {
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        scroll-snap-align: center;
+        cursor: pointer;
+      }
+      .tarot-card {
+        width: 130px;
+        height: 208px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #E5E5E5;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+      @media (min-width: 768px) {
+        .tarot-card { width: 192px; height: 307px; }
+      }
+      .tarot-card:hover {
+        transform: translateY(-8px) scale(1.02);
+      }
+      .tarot-card.selected {
+        border-color: var(--lime);
+        transform: translateY(-8px) scale(1.02);
+      }
+      .tarot-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        pointer-events: none;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .card-label {
+        margin-top: 8px;
+        text-align: center;
+        width: 130px;
+      }
+      @media (min-width: 768px) {
+        .card-label { width: 192px; margin-top: 12px; }
+      }
+      .card-label .name {
+        font-size: 12px;
+        font-weight: 700;
+        color: #44403c;
+      }
+      @media (min-width: 768px) {
+        .card-label .name { font-size: 16px; }
+      }
+      .card-label .desc {
+        font-size: 12px;
+        color: #78716c;
+        margin-top: 4px;
+        line-height: 1.3;
+      }
+      @media (min-width: 768px) {
+        .card-label .desc {
+          font-size: 14px;
+          opacity: 0;
+          transition: opacity 0.2s;
+          height: 38px;
+        }
+        .card-wrapper:hover .card-label .desc { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="question-container">
+      <div class="content-wrapper">
+        <div class="question-area">
+          <div class="question-header">
+            <button class="back-btn" onclick="goBack()" aria-label="이전">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <h1 class="question-text">당신의 식단 유형은?</h1>
+          </div>
+          <div class="progress-line"></div>
+          <div class="progress-fill" style="width: 16.6%;"></div>
+        </div>
 
-  <main class="question-main">
-    <div class="question-container">
-      <span class="question-step">1 / 7</span>
-      <h1 class="question-title">평소 식사 스타일은 어떤가요?</h1>
+        <!-- 모바일 -->
+        <div class="mobile-scroll">
+          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('none')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-type/feast.png" alt="The Feast"></div>
+            <div class="card-label"><div class="name">만찬</div><div class="desc">고기, 생선, 채소 가리지 않고 다양하게 즐겨요</div></div>
+          </div>
+          <div class="card-wrapper" onclick="selectOption('vegan')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-type/garden.png" alt="The Garden"></div>
+            <div class="card-label"><div class="name">정원</div><div class="desc">동물성 식품 없이 식물성으로만 먹어요</div></div>
+          </div>
+          <div class="card-wrapper" onclick="selectOption('pescatarian')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-type/ocean.png" alt="The Ocean"></div>
+            <div class="card-label"><div class="name">바다</div><div class="desc">육류는 안 먹지만 해산물은 먹어요</div></div>
+          </div>
+          <div class="card-wrapper" onclick="selectOption('pollo')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-type/dawn.png" alt="The Dawn"></div>
+            <div class="card-label"><div class="name">새벽</div><div class="desc">육류는 안 먹지만 가금류는 먹어요</div></div>
+          </div>
+          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('flexitarian')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-type/balance.png" alt="The Balance"></div>
+            <div class="card-label"><div class="name">균형</div><div class="desc">평소엔 채식, 가끔은 유연하게 먹어요</div></div>
+          </div>
+        </div>
 
-      <div class="options-grid">
-        <a href="spirit-question-option.html" class="option-card">
-          <span class="option-emoji">🥗</span>
-          <span class="option-text">건강하게 먹으려고 노력해요</span>
-        </a>
-        <a href="spirit-question-option.html" class="option-card">
-          <span class="option-emoji">🍕</span>
-          <span class="option-text">맛있으면 장땡이에요</span>
-        </a>
-        <a href="spirit-question-option.html" class="option-card">
-          <span class="option-emoji">⏰</span>
-          <span class="option-text">시간 없어서 대충 먹어요</span>
-        </a>
-        <a href="spirit-question-option.html" class="option-card">
-          <span class="option-emoji">🌱</span>
-          <span class="option-text">채식 위주로 먹고 있어요</span>
-        </a>
+        <!-- 데스크탑 -->
+        <div class="desktop-grid">
+          <div class="desktop-row">
+            <div class="card-wrapper" onclick="selectOption('none')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-type/feast.png" alt="The Feast"></div>
+              <div class="card-label"><div class="name">만찬</div><div class="desc">고기, 생선, 채소 가리지 않고 다양하게 즐겨요</div></div>
+            </div>
+            <div class="card-wrapper" onclick="selectOption('vegan')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-type/garden.png" alt="The Garden"></div>
+              <div class="card-label"><div class="name">정원</div><div class="desc">동물성 식품 없이 식물성으로만 먹어요</div></div>
+            </div>
+          </div>
+          <div class="desktop-row">
+            <div class="card-wrapper" onclick="selectOption('pescatarian')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-type/ocean.png" alt="The Ocean"></div>
+              <div class="card-label"><div class="name">바다</div><div class="desc">육류는 안 먹지만 해산물은 먹어요</div></div>
+            </div>
+            <div class="card-wrapper" onclick="selectOption('pollo')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-type/dawn.png" alt="The Dawn"></div>
+              <div class="card-label"><div class="name">새벽</div><div class="desc">육류는 안 먹지만 가금류는 먹어요</div></div>
+            </div>
+            <div class="card-wrapper" onclick="selectOption('flexitarian')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-type/balance.png" alt="The Balance"></div>
+              <div class="card-label"><div class="name">균형</div><div class="desc">평소엔 채식, 가끔은 유연하게 먹어요</div></div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </main>
-</body>
+    </main>
+
+    <script>
+      function goBack() {
+        window.location.href = 'index.html';
+      }
+
+      function selectOption(value) {
+        // 답변 저장
+        let answers = JSON.parse(localStorage.getItem('spirit-finder-answers') || '{}');
+        answers[1] = value;
+        localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
+
+        // 다음 질문으로 이동
+        setTimeout(() => {
+          window.location.href = 'spirit-question-option.html';
+        }, 300);
+      }
+    </script>
+  </body>
 </html>

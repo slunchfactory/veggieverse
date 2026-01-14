@@ -1,218 +1,831 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="슬런치 팩토리 - 비건 푸드 플랫폼">
-  <title>VeggieVerse - 슬런치 팩토리</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <!-- HEADER -->
-  <header class="header">
-    <div class="header-container">
-      <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <line x1="3" y1="12" x2="21" y2="12"></line>
-          <line x1="3" y1="18" x2="21" y2="18"></line>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리의 비건 푸드 플랫폼. 건강한 식단, 레시피, 뉴스레터를 만나보세요." />
+    <meta name="keywords" content="비건, 채식, 슬런치, 레시피, 건강식단" />
+    <meta property="og:title" content="VeggieVerse - 슬런치 팩토리" />
+    <meta property="og:description" content="슬런치 팩토리의 비건 푸드 플랫폼" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Pixelify+Sans:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
+    <title>VeggieVerse - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../index.css">
+    <style>
+      :root {
+        --promo-h: 32px;
+        --header-h: 64px;
+      }
+      /* 플로팅 야채 애니메이션 - 각각 다른 경로 */
+      @keyframes float-1 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(60px, -40px); } 40% { transform: translate(-30px, -80px); } 60% { transform: translate(80px, -30px); } 80% { transform: translate(-40px, 20px); } }
+      @keyframes float-2 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-50px, 30px); } 40% { transform: translate(40px, -50px); } 60% { transform: translate(-60px, 40px); } 80% { transform: translate(30px, -20px); } }
+      @keyframes float-3 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(40px, 50px); } 40% { transform: translate(-60px, -30px); } 60% { transform: translate(30px, -60px); } 80% { transform: translate(-20px, 40px); } }
+      @keyframes float-4 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-40px, -50px); } 40% { transform: translate(70px, 30px); } 60% { transform: translate(-30px, 60px); } 80% { transform: translate(50px, -40px); } }
+      @keyframes float-5 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(50px, 40px); } 40% { transform: translate(-40px, 60px); } 60% { transform: translate(60px, -40px); } 80% { transform: translate(-50px, -30px); } }
+      @keyframes float-6 { 0%, 100% { transform: translate(0, 0); } 20% { transform: translate(-70px, 20px); } 40% { transform: translate(50px, -70px); } 60% { transform: translate(-40px, 50px); } 80% { transform: translate(60px, 30px); } }
+      .float-anim-1 { animation: float-1 12s ease-in-out infinite; }
+      .float-anim-2 { animation: float-2 14s ease-in-out infinite; animation-delay: -2s; }
+      .float-anim-3 { animation: float-3 11s ease-in-out infinite; animation-delay: -4s; }
+      .float-anim-4 { animation: float-4 13s ease-in-out infinite; animation-delay: -1s; }
+      .float-anim-5 { animation: float-5 15s ease-in-out infinite; animation-delay: -3s; }
+      .float-anim-6 { animation: float-6 16s ease-in-out infinite; animation-delay: -5s; }
+      .floating-veggie {
+        cursor: pointer;
+        transition: transform 0.3s;
+        position: absolute;
+      }
+      .floating-veggie:hover { transform: scale(1.1) !important; }
+      .floating-veggie.selected { opacity: 0.5; }
+      /* 무한 롤링 */
+      @keyframes scrollLeft { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+      .infinite-scroll-track { display: flex; gap: 12px; animation: scrollLeft 60s linear infinite; width: fit-content; }
+      .infinite-scroll-track:hover { animation-play-state: paused; }
+      /* 선택 슬롯 */
+      .selection-slot {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .selection-slot .remove-btn {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        width: 20px;
+        height: 20px;
+        background: rgba(0,0,0,0.6);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+      }
+      .selection-slot .remove-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: white;
+      }
+    </style>
+  </head>
+  <body style="background: #D7D7D7;">
+    <!-- TOP BANNER (프로모션 배너) -->
+    <div id="topBanner" style="
+      width: 100%;
+      height: var(--promo-h);
+      background-color: #8B4513;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 60;
+    ">
+      <a href="#" style="
+        font-size: 13px;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+        color: #DCFD4A;
+        text-decoration: none;
+      ">
+        🎁 슬런치가 처음이신 고객님은 지금 가입하고 할인쿠폰 받아가세요!
+      </a>
+      <button onclick="closeBanner()" style="
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      " aria-label="배너 닫기">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DCFD4A" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <a href="index.html" class="logo">
-        <img src="images/logo.png" alt="SLUNCH FACTORY" onerror="this.parentElement.innerHTML='SLUNCH'">
-      </a>
-      <div class="header-right">
-        <a href="mypage.html" class="cart-link">(0)</a>
-        <a href="mypage.html" class="user-btn">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-            <circle cx="12" cy="8" r="4"></circle>
-            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+    </div>
+
+    <!-- HEADER -->
+    <header style="height: var(--header-h); z-index: 50; background-color: #DCFD4A; position: relative;">
+      <div style="display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; max-width: 1440px; margin: 0 auto; position: relative;">
+        <button onclick="openDrawer()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0;" aria-label="메뉴 열기">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
+        </button>
+        <a href="index.html" style="position: absolute; left: 50%; transform: translateX(-50%); z-index: 51;">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY" style="height: 36px; display: block; object-fit: contain;">
         </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- NAVIGATION DRAWER -->
-  <div class="nav-overlay" id="navOverlay"></div>
-  <nav class="nav-drawer" id="navDrawer">
-    <div class="nav-header">
-      <button class="nav-close" id="navClose">&times;</button>
-    </div>
-    <div class="nav-menu">
-      <a href="index.html" class="nav-item active">Home</a>
-      <a href="about.html" class="nav-item">About</a>
-      <a href="recipe.html" class="nav-item">Recipe</a>
-      <a href="store.html" class="nav-item">Store</a>
-      <a href="event.html" class="nav-item">Event</a>
-      <a href="newsletter.html" class="nav-item">Newsletter</a>
-      <a href="subscribe.html" class="nav-item">Subscribe</a>
-      <a href="spirit.html" class="nav-item">Spirit Finder</a>
-      <a href="mypage.html" class="nav-item">My Page</a>
-    </div>
-  </nav>
-
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <!-- HERO: 플로팅 야채 섹션 -->
-    <section class="hero-floating">
-      <div class="floating-area">
-        <div class="floating-item" style="left: 10%; top: 20%; width: 80px; animation-delay: 0s;">
-          <img src="images/vege/tomato.png" alt="토마토" onerror="this.src='https://via.placeholder.com/80/FF6B6B/fff?text=🍅'">
-          <span class="label" style="background: #FF6B6B; color: #fff;">토마토</span>
-        </div>
-        <div class="floating-item" style="left: 25%; top: 45%; width: 100px; animation-delay: 0.5s;">
-          <img src="images/vege/broccoli.png" alt="브로콜리" onerror="this.src='https://via.placeholder.com/100/4ECDC4/fff?text=🥦'">
-          <span class="label" style="background: #4ECDC4; color: #fff;">브로콜리</span>
-        </div>
-        <div class="floating-item" style="left: 50%; top: 15%; width: 70px; animation-delay: 1s;">
-          <img src="images/vege/lemon.png" alt="레몬" onerror="this.src='https://via.placeholder.com/70/FFE66D/333?text=🍋'">
-          <span class="label" style="background: #FFE66D; color: #333;">레몬</span>
-        </div>
-        <div class="floating-item" style="left: 70%; top: 35%; width: 90px; animation-delay: 1.5s;">
-          <img src="images/vege/avocado.png" alt="아보카도" onerror="this.src='https://via.placeholder.com/90/A8E6CF/333?text=🥑'">
-          <span class="label" style="background: #A8E6CF; color: #333;">아보카도</span>
-        </div>
-        <div class="floating-item" style="left: 85%; top: 20%; width: 75px; animation-delay: 2s;">
-          <img src="images/vege/carrot.png" alt="당근" onerror="this.src='https://via.placeholder.com/75/FF8C42/fff?text=🥕'">
-          <span class="label" style="background: #FF8C42; color: #fff;">당근</span>
-        </div>
-        <div class="floating-item" style="left: 15%; top: 65%; width: 85px; animation-delay: 2.5s;">
-          <img src="images/vege/mushroom.png" alt="버섯" onerror="this.src='https://via.placeholder.com/85/C9B99A/333?text=🍄'">
-          <span class="label" style="background: #C9B99A; color: #333;">버섯</span>
-        </div>
-        <div class="floating-item" style="left: 55%; top: 60%; width: 80px; animation-delay: 3s;">
-          <img src="images/vege/grape.png" alt="포도" onerror="this.src='https://via.placeholder.com/80/9B59B6/fff?text=🍇'">
-          <span class="label" style="background: #9B59B6; color: #fff;">포도</span>
-        </div>
-        <div class="floating-item" style="left: 80%; top: 55%; width: 70px; animation-delay: 3.5s;">
-          <img src="images/vege/orange.png" alt="오렌지" onerror="this.src='https://via.placeholder.com/70/F39C12/fff?text=🍊'">
-          <span class="label" style="background: #F39C12; color: #fff;">오렌지</span>
-        </div>
-      </div>
-
-      <!-- Spirit Finder 패널 -->
-      <div class="spirit-panel">
-        <div class="spirit-panel-content">
-          <div class="selected-veggies">
-            <div class="veggie-slot">
-              <img src="images/vege/tomato.png" alt="" onerror="this.src='https://via.placeholder.com/50/FF6B6B/fff?text=🍅'">
-            </div>
-            <div class="veggie-slot">
-              <img src="images/vege/broccoli.png" alt="" onerror="this.src='https://via.placeholder.com/50/4ECDC4/fff?text=🥦'">
-            </div>
-            <div class="veggie-slot">
-              <img src="images/vege/lemon.png" alt="" onerror="this.src='https://via.placeholder.com/50/FFE66D/333?text=🍋'">
-            </div>
-          </div>
-          <a href="spirit.html" class="spirit-btn">나의 슬로우 스피릿 찾기</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- SLUNCH WEEKLY 섹션 -->
-    <section class="section" style="background: #fff; padding: 120px 20px;">
-      <div class="page-container">
-        <div class="section-header">
-          <h2 class="section-title">Slunch Weekly</h2>
-          <p class="section-subtitle">하루 2끼, 균형 잡힌 식단을 문 앞까지</p>
-        </div>
-
-        <div class="weekly-grid">
-          <div class="weekly-card">
-            <img src="images/14meals.png" alt="주 14끼 식단" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400'">
-            <div class="weekly-card-content">
-              <h3 class="weekly-card-title">주 14끼 식단</h3>
-              <p class="weekly-card-desc">하루 2끼, 일주일치 완벽한 식단</p>
-            </div>
-          </div>
-          <div class="weekly-card">
-            <img src="images/dawn.png" alt="신선 새벽 배송" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400'">
-            <div class="weekly-card-content">
-              <h3 class="weekly-card-title">신선 새벽 배송</h3>
-              <p class="weekly-card-desc">매주 월요일 아침, 문 앞까지</p>
-            </div>
-          </div>
-          <div class="weekly-card">
-            <img src="images/balance.png" alt="영양 밸런스" class="weekly-card-image" onerror="this.src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400'">
-            <div class="weekly-card-content">
-              <h3 class="weekly-card-title">영양 밸런스 완벽 설계</h3>
-              <p class="weekly-card-desc">전문가가 설계한 균형 잡힌 식단</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-center mt-12">
-          <a href="subscribe.html" class="btn btn-secondary">슬런치 위클리 보러가기</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- 레시피 카드 섹션 -->
-    <section class="section" style="background: #FDFBF7; padding: 80px 20px;">
-      <div class="page-container">
-        <div class="section-header">
-          <h2 class="section-title">누군가의 테이블에서 영감을</h2>
-          <p class="section-subtitle">슬런치 멤버들이 직접 만들고 공유하는 레시피</p>
-        </div>
-
-        <div class="card-grid">
-          <a href="recipe.html" class="card">
-            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400" alt="두부 스테이크" class="card-image">
-            <div class="card-content">
-              <span class="card-category">점심</span>
-              <h3 class="card-title">두부 스테이크</h3>
-              <p class="card-description">고단백 비건 메인 요리</p>
-            </div>
-          </a>
-          <a href="recipe.html" class="card">
-            <img src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?w=400" alt="비건 파스타" class="card-image">
-            <div class="card-content">
-              <span class="card-category">데이트</span>
-              <h3 class="card-title">비건 파스타</h3>
-              <p class="card-description">토마토 베이스의 담백한 맛</p>
-            </div>
-          </a>
-          <a href="recipe.html" class="card">
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400" alt="아보카도 샐러드" class="card-image">
-            <div class="card-content">
-              <span class="card-category">점심</span>
-              <h3 class="card-title">아보카도 샐러드 볼</h3>
-              <p class="card-description">건강한 한 끼</p>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <a href="#" style="height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 4px; font-size: 14px; font-weight: 400; color: #000; text-decoration: none;">(0)</a>
+          <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E5E5; display: flex; align-items: center; justify-content: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+              </svg>
             </div>
           </a>
         </div>
+      </div>
+    </header>
 
-        <div class="text-center mt-12">
-          <a href="recipe.html" class="btn btn-outline">레시피 더보기</a>
+    <!-- NAVIGATION DRAWER -->
+    <div id="navOverlay" onclick="closeDrawer()" style="display: none; position: fixed; inset: 0; z-index: 100;"></div>
+    <nav id="navDrawer" style="position: fixed; top: 0; left: 0; bottom: 0; width: 80vw; max-width: 400px; background: #FFFFFF; transform: translateX(-100%); transition: transform 0.3s ease-out; display: flex; flex-direction: column; overflow-y: auto; border-right: 1px solid #000; z-index: 101;">
+      <div style="height: var(--header-h); display: flex; align-items: center; justify-content: flex-start; padding: 0 16px; border-bottom: 1px solid #000; flex-shrink: 0;">
+        <button onclick="closeDrawer()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div style="flex: 1;">
+        <a href="about.html" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">About</span></a>
+        <a href="menu.html" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">Store</span></a>
+        <a href="#" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">Subscription</span></a>
+        <a href="#" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">Recipe</span></a>
+        <a href="#" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">Newsletter</span></a>
+        <a href="#" style="display: flex; align-items: center; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;"><span style="font-size: 18px; font-weight: 400; color: #333;">Event</span></a>
+      </div>
+      <div style="padding: 24px; border-top: 1px solid #000; margin-top: auto;">
+        <button style="font-size: 15px; font-weight: 400; color: #000; background: none; border: none; cursor: pointer; text-align: left; padding: 0; margin-bottom: 16px; display: block;">Search</button>
+        <button style="font-size: 15px; font-weight: 400; color: #000; background: none; border: none; cursor: pointer; text-align: left; padding: 0; display: block;">Login / Sign Up</button>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main style="min-height: 100vh; width: 100%; background-color: #ffffff;">
+
+      <!-- ============================================
+           HERO SECTION - 나의 슬로우 스피릿 찾기
+           ============================================ -->
+      <section
+        id="heroSection"
+        style="
+          min-height: calc(100vh - 96px);
+          background-image: url('../public/images/bg.png');
+          background-size: cover;
+          background-position: center top;
+          background-repeat: no-repeat;
+          position: relative;
+          overflow: hidden;
+          padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 60px) 0;
+          display: flex;
+          flex-direction: column;
+        "
+      >
+        <!-- 플로팅 야채 영역 -->
+        <div id="veggieContainer" style="flex: 1; position: relative; min-height: 400px;">
+          <!-- Asparagus -->
+          <div class="floating-veggie float-anim-1" data-name="Asparagus" data-color="#7CB342" style="left: 5%; top: 25%; width: 80px; height: 80px;">
+            <img src="../public/vege_flot_img/asparagus.png" alt="Asparagus" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Avocado -->
+          <div class="floating-veggie float-anim-2" data-name="Avocado" data-color="#558B2F" style="left: 75%; top: 55%; width: 120px; height: 120px;">
+            <img src="../public/vege_flot_img/avocado.png" alt="Avocado" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Blueberry -->
+          <div class="floating-veggie float-anim-3" data-name="Blueberry" data-color="#5C6BC0" style="left: 88%; top: 30%; width: 70px; height: 70px;">
+            <img src="../public/vege_flot_img/blueberry.png" alt="Blueberry" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Broccoli -->
+          <div class="floating-veggie float-anim-4" data-name="Broccoli" data-color="#2E7D32" style="left: 30%; top: 40%; width: 110px; height: 110px;">
+            <img src="../public/vege_flot_img/broccoli.png" alt="Broccoli" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Carrot -->
+          <div class="floating-veggie float-anim-5" data-name="Carrot" data-color="#EF6C00" style="left: 55%; top: 50%; width: 90px; height: 90px;">
+            <img src="../public/vege_flot_img/carrot.png" alt="Carrot" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Coconut -->
+          <div class="floating-veggie float-anim-6" data-name="Coconut" data-color="#8D6E63" style="left: 20%; top: 55%; width: 100px; height: 100px;">
+            <img src="../public/vege_flot_img/coconut.png" alt="Coconut" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Corn -->
+          <div class="floating-veggie float-anim-1" data-name="Corn" data-color="#FBC02D" style="left: 82%; top: 15%; width: 85px; height: 85px;">
+            <img src="../public/vege_flot_img/corn.png" alt="Corn" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Dill -->
+          <div class="floating-veggie float-anim-2" data-name="Dill" data-color="#66BB6A" style="left: 12%; top: 15%; width: 95px; height: 95px;">
+            <img src="../public/vege_flot_img/dill.png" alt="Dill" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Fig -->
+          <div class="floating-veggie float-anim-3" data-name="Fig" data-color="#6A1B9A" style="left: 65%; top: 25%; width: 100px; height: 100px;">
+            <img src="../public/vege_flot_img/fig.png" alt="Fig" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Grape -->
+          <div class="floating-veggie float-anim-4" data-name="Grape" data-color="#7B1FA2" style="left: 78%; top: 45%; width: 80px; height: 80px;">
+            <img src="../public/vege_flot_img/grape.png" alt="Grape" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Kiwi -->
+          <div class="floating-veggie float-anim-5" data-name="Kiwi" data-color="#8BC34A" style="left: 42%; top: 35%; width: 90px; height: 90px;">
+            <img src="../public/vege_flot_img/kiwi.png" alt="Kiwi" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Lemon -->
+          <div class="floating-veggie float-anim-6" data-name="Lemon" data-color="#FFEB3B" style="left: 50%; top: 12%; width: 110px; height: 110px;">
+            <img src="../public/vege_flot_img/lemon.png" alt="Lemon" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Lettuce -->
+          <div class="floating-veggie float-anim-1" data-name="Lettuce" data-color="#81C784" style="left: 25%; top: 65%; width: 105px; height: 105px;">
+            <img src="../public/vege_flot_img/lettuce.png" alt="Lettuce" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Lychee -->
+          <div class="floating-veggie float-anim-2" data-name="Lychee" data-color="#F48FB1" style="left: 8%; top: 45%; width: 75px; height: 75px;">
+            <img src="../public/vege_flot_img/lychee.png" alt="Lychee" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Mango -->
+          <div class="floating-veggie float-anim-3" data-name="Mango" data-color="#FFB300" style="left: 85%; top: 65%; width: 95px; height: 95px;">
+            <img src="../public/vege_flot_img/mango.png" alt="Mango" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Mushroom -->
+          <div class="floating-veggie float-anim-4" data-name="Mushroom" data-color="#A1887F" style="left: 3%; top: 35%; width: 100px; height: 100px;">
+            <img src="../public/vege_flot_img/mushroom.png" alt="Mushroom" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Olive -->
+          <div class="floating-veggie float-anim-5" data-name="Olive" data-color="#827717" style="left: 18%; top: 8%; width: 70px; height: 70px;">
+            <img src="../public/vege_flot_img/olive.png" alt="Olive" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Orange -->
+          <div class="floating-veggie float-anim-6" data-name="Orange" data-color="#FF9800" style="left: 70%; top: 10%; width: 100px; height: 100px;">
+            <img src="../public/vege_flot_img/orange.png" alt="Orange" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Peanut -->
+          <div class="floating-veggie float-anim-1" data-name="Peanut" data-color="#D7CCC8" style="left: 38%; top: 18%; width: 85px; height: 85px;">
+            <img src="../public/vege_flot_img/peanut.png" alt="Peanut" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Pineapple -->
+          <div class="floating-veggie float-anim-2" data-name="Pineapple" data-color="#FDD835" style="left: 28%; top: 22%; width: 90px; height: 90px;">
+            <img src="../public/vege_flot_img/pineapple.png" alt="Pineapple" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Pistachio -->
+          <div class="floating-veggie float-anim-3" data-name="Pistachio" data-color="#AED581" style="left: 60%; top: 40%; width: 80px; height: 80px;">
+            <img src="../public/vege_flot_img/pistachio.png" alt="Pistachio" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Raspberry -->
+          <div class="floating-veggie float-anim-4" data-name="Raspberry" data-color="#E91E63" style="left: 72%; top: 35%; width: 75px; height: 75px;">
+            <img src="../public/vege_flot_img/raspberry.png" alt="Raspberry" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Tomato -->
+          <div class="floating-veggie float-anim-5" data-name="Tomato" data-color="#E53935" style="left: 45%; top: 58%; width: 105px; height: 105px;">
+            <img src="../public/vege_flot_img/tomato.png" alt="Tomato" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+          <!-- Watermelon -->
+          <div class="floating-veggie float-anim-6" data-name="Watermelon" data-color="#EF5350" style="left: 58%; top: 68%; width: 90px; height: 90px;">
+            <img src="../public/vege_flot_img/watermelon.png" alt="Watermelon" style="width: 100%; height: 100%; object-fit: contain;">
+          </div>
+        </div>
+
+        <!-- 서브헤드라인 -->
+        <p style="
+          margin-bottom: 16px;
+          z-index: 30;
+          position: relative;
+          text-align: center;
+          font-size: clamp(16px, 2vw, 20px);
+          font-weight: 700;
+          line-height: 1.6;
+          letter-spacing: -0.01em;
+          max-width: 700px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 0 40px;
+          color: #DCFD4A;
+        ">
+          "뭐 먹지?" 고민은 내려놓고, 나에게 맞는 한 끼를 발견하세요.<br>끌리는 재료 3 가지만 고르면, 당신의 취향에 꼭 맞는 테이블이 완성됩니다.
+        </p>
+
+        <!-- 본문 -->
+        <p style="
+          color: #78716c;
+          margin-bottom: 32px;
+          z-index: 30;
+          position: relative;
+          text-align: center;
+          font-size: 16px;
+          font-weight: 400;
+          line-height: 1.8;
+          letter-spacing: -0.01em;
+          max-width: 800px;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 0 40px;
+        ">
+          슬런치는 맛있는 한 끼가 거창할 필요 없다고 믿습니다. 바쁜 하루 속에서도 나를 위한 시간, 천천히 음미하는 식사. 우리는 당신의 취향과 라이프스타일에 맞춰 매일의 식탁을 설계합니다. 건강을 위해 맛을 포기하거나, 맛을 위해 건강을 타협하지 않아도 됩니다. 그냥 맛있게 먹었을 뿐인데, 몸도 마음도 가벼워지는 경험. 슬런치가 그 테이블을 열어드릴게요.
+        </p>
+
+        <!-- 하단 마름모 박스 -->
+        <div style="
+          position: relative;
+          width: 860px;
+          max-width: 100%;
+          margin: 0 auto;
+          z-index: 40;
+        ">
+          <div style="
+            background-color: #DCFD4A;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            clip-path: polygon(3.49% 0, 96.51% 0, 100% 100%, 0 100%);
+            padding: 20px;
+          ">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px;">
+              <!-- 선택된 야채 슬롯 3개 -->
+              <div id="selectionSlots" style="display: flex; align-items: center; gap: 8px;">
+                <div id="slot0" class="selection-slot" data-index="0" style="background: rgba(255,255,255,0.3);"></div>
+                <div id="slot1" class="selection-slot" data-index="1" style="background: rgba(255,255,255,0.3);"></div>
+                <div id="slot2" class="selection-slot" data-index="2" style="background: rgba(255,255,255,0.3);"></div>
+              </div>
+              <!-- 버튼 -->
+              <a href="spirit-question-diet.html" id="spiritBtn" onclick="saveSelectedItems()" style="
+                display: inline-block;
+                padding: 12px 24px;
+                background-color: #8C451D;
+                color: #FFFFFF;
+                font-size: 15px;
+                font-weight: 400;
+                text-decoration: none;
+                min-height: 44px;
+                min-width: 120px;
+                text-align: center;
+              ">나의 슬로우 스피릿 찾기</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           SLUNCH WEEKLY 섹션
+           ============================================ -->
+      <section style="background: #fff; padding: 120px 20px;">
+        <div class="page-container" style="max-width: 1440px; margin: 0 auto;">
+          <!-- 섹션 헤더 -->
+          <div style="margin-bottom: 48px; max-width: 768px;">
+            <h2 style="font-size: var(--font-size-h2); font-weight: 400; letter-spacing: var(--letter-spacing-tight); line-height: var(--line-height-h2); color: #1c1917; margin-bottom: 16px;">
+              Slunch Weekly
+            </h2>
+            <p style="font-size: var(--font-size-body); font-weight: 400; line-height: var(--line-height-body); letter-spacing: var(--letter-spacing-tight); color: #78716c;">
+              하루 2끼, 균형 잡힌 식단을 문 앞까지. 내 몸을 위한 가장 쉬운 선택
+            </p>
+          </div>
+
+          <!-- 3열 그리드 -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+            <!-- 주 14끼 식단 -->
+            <div style="background: #fff;">
+              <div style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3;">
+                <img src="../public/14meals.png" alt="주 14끼 식단" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div style="padding-top: 12px;">
+                <h3 style="font-size: 16px; font-weight: 500; letter-spacing: -0.01em; color: #1a1a1a; margin-bottom: 4px;">주 14끼 식단</h3>
+                <p style="font-size: 12px; font-weight: 400; line-height: 1.6; color: #666;">하루 2끼, 일주일치 완벽한 식단</p>
+              </div>
+            </div>
+            <!-- 신선 새벽 배송 -->
+            <div style="background: #fff;">
+              <div style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3;">
+                <img src="../public/dawn.png" alt="신선 새벽 배송" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div style="padding-top: 12px;">
+                <h3 style="font-size: 16px; font-weight: 500; letter-spacing: -0.01em; color: #1a1a1a; margin-bottom: 4px;">신선 새벽 배송</h3>
+                <p style="font-size: 12px; font-weight: 400; line-height: 1.6; color: #666;">매주 월요일 아침, 문 앞까지 신선하게</p>
+              </div>
+            </div>
+            <!-- 영양 밸런스 완벽 설계 -->
+            <div style="background: #fff;">
+              <div style="border: 1px solid #eee; border-radius: 12px; overflow: hidden; aspect-ratio: 4/3;">
+                <img src="../public/balance.png" alt="영양 밸런스 완벽 설계" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <div style="padding-top: 12px;">
+                <h3 style="font-size: 16px; font-weight: 500; letter-spacing: -0.01em; color: #1a1a1a; margin-bottom: 4px;">영양 밸런스 완벽 설계</h3>
+                <p style="font-size: 12px; font-weight: 400; line-height: 1.6; color: #666;">전문가와 AI가 설계한 균형 잡힌 식단</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA 버튼 -->
+          <div style="text-align: center; margin-top: 48px;">
+            <a href="#" style="display: inline-block; padding: 12px 24px; background-color: #B2B2B2; color: #FFFFFF; font-size: 15px; font-weight: 400; text-decoration: none; min-height: 44px; min-width: 120px;">
+              슬런치 위클리 보러가기
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           레시피 섹션 - 누군가의 테이블에서 영감을
+           ============================================ -->
+      <section style="padding: 80px 0; background-color: #FDFBF7; overflow: hidden;">
+        <div class="page-container" style="max-width: 1440px; margin: 0 auto; padding: 0 20px; margin-bottom: 48px;">
+          <div style="max-width: 768px;">
+            <h2 style="font-size: var(--font-size-h2); font-weight: 400; letter-spacing: var(--letter-spacing-tight); line-height: var(--line-height-h2); color: #1c1917; margin-bottom: 16px;">
+              누군가의 테이블에서 영감을
+            </h2>
+            <p style="font-size: var(--font-size-body); font-weight: 400; line-height: var(--line-height-body); letter-spacing: var(--letter-spacing-tight); color: #78716c;">
+              슬런치 멤버들이 직접 만들고 공유하는 레시피.
+            </p>
+          </div>
+        </div>
+
+        <!-- 무한 롤링 레시피 카드 -->
+        <div style="position: relative; width: 100%;">
+          <div class="infinite-scroll-track">
+            <!-- 카드 세트 1 -->
+            <div style="flex-shrink: 0; width: 220px; height: 320px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&h=500&fit=crop" alt="콩나물 비빔밥" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@비건셰프</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">콩나물 비빔밥</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 320px; height: 220px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=500&fit=crop" alt="당근 라페 샌드위치" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@채식러버</p>
+                <h3 style="font-size: 14px; font-weight: 400; line-height: 1.3;">당근 라페 샌드위치</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 240px; height: 240px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&h=500&fit=crop" alt="올리브 파스타" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@이탈리안</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">올리브 파스타</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 220px; height: 320px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=500&fit=crop" alt="피스타치오 페스토" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@홈쿡러</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">피스타치오 페스토</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 320px; height: 220px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&h=500&fit=crop" alt="무화과 샐러드" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@계절요리</p>
+                <h3 style="font-size: 14px; font-weight: 400; line-height: 1.3;">무화과 샐러드</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 240px; height: 240px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop" alt="두부 덮밥" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@점심왕</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">두부 덮밥</h3>
+              </div>
+            </div>
+            <!-- 카드 세트 2 (복제) -->
+            <div style="flex-shrink: 0; width: 220px; height: 320px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&h=500&fit=crop" alt="콩나물 비빔밥" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@비건셰프</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">콩나물 비빔밥</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 320px; height: 220px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=500&fit=crop" alt="당근 라페 샌드위치" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@채식러버</p>
+                <h3 style="font-size: 14px; font-weight: 400; line-height: 1.3;">당근 라페 샌드위치</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 240px; height: 240px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=500&h=500&fit=crop" alt="올리브 파스타" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@이탈리안</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">올리브 파스타</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 220px; height: 320px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&h=500&fit=crop" alt="피스타치오 페스토" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@홈쿡러</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">피스타치오 페스토</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 320px; height: 220px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&h=500&fit=crop" alt="무화과 샐러드" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@계절요리</p>
+                <h3 style="font-size: 14px; font-weight: 400; line-height: 1.3;">무화과 샐러드</h3>
+              </div>
+            </div>
+            <div style="flex-shrink: 0; width: 240px; height: 240px; border-radius: 8px; overflow: hidden; position: relative;">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&h=500&fit=crop" alt="두부 덮밥" style="width: 100%; height: 100%; object-fit: cover;">
+              <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 16px; color: #fff; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); height: 60%; display: flex; flex-direction: column; justify-content: flex-end;">
+                <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; opacity: 0.8;">@점심왕</p>
+                <h3 style="font-size: 13px; font-weight: 400; line-height: 1.3;">두부 덮밥</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- View all 버튼 -->
+        <div style="text-align: center; margin-top: 48px;">
+          <a href="#" style="display: inline-block; padding: 12px 24px; background-color: #B2B2B2; color: #FFFFFF; font-size: 15px; font-weight: 400; text-decoration: none; min-height: 44px; min-width: 120px;">
+            View all
+          </a>
+        </div>
+      </section>
+
+      <!-- ============================================
+           뉴스레터 섹션
+           ============================================ -->
+      <section style="background-color: #D7D7D7; padding: 80px 0;">
+        <div class="page-container" style="max-width: 1440px; margin: 0 auto; padding: 0 20px;">
+          <h2 style="font-size: 24px; font-weight: 400; letter-spacing: -0.02em; line-height: 1.2; color: #000000; margin-bottom: 32px;">
+            뉴스레터
+          </h2>
+
+          <!-- 4열 그리드 -->
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;">
+            <!-- 아티클 1 -->
+            <a href="#" style="text-decoration: none; color: inherit;">
+              <div style="aspect-ratio: 4/3; background-color: #E5E5E0; border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Health" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <p style="font-size: 11px; font-weight: 400; letter-spacing: 0.05em; color: #6B6B6B; margin-bottom: 8px; text-transform: uppercase;">Health</p>
+              <h3 style="font-size: 16px; font-weight: 400; line-height: 1.3; color: #000000; margin-bottom: 6px;">멈춰야 보이는 것들</h3>
+              <p style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #6B6B6B; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">번아웃을 겪고 나서야 깨달은 것들</p>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9A9A9A;">
+                <span>Josin</span>
+                <span>·</span>
+                <span>2024.12.10</span>
+              </div>
+            </a>
+            <!-- 아티클 2 -->
+            <a href="#" style="text-decoration: none; color: inherit;">
+              <div style="aspect-ratio: 4/3; background-color: #E5E5E0; border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=600&q=80" alt="Culture" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <p style="font-size: 11px; font-weight: 400; letter-spacing: 0.05em; color: #6B6B6B; margin-bottom: 8px; text-transform: uppercase;">Culture</p>
+              <h3 style="font-size: 16px; font-weight: 400; line-height: 1.3; color: #000000; margin-bottom: 6px;">2060년, 나는 마흔이 된다</h3>
+              <p style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #6B6B6B; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">초고령 사회를 앞둔 Z세대의 고민</p>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9A9A9A;">
+                <span>Huna</span>
+                <span>·</span>
+                <span>2024.12.05</span>
+              </div>
+            </a>
+            <!-- 아티클 3 -->
+            <a href="#" style="text-decoration: none; color: inherit;">
+              <div style="aspect-ratio: 4/3; background-color: #E5E5E0; border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=600&q=80" alt="Food" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <p style="font-size: 11px; font-weight: 400; letter-spacing: 0.05em; color: #6B6B6B; margin-bottom: 8px; text-transform: uppercase;">Food</p>
+              <h3 style="font-size: 16px; font-weight: 400; line-height: 1.3; color: #000000; margin-bottom: 6px;">냉장고를 열면 한 끼가 보인다</h3>
+              <p style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #6B6B6B; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">배달 앱 골드 등급이 집밥을 시작한 이유</p>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9A9A9A;">
+                <span>ChaCha</span>
+                <span>·</span>
+                <span>2024.11.28</span>
+              </div>
+            </a>
+            <!-- 아티클 4 -->
+            <a href="#" style="text-decoration: none; color: inherit;">
+              <div style="aspect-ratio: 4/3; background-color: #E5E5E0; border-radius: 4px; margin-bottom: 16px; overflow: hidden;">
+                <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=600&q=80" alt="Life" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <p style="font-size: 11px; font-weight: 400; letter-spacing: 0.05em; color: #6B6B6B; margin-bottom: 8px; text-transform: uppercase;">Life</p>
+              <h3 style="font-size: 16px; font-weight: 400; line-height: 1.3; color: #000000; margin-bottom: 6px;">"그 영화 재밌어" 다음에 할 말</h3>
+              <p style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #6B6B6B; margin-bottom: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">소개팅에서 영화 이야기 잘하는 법</p>
+              <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #9A9A9A;">
+                <span>Jin</span>
+                <span>·</span>
+                <span>2024.11.20</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- View all 버튼 -->
+          <div style="text-align: center; margin-top: 48px;">
+            <a href="#" style="display: inline-block; padding: 12px 24px; background-color: #B2B2B2; color: #FFFFFF; font-size: 15px; font-weight: 400; text-decoration: none; min-height: 44px; min-width: 120px;">
+              View all
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           이미지 영역
+           ============================================ -->
+      <section style="width: 100%; background-color: #000000;">
+        <img src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&w=1920&q=80" alt="건강한 식탁" style="width: 100%; height: 980px; object-fit: cover;">
+      </section>
+
+      <!-- ============================================
+           CTA 섹션 - 지금 시작해보세요
+           ============================================ -->
+      <section style="width: 100%; background-color: #000000; padding: 80px 0;">
+        <div class="page-container" style="max-width: 1440px; margin: 0 auto; padding: 0 20px;">
+          <div style="max-width: 768px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: var(--font-size-h2); font-weight: 400; letter-spacing: var(--letter-spacing-tight); line-height: var(--line-height-h2); color: #FFFFFF; margin-bottom: 24px;">
+              지금 시작해보세요
+            </h2>
+            <p style="font-size: var(--font-size-body); font-weight: 400; line-height: var(--line-height-body); letter-spacing: var(--letter-spacing-tight); color: #FFFFFF; margin-bottom: 40px;">
+              슬런치와 함께 느긋한 식탁 문화를 경험하고, AI가 제안하는 개인화된 건강 관리를 시작해보세요.<br>
+              첫 방문 고객을 위한 특별 할인 혜택도 준비되어 있습니다.
+            </p>
+            <a href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;" style="display: inline-block; padding: 12px 24px; background-color: #B2B2B2; color: #FFFFFF; font-size: 15px; font-weight: 400; text-decoration: none; min-height: 44px; min-width: 120px;">
+              지금 테스트하고 식단 추천받기
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-black w-full" style="background-color: #DCFD4A; border-top: 1px solid var(--black);">
+      <div class="block md:hidden px-5 py-10">
+        <div class="grid grid-cols-2 gap-x-5 gap-y-10 mb-10">
+          <div>
+            <a href="about.html" class="block text-[11px] font-normal tracking-widest uppercase mb-3 text-black">ABOUT</a>
+            <a href="about.html" class="block text-[13px] text-black leading-relaxed mb-1">Slow and Lunch</a>
+            <a href="about.html" class="block text-[13px] text-black leading-relaxed mb-1">Branch</a>
+            <a href="about.html" class="block text-[13px] text-black leading-relaxed mb-1">B2B & V-tech</a>
+          </div>
+          <div>
+            <a href="#" class="block text-[11px] font-normal tracking-widest uppercase mb-3 text-black">NEWSLETTER</a>
+            <p class="text-[13px] text-black leading-relaxed">슬런치 에디터가 발행하는 아티클</p>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-widest uppercase mb-3 text-black">CONTACT</p>
+            <a href="mailto:slunch@slunch.co.kr" class="block text-[13px] text-black leading-relaxed mb-1">일반문의 slunch@slunch.co.kr</a>
+            <a href="mailto:export@slunch.co.kr" class="block text-[13px] text-black leading-relaxed mb-1">B2B export@slunch.co.kr</a>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-widest uppercase mb-3 text-black">SOCIAL</p>
+            <a href="https://instagram.com/slunch_factory" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black leading-relaxed mb-1">Instagram</a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black leading-relaxed mb-1">Youtube</a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black leading-relaxed mb-1">Linked In</a>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-widest uppercase mb-3 text-black">BANK</p>
+            <p class="text-[14px] text-black font-mono mb-1">우리은행 1005-504-450570</p>
+            <p class="text-[13px] text-black leading-relaxed">(주)슬런치팩토리</p>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-widest uppercase mb-3 text-black">CS</p>
+            <p class="text-[14px] text-black font-mono mb-1">032-224-6525</p>
+            <p class="text-[13px] text-black leading-relaxed">카카오톡 채널 문의</p>
+          </div>
+        </div>
+        <p class="text-[10px] text-black leading-relaxed text-left" style="word-break: keep-all;">(주)슬런치팩토리   |   대표 이현아   |   사업자번호 288-86-02863   |   통신판매업 제2023-경기부천-0868호   |   경기 부천시 소사로160번길 23-8   |   © 2024 Slunch Factory. All Rights Reserved.</p>
+      </div>
+      <div class="hidden md:block w-full max-w-[1440px] mx-auto px-10 py-12">
+        <div class="grid grid-cols-5 gap-x-12 mb-12">
+          <div>
+            <a href="about.html" class="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">ABOUT</a>
+            <ul class="space-y-2">
+              <li><a href="about.html" class="block text-[13px] text-black font-normal leading-[1.8]">Slow and Lunch</a></li>
+              <li><a href="about.html" class="block text-[13px] text-black font-normal leading-[1.8]">Branch</a></li>
+              <li><a href="about.html" class="block text-[13px] text-black font-normal leading-[1.8]">B2B & V-tech</a></li>
+            </ul>
+          </div>
+          <div>
+            <a href="#" class="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">NEWSLETTER</a>
+            <p class="text-[13px] text-black font-normal leading-[1.8]">슬런치 에디터가 발행하는 아티클</p>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">CONTACT</p>
+            <ul class="space-y-2">
+              <li><a href="mailto:slunch@slunch.co.kr" class="block text-[13px] text-black font-normal leading-[1.8]">일반문의 slunch@slunch.co.kr</a></li>
+              <li><a href="mailto:export@slunch.co.kr" class="block text-[13px] text-black font-normal leading-[1.8]">B2B export@slunch.co.kr</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">SOCIAL</p>
+            <ul class="space-y-2">
+              <li><a href="https://instagram.com/slunch_factory" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black font-normal leading-[1.8]">Instagram</a></li>
+              <li><a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black font-normal leading-[1.8]">Youtube</a></li>
+              <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="block text-[13px] text-black font-normal leading-[1.8]">Linked In</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="mb-6">
+              <p class="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">BANK</p>
+              <p class="text-[14px] text-black font-mono mb-1 leading-[1.8]">우리은행 1005-504-450570</p>
+              <p class="text-[13px] text-black font-normal leading-[1.8]">(주)슬런치팩토리</p>
+            </div>
+            <div>
+              <p class="text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black">CS</p>
+              <p class="text-[14px] text-black font-mono mb-1 leading-[1.8]">032-224-6525</p>
+              <p class="text-[13px] text-black font-normal leading-[1.8]">카카오톡 채널 문의</p>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-black pt-6 flex justify-between items-end text-[11px] text-black">
+          <p style="word-break: keep-all;">(주)슬런치팩토리   |   대표 이현아   |   사업자번호 288-86-02863   |   통신판매업 제2023-경기부천-0868호   |   경기 부천시 소사로160번길 23-8</p>
+          <p class="whitespace-nowrap ml-4">© 2024 Slunch Factory. All Rights Reserved.</p>
         </div>
       </div>
-    </section>
-  </main>
+    </footer>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-logo">SLUNCH FACTORY</div>
-      <div class="footer-info">
-        <p>슬런치팩토리 주식회사 | 대표: 홍길동</p>
-        <p>사업자등록번호: 123-45-67890</p>
-        <p>서울특별시 강남구 테헤란로 123</p>
-      </div>
-      <div class="footer-links">
-        <a href="index.html" class="footer-link">Home</a>
-        <a href="about.html" class="footer-link">About</a>
-        <a href="recipe.html" class="footer-link">Recipe</a>
-        <a href="store.html" class="footer-link">Store</a>
-      </div>
-      <div class="footer-copyright">
-        <p>&copy; 2024 Slunch Factory. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    <script>
+      // 배너 닫기
+      function closeBanner() {
+        document.getElementById('topBanner').style.display = 'none';
+      }
 
-  <script src="script.js"></script>
-</body>
+      // 네비게이션 드로어
+      function openDrawer() {
+        document.getElementById('navDrawer').style.transform = 'translateX(0)';
+        document.getElementById('navOverlay').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
+      function closeDrawer() {
+        document.getElementById('navDrawer').style.transform = 'translateX(-100%)';
+        document.getElementById('navOverlay').style.display = 'none';
+        document.body.style.overflow = '';
+      }
+
+      // 야채 선택 기능
+      document.addEventListener('DOMContentLoaded', function() {
+        const veggies = document.querySelectorAll('.floating-veggie');
+        let selectedItems = [];
+
+        veggies.forEach(veggie => {
+          veggie.addEventListener('click', function() {
+            const name = this.dataset.name;
+            const color = this.dataset.color;
+            const imgSrc = this.querySelector('img').src;
+
+            if (this.classList.contains('selected')) {
+              // 선택 해제
+              this.classList.remove('selected');
+              selectedItems = selectedItems.filter(item => item.name !== name);
+            } else if (selectedItems.length < 3) {
+              // 선택
+              this.classList.add('selected');
+              selectedItems.push({ name, color, imgSrc, element: this });
+            }
+
+            updateSlots();
+          });
+        });
+
+        function updateSlots() {
+          for (let i = 0; i < 3; i++) {
+            const slot = document.getElementById('slot' + i);
+            if (selectedItems[i]) {
+              const item = selectedItems[i];
+              slot.innerHTML = `
+                <div style="
+                  width: 100%;
+                  height: 100%;
+                  background-color: ${item.color};
+                  -webkit-mask-image: url('${item.imgSrc}');
+                  -webkit-mask-size: contain;
+                  -webkit-mask-repeat: no-repeat;
+                  -webkit-mask-position: center;
+                  mask-image: url('${item.imgSrc}');
+                  mask-size: contain;
+                  mask-repeat: no-repeat;
+                  mask-position: center;
+                "></div>
+                <div class="remove-btn" onclick="removeSelection(${i}); event.stopPropagation();">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </div>
+              `;
+              slot.style.background = 'rgba(255,255,255,0.6)';
+            } else {
+              slot.innerHTML = '';
+              slot.style.background = 'rgba(255,255,255,0.3)';
+            }
+          }
+        }
+
+        // 전역 함수로 선택 해제
+        window.removeSelection = function(index) {
+          if (selectedItems[index]) {
+            selectedItems[index].element.classList.remove('selected');
+            selectedItems.splice(index, 1);
+            updateSlots();
+          }
+        };
+
+        // 선택된 아이템을 localStorage에 저장하는 함수
+        window.saveSelectedItems = function() {
+          const itemsToSave = selectedItems.map(item => ({
+            name: item.name,
+            color: item.color,
+            image: item.imgSrc
+          }));
+          localStorage.setItem('spirit-finder-selected-items', JSON.stringify(itemsToSave));
+        };
+      });
+    </script>
+  </body>
 </html>
