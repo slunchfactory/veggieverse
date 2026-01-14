@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
+    <title>Spirit Finder - 슬런치 팩토리</title>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --header-h: 64px;
+        --cream: #FDFBF7;
+        --lime: #DCFD4A;
+        --black: #000000;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
+      html, body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: #ffffff;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      /* Header */
+      .header {
+        height: var(--header-h);
+        background: var(--lime);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .header-left button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .header-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .header-center img { height: 36px; display: block; }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-right a {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        font-size: 14px;
+        color: var(--black);
+        text-decoration: none;
+      }
+      .header-profile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Main container */
+      .spirit-container {
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        background: #ffffff;
+      }
+
+      /* Close button */
+      .close-btn {
+        position: fixed;
+        top: calc(var(--header-h) + 16px);
+        right: 16px;
+        width: 36px;
+        height: 36px;
+        background: var(--cream);
+        border: 1px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 90;
+      }
+
+      /* Floating vegetables */
+      .veggie-area {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .floating-veggie {
+        position: absolute;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s;
+      }
+      .floating-veggie:hover {
+        transform: scale(1.1);
+      }
+      .floating-veggie.selected {
+        opacity: 0.3;
+      }
+      .floating-veggie img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      /* Animation keyframes */
+      @keyframes float-1 { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(30px, -20px) rotate(5deg); } 50% { transform: translate(-20px, -40px) rotate(-5deg); } 75% { transform: translate(40px, 10px) rotate(3deg); } }
+      @keyframes float-2 { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(-40px, 30px) rotate(-3deg); } 50% { transform: translate(30px, -30px) rotate(5deg); } 75% { transform: translate(-20px, 20px) rotate(-5deg); } }
+      @keyframes float-3 { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(20px, 40px) rotate(3deg); } 50% { transform: translate(-30px, -20px) rotate(-3deg); } 75% { transform: translate(10px, -30px) rotate(5deg); } }
+
+      .anim-1 { animation: float-1 15s ease-in-out infinite; }
+      .anim-2 { animation: float-2 18s ease-in-out infinite; animation-delay: -3s; }
+      .anim-3 { animation: float-3 12s ease-in-out infinite; animation-delay: -6s; }
+
+      /* Bottom gradient */
+      .bottom-gradient {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 200px;
+        background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,1) 100%);
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      /* Selection bar */
+      .selection-bar {
+        position: fixed;
+        bottom: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 80;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        background: var(--cream);
+        border: 1px solid #000;
+        padding: 12px 24px;
+      }
+
+      .selection-slots {
+        display: flex;
+        gap: 12px;
+      }
+      .slot {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .slot.empty {
+        border: 1px dashed #000;
+      }
+      .slot.filled {
+        border: 1px solid #000;
+        background: #F7F4EF;
+      }
+      .slot .number {
+        font-size: 12px;
+        color: #6B6B6B;
+      }
+      .slot img {
+        width: 40px;
+        height: 40px;
+        object-fit: contain;
+      }
+      .slot .remove-btn {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 20px;
+        height: 20px;
+        background: #000;
+        border: 1px solid #000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+      .slot .remove-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: #fff;
+      }
+
+      .divider {
+        width: 1px;
+        height: 32px;
+        background: #000;
+      }
+
+      .start-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border: 1px solid #000;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: transparent;
+        color: #6B6B6B;
+      }
+      .start-btn.active {
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+      }
+      .start-btn:disabled {
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-left">
+          <button aria-label="메뉴 열기">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <a href="index.html" class="header-center">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY">
+        </a>
+        <div class="header-right">
+          <a href="mypage.html" aria-label="마이페이지">
+            <div class="header-profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Close button -->
+    <a href="store.html" class="close-btn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </a>
+
+    <div class="spirit-container">
+      <div class="veggie-area" id="veggieArea">
+        <!-- Vegetables will be dynamically generated -->
+      </div>
+      <div class="bottom-gradient"></div>
+    </div>
+
+    <!-- Selection bar -->
+    <div class="selection-bar">
+      <div class="selection-slots" id="selectionSlots">
+        <div class="slot empty" data-index="0"><span class="number">1</span></div>
+        <div class="slot empty" data-index="1"><span class="number">2</span></div>
+        <div class="slot empty" data-index="2"><span class="number">3</span></div>
+      </div>
+      <div class="divider"></div>
+      <button class="start-btn" id="startBtn" disabled onclick="startSpirit()">
+        시작하기
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+    </div>
+
+    <script>
+      const vegetables = [
+        { name: 'Asparagus', color: '#7CB342', image: '../public/vege_flot_img/asparagus.png' },
+        { name: 'Avocado', color: '#558B2F', image: '../public/vege_flot_img/avocado.png' },
+        { name: 'Blueberry', color: '#5C6BC0', image: '../public/vege_flot_img/blueberry.png' },
+        { name: 'Broccoli', color: '#2E7D32', image: '../public/vege_flot_img/broccoli.png' },
+        { name: 'Carrot', color: '#EF6C00', image: '../public/vege_flot_img/carrot.png' },
+        { name: 'Coconut', color: '#8D6E63', image: '../public/vege_flot_img/coconut.png' },
+        { name: 'Corn', color: '#FBC02D', image: '../public/vege_flot_img/corn.png' },
+        { name: 'Dill', color: '#66BB6A', image: '../public/vege_flot_img/dill.png' },
+        { name: 'Fig', color: '#6A1B9A', image: '../public/vege_flot_img/fig.png' },
+        { name: 'Grape', color: '#7B1FA2', image: '../public/vege_flot_img/grape.png' },
+        { name: 'Kiwi', color: '#8BC34A', image: '../public/vege_flot_img/kiwi.png' },
+        { name: 'Lemon', color: '#FFEB3B', image: '../public/vege_flot_img/lemon.png' },
+        { name: 'Lettuce', color: '#81C784', image: '../public/vege_flot_img/lettuce.png' },
+        { name: 'Mango', color: '#FFB300', image: '../public/vege_flot_img/mango.png' },
+        { name: 'Mushroom', color: '#A1887F', image: '../public/vege_flot_img/mushroom.png' },
+        { name: 'Orange', color: '#FF9800', image: '../public/vege_flot_img/orange.png' },
+        { name: 'Pineapple', color: '#FDD835', image: '../public/vege_flot_img/pineapple.png' },
+        { name: 'Tomato', color: '#E53935', image: '../public/vege_flot_img/tomato.png' },
+      ];
+
+      let selectedItems = [];
+      const veggieArea = document.getElementById('veggieArea');
+
+      // Generate floating vegetables
+      vegetables.forEach((veg, index) => {
+        const div = document.createElement('div');
+        div.className = `floating-veggie anim-${(index % 3) + 1}`;
+        div.dataset.name = veg.name;
+        div.dataset.color = veg.color;
+        div.dataset.image = veg.image;
+
+        const size = 70 + Math.random() * 50;
+        const left = 5 + Math.random() * 80;
+        const top = 5 + Math.random() * 70;
+
+        div.style.cssText = `
+          left: ${left}%;
+          top: ${top}%;
+          width: ${size}px;
+          height: ${size}px;
+          animation-delay: ${-Math.random() * 10}s;
+        `;
+
+        div.innerHTML = `<img src="${veg.image}" alt="${veg.name}">`;
+        div.addEventListener('click', () => selectVeggie(div, veg));
+
+        veggieArea.appendChild(div);
+      });
+
+      function selectVeggie(element, veg) {
+        const isSelected = element.classList.contains('selected');
+
+        if (isSelected) {
+          element.classList.remove('selected');
+          selectedItems = selectedItems.filter(item => item.name !== veg.name);
+        } else if (selectedItems.length < 3) {
+          element.classList.add('selected');
+          selectedItems.push({ ...veg, element });
+        }
+
+        updateSlots();
+      }
+
+      function updateSlots() {
+        const slots = document.querySelectorAll('.slot');
+        slots.forEach((slot, index) => {
+          if (selectedItems[index]) {
+            const item = selectedItems[index];
+            slot.className = 'slot filled';
+            slot.innerHTML = `
+              <img src="${item.image}" alt="${item.name}">
+              <div class="remove-btn" onclick="removeItem(${index}); event.stopPropagation();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </div>
+            `;
+          } else {
+            slot.className = 'slot empty';
+            slot.innerHTML = `<span class="number">${index + 1}</span>`;
+          }
+        });
+
+        const startBtn = document.getElementById('startBtn');
+        if (selectedItems.length === 3) {
+          startBtn.classList.add('active');
+          startBtn.disabled = false;
+        } else {
+          startBtn.classList.remove('active');
+          startBtn.disabled = true;
+        }
+      }
+
+      function removeItem(index) {
+        if (selectedItems[index]) {
+          selectedItems[index].element.classList.remove('selected');
+          selectedItems.splice(index, 1);
+          updateSlots();
+        }
+      }
+
+      function startSpirit() {
+        if (selectedItems.length === 3) {
+          const itemsToSave = selectedItems.map(item => ({
+            name: item.name,
+            color: item.color,
+            image: item.image
+          }));
+          localStorage.setItem('spirit-finder-selected-items', JSON.stringify(itemsToSave));
+          localStorage.removeItem('spirit-finder-answers');
+          window.location.href = 'spirit-question-diet.html';
+        }
+      }
+    </script>
+  </body>
+</html>
