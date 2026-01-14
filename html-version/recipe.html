@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 레시피" />
+    <title>Recipe - 슬런치 팩토리</title>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <style>
+      /* === DESIGN SYSTEM === */
+      :root {
+        --header-h: 64px;
+        --control-bar-h: 48px;
+        --cream: #FDFBF7;
+        --lime: #DCFD4A;
+        --black: #000000;
+        --gray: #6B6B6B;
+        --gray-light: #9A9A9A;
+        --gray-lighter: #E0E0E0;
+        --white: #FFFFFF;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
+      body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--cream);
+        min-height: 100vh;
+        color: var(--black);
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* === HEADER === */
+      .header {
+        height: var(--header-h);
+        background: var(--lime);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .header-left button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .header-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .header-center img { height: 36px; display: block; }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-right a {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        font-size: 14px;
+        color: var(--black);
+        text-decoration: none;
+      }
+      .header-profile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* === TOP CONTROL BAR === */
+      .control-bar {
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        z-index: 45;
+        background: var(--white);
+        border-bottom: 1px solid var(--black);
+      }
+      .control-bar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--control-bar-h);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        overflow-x: auto;
+        height: 100%;
+      }
+      .tabs::-webkit-scrollbar { display: none; }
+      .tab {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 14px;
+        line-height: 48px;
+        color: var(--gray);
+        cursor: pointer;
+        white-space: nowrap;
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+      .tab:hover { color: var(--black); }
+      .tab.active {
+        color: var(--black);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+
+      /* === MAIN CONTENT === */
+      main {
+        padding-top: calc(var(--header-h) + var(--control-bar-h));
+      }
+
+      /* === RETRO DESKTOP OS SECTION (Desktop Only) === */
+      .retro-section {
+        display: none;
+        padding: 0;
+      }
+      @media (min-width: 768px) {
+        .retro-section { display: block; }
+      }
+      .page-container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+      @media (min-width: 768px) { .page-container { padding: 0 32px; } }
+      @media (min-width: 1024px) { .page-container { padding: 0 40px; } }
+
+      /* Retro Window */
+      .retro-window {
+        border: 2px solid;
+        border-color: #DFDFDF #404040 #404040 #DFDFDF;
+        background: #C0C0C0;
+        box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+      }
+      .retro-titlebar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 6px;
+        background: linear-gradient(180deg, #000080 0%, #1084D0 100%);
+        border-bottom: 2px solid #404040;
+        min-height: 28px;
+      }
+      .retro-buttons {
+        display: flex;
+        gap: 4px;
+      }
+      .retro-btn {
+        width: 14px;
+        height: 14px;
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        cursor: pointer;
+        box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3);
+      }
+      .retro-btn-close {
+        background: linear-gradient(180deg, #FF6B6B 0%, #C0392B 100%);
+        border: 1px solid;
+        border-color: #FFAAAA #8B0000 #8B0000 #FFAAAA;
+        color: #4A0000;
+      }
+      .retro-btn-minimize {
+        background: linear-gradient(180deg, #F1C40F 0%, #D4AC0D 100%);
+        border: 1px solid;
+        border-color: #FFEB99 #8B7500 #8B7500 #FFEB99;
+        color: #5D4E00;
+      }
+      .retro-btn-maximize {
+        background: linear-gradient(180deg, #2ECC71 0%, #27AE60 100%);
+        border: 1px solid;
+        border-color: #98FB98 #006400 #006400 #98FB98;
+        color: #004000;
+        font-size: 8px;
+      }
+      .retro-title {
+        flex: 1;
+        text-align: center;
+        margin-left: 50px;
+        font-size: 14px;
+        color: #FFFFFF;
+        font-family: 'Pixelify Sans', monospace;
+        text-shadow: 1px 1px 0 #000;
+        letter-spacing: 1px;
+      }
+      .retro-menubar {
+        display: flex;
+        gap: 16px;
+        padding: 4px 8px;
+        background: #C0C0C0;
+        border-bottom: 1px solid #808080;
+        font-family: 'Pixelify Sans', monospace;
+        font-size: 12px;
+      }
+      .retro-menubar span { cursor: pointer; }
+      .retro-content {
+        height: 70vh;
+        min-height: 500px;
+        max-height: 700px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #FFFFFF;
+        border: 2px solid;
+        border-color: #404040 #DFDFDF #DFDFDF #404040;
+        margin: 4px;
+        position: relative;
+      }
+      .retro-desktop {
+        position: relative;
+        min-height: 600px;
+        width: 100%;
+        padding-bottom: 120px;
+        background:
+          repeating-linear-gradient(0deg, transparent, transparent 15px, rgba(0,0,0,0.03) 15px, rgba(0,0,0,0.03) 16px),
+          repeating-linear-gradient(90deg, transparent, transparent 15px, rgba(0,0,0,0.03) 15px, rgba(0,0,0,0.03) 16px);
+        background-size: 16px 16px;
+      }
+      .retro-statusbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 8px;
+        background: #C0C0C0;
+        border-top: 1px solid #DFDFDF;
+        font-family: 'Pixelify Sans', monospace;
+        font-size: 11px;
+        color: #404040;
+      }
+
+      /* Retro File Icon */
+      .retro-file {
+        position: absolute;
+        cursor: grab;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 6px;
+        border-radius: 2px;
+        border: 1px solid transparent;
+        text-decoration: none;
+        color: inherit;
+      }
+      .retro-file:hover {
+        background: rgba(0, 0, 128, 0.1);
+        border: 1px dotted #000080;
+      }
+      .retro-file-icon {
+        width: 48px;
+        height: 48px;
+        position: relative;
+        background: #FFFFFF;
+        border: 2px solid #000;
+        border-radius: 2px;
+        overflow: hidden;
+        box-shadow: inset -1px -1px 0 #808080, inset 1px 1px 0 #FFFFFF;
+      }
+      .retro-file-icon::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        background: linear-gradient(135deg, transparent 50%, #C0C0C0 50%);
+        border-left: 1px solid #808080;
+        border-bottom: 1px solid #808080;
+        z-index: 2;
+      }
+      .retro-file-icon img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .retro-file-name {
+        margin-top: 4px;
+        font-size: 10px;
+        font-family: 'Pixelify Sans', monospace;
+        text-align: center;
+        max-width: 70px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        line-height: 1.1;
+        text-shadow: 1px 1px 0 #fff;
+      }
+
+      /* Retro Folder */
+      .retro-folder {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 12px 16px;
+        background: rgba(0,0,0,0.02);
+        border: 2px dashed #C0C0C0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.2s, border 0.2s;
+        z-index: 100;
+      }
+      .retro-folder:hover {
+        background: rgba(255,215,0,0.15);
+        border: 2px dashed #DAA520;
+      }
+      .retro-folder-name {
+        margin-top: 6px;
+        font-size: 12px;
+        font-family: 'Pixelify Sans', monospace;
+      }
+
+      /* === MOBILE POPULAR SECTION === */
+      .mobile-popular {
+        display: block;
+        padding: 16px 0;
+      }
+      @media (min-width: 768px) {
+        .mobile-popular { display: none; }
+      }
+      .mobile-scroll {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 0 16px 16px;
+        scroll-snap-type: x mandatory;
+      }
+      .mobile-card {
+        flex-shrink: 0;
+        min-width: 140px;
+        text-decoration: none;
+        scroll-snap-align: start;
+      }
+      .mobile-card-img {
+        border: 2px solid #000;
+        overflow: hidden;
+        background: #fff;
+        box-shadow: inset -2px -2px 0 #808080, inset 2px 2px 0 #DFDFDF;
+      }
+      .mobile-card-img-inner {
+        aspect-ratio: 1/1;
+        overflow: hidden;
+      }
+      .mobile-card-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .mobile-card-content {
+        padding: 8px;
+        background: #C0C0C0;
+      }
+      .mobile-card-title {
+        font-size: 12px;
+        color: #000;
+        margin: 0;
+        font-family: 'Pixelify Sans', monospace;
+      }
+      .mobile-card-likes {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 4px;
+        font-size: 10px;
+        color: #404040;
+        font-family: 'Pixelify Sans', monospace;
+      }
+      .mobile-card-likes svg {
+        width: 10px;
+        height: 10px;
+        fill: #E53935;
+        color: #E53935;
+      }
+
+      /* === CATEGORY SECTION === */
+      .category-section {
+        padding: 48px 0 56px;
+      }
+      .category-section:nth-child(odd) { background: #FAFAF8; }
+      .category-section:nth-child(even) { background: #fdfbf7; }
+
+      .category-inner {
+        display: flex;
+        gap: 32px;
+        padding-left: max(16px, calc((100vw - 1440px) / 2 + 40px));
+      }
+
+      .category-text {
+        flex: 0 0 200px;
+        position: sticky;
+        top: 140px;
+        display: none;
+      }
+      @media (min-width: 1024px) { .category-text { display: block; } }
+      .category-subtitle {
+        font-size: 11px;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+      .category-title {
+        font-size: 24px;
+        color: #000;
+        line-height: 1.3;
+        margin-bottom: 12px;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .category-title:hover { text-decoration: underline; }
+      .category-desc {
+        font-size: 13px;
+        color: var(--gray);
+        line-height: 1.6;
+      }
+
+      .category-mobile-header {
+        display: block;
+        padding-left: max(16px, calc((100vw - 1440px) / 2 + 40px));
+        margin-bottom: 16px;
+      }
+      @media (min-width: 1024px) { .category-mobile-header { display: none; } }
+      .category-mobile-header .category-title { font-size: 20px; margin-top: 4px; display: block; }
+
+      .category-slider { flex: 1; position: relative; min-width: 0; }
+      .slider-container {
+        display: flex;
+        gap: 16px;
+        overflow-x: auto;
+        padding-right: 64px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        padding-bottom: 4px;
+      }
+      .slider-container::-webkit-scrollbar { display: none; }
+
+      /* Editorial Card */
+      .editorial-card {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        min-width: 200px;
+        max-width: 200px;
+        height: 300px;
+        background: #fff;
+        border-radius: 16px;
+        overflow: hidden;
+        text-decoration: none;
+        color: inherit;
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.2s;
+      }
+      .editorial-card:hover { transform: scale(1.03); }
+      .editorial-img {
+        width: 200px;
+        height: 200px;
+        overflow: hidden;
+        background: #f0f0f0;
+        flex-shrink: 0;
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+      }
+      .editorial-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .editorial-content {
+        padding: 12px 16px 16px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+      }
+      .editorial-title {
+        font-size: 18px;
+        color: #000;
+        line-height: 1.3;
+        margin-bottom: 4px;
+      }
+      .editorial-card:hover .editorial-title { text-decoration: underline; }
+      .editorial-author {
+        font-size: 12px;
+        color: #888;
+      }
+      .editorial-bookmark {
+        margin-top: auto;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .editorial-bookmark span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 20px;
+        border-radius: 50%;
+        font-size: 11px;
+        border: 1px solid #000;
+        transition: all 0.2s;
+      }
+      .editorial-card:hover .editorial-bookmark span {
+        background: #000;
+        color: #fff;
+        border-color: #000;
+      }
+
+      /* View All Card */
+      .view-all-card {
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        min-width: 200px;
+        max-width: 200px;
+        height: 300px;
+        background: #F5F5F5;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .view-all-card:hover { background: #E5E5E5; }
+      .view-all-card span {
+        font-size: 12px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      /* === CTA SECTION === */
+      .cta-section {
+        padding: 64px 16px;
+        text-align: center;
+        background: var(--cream);
+      }
+      .cta-icon {
+        width: 48px;
+        height: 48px;
+        background: #F5F5F5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+      }
+      .cta-title {
+        font-size: 18px;
+        color: #000;
+        margin-bottom: 8px;
+      }
+      .cta-desc {
+        font-size: 14px;
+        color: var(--gray);
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+      .cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        font-size: 14px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .cta-btn:hover { opacity: 0.8; }
+
+      /* === FOOTER === */
+      .footer {
+        background: var(--lime);
+        border-top: 1px solid var(--black);
+        padding: 40px 20px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 40px;
+        max-width: 1440px;
+        margin: 0 auto 32px;
+      }
+      @media (min-width: 768px) {
+        .footer-grid { grid-template-columns: repeat(5, 1fr); }
+        .footer { padding: 48px 40px; }
+      }
+      .footer-title {
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: var(--black);
+      }
+      .footer-link {
+        display: block;
+        font-size: 13px;
+        color: var(--black);
+        text-decoration: none;
+        line-height: 1.8;
+      }
+      .footer-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .footer-text {
+        font-size: 13px;
+        color: var(--black);
+        line-height: 1.8;
+      }
+      .footer-copyright {
+        font-size: 10px;
+        color: var(--black);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding-top: 24px;
+        border-top: 1px solid var(--black);
+      }
+      @media (min-width: 768px) {
+        .footer-copyright {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-left">
+          <button aria-label="메뉴 열기">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <a href="index.html" class="header-center">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY">
+        </a>
+        <div class="header-right">
+          <a href="cart.html" aria-label="장바구니">(0)</a>
+          <a href="mypage.html" aria-label="마이페이지">
+            <div class="header-profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOP CONTROL BAR -->
+    <div class="control-bar">
+      <div class="control-bar-inner">
+        <div class="tabs">
+          <button class="tab active" data-section="popular">인기</button>
+          <button class="tab" data-section="new">신규</button>
+          <button class="tab" data-section="lunch">점심</button>
+          <button class="tab" data-section="dessert">디저트</button>
+          <button class="tab" data-section="korean">한식</button>
+          <button class="tab" data-section="drink">술안주</button>
+          <button class="tab" data-section="date">데이트</button>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <!-- RETRO DESKTOP OS SECTION (Desktop Only) -->
+      <section class="retro-section">
+        <div class="page-container">
+          <div class="retro-window">
+            <!-- Title Bar -->
+            <div class="retro-titlebar">
+              <div class="retro-buttons">
+                <div class="retro-btn retro-btn-close">×</div>
+                <div class="retro-btn retro-btn-minimize">−</div>
+                <div class="retro-btn retro-btn-maximize">□</div>
+              </div>
+              <div class="retro-title">📂 The Recipe Finder</div>
+              <div style="width: 50px;"></div>
+            </div>
+            <!-- Menu Bar -->
+            <div class="retro-menubar">
+              <span>File</span>
+              <span>Edit</span>
+              <span>View</span>
+              <span>Help</span>
+            </div>
+            <!-- Content -->
+            <div class="retro-content">
+              <div class="retro-desktop">
+                <!-- Row 1 -->
+                <a href="recipe-detail.html?id=1" class="retro-file" style="left: 15px; top: 10px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/mushroom.png" alt="두부 스테이크" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">두부_스테이크.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=2" class="retro-file" style="left: 110px; top: 10px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/avocado.png" alt="아보카도 포케" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">아보카도_포케.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=3" class="retro-file" style="left: 205px; top: 10px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/lemon.png" alt="레몬 파스타" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">레몬_파스타.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=4" class="retro-file" style="left: 300px; top: 10px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/napa cabbage.png" alt="배추 된장국" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">배추_된장국.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=5" class="retro-file" style="left: 395px; top: 10px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/coconut.png" alt="망고 푸딩" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">망고_푸딩.rec</span>
+                </a>
+
+                <!-- Row 2 -->
+                <a href="recipe-detail.html?id=6" class="retro-file" style="left: 15px; top: 115px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/blueberry.png" alt="블루베리 오트밀" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">블루베리_오트밀.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=7" class="retro-file" style="left: 110px; top: 115px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/tomato.png" alt="토마토 브루스게타" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">토마토_브루스게타.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=8" class="retro-file" style="left: 205px; top: 115px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/banana.png" alt="바나나 스무디" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">바나나_스무디.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=9" class="retro-file" style="left: 300px; top: 115px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/carrot.png" alt="당근 케이크" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">당근_케이크.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=10" class="retro-file" style="left: 395px; top: 115px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/spinach.png" alt="시금치 샐러드" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">시금치_샐러드.rec</span>
+                </a>
+
+                <!-- Row 3 -->
+                <a href="recipe-detail.html?id=11" class="retro-file" style="left: 15px; top: 220px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/pumpkin.png" alt="호박 수프" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">호박_수프.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=12" class="retro-file" style="left: 110px; top: 220px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/broccoli.png" alt="브로콜리 볶음" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">브로콜리_볶음.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=13" class="retro-file" style="left: 205px; top: 220px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/cucumber.png" alt="오이 피클" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">오이_피클.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=14" class="retro-file" style="left: 300px; top: 220px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/cherry.png" alt="체리 타르트" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">체리_타르트.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=15" class="retro-file" style="left: 395px; top: 220px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/strawberry.png" alt="딸기 파르페" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">딸기_파르페.rec</span>
+                </a>
+
+                <!-- Row 4 -->
+                <a href="recipe-detail.html?id=16" class="retro-file" style="left: 15px; top: 325px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/grape.png" alt="포도 젤리" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">포도_젤리.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=17" class="retro-file" style="left: 110px; top: 325px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/pineapple.png" alt="파인애플 볶음밥" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">파인애플_볶음밥.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=18" class="retro-file" style="left: 205px; top: 325px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/watermelon.png" alt="수박 화채" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">수박_화채.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=19" class="retro-file" style="left: 300px; top: 325px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/kiwi.png" alt="키위 요거트" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">키위_요거트.rec</span>
+                </a>
+                <a href="recipe-detail.html?id=20" class="retro-file" style="left: 395px; top: 325px;">
+                  <div class="retro-file-icon"><img src="../public/vege_flot_img/peach.png" alt="복숭아 아이스티" onerror="this.style.display='none'"></div>
+                  <span class="retro-file-name">복숭아_아이스티.rec</span>
+                </a>
+
+                <!-- My_Recipe Folder -->
+                <div class="retro-folder">
+                  <svg width="56" height="56" viewBox="0 0 32 32" style="image-rendering: pixelated;">
+                    <rect x="2" y="10" width="28" height="18" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                    <rect x="2" y="8" width="12" height="4" fill="#FFD700" stroke="#000" stroke-width="1"/>
+                    <rect x="4" y="12" width="24" height="2" fill="#FFEC8B"/>
+                    <rect x="4" y="16" width="24" height="8" fill="#DAA520" opacity="0.3"/>
+                  </svg>
+                  <span class="retro-folder-name">My_Recipe</span>
+                </div>
+              </div>
+            </div>
+            <!-- Status Bar -->
+            <div class="retro-statusbar">
+              <span>20 items</span>
+              <span>Right-click for options</span>
+              <span>💾 0 saved</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MOBILE POPULAR SECTION -->
+      <section class="mobile-popular" id="section-popular">
+        <div class="mobile-scroll no-scrollbar">
+          <a href="recipe-detail.html?id=1" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/mushroom.png" alt="두부 스테이크" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">두부 스테이크</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,847</div>
+              </div>
+            </div>
+          </a>
+          <a href="recipe-detail.html?id=2" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/avocado.png" alt="아보카도 포케" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">아보카도 포케</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,634</div>
+              </div>
+            </div>
+          </a>
+          <a href="recipe-detail.html?id=3" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/lemon.png" alt="레몬 파스타" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">레몬 파스타</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,512</div>
+              </div>
+            </div>
+          </a>
+          <a href="recipe-detail.html?id=4" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/napa cabbage.png" alt="배추 된장국" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">배추 된장국</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,398</div>
+              </div>
+            </div>
+          </a>
+          <a href="recipe-detail.html?id=5" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/coconut.png" alt="망고 푸딩" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">망고 푸딩</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,287</div>
+              </div>
+            </div>
+          </a>
+          <a href="recipe-detail.html?id=6" class="mobile-card">
+            <div class="mobile-card-img">
+              <div class="mobile-card-img-inner"><img src="../public/vege_flot_img/blueberry.png" alt="블루베리 오트밀" onerror="this.style.display='none'"></div>
+              <div class="mobile-card-content">
+                <p class="mobile-card-title">블루베리 오트밀</p>
+                <div class="mobile-card-likes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>2,156</div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: New -->
+      <section class="category-section" id="section-new">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">신규레시피</p>
+          <a href="recipe-list.html?category=new" class="category-title">이번 주 새로 올라온 레시피</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">신규레시피</p>
+            <a href="recipe-list.html?category=new" class="category-title">이번 주 새로 올라온 레시피</a>
+            <p class="category-desc">슬런치가 엄선한 이번 주 새로 올라온 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=101" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/edamame.png" alt="콩나물 비빔밥" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">콩나물 비빔밥</h3>
+                  <span class="editorial-author">@비건셰프</span>
+                  <div class="editorial-bookmark"><span>234</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=102" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/carrot.png" alt="당근 라페 샌드위치" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">당근 라페 샌드위치</h3>
+                  <span class="editorial-author">@채식러버</span>
+                  <div class="editorial-bookmark"><span>189</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=103" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/olive.png" alt="올리브 파스타" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">올리브 파스타</h3>
+                  <span class="editorial-author">@이탈리안</span>
+                  <div class="editorial-bookmark"><span>156</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=104" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/pistachio.png" alt="피스타치오 페스토" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">피스타치오 페스토</h3>
+                  <span class="editorial-author">@홈쿡러</span>
+                  <div class="editorial-bookmark"><span>312</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=105" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/fig.png" alt="무화과 샐러드" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">무화과 샐러드</h3>
+                  <span class="editorial-author">@계절요리</span>
+                  <div class="editorial-bookmark"><span>278</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=new" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category: Lunch -->
+      <section class="category-section" id="section-lunch">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">점심</p>
+          <a href="recipe-list.html?category=lunch" class="category-title">맛있는 점심으로 하루 채우기</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">점심</p>
+            <a href="recipe-list.html?category=lunch" class="category-title">맛있는 점심으로 하루 채우기</a>
+            <p class="category-desc">슬런치가 엄선한 맛있는 점심 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=201" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/lettuce.png" alt="두부 덮밥" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">두부 덮밥</h3>
+                  <span class="editorial-author">@점심왕</span>
+                  <div class="editorial-bookmark"><span>445</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=202" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/potato.png" alt="야채 카레" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">야채 카레</h3>
+                  <span class="editorial-author">@카레매니아</span>
+                  <div class="editorial-bookmark"><span>389</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=203" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/chili pepper.png" alt="비빔국수" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">비빔국수</h3>
+                  <span class="editorial-author">@면요리사</span>
+                  <div class="editorial-bookmark"><span>521</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=204" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/green bean.png" alt="샐러드 랩" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">샐러드 랩</h3>
+                  <span class="editorial-author">@다이어터</span>
+                  <div class="editorial-bookmark"><span>298</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=205" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/mushroom.png" alt="버섯 덮밥" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">버섯 덮밥</h3>
+                  <span class="editorial-author">@버섯사랑</span>
+                  <div class="editorial-bookmark"><span>367</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=206" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/avocado.png" alt="아보카도 토스트" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">아보카도 토스트</h3>
+                  <span class="editorial-author">@브런치러버</span>
+                  <div class="editorial-bookmark"><span>412</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=207" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/tomato.png" alt="토마토 리조또" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">토마토 리조또</h3>
+                  <span class="editorial-author">@리조또장인</span>
+                  <div class="editorial-bookmark"><span>356</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=208" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/pumpkin.png" alt="호박 크림 수프" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">호박 크림 수프</h3>
+                  <span class="editorial-author">@수프마스터</span>
+                  <div class="editorial-bookmark"><span>423</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=lunch" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category: Dessert -->
+      <section class="category-section" id="section-dessert">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">디저트</p>
+          <a href="recipe-list.html?category=dessert" class="category-title">디저트는 내 삶의 낙이야</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">디저트</p>
+            <a href="recipe-list.html?category=dessert" class="category-title">디저트는 내 삶의 낙이야</a>
+            <p class="category-desc">슬런치가 엄선한 디저트 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=301" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/coconut.png" alt="코코넛 푸딩" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">코코넛 푸딩</h3>
+                  <span class="editorial-author">@디저트왕</span>
+                  <div class="editorial-bookmark"><span>623</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=302" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/blueberry.png" alt="블루베리 타르트" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">블루베리 타르트</h3>
+                  <span class="editorial-author">@베이커리</span>
+                  <div class="editorial-bookmark"><span>578</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=303" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/mangosteen.png" alt="망고스틴 아이스크림" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">망고스틴 아이스크림</h3>
+                  <span class="editorial-author">@아이스크림</span>
+                  <div class="editorial-bookmark"><span>445</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=304" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/grape.png" alt="포도 젤리" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">포도 젤리</h3>
+                  <span class="editorial-author">@젤리장인</span>
+                  <div class="editorial-bookmark"><span>389</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=305" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/raspberry.png" alt="라즈베리 무스" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">라즈베리 무스</h3>
+                  <span class="editorial-author">@무스마스터</span>
+                  <div class="editorial-bookmark"><span>512</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=dessert" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category: Korean -->
+      <section class="category-section" id="section-korean">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">한식</p>
+          <a href="recipe-list.html?category=korean" class="category-title">할머니 손맛이 그리울 때</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">한식</p>
+            <a href="recipe-list.html?category=korean" class="category-title">할머니 손맛이 그리울 때</a>
+            <p class="category-desc">슬런치가 엄선한 한식 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=401" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/napa cabbage.png" alt="배추된장국" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">배추된장국</h3>
+                  <span class="editorial-author">@한식셰프</span>
+                  <div class="editorial-bookmark"><span>734</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=402" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/garlic.png" alt="마늘종 볶음" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">마늘종 볶음</h3>
+                  <span class="editorial-author">@반찬왕</span>
+                  <div class="editorial-bookmark"><span>623</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=403" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/ginger.png" alt="생강차" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">생강차</h3>
+                  <span class="editorial-author">@차전문가</span>
+                  <div class="editorial-bookmark"><span>456</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=404" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/leek.png" alt="파전" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">파전</h3>
+                  <span class="editorial-author">@전요리사</span>
+                  <div class="editorial-bookmark"><span>589</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=405" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/pepper.png" alt="고추장 비빔밥" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">고추장 비빔밥</h3>
+                  <span class="editorial-author">@비빔밥러버</span>
+                  <div class="editorial-bookmark"><span>678</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=korean" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category: Drink -->
+      <section class="category-section" id="section-drink">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">술안주</p>
+          <a href="recipe-list.html?category=drink" class="category-title">오늘 한 잔, 안주는 내가 만들게</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">술안주</p>
+            <a href="recipe-list.html?category=drink" class="category-title">오늘 한 잔, 안주는 내가 만들게</a>
+            <p class="category-desc">슬런치가 엄선한 술안주 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=501" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/peanut.png" alt="땅콩 조림" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">땅콩 조림</h3>
+                  <span class="editorial-author">@술꾼</span>
+                  <div class="editorial-bookmark"><span>445</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=502" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/corn.png" alt="옥수수 치즈구이" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">옥수수 치즈구이</h3>
+                  <span class="editorial-author">@안주왕</span>
+                  <div class="editorial-bookmark"><span>534</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=503" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/asparagus.png" alt="아스파라거스 구이" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">아스파라거스 구이</h3>
+                  <span class="editorial-author">@바텐더</span>
+                  <div class="editorial-bookmark"><span>367</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=504" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/broccoli.png" alt="브로콜리 튀김" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">브로콜리 튀김</h3>
+                  <span class="editorial-author">@튀김장인</span>
+                  <div class="editorial-bookmark"><span>423</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=505" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/dill.png" alt="딜 감자튀김" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">딜 감자튀김</h3>
+                  <span class="editorial-author">@감자사랑</span>
+                  <div class="editorial-bookmark"><span>489</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=drink" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category: Date -->
+      <section class="category-section" id="section-date">
+        <div class="category-mobile-header">
+          <p class="category-subtitle">데이트</p>
+          <a href="recipe-list.html?category=date" class="category-title">오늘 저녁, 특별한 사람과 함께</a>
+        </div>
+        <div class="category-inner">
+          <div class="category-text">
+            <p class="category-subtitle">데이트</p>
+            <a href="recipe-list.html?category=date" class="category-title">오늘 저녁, 특별한 사람과 함께</a>
+            <p class="category-desc">슬런치가 엄선한 데이트 레시피를 만나보세요.</p>
+          </div>
+          <div class="category-slider">
+            <div class="slider-container no-scrollbar">
+              <a href="recipe-detail.html?id=601" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/mushroom.png" alt="트러플 리조또" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">트러플 리조또</h3>
+                  <span class="editorial-author">@로맨티스트</span>
+                  <div class="editorial-bookmark"><span>789</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=602" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/lemon.png" alt="레몬 파스타" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">레몬 파스타</h3>
+                  <span class="editorial-author">@파스타장인</span>
+                  <div class="editorial-bookmark"><span>656</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=603" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/peach.png" alt="복숭아 카프레제" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">복숭아 카프레제</h3>
+                  <span class="editorial-author">@샐러드마스터</span>
+                  <div class="editorial-bookmark"><span>534</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=604" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/kiwi.png" alt="키위 모히또" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">키위 모히또</h3>
+                  <span class="editorial-author">@믹솔로지스트</span>
+                  <div class="editorial-bookmark"><span>612</span></div>
+                </div>
+              </a>
+              <a href="recipe-detail.html?id=605" class="editorial-card">
+                <div class="editorial-img"><img src="../public/vege_flot_img/lychee.png" alt="리치 샴페인" onerror="this.style.display='none'"></div>
+                <div class="editorial-content">
+                  <h3 class="editorial-title">리치 샴페인</h3>
+                  <span class="editorial-author">@소믈리에</span>
+                  <div class="editorial-bookmark"><span>567</span></div>
+                </div>
+              </a>
+              <a href="recipe-list.html?category=date" class="view-all-card"><span>View More</span></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="cta-section">
+        <div class="cta-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6B6B6B" stroke-width="1.5">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </div>
+        <h3 class="cta-title">나만의 레시피를 공유해보세요</h3>
+        <p class="cta-desc">당신의 특별한 비건 레시피를 슬런치 커뮤니티와 함께 나눠보세요.</p>
+        <a href="recipe-upload.html" class="cta-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          레시피 작성하기
+        </a>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-title">ABOUT</p>
+          <a href="about.html" class="footer-link">Slow and Lunch</a>
+          <a href="about-branch.html" class="footer-link">Branch</a>
+          <a href="about-b2b.html" class="footer-link">B2B & V-tech</a>
+        </div>
+        <div>
+          <p class="footer-title">NEWSLETTER</p>
+          <p class="footer-text">슬런치 에디터가 발행하는 아티클</p>
+        </div>
+        <div>
+          <p class="footer-title">CONTACT</p>
+          <a href="mailto:slunch@slunch.co.kr" class="footer-link">일반문의 slunch@slunch.co.kr</a>
+          <a href="mailto:export@slunch.co.kr" class="footer-link">B2B export@slunch.co.kr</a>
+        </div>
+        <div>
+          <p class="footer-title">SOCIAL</p>
+          <a href="https://instagram.com/slunch_factory" target="_blank" class="footer-link">Instagram</a>
+          <a href="https://youtube.com" target="_blank" class="footer-link">Youtube</a>
+          <a href="https://linkedin.com" target="_blank" class="footer-link">Linked In</a>
+        </div>
+        <div>
+          <p class="footer-title">BANK</p>
+          <p class="footer-text" style="font-family: monospace;">우리은행 1005-504-450570</p>
+          <p class="footer-text">(주)슬런치팩토리</p>
+          <p class="footer-title" style="margin-top: 24px;">CS</p>
+          <p class="footer-text" style="font-family: monospace;">032-224-6525</p>
+          <p class="footer-text">카카오톡 채널 문의</p>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>(주)슬런치팩토리 | 대표 이현아 | 사업자번호 288-86-02863 | 통신판매업 제2023-경기부천-0868호 | 경기 부천시 소사로160번길 23-8</p>
+        <p>© 2024 Slunch Factory. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching -> scroll to section
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+
+          const sectionId = this.dataset.section;
+          if (sectionId === 'popular') {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            const section = document.getElementById('section-' + sectionId);
+            if (section) {
+              const headerHeight = 112; // header + control bar
+              const offset = section.offsetTop - headerHeight;
+              window.scrollTo({ top: offset, behavior: 'smooth' });
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

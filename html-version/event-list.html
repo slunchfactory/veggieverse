@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 이벤트 상세" />
+    <title>Event Detail - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root { --lime: #DCFD4A; --charcoal: #333; --warm-gray: #888; --muted: #999; --brown: #8C451D; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #FFFDF5; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+      .header { height: 64px; background: var(--lime); border-bottom: 1px solid #000; position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+      .header-logo { height: 36px; }
+      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #000; }
+
+      main { margin-top: 64px; max-width: 800px; margin-left: auto; margin-right: auto; }
+
+      .event-hero { aspect-ratio: 16/9; background: #E8E4DF; }
+      .event-hero img { width: 100%; height: 100%; object-fit: cover; }
+
+      .event-content { padding: 32px 24px; }
+
+      .event-status { display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 500; margin-bottom: 16px; background: var(--lime); }
+      .event-title { font-size: 28px; font-weight: 400; margin-bottom: 16px; }
+      .event-period { font-size: 14px; color: var(--warm-gray); margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #eee; }
+
+      .event-desc { font-size: 15px; color: var(--charcoal); line-height: 1.8; margin-bottom: 32px; }
+
+      .event-details { background: #f9f9f9; padding: 24px; margin-bottom: 32px; }
+      .detail-title { font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+      .detail-list { list-style: none; }
+      .detail-list li { font-size: 14px; color: var(--charcoal); line-height: 2; padding-left: 16px; position: relative; }
+      .detail-list li::before { content: '•'; position: absolute; left: 0; color: var(--warm-gray); }
+
+      .event-btn { display: block; width: 100%; padding: 16px; background: var(--brown); color: #fff; text-align: center; font-size: 15px; text-decoration: none; }
+      .event-btn:hover { opacity: 0.9; }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="event.html" class="header-back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <a href="index.html">
+        <img src="../public/common/logo.png" alt="SLUNCH FACTORY" class="header-logo">
+      </a>
+    </header>
+
+    <main>
+      <div class="event-hero">
+        <img src="../public/images/event/event-1.jpg" alt="신메뉴 출시 이벤트" onerror="this.parentElement.style.background='#D4CFC7'">
+      </div>
+
+      <div class="event-content">
+        <span class="event-status">진행중</span>
+        <h1 class="event-title">신메뉴 출시 기념 20% 할인</h1>
+        <p class="event-period">2024.01.01 - 2024.01.31</p>
+
+        <p class="event-desc">
+          새해를 맞아 슬런치 팩토리에서 신메뉴를 출시했습니다!
+          출시 기념으로 한 달간 20% 할인 행사를 진행합니다.
+          이 기회에 새로운 비건 메뉴를 맛보세요.
+        </p>
+
+        <div class="event-details">
+          <h3 class="detail-title">이벤트 안내</h3>
+          <ul class="detail-list">
+            <li>기간: 2024년 1월 1일 ~ 1월 31일</li>
+            <li>대상: 신메뉴 전 품목</li>
+            <li>할인율: 20%</li>
+            <li>온라인/오프라인 동시 진행</li>
+            <li>다른 쿠폰과 중복 사용 불가</li>
+          </ul>
+        </div>
+
+        <a href="store.html" class="event-btn">상품 보러가기</a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 식단 구독" />
+    <title>Subscribe - 슬런치 팩토리</title>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <style>
+      /* === DESIGN SYSTEM === */
+      :root {
+        --header-h: 64px;
+        --cream: #FDFBF7;
+        --lime: #DCFD4A;
+        --black: #000000;
+        --gray: #6B6B6B;
+        --gray-light: #9A9A9A;
+        --gray-lighter: #E0E0E0;
+        --white: #FFFFFF;
+        --naver-green: #03C75A;
+        --blue-50: #eff6ff;
+        --blue-200: #bfdbfe;
+        --blue-500: #3b82f6;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
+      body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--cream);
+        min-height: 100vh;
+        color: var(--black);
+        overflow: hidden;
+      }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* === HEADER === */
+      .header {
+        height: var(--header-h);
+        background: var(--lime);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .header-left button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .header-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .header-center img { height: 36px; display: block; }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-right a {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        font-size: 14px;
+        color: var(--black);
+        text-decoration: none;
+      }
+      .header-profile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* === MAIN CONTAINER === */
+      .main-container {
+        display: flex;
+        height: calc(100vh - var(--header-h));
+        margin-top: var(--header-h);
+        border-top: 1px solid var(--black);
+        overflow: hidden;
+      }
+
+      /* === LEFT PANEL === */
+      .left-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid var(--black);
+        position: relative;
+      }
+
+      /* Duration Tabs */
+      .duration-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--black);
+        flex-shrink: 0;
+      }
+      .duration-tab {
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--white);
+        color: var(--black);
+        border: none;
+      }
+      .duration-tab:first-child { border-right: 1px solid var(--black); }
+      .duration-tab:hover { background: #f5f5f5; }
+      .duration-tab.active { background: var(--black); color: var(--white); }
+
+      /* Plan Type Tabs */
+      .plan-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--black);
+        flex-shrink: 0;
+      }
+      .plan-tab {
+        flex: 1;
+        padding: 12px;
+        text-align: center;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--white);
+        color: var(--black);
+        border: none;
+        border-right: 1px solid var(--black);
+      }
+      .plan-tab:last-child { border-right: none; }
+      .plan-tab:hover:not(.disabled) { background: #f5f5f5; }
+      .plan-tab.active { background: var(--black); color: var(--white); }
+      .plan-tab.disabled { background: #f5f5f5; color: #ccc; cursor: not-allowed; }
+
+      /* Calendar Area */
+      .calendar-area {
+        flex: 1;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+      }
+      .calendar-guide {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+      }
+      .guide-text {
+        font-size: 16px;
+        color: var(--gray);
+        line-height: 1.8;
+      }
+      .guide-hint {
+        font-size: 13px;
+        color: #ccc;
+        margin-top: 16px;
+      }
+
+      /* Calendar Grid */
+      .calendar-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border-bottom: 1px solid #ddd;
+        background: #f5f5f5;
+      }
+      .calendar-header-cell {
+        padding: 8px;
+        text-align: center;
+        font-size: 11px;
+        color: var(--gray);
+        border-right: 1px solid #eee;
+      }
+      .calendar-header-cell:last-child { border-right: none; }
+      .calendar-header-cell.sun { color: #ef4444; }
+      .calendar-header-cell.sat { color: #3b82f6; }
+
+      .calendar-row {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        flex: 1;
+      }
+      .calendar-cell {
+        border-right: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+      }
+      .calendar-cell:last-child { border-right: none; }
+      .calendar-date {
+        padding: 4px;
+        text-align: center;
+        font-size: 12px;
+        background: #f9f9f9;
+        border-bottom: 1px solid #eee;
+      }
+      .calendar-date.sun { background: #fef2f2; color: #ef4444; }
+      .calendar-slots {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .calendar-slot {
+        flex: 1;
+        padding: 4px;
+        min-height: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        border-bottom: 1px solid #f0f0f0;
+        gap: 4px;
+      }
+      .calendar-slot:last-child { border-bottom: none; }
+      .calendar-slot:hover { background: #f5f5f5; }
+      .calendar-slot.selected { background: var(--blue-50); }
+      .slot-label { font-size: 9px; color: #ddd; }
+      .slot-meal-img {
+        width: 100%;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 4px;
+      }
+      .slot-meal-name {
+        font-size: 9px;
+        text-align: center;
+        line-height: 1.2;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .slot-remove {
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        width: 16px;
+        height: 16px;
+        background: var(--black);
+        color: var(--white);
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        cursor: pointer;
+        border: none;
+      }
+      .calendar-slot:hover .slot-remove { display: flex; }
+
+      /* Checkout Bar */
+      .checkout-bar {
+        height: 90px;
+        border-top: 1px solid var(--black);
+        background: var(--white);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 32px;
+        flex-shrink: 0;
+      }
+      .checkout-label {
+        font-size: 10px;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 4px;
+      }
+      .checkout-price-row {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+      }
+      .checkout-price {
+        font-size: 28px;
+      }
+      .checkout-original {
+        font-size: 14px;
+        color: #aaa;
+        text-decoration: line-through;
+      }
+      .checkout-discount {
+        font-size: 12px;
+        color: #ef4444;
+      }
+      .checkout-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .checkout-count {
+        font-size: 13px;
+        color: #aaa;
+      }
+      .btn-npay {
+        height: 50px;
+        padding: 0 24px;
+        background: var(--naver-green);
+        color: var(--white);
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-npay:hover { background: #02b351; }
+      .btn-checkout {
+        height: 50px;
+        padding: 0 40px;
+        background: var(--black);
+        color: var(--white);
+        font-size: 15px;
+        border: none;
+        cursor: pointer;
+      }
+      .btn-checkout:hover { background: #333; }
+      .btn-checkout:disabled {
+        background: #eee;
+        color: #ccc;
+        cursor: not-allowed;
+      }
+
+      /* === RIGHT PANEL === */
+      .right-panel {
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        background: #fafafa;
+      }
+
+      /* Filter Header */
+      .filter-header {
+        padding: 24px;
+        border-bottom: 1px solid var(--black);
+        background: var(--white);
+        flex-shrink: 0;
+      }
+      .filter-title {
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+      .filter-label {
+        font-size: 10px;
+        color: #aaa;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 10px;
+      }
+      .filter-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .filter-tag {
+        padding: 6px 12px;
+        font-size: 11px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: #f5f5f5;
+        color: var(--gray);
+        border: 1px solid #eee;
+      }
+      .filter-tag:hover { border-color: #aaa; }
+      .filter-tag.active {
+        background: var(--blue-50);
+        color: var(--blue-500);
+        border-color: var(--blue-200);
+      }
+
+      /* Menu Grid */
+      .menu-grid-area {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+      .menu-card {
+        cursor: pointer;
+      }
+      .menu-card:hover .menu-name { text-decoration: underline; }
+      .menu-img {
+        aspect-ratio: 1;
+        background: #f5f5f5;
+        border-radius: 4px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        position: relative;
+      }
+      .menu-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s;
+      }
+      .menu-card:hover .menu-img img { transform: scale(1.05); }
+      .menu-name {
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+      .menu-desc {
+        font-size: 13px;
+        color: var(--gray);
+        margin-bottom: 8px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .menu-price { font-size: 16px; }
+
+      .menu-empty {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #aaa;
+        font-size: 14px;
+      }
+
+      /* === MOBILE === */
+      @media (max-width: 1024px) {
+        body { overflow: auto; }
+        .main-container {
+          flex-direction: column;
+          height: auto;
+          overflow: visible;
+        }
+        .left-panel, .right-panel { width: 100%; }
+        .left-panel { min-height: 60vh; border-right: none; border-bottom: 1px solid var(--black); }
+        .menu-grid { grid-template-columns: repeat(2, 1fr); }
+        .checkout-bar {
+          flex-direction: column;
+          height: auto;
+          padding: 16px;
+          gap: 16px;
+        }
+        .checkout-actions { width: 100%; justify-content: flex-end; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-left">
+          <button aria-label="메뉴 열기">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <a href="index.html" class="header-center">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY">
+        </a>
+        <div class="header-right">
+          <a href="cart.html" aria-label="장바구니">(0)</a>
+          <a href="mypage.html" aria-label="마이페이지">
+            <div class="header-profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <!-- Left Panel: Calendar + Checkout -->
+      <section class="left-panel">
+        <!-- Duration Tabs -->
+        <div class="duration-tabs">
+          <button class="duration-tab active" onclick="selectDuration(1)">1주</button>
+          <button class="duration-tab" onclick="selectDuration(2)">2주</button>
+        </div>
+
+        <!-- Plan Type Tabs -->
+        <div class="plan-tabs" id="planTabs">
+          <button class="plan-tab" data-plan="glow" onclick="selectPlan('glow')">글로우</button>
+          <button class="plan-tab" data-plan="wellness" onclick="selectPlan('wellness')">웰니스</button>
+          <button class="plan-tab" data-plan="balance" onclick="selectPlan('balance')">밸런스</button>
+          <button class="plan-tab" data-plan="light" onclick="selectPlan('light')">라이트</button>
+          <button class="plan-tab" data-plan="clean" onclick="selectPlan('clean')">클린</button>
+        </div>
+
+        <!-- Calendar Area -->
+        <div class="calendar-area no-scrollbar">
+          <!-- Guide (shown when no plan selected) -->
+          <div class="calendar-guide" id="calendarGuide">
+            <div>
+              <p class="guide-text">
+                구독할 기간을 선택하신 후<br>
+                내가 원하는 타입을 골라주세요!
+              </p>
+              <p class="guide-hint">👆 위에서 식단 타입을 선택해주세요</p>
+            </div>
+          </div>
+
+          <!-- Calendar Grid (hidden initially) -->
+          <div id="calendarGrid" style="display: none; flex: 1; flex-direction: column;">
+            <div class="calendar-header">
+              <div class="calendar-header-cell">월</div>
+              <div class="calendar-header-cell">화</div>
+              <div class="calendar-header-cell">수</div>
+              <div class="calendar-header-cell">목</div>
+              <div class="calendar-header-cell">금</div>
+              <div class="calendar-header-cell sat">토</div>
+              <div class="calendar-header-cell sun">일</div>
+            </div>
+            <div class="calendar-row" id="week1Row"></div>
+            <div class="calendar-row" id="week2Row" style="display: none; border-top: 1px solid #ddd;"></div>
+          </div>
+        </div>
+
+        <!-- Checkout Bar -->
+        <div class="checkout-bar">
+          <div class="checkout-info">
+            <p class="checkout-label">예상 결제 금액</p>
+            <div class="checkout-price-row">
+              <span class="checkout-price" id="totalPrice">0원</span>
+              <span class="checkout-original" id="originalPrice" style="display: none;">0원</span>
+              <span class="checkout-discount" id="discountLabel" style="display: none;">10% 할인</span>
+            </div>
+          </div>
+          <div class="checkout-actions">
+            <span class="checkout-count" id="slotCount">0 / 14</span>
+            <button class="btn-npay"><span style="font-weight:900 !important;">N</span>Pay</button>
+            <button class="btn-checkout" id="checkoutBtn" disabled>구독 시작</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Panel: Menu Library -->
+      <aside class="right-panel">
+        <!-- Filter Header -->
+        <div class="filter-header">
+          <h2 class="filter-title">메뉴 라이브러리</h2>
+          <p class="filter-label">제외 재료 (메뉴 자동 변환)</p>
+          <div class="filter-tags">
+            <span class="filter-tag" onclick="toggleFilter(this, 'dairy')">유제품</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'shellfish')">갑각류</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'fish')">생선</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'nuts')">견과류</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'chicken')">닭고기</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'egg')">계란</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'gluten')">글루텐</span>
+            <span class="filter-tag" onclick="toggleFilter(this, 'spicy')">매운맛</span>
+          </div>
+        </div>
+
+        <!-- Menu Grid -->
+        <div class="menu-grid-area no-scrollbar">
+          <div class="menu-grid" id="menuGrid">
+            <!-- Glow Menus -->
+            <div class="menu-card" data-id="G01" data-category="glow" data-price="9500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example.png" alt="노르웨이 연어 콩피" onerror="this.src='https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">노르웨이 연어 콩피</p>
+              <p class="menu-desc">저온에서 천천히 익힌 프리미엄 연어</p>
+              <p class="menu-price">9,500원</p>
+            </div>
+            <div class="menu-card" data-id="G02" data-category="glow" data-price="12000" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example2.png" alt="홋카이도 관자 버터 소테" onerror="this.src='https://images.unsplash.com/photo-1559847844-5315695dadae?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">홋카이도 관자 버터 소테</p>
+              <p class="menu-desc">버터에 구운 홋카이도산 관자</p>
+              <p class="menu-price">12,000원</p>
+            </div>
+            <div class="menu-card" data-id="G03" data-category="glow" data-price="8900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example3.png" alt="연어 아보카도 덮밥" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">연어 아보카도 덮밥</p>
+              <p class="menu-desc">신선한 연어와 아보카도의 조합</p>
+              <p class="menu-price">8,900원</p>
+            </div>
+            <div class="menu-card" data-id="G04" data-category="glow" data-price="7900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example4.png" alt="아보카도 타르타르" onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">아보카도 타르타르</p>
+              <p class="menu-desc">크리미한 아보카도 타르타르</p>
+              <p class="menu-price">7,900원</p>
+            </div>
+            <div class="menu-card" data-id="G05" data-category="glow" data-price="7500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example5.png" alt="로스티드 비트 카르파초" onerror="this.src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">로스티드 비트 카르파초</p>
+              <p class="menu-desc">구운 비트의 선명한 맛</p>
+              <p class="menu-price">7,500원</p>
+            </div>
+            <div class="menu-card" data-id="G06" data-category="glow" data-price="9900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example6.png" alt="미소 글레이즈드 연어" onerror="this.src='https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">미소 글레이즈드 연어</p>
+              <p class="menu-desc">미소 소스로 글레이즈한 연어</p>
+              <p class="menu-price">9,900원</p>
+            </div>
+
+            <!-- Recovery/Wellness Menus -->
+            <div class="menu-card" data-id="R01" data-category="wellness" data-price="9500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example.png" alt="치킨 콩피" onerror="this.src='https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">치킨 콩피</p>
+              <p class="menu-desc">저온에서 천천히 익힌 닭다리살</p>
+              <p class="menu-price">9,500원</p>
+            </div>
+            <div class="menu-card" data-id="R02" data-category="wellness" data-price="9200" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example2.png" alt="치킨 마르살라" onerror="this.src='https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">치킨 마르살라</p>
+              <p class="menu-desc">마르살라 와인 소스 치킨</p>
+              <p class="menu-price">9,200원</p>
+            </div>
+            <div class="menu-card" data-id="R03" data-category="wellness" data-price="6900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example3.png" alt="치킨 마요 덮밥" onerror="this.src='https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">치킨 마요 덮밥</p>
+              <p class="menu-desc">부드러운 치킨과 마요네즈의 조화</p>
+              <p class="menu-price">6,900원</p>
+            </div>
+            <div class="menu-card" data-id="R05" data-category="wellness" data-price="6900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example5.png" alt="크리스피 두부 스테이크" onerror="this.src='https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">크리스피 두부 스테이크</p>
+              <p class="menu-desc">바삭하게 구운 두부 스테이크</p>
+              <p class="menu-price">6,900원</p>
+            </div>
+
+            <!-- Balance Menus -->
+            <div class="menu-card" data-id="B01" data-category="balance" data-price="8900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example.png" alt="트러플 크림 리조또" onerror="this.src='https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">트러플 크림 리조또</p>
+              <p class="menu-desc">트러플 향 크리미 리조또</p>
+              <p class="menu-price">8,900원</p>
+            </div>
+            <div class="menu-card" data-id="B03" data-category="balance" data-price="6900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example3.png" alt="채소 카레 덮밥" onerror="this.src='https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">채소 카레 덮밥</p>
+              <p class="menu-desc">향신료 가득한 채소 카레</p>
+              <p class="menu-price">6,900원</p>
+            </div>
+            <div class="menu-card" data-id="B05" data-category="balance" data-price="8500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example5.png" alt="버섯 리조또" onerror="this.src='https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">버섯 리조또</p>
+              <p class="menu-desc">다양한 버섯의 크리미 리조또</p>
+              <p class="menu-price">8,500원</p>
+            </div>
+
+            <!-- Light Menus -->
+            <div class="menu-card" data-id="L01" data-category="light" data-price="6500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example.png" alt="당근 오렌지 수프" onerror="this.src='https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">당근 오렌지 수프</p>
+              <p class="menu-desc">상큼한 당근 오렌지 수프</p>
+              <p class="menu-price">6,500원</p>
+            </div>
+            <div class="menu-card" data-id="L03" data-category="light" data-price="6900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example3.png" alt="비건 포케 볼" onerror="this.src='https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">비건 포케 볼</p>
+              <p class="menu-desc">두부와 채소로 만든 비건 포케</p>
+              <p class="menu-price">6,900원</p>
+            </div>
+            <div class="menu-card" data-id="L06" data-category="light" data-price="6500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example6.png" alt="렌틸콩 수프" onerror="this.src='https://images.unsplash.com/photo-1547592166-23ac45744acd?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">렌틸콩 수프</p>
+              <p class="menu-desc">고단백 렌틸콩 수프</p>
+              <p class="menu-price">6,500원</p>
+            </div>
+
+            <!-- Clean Menus -->
+            <div class="menu-card" data-id="C01" data-category="clean" data-price="7900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example.png" alt="사프란 퀴노아 필라프" onerror="this.src='https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">사프란 퀴노아 필라프</p>
+              <p class="menu-desc">사프란 향이 깃든 퀴노아 필라프</p>
+              <p class="menu-price">7,900원</p>
+            </div>
+            <div class="menu-card" data-id="C02" data-category="clean" data-price="7500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example2.png" alt="지중해식 퀴노아 샐러드" onerror="this.src='https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">지중해식 퀴노아 샐러드</p>
+              <p class="menu-desc">올리브와 허브의 지중해 샐러드</p>
+              <p class="menu-price">7,500원</p>
+            </div>
+            <div class="menu-card" data-id="C03" data-category="clean" data-price="7500" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example3.png" alt="구운 콜리플라워 스테이크" onerror="this.src='https://images.unsplash.com/photo-1518779578993-ec3579fee39f?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">구운 콜리플라워 스테이크</p>
+              <p class="menu-desc">통째로 구운 콜리플라워</p>
+              <p class="menu-price">7,500원</p>
+            </div>
+            <div class="menu-card" data-id="C05" data-category="clean" data-price="6900" onclick="addMeal(this)">
+              <div class="menu-img"><img src="../public/images/menus/example5.png" alt="라따뚜이" onerror="this.src='https://images.unsplash.com/photo-1572453800999-e8d2d1589b7c?w=300&h=300&fit=crop'"></div>
+              <p class="menu-name">라따뚜이</p>
+              <p class="menu-desc">프로방스식 채소 스튜</p>
+              <p class="menu-price">6,900원</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script>
+      let currentDuration = 1;
+      let durationSelected = true;
+      let currentPlan = null;
+      let mealPlan = {};
+      let selectedSlotId = null;
+      let totalSlots = 14;
+
+      function selectDuration(weeks) {
+        currentDuration = weeks;
+        durationSelected = true;
+        totalSlots = weeks === 1 ? 14 : 28;
+
+        document.querySelectorAll('.duration-tab').forEach((tab, i) => {
+          tab.classList.toggle('active', i === weeks - 1);
+        });
+
+        // Show/hide week 2
+        document.getElementById('week2Row').style.display = weeks === 2 ? 'grid' : 'none';
+
+        updateSlotCount();
+        updateCheckout();
+      }
+
+      function selectPlan(planId) {
+        if (!durationSelected) return;
+
+        currentPlan = planId;
+        document.querySelectorAll('.plan-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.dataset.plan === planId);
+        });
+
+        // Show calendar grid
+        document.getElementById('calendarGuide').style.display = 'none';
+        document.getElementById('calendarGrid').style.display = 'flex';
+
+        // Generate calendar
+        generateCalendar();
+
+        // Auto-fill with plan menus
+        autoFillMeals(planId);
+
+        // Filter menu grid
+        filterMenus(planId);
+      }
+
+      function generateCalendar() {
+        const week1Row = document.getElementById('week1Row');
+        const week2Row = document.getElementById('week2Row');
+        week1Row.innerHTML = '';
+        week2Row.innerHTML = '';
+
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const daysUntilMonday = dayOfWeek === 0 ? 1 : dayOfWeek === 1 ? 7 : 8 - dayOfWeek;
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() + daysUntilMonday);
+
+        // Week 1
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(startDate);
+          date.setDate(startDate.getDate() + i);
+          week1Row.appendChild(createDayCell(date, i, 1));
+        }
+
+        // Week 2
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(startDate);
+          date.setDate(startDate.getDate() + 7 + i);
+          week2Row.appendChild(createDayCell(date, i, 2));
+        }
+      }
+
+      function createDayCell(date, dayIndex, week) {
+        const dayNum = date.getDate();
+        const isSun = date.getDay() === 0;
+        const dateKey = date.toISOString().split('T')[0];
+
+        const cell = document.createElement('div');
+        cell.className = 'calendar-cell';
+        cell.innerHTML = `
+          <div class="calendar-date ${isSun ? 'sun' : ''}">${dayNum}</div>
+          <div class="calendar-slots">
+            <div class="calendar-slot" data-slot="${dateKey}-lunch" onclick="selectSlot(this)">
+              <span class="slot-label">점심</span>
+            </div>
+            <div class="calendar-slot" data-slot="${dateKey}-dinner" onclick="selectSlot(this)">
+              <span class="slot-label">저녁</span>
+            </div>
+          </div>
+        `;
+        return cell;
+      }
+
+      function selectSlot(el) {
+        document.querySelectorAll('.calendar-slot').forEach(s => s.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedSlotId = el.dataset.slot;
+      }
+
+      function autoFillMeals(planId) {
+        // Get menus for this plan
+        const menus = document.querySelectorAll(`.menu-card[data-category="${planId}"]`);
+        if (menus.length === 0) return;
+
+        const menuArray = Array.from(menus);
+        mealPlan = {};
+
+        // Fill all slots
+        const slots = document.querySelectorAll('.calendar-slot');
+        let menuIndex = 0;
+
+        slots.forEach(slot => {
+          if (currentDuration === 1 && slot.closest('#week2Row')) return;
+
+          const menu = menuArray[menuIndex % menuArray.length];
+          const slotId = slot.dataset.slot;
+
+          mealPlan[slotId] = {
+            id: menu.dataset.id,
+            name: menu.querySelector('.menu-name').textContent,
+            price: parseInt(menu.dataset.price),
+            image: menu.querySelector('img').src
+          };
+
+          // Update slot UI
+          slot.innerHTML = `
+            <img class="slot-meal-img" src="${mealPlan[slotId].image}" alt="${mealPlan[slotId].name}">
+            <span class="slot-meal-name">${mealPlan[slotId].name}</span>
+          `;
+
+          menuIndex++;
+        });
+
+        updateSlotCount();
+        updateCheckout();
+      }
+
+      function filterMenus(planId) {
+        const allMenus = document.querySelectorAll('.menu-card');
+        allMenus.forEach(menu => {
+          if (planId === null || menu.dataset.category === planId) {
+            menu.style.display = 'block';
+          } else {
+            menu.style.display = 'none';
+          }
+        });
+      }
+
+      function toggleFilter(el, category) {
+        el.classList.toggle('active');
+        // In a real app, this would filter menus based on excluded ingredients
+      }
+
+      function addMeal(menuCard) {
+        if (!selectedSlotId) {
+          // Find first empty slot
+          const slots = document.querySelectorAll('.calendar-slot');
+          for (const slot of slots) {
+            if (currentDuration === 1 && slot.closest('#week2Row')) continue;
+            if (!mealPlan[slot.dataset.slot]) {
+              selectedSlotId = slot.dataset.slot;
+              slot.classList.add('selected');
+              break;
+            }
+          }
+        }
+
+        if (!selectedSlotId) return;
+
+        const slot = document.querySelector(`[data-slot="${selectedSlotId}"]`);
+        const meal = {
+          id: menuCard.dataset.id,
+          name: menuCard.querySelector('.menu-name').textContent,
+          price: parseInt(menuCard.dataset.price),
+          image: menuCard.querySelector('img').src
+        };
+
+        mealPlan[selectedSlotId] = meal;
+
+        // Update slot UI
+        slot.innerHTML = `
+          <img class="slot-meal-img" src="${meal.image}" alt="${meal.name}">
+          <span class="slot-meal-name">${meal.name}</span>
+        `;
+        slot.classList.remove('selected');
+
+        // Move to next empty slot
+        const slots = Array.from(document.querySelectorAll('.calendar-slot'));
+        const currentIndex = slots.findIndex(s => s.dataset.slot === selectedSlotId);
+        selectedSlotId = null;
+
+        for (let i = currentIndex + 1; i < slots.length; i++) {
+          if (currentDuration === 1 && slots[i].closest('#week2Row')) continue;
+          if (!mealPlan[slots[i].dataset.slot]) {
+            selectedSlotId = slots[i].dataset.slot;
+            slots[i].classList.add('selected');
+            break;
+          }
+        }
+
+        updateSlotCount();
+        updateCheckout();
+      }
+
+      function updateSlotCount() {
+        const filled = Object.keys(mealPlan).length;
+        document.getElementById('slotCount').textContent = `${filled} / ${totalSlots}`;
+        document.getElementById('checkoutBtn').disabled = filled === 0;
+        document.getElementById('checkoutBtn').textContent = filled === totalSlots ? '결제하기' : '구독 시작';
+      }
+
+      function updateCheckout() {
+        const total = Object.values(mealPlan).reduce((sum, meal) => sum + meal.price, 0);
+        const original = Math.round(total / 0.9);
+
+        document.getElementById('totalPrice').textContent = formatPrice(total);
+
+        if (total > 0) {
+          document.getElementById('originalPrice').textContent = formatPrice(original);
+          document.getElementById('originalPrice').style.display = 'inline';
+          document.getElementById('discountLabel').style.display = 'inline';
+        } else {
+          document.getElementById('originalPrice').style.display = 'none';
+          document.getElementById('discountLabel').style.display = 'none';
+        }
+      }
+
+      function formatPrice(price) {
+        return price.toLocaleString() + '원';
+      }
+    </script>
+  </body>
+</html>

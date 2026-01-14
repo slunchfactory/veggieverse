@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 스토어" />
+    <title>Store - 슬런치 팩토리</title>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <style>
+      /* === DESIGN SYSTEM === */
+      :root {
+        --header-h: 64px;
+        --control-bar-h: 48px;
+        --cream: #FDFBF7;
+        --lime: #DCFD4A;
+        --black: #000000;
+        --gray: #6B6B6B;
+        --gray-light: #9A9A9A;
+        --gray-lighter: #E0E0E0;
+        --white: #FFFFFF;
+        --discount-blue: #87b5e1;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
+      body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--cream);
+        min-height: 100vh;
+        color: var(--black);
+      }
+
+      /* === HEADER === */
+      .header {
+        height: var(--header-h);
+        background: var(--lime);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .header-left button {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .header-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .header-center img {
+        height: 36px;
+        display: block;
+      }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-right a {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        font-size: 14px;
+        color: var(--black);
+        text-decoration: none;
+      }
+      .header-profile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* === TOP CONTROL BAR === */
+      .control-bar {
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        z-index: 45;
+        background: var(--white);
+        border-bottom: 1px solid var(--black);
+      }
+      .control-bar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--control-bar-h);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+      }
+      .tabs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        overflow-x: auto;
+        height: 100%;
+      }
+      .tabs::-webkit-scrollbar { display: none; }
+      .tab {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: 14px;
+        line-height: 48px;
+        color: var(--gray);
+        cursor: pointer;
+        white-space: nowrap;
+        text-decoration: none;
+        transition: color 0.15s ease;
+      }
+      .tab:hover { color: var(--black); }
+      .tab.active {
+        color: var(--black);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .tab-count {
+        margin-left: 4px;
+        color: #999;
+        font-size: 12px;
+      }
+      .control-right {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: absolute;
+        right: 20px;
+      }
+      .btn-filter, .btn-sort {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: none;
+        padding: 8px 0;
+        font-size: 13px;
+        color: var(--gray);
+        cursor: pointer;
+      }
+      .filter-badge {
+        min-width: 18px;
+        height: 18px;
+        background: var(--black);
+        color: var(--white);
+        border-radius: 50%;
+        font-size: 11px;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .sort-dropdown {
+        position: relative;
+      }
+      .sort-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 4px;
+        min-width: 140px;
+        background: var(--white);
+        border: 1px solid var(--black);
+        z-index: 20;
+        display: none;
+      }
+      .sort-menu.open { display: block; }
+      .sort-option {
+        width: 100%;
+        text-align: left;
+        padding: 10px 14px;
+        font-size: 13px;
+        color: var(--gray);
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--gray-lighter);
+        cursor: pointer;
+      }
+      .sort-option:hover { background: #F5F5F5; }
+      .sort-option.active { color: var(--black); background: #F5F5F5; }
+
+      /* === MAIN CONTENT === */
+      main {
+        padding-top: calc(var(--header-h) + var(--control-bar-h) + 24px);
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 60px;
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      /* === PRODUCT GRID === */
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+      }
+      @media (min-width: 640px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+      @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; } }
+      @media (min-width: 1280px) { .product-grid { grid-template-columns: repeat(5, 1fr); } }
+
+      /* === PRODUCT CARD === */
+      .product-card {
+        background: transparent;
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+      }
+      .product-img-wrapper {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        background: #F5F5F5;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .product-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+      }
+      .product-card:hover .product-img-wrapper img {
+        transform: scale(1.05);
+      }
+      .product-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 2px 8px;
+        font-size: 11px;
+        z-index: 10;
+      }
+      .badge-new { background: #F2C94C; color: var(--black); }
+      .badge-best { background: #3fa945; color: var(--white); }
+      .badge-soldout { background: #A0A0A0; color: var(--white); }
+      .product-card.soldout .product-img-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(13, 13, 13, 0.5);
+        z-index: 5;
+      }
+      .product-content {
+        padding: 16px 0 0 0;
+      }
+      .product-name {
+        font-size: 15px;
+        line-height: 1.3;
+        margin: 0 0 8px 0;
+        color: var(--black);
+      }
+      .product-card.soldout .product-name { color: var(--gray); }
+      .product-card:hover .product-name {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .product-desc {
+        font-size: 13px;
+        color: var(--gray);
+        margin: 0 0 12px 0;
+        line-height: 1.5;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .product-card:hover .product-desc {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .product-price-original {
+        font-size: 13px;
+        color: var(--gray-light);
+        text-decoration: line-through;
+        margin: 0 0 4px 0;
+      }
+      .product-price-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .product-discount {
+        font-size: 16px;
+        color: var(--discount-blue);
+      }
+      .product-price {
+        font-size: 16px;
+        color: var(--black);
+      }
+      .product-card.soldout .product-price { color: var(--gray); }
+
+      /* === FILTER DRAWER === */
+      .filter-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: none;
+      }
+      .filter-overlay.open { display: block; }
+      .filter-backdrop {
+        position: absolute;
+        inset: 0;
+      }
+      .filter-drawer {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 320px;
+        max-width: 100vw;
+        background: var(--white);
+        border-left: 1px solid var(--black);
+        display: flex;
+        flex-direction: column;
+        animation: slideInRight 0.3s ease-out;
+      }
+      @keyframes slideInRight {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
+      }
+      .filter-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--black);
+      }
+      .filter-header h3 { font-size: 16px; margin: 0; }
+      .filter-close {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .filter-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
+      .filter-section {
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--black);
+        margin-bottom: 20px;
+      }
+      .filter-section:last-child { border-bottom: none; margin-bottom: 0; }
+      .filter-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        color: var(--gray);
+        cursor: pointer;
+        margin-bottom: 12px;
+      }
+      .filter-option:last-child { margin-bottom: 0; }
+      .filter-option.active { color: var(--black); }
+      .filter-radio {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        border: 1px solid var(--black);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .filter-radio-inner {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--black);
+        display: none;
+      }
+      .filter-option.active .filter-radio-inner { display: block; }
+      .filter-footer {
+        display: flex;
+        gap: 12px;
+        padding: 16px 20px;
+        border-top: 1px solid var(--black);
+      }
+      .btn-reset {
+        flex: 1;
+        padding: 12px;
+        font-size: 14px;
+        background: transparent;
+        border: 1px solid var(--black);
+        cursor: pointer;
+      }
+      .btn-apply {
+        flex: 1;
+        padding: 12px;
+        font-size: 14px;
+        background: var(--black);
+        color: var(--white);
+        border: none;
+        cursor: pointer;
+      }
+
+      /* === FOOTER === */
+      .footer {
+        background: var(--lime);
+        border-top: 1px solid var(--black);
+        padding: 40px 20px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 40px;
+        max-width: 1440px;
+        margin: 0 auto 32px;
+      }
+      @media (min-width: 768px) {
+        .footer-grid { grid-template-columns: repeat(5, 1fr); }
+        .footer { padding: 48px 40px; }
+      }
+      .footer-title {
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: var(--black);
+      }
+      .footer-link {
+        display: block;
+        font-size: 13px;
+        color: var(--black);
+        text-decoration: none;
+        line-height: 1.8;
+      }
+      .footer-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .footer-text {
+        font-size: 13px;
+        color: var(--black);
+        line-height: 1.8;
+      }
+      .footer-copyright {
+        font-size: 10px;
+        color: var(--black);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding-top: 24px;
+        border-top: 1px solid var(--black);
+      }
+      @media (min-width: 768px) {
+        .footer-copyright {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+        }
+      }
+
+      /* === MOBILE HIDE === */
+      @media (max-width: 768px) {
+        .control-right { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-left">
+          <button aria-label="메뉴 열기">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <a href="index.html" class="header-center">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY">
+        </a>
+        <div class="header-right">
+          <a href="cart.html" aria-label="장바구니">(0)</a>
+          <a href="mypage.html" aria-label="마이페이지">
+            <div class="header-profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- TOP CONTROL BAR -->
+    <div class="control-bar">
+      <div class="control-bar-inner">
+        <div class="tabs">
+          <button class="tab active" data-category="밀키트">밀키트<span class="tab-count">(6)</span></button>
+          <button class="tab" data-category="베이커리">베이커리<span class="tab-count">(5)</span></button>
+          <button class="tab" data-category="소스/오일">소스/오일<span class="tab-count">(1)</span></button>
+          <button class="tab" data-category="세트">세트<span class="tab-count">(0)</span></button>
+          <button class="tab" data-category="구독">구독<span class="tab-count">(1)</span></button>
+        </div>
+        <div class="control-right">
+          <button class="btn-filter" onclick="openFilter()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/>
+            </svg>
+            <span>Filter</span>
+            <span class="filter-badge" id="filterBadge">0</span>
+          </button>
+          <div class="sort-dropdown">
+            <button class="btn-sort" onclick="toggleSort()">
+              <span id="sortLabel">기본 정렬</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="sort-menu" id="sortMenu">
+              <button class="sort-option active" data-sort="default">기본 정렬</button>
+              <button class="sort-option" data-sort="name-az">상품명순: A-Z</button>
+              <button class="sort-option" data-sort="name-za">상품명순: Z-A</button>
+              <button class="sort-option" data-sort="price-low">가격: 저가순</button>
+              <button class="sort-option" data-sort="price-high">가격: 고가순</button>
+              <button class="sort-option" data-sort="popularity">인기: 높은 순</button>
+              <button class="sort-option" data-sort="algorithm">내 알고리즘</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <div class="product-grid">
+        <!-- Product 1 - NEW -->
+        <a href="store-detail.html?id=1" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-1.jpg" alt="볶음김치" onerror="this.style.display='none'">
+            <span class="product-badge badge-new">NEW</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">볶음김치</h3>
+            <p class="product-desc">젓갈이 들어가지 않은 비건 볶음김치</p>
+            <p class="product-price">12,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 2 - BEST -->
+        <a href="store-detail.html?id=2" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-2.jpg" alt="김치볶음밥" onerror="this.style.display='none'">
+            <span class="product-badge badge-best">BEST</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">김치볶음밥</h3>
+            <p class="product-desc">젓갈이 들어가지 않은 비건 캔김치로 구성한 김치볶음밥 밀키트</p>
+            <p class="product-price-original">15,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">20%</span>
+              <span class="product-price">12,000원</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 3 -->
+        <a href="store-detail.html?id=3" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-3.jpg" alt="시금치 뇨끼" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">시금치 뇨끼</h3>
+            <p class="product-desc">계란, 우유, 버터를 넣지 않은 비건 뇨끼</p>
+            <p class="product-price-original">24,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">25%</span>
+              <span class="product-price">18,000원</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 4 - BEST -->
+        <a href="store-detail.html?id=4" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-4.jpg" alt="블루베리 타르트" onerror="this.style.display='none'">
+            <span class="product-badge badge-best">BEST</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">블루베리 타르트</h3>
+            <p class="product-desc">슬런치 팩토리 프리미엄 블루베리 타르트</p>
+            <p class="product-price-original">44,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">11%</span>
+              <span class="product-price">39,000원</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 5 -->
+        <a href="store-detail.html?id=5" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-5.jpg" alt="복숭아 타르트" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">복숭아 타르트</h3>
+            <p class="product-desc">달콤한 복숭아를 올린 비건 디저트</p>
+            <p class="product-price-original">35,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">9%</span>
+              <span class="product-price">32,000원</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Product 6 - SOLD OUT -->
+        <div class="product-card soldout">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-6.jpg" alt="잠봉뵈르" onerror="this.style.display='none'">
+            <span class="product-badge badge-soldout">SOLD OUT</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">잠봉뵈르</h3>
+            <p class="product-desc">슬런치 팩토리의 베스트 셀러</p>
+            <p class="product-price-original">12,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">33%</span>
+              <span class="product-price">8,000원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 7 - SOLD OUT -->
+        <div class="product-card soldout">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-7.jpg" alt="자두 타르트" onerror="this.style.display='none'">
+            <span class="product-badge badge-soldout">SOLD OUT</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">자두 타르트</h3>
+            <p class="product-desc">상큼한 자두를 올린 프리미엄 비건 타르트</p>
+            <p class="product-price-original">44,000원</p>
+            <div class="product-price-row">
+              <span class="product-discount">11%</span>
+              <span class="product-price">39,000원</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product 8 -->
+        <a href="store-detail.html?id=8" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-8.jpg" alt="피넛버터 초코바" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">피넛버터 초코바</h3>
+            <p class="product-desc">고소한 피넛버터와 달콤한 초콜릿이 만나 만든 비건 초코바</p>
+            <p class="product-price">12,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 9 -->
+        <a href="store-detail.html?id=9" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-9.jpg" alt="김치칼국수" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">김치칼국수</h3>
+            <p class="product-desc">젓갈 없이 만든 비건 김치칼국수</p>
+            <p class="product-price">15,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 10 -->
+        <a href="store-detail.html?id=10" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-10.jpg" alt="김치전" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">김치전</h3>
+            <p class="product-desc">바삭하게 구운 비건 김치전</p>
+            <p class="product-price">18,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 11 -->
+        <a href="store-detail.html?id=11" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-11.jpg" alt="단호박 초코 케익" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">단호박 초코 케익</h3>
+            <p class="product-desc">부드러운 단호박과 진한 초콜릿의 조화</p>
+            <p class="product-price">35,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 12 -->
+        <a href="store-detail.html?id=12" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-12.jpg" alt="말차 케익" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">말차 케익</h3>
+            <p class="product-desc">고소하고 향긋한 말차의 풍미를 담은 비건 케익</p>
+            <p class="product-price">32,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 13 -->
+        <a href="store-detail.html?id=13" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-13.jpg" alt="슬런치 디스커버리 6팩" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">슬런치 디스커버리 6팩</h3>
+            <p class="product-desc">슬런치의 대표 소스들을 한 번에 맛볼 수 있는 세트</p>
+            <p class="product-price">25,000원</p>
+          </div>
+        </a>
+
+        <!-- Product 14 - SOLD OUT -->
+        <div class="product-card soldout">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-14.jpg" alt="페퍼로니 피자" onerror="this.style.display='none'">
+            <span class="product-badge badge-soldout">SOLD OUT</span>
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">페퍼로니 피자</h3>
+            <p class="product-desc">비건 페퍼로니와 신선한 채소를 올린 비건 피자</p>
+            <p class="product-price">22,000원</p>
+          </div>
+        </div>
+
+        <!-- Product 15 -->
+        <a href="store-detail.html?id=15" class="product-card">
+          <div class="product-img-wrapper">
+            <img src="../public/images/store/product-15.jpg" alt="슬런치 위클리" onerror="this.style.display='none'">
+          </div>
+          <div class="product-content">
+            <h3 class="product-name">슬런치 위클리</h3>
+            <p class="product-desc">매주 새로운 비건 메뉴를 만나보는 정기 구독 서비스</p>
+            <p class="product-price">35,000원</p>
+          </div>
+        </a>
+      </div>
+    </main>
+
+    <!-- FILTER DRAWER -->
+    <div class="filter-overlay" id="filterOverlay">
+      <div class="filter-backdrop" onclick="closeFilter()"></div>
+      <div class="filter-drawer">
+        <div class="filter-header">
+          <h3>Filter</h3>
+          <button class="filter-close" onclick="closeFilter()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+              <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+        <div class="filter-body">
+          <!-- 식단 -->
+          <div class="filter-section">
+            <div class="filter-option active" data-filter="diet" data-value="none" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>일반</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="vegan" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>비건</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="lacto" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>락토비건</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="ovo" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>오보</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="lacto-ovo" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>락토오보</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="flexi" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>플렉시</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="pesco" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>페스코</span>
+            </div>
+            <div class="filter-option" data-filter="diet" data-value="pollo" onclick="selectDiet(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>폴로</span>
+            </div>
+          </div>
+
+          <!-- 추가 제한 -->
+          <div class="filter-section">
+            <div class="filter-option" data-filter="restriction" data-value="gluten-free" onclick="toggleRestriction(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>글루텐프리</span>
+            </div>
+            <div class="filter-option" data-filter="restriction" data-value="halal" onclick="toggleRestriction(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>할랄</span>
+            </div>
+            <div class="filter-option" data-filter="restriction" data-value="kosher" onclick="toggleRestriction(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>코셔</span>
+            </div>
+          </div>
+
+          <!-- 음식 종류 -->
+          <div class="filter-section">
+            <div class="filter-option" data-filter="cuisine" data-value="korean" onclick="toggleCuisine(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>한식</span>
+            </div>
+            <div class="filter-option" data-filter="cuisine" data-value="western" onclick="toggleCuisine(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>양식</span>
+            </div>
+            <div class="filter-option" data-filter="cuisine" data-value="dessert" onclick="toggleCuisine(this)">
+              <span class="filter-radio"><span class="filter-radio-inner"></span></span>
+              <span>디저트</span>
+            </div>
+          </div>
+        </div>
+        <div class="filter-footer">
+          <button class="btn-reset" onclick="resetFilters()">초기화</button>
+          <button class="btn-apply" onclick="applyFilters()">적용</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-title">ABOUT</p>
+          <a href="about.html" class="footer-link">Slow and Lunch</a>
+          <a href="about-branch.html" class="footer-link">Branch</a>
+          <a href="about-b2b.html" class="footer-link">B2B & V-tech</a>
+        </div>
+        <div>
+          <p class="footer-title">NEWSLETTER</p>
+          <p class="footer-text">슬런치 에디터가 발행하는 아티클</p>
+        </div>
+        <div>
+          <p class="footer-title">CONTACT</p>
+          <a href="mailto:slunch@slunch.co.kr" class="footer-link">일반문의 slunch@slunch.co.kr</a>
+          <a href="mailto:export@slunch.co.kr" class="footer-link">B2B export@slunch.co.kr</a>
+        </div>
+        <div>
+          <p class="footer-title">SOCIAL</p>
+          <a href="https://instagram.com/slunch_factory" target="_blank" class="footer-link">Instagram</a>
+          <a href="https://youtube.com" target="_blank" class="footer-link">Youtube</a>
+          <a href="https://linkedin.com" target="_blank" class="footer-link">Linked In</a>
+        </div>
+        <div>
+          <p class="footer-title">BANK</p>
+          <p class="footer-text" style="font-family: monospace;">우리은행 1005-504-450570</p>
+          <p class="footer-text">(주)슬런치팩토리</p>
+          <p class="footer-title" style="margin-top: 24px;">CS</p>
+          <p class="footer-text" style="font-family: monospace;">032-224-6525</p>
+          <p class="footer-text">카카오톡 채널 문의</p>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>(주)슬런치팩토리 | 대표 이현아 | 사업자번호 288-86-02863 | 통신판매업 제2023-경기부천-0868호 | 경기 부천시 소사로160번길 23-8</p>
+        <p>© 2024 Slunch Factory. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Tab switching
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Sort dropdown
+      function toggleSort() {
+        document.getElementById('sortMenu').classList.toggle('open');
+      }
+
+      document.querySelectorAll('.sort-option').forEach(opt => {
+        opt.addEventListener('click', function() {
+          document.querySelectorAll('.sort-option').forEach(o => o.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('sortLabel').textContent = this.textContent;
+          document.getElementById('sortMenu').classList.remove('open');
+        });
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!e.target.closest('.sort-dropdown')) {
+          document.getElementById('sortMenu').classList.remove('open');
+        }
+      });
+
+      // Filter drawer
+      function openFilter() {
+        document.getElementById('filterOverlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeFilter() {
+        document.getElementById('filterOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      function selectDiet(el) {
+        document.querySelectorAll('[data-filter="diet"]').forEach(opt => opt.classList.remove('active'));
+        el.classList.add('active');
+      }
+
+      function toggleRestriction(el) {
+        el.classList.toggle('active');
+      }
+
+      function toggleCuisine(el) {
+        el.classList.toggle('active');
+      }
+
+      function resetFilters() {
+        document.querySelectorAll('.filter-option').forEach(opt => opt.classList.remove('active'));
+        document.querySelector('[data-filter="diet"][data-value="none"]').classList.add('active');
+      }
+
+      function applyFilters() {
+        closeFilter();
+      }
+    </script>
+  </body>
+</html>

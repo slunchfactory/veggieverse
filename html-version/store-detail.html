@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 상품 상세" />
+    <title>Store Detail - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root { --lime: #DCFD4A; --charcoal: #333; --warm-gray: #888; --muted: #999; --brown: #8C451D; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #FFFDF5; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+      .header { height: 64px; background: var(--lime); border-bottom: 1px solid #000; position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+      .header-logo { height: 36px; }
+      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #000; }
+
+      main { margin-top: 64px; }
+
+      .product-layout { display: grid; grid-template-columns: 1fr; }
+      @media (min-width: 768px) { .product-layout { grid-template-columns: 1fr 1fr; } }
+
+      .product-image { aspect-ratio: 1; background: #F5F5F5; }
+      @media (min-width: 768px) { .product-image { border-right: 1px solid #000; } }
+      .product-image img { width: 100%; height: 100%; object-fit: cover; }
+
+      .product-info { padding: 32px 24px; }
+      @media (min-width: 768px) { .product-info { padding: 48px; } }
+
+      .product-badge { display: inline-block; padding: 4px 12px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
+      .badge-new { background: var(--lime); color: #000; }
+      .badge-best { background: #000; color: #fff; }
+
+      .product-name { font-size: 28px; font-weight: 400; margin-bottom: 16px; }
+      .product-desc { font-size: 15px; color: var(--charcoal); line-height: 1.7; margin-bottom: 24px; }
+
+      .price-section { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 1px solid #eee; }
+      .price-original { font-size: 16px; color: var(--muted); text-decoration: line-through; margin-bottom: 8px; }
+      .price-row { display: flex; align-items: center; gap: 12px; }
+      .price-discount { font-size: 24px; font-weight: 600; color: #87b5e1; }
+      .price-current { font-size: 24px; font-weight: 500; }
+
+      .info-list { margin-bottom: 32px; }
+      .info-item { display: flex; padding: 12px 0; border-bottom: 1px solid #eee; }
+      .info-label { width: 100px; font-size: 14px; color: var(--warm-gray); }
+      .info-value { font-size: 14px; color: var(--charcoal); }
+
+      .action-buttons { display: flex; gap: 12px; }
+      .btn-cart { flex: 1; padding: 16px; border: 1px solid #000; background: #fff; font-size: 15px; cursor: pointer; }
+      .btn-cart:hover { background: #f5f5f5; }
+      .btn-buy { flex: 1; padding: 16px; border: none; background: var(--brown); color: #fff; font-size: 15px; cursor: pointer; }
+      .btn-buy:hover { opacity: 0.9; }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="store.html" class="header-back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <a href="index.html">
+        <img src="../public/common/logo.png" alt="SLUNCH FACTORY" class="header-logo">
+      </a>
+    </header>
+
+    <main>
+      <div class="product-layout">
+        <div class="product-image">
+          <img src="../public/images/store/product-1.jpg" alt="볶음김치" onerror="this.parentElement.style.background='#E8E4DF'">
+        </div>
+        <div class="product-info">
+          <span class="product-badge badge-new">NEW</span>
+          <h1 class="product-name">볶음김치</h1>
+          <p class="product-desc">
+            젓갈이 들어가지 않은 비건 볶음김치입니다.
+            슬런치팩토리만의 특별한 레시피로 만들어
+            깊은 맛을 자랑합니다.
+          </p>
+
+          <div class="price-section">
+            <span class="price-current">12,000원</span>
+          </div>
+
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">식단</span>
+              <span class="info-value">비건</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">카테고리</span>
+              <span class="info-value">신메뉴 / 한식</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">배송</span>
+              <span class="info-value">냉동배송</span>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-cart">장바구니</button>
+            <a href="https://slunch.co.kr" target="_blank" class="btn-buy" style="text-align:center; text-decoration:none;">구매하기</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

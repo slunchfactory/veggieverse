@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 브랜드 스토리" />
+    <title>About Story - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root { --lime: #DCFD4A; --charcoal: #333; --warm-gray: #888; --muted: #999; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #FFFDF5; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+      /* Header */
+      .header { height: 64px; background: var(--lime); border-bottom: 1px solid #000; position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+      .header-logo { height: 36px; }
+      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #000; }
+
+      /* Main */
+      main { margin-top: 64px; }
+
+      /* Hero Grid */
+      .hero-grid { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      @media (min-width: 768px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
+      .hero-image { aspect-ratio: 4/3; background: #E8E4DF; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+      @media (min-width: 768px) { .hero-image { border-right: 1px solid #000; } }
+      .hero-text { padding: 40px 24px; display: flex; flex-direction: column; justify-content: center; }
+      @media (min-width: 768px) { .hero-text { padding: 64px; } }
+      .hero-label { font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+      .hero-title { font-size: 28px; font-weight: 400; line-height: 1.3; margin-bottom: 24px; }
+      @media (min-width: 768px) { .hero-title { font-size: 32px; } }
+      .hero-desc { font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal); }
+
+      /* 3-Column Grid */
+      .three-col { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      @media (min-width: 768px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
+      .col-item { padding: 32px 24px; border-bottom: 1px solid #000; }
+      @media (min-width: 768px) { .col-item { padding: 48px 32px; border-bottom: none; border-right: 1px solid #000; } .col-item:last-child { border-right: none; } }
+      .col-label { font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+      .col-text { font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal); }
+
+      /* Full Image */
+      .full-image { height: 300px; background: #D4CFC7; border-bottom: 1px solid #000; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+      @media (min-width: 768px) { .full-image { height: 400px; } }
+
+      /* Tags */
+      .tags-section { padding: 24px; display: flex; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #000; }
+      @media (min-width: 768px) { .tags-section { padding: 32px 64px; gap: 16px; } }
+      .tag { padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400; }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <a href="about.html" class="header-back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <a href="index.html">
+        <img src="../public/common/logo.png" alt="SLUNCH FACTORY" class="header-logo">
+      </a>
+    </header>
+
+    <main>
+      <!-- Hero Grid -->
+      <div class="hero-grid">
+        <div class="hero-image">[브랜드 이미지]</div>
+        <div class="hero-text">
+          <p class="hero-label">Since 2019</p>
+          <h1 class="hero-title">Slow and Lunch</h1>
+          <p class="hero-desc">
+            슬런치팩토리는 2019년 부천에서 시작했어요.<br>
+            '천천히, 제대로 만든 점심 한 끼'라는 생각으로<br>
+            Slow와 Lunch를 합쳐 슬런치라는 이름을 지었어요.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3-Column Grid -->
+      <div class="three-col">
+        <div class="col-item">
+          <p class="col-label">Philosophy</p>
+          <p class="col-text">
+            고기 없이도 맛있을 수 있다는 걸 보여주고 싶었어요.
+            "비건이라서 맛있는 게 아니라, 맛있는데 비건인 거"
+            그게 저희가 생각하는 방향이에요.
+          </p>
+        </div>
+        <div class="col-item">
+          <p class="col-label">Production</p>
+          <p class="col-text">
+            홍대와 더현대에서 직접 만든 음식을 팔고 있어요.
+            공장도 여전히 직접 운영하고요.
+            재료 고르는 것부터 포장까지, 다 저희 손을 거쳐요.
+          </p>
+        </div>
+        <div class="col-item">
+          <p class="col-label">Vision</p>
+          <p class="col-text">
+            식물성이라고 해서 특별하거나 불편하지 않았으면 해요.
+            그냥 맛있는 음식. 속 편한 한 끼.
+            그게 슬런치가 만들고 싶은 거예요.
+          </p>
+        </div>
+      </div>
+
+      <!-- Full Image -->
+      <div class="full-image">[공장/매장 전경 이미지]</div>
+
+      <!-- Tags -->
+      <div class="tags-section">
+        <span class="tag">#속편한</span>
+        <span class="tag">#재료가솔직한</span>
+        <span class="tag">#식물성</span>
+        <span class="tag">#천천히제대로</span>
+      </div>
+    </main>
+  </body>
+</html>

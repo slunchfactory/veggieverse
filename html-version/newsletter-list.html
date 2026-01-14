@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 뉴스레터 상세" />
+    <title>Newsletter Detail - 슬런치 팩토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <style>
+      :root { --lime: #DCFD4A; --charcoal: #333; --warm-gray: #888; --muted: #999; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #FFFDF5; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+
+      .header { height: 64px; background: var(--lime); border-bottom: 1px solid #000; position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+      .header-logo { height: 36px; }
+      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #000; }
+
+      main { margin-top: 64px; max-width: 700px; margin-left: auto; margin-right: auto; padding: 0 24px; }
+
+      .newsletter-header { padding: 40px 0; border-bottom: 1px solid #eee; margin-bottom: 32px; }
+      .newsletter-num { font-size: 12px; color: var(--warm-gray); margin-bottom: 12px; }
+      .newsletter-title { font-size: 32px; font-weight: 400; line-height: 1.4; margin-bottom: 16px; }
+      .newsletter-date { font-size: 14px; color: var(--muted); }
+
+      .newsletter-hero { aspect-ratio: 16/9; background: #E8E4DF; margin-bottom: 32px; }
+      .newsletter-hero img { width: 100%; height: 100%; object-fit: cover; }
+
+      .newsletter-content { font-size: 16px; color: var(--charcoal); line-height: 1.9; }
+      .newsletter-content p { margin-bottom: 24px; }
+      .newsletter-content h2 { font-size: 22px; font-weight: 400; margin: 40px 0 20px; }
+      .newsletter-content blockquote { padding: 20px 24px; background: #f9f9f9; border-left: 3px solid var(--lime); margin: 24px 0; font-style: italic; }
+
+      .newsletter-footer { margin-top: 48px; padding: 32px 0; border-top: 1px solid #eee; }
+      .share-title { font-size: 14px; color: var(--warm-gray); margin-bottom: 16px; }
+      .share-buttons { display: flex; gap: 12px; }
+      .share-btn { width: 40px; height: 40px; border: 1px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; background: #fff; }
+      .share-btn:hover { border-color: #000; }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <a href="newsletter.html" class="header-back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </a>
+      <a href="index.html">
+        <img src="../public/common/logo.png" alt="SLUNCH FACTORY" class="header-logo">
+      </a>
+    </header>
+
+    <main>
+      <div class="newsletter-header">
+        <p class="newsletter-num">Vol.12</p>
+        <h1 class="newsletter-title">비건 라이프의 첫 걸음, 어렵지 않아요</h1>
+        <p class="newsletter-date">2024.01.15</p>
+      </div>
+
+      <div class="newsletter-hero">
+        <img src="../public/images/newsletter/newsletter-1.jpg" alt="뉴스레터 이미지" onerror="this.parentElement.style.background='#D4CFC7'">
+      </div>
+
+      <div class="newsletter-content">
+        <p>
+          안녕하세요, 슬런치 팩토리입니다.
+          새해가 밝았어요. 많은 분들이 새해 목표로 건강한 식습관을 꼽으시더라고요.
+        </p>
+
+        <p>
+          비건이나 채식에 관심은 있지만 어디서부터 시작해야 할지 막막하셨던 분들을 위해
+          오늘은 비건 라이프의 첫 걸음을 떼는 방법에 대해 이야기해볼게요.
+        </p>
+
+        <h2>완벽하지 않아도 괜찮아요</h2>
+
+        <p>
+          처음부터 100% 비건이 될 필요는 없어요.
+          일주일에 하루, 아니면 하루에 한 끼만 채식으로 바꿔보는 것부터 시작해보세요.
+          작은 변화가 모여 큰 변화가 됩니다.
+        </p>
+
+        <blockquote>
+          "비건이라서 맛있는 게 아니라, 맛있는데 비건인 거"
+          - 슬런치 팩토리
+        </blockquote>
+
+        <p>
+          슬런치 팩토리는 언제나 여러분의 건강한 선택을 응원합니다.
+          맛있고 속 편한 한 끼, 저희가 함께할게요.
+        </p>
+      </div>
+
+      <div class="newsletter-footer">
+        <p class="share-title">공유하기</p>
+        <div class="share-buttons">
+          <button class="share-btn" title="링크 복사">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+          <button class="share-btn" title="카카오톡">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3C6.5 3 2 6.58 2 11c0 2.9 1.94 5.45 4.87 6.88-.22.79-.8 2.85-.92 3.3-.14.55.2.54.42.4.18-.12 2.85-1.93 4-2.71.52.07 1.07.13 1.63.13 5.5 0 10-3.58 10-8s-4.5-8-10-8z"/></svg>
+          </button>
+          <button class="share-btn" title="트위터">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+          </button>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

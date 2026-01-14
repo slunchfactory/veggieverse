@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="슬런치 팩토리 - 장바구니" />
+    <title>Cart - 슬런치 팩토리</title>
+    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <style>
+      /* === DESIGN SYSTEM === */
+      :root {
+        --header-h: 64px;
+        --cream: #FDFBF7;
+        --lime: #DCFD4A;
+        --black: #000000;
+        --gray: #6B6B6B;
+        --gray-light: #9A9A9A;
+        --charcoal: #333;
+        --warm-gray: #888;
+        --muted: #999;
+        --brown: #8C451D;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
+      body {
+        font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--cream);
+        min-height: 100vh;
+        color: var(--black);
+      }
+
+      /* === HEADER === */
+      .header {
+        height: var(--header-h);
+        background: var(--lime);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+      }
+      .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        padding: 0 16px;
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+      }
+      .header-left a {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+        color: var(--black);
+      }
+      .header-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .header-center img { height: 36px; display: block; }
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .header-right a {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 4px;
+        font-size: 14px;
+        color: var(--black);
+        text-decoration: none;
+      }
+      .header-profile {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #E5E5E5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* === MAIN CONTENT === */
+      main {
+        margin-top: var(--header-h);
+        padding: 24px 16px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .page-title {
+        font-size: 24px;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #000;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+      }
+      .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+      .empty-text {
+        font-size: 15px;
+        color: var(--warm-gray);
+        margin-bottom: 24px;
+      }
+      .empty-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: #000;
+        color: #fff;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .empty-btn:hover { background: #333; }
+
+      /* Cart Items */
+      .cart-items { margin-bottom: 32px; }
+      .cart-item {
+        display: flex;
+        gap: 16px;
+        padding: 20px 0;
+        border-bottom: 1px solid #eee;
+      }
+      .cart-item-check {
+        width: 20px;
+        height: 20px;
+        margin-top: 4px;
+      }
+      .cart-item-img {
+        width: 80px;
+        height: 80px;
+        background: #E8E4DF;
+        border-radius: 4px;
+        flex-shrink: 0;
+        overflow: hidden;
+      }
+      .cart-item-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .cart-item-info { flex: 1; }
+      .cart-item-name {
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+      .cart-item-option {
+        font-size: 13px;
+        color: var(--warm-gray);
+        margin-bottom: 12px;
+      }
+      .cart-item-qty {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .qty-btn {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ddd;
+        background: #fff;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .qty-btn:hover { border-color: #000; }
+      .qty-value {
+        font-size: 14px;
+        min-width: 20px;
+        text-align: center;
+      }
+      .cart-item-price {
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .cart-item-price .original {
+        font-size: 13px;
+        color: var(--warm-gray);
+        text-decoration: line-through;
+        margin-bottom: 2px;
+      }
+      .cart-item-price .current {
+        font-size: 16px;
+        color: #000;
+      }
+      .cart-item-remove {
+        width: 24px;
+        height: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--muted);
+      }
+      .cart-item-remove:hover { color: #000; }
+
+      /* Summary */
+      .cart-summary {
+        background: #fff;
+        border: 1px solid #eee;
+        padding: 24px;
+        margin-bottom: 24px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 14px;
+        color: var(--charcoal);
+      }
+      .summary-row.total {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid #eee;
+        font-size: 18px;
+        color: #000;
+      }
+      .summary-row .discount { color: #E53935; }
+
+      /* Checkout Button */
+      .checkout-btn {
+        display: block;
+        width: 100%;
+        padding: 16px;
+        background: var(--brown);
+        color: #fff;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+      }
+      .checkout-btn:hover { opacity: 0.9; }
+      .checkout-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      /* Select All */
+      .select-all {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 8px;
+      }
+      .select-all input {
+        width: 18px;
+        height: 18px;
+      }
+      .select-all span {
+        font-size: 14px;
+        color: var(--charcoal);
+      }
+
+      /* === FOOTER === */
+      .footer {
+        background: var(--lime);
+        border-top: 1px solid var(--black);
+        padding: 40px 20px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px 40px;
+        max-width: 1440px;
+        margin: 0 auto 32px;
+      }
+      @media (min-width: 768px) {
+        .footer-grid { grid-template-columns: repeat(5, 1fr); }
+        .footer { padding: 48px 40px; }
+      }
+      .footer-title {
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+        color: var(--black);
+      }
+      .footer-link {
+        display: block;
+        font-size: 13px;
+        color: var(--black);
+        text-decoration: none;
+        line-height: 1.8;
+      }
+      .footer-link:hover {
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      .footer-text {
+        font-size: 13px;
+        color: var(--black);
+        line-height: 1.8;
+      }
+      .footer-copyright {
+        font-size: 10px;
+        color: var(--black);
+        max-width: 1440px;
+        margin: 0 auto;
+        padding-top: 24px;
+        border-top: 1px solid var(--black);
+      }
+      @media (min-width: 768px) {
+        .footer-copyright {
+          display: flex;
+          justify-content: space-between;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header class="header">
+      <div class="header-inner">
+        <div class="header-left">
+          <a href="javascript:history.back()" aria-label="뒤로가기">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </a>
+        </div>
+        <a href="index.html" class="header-center">
+          <img src="../public/common/logo.png" alt="SLUNCH FACTORY">
+        </a>
+        <div class="header-right">
+          <a href="cart.html" aria-label="장바구니">(0)</a>
+          <a href="mypage.html" aria-label="마이페이지">
+            <div class="header-profile">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <h1 class="page-title">장바구니</h1>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">🛒</div>
+        <p class="empty-text">장바구니가 비어있습니다.</p>
+        <a href="store.html" class="empty-btn">쇼핑하러 가기</a>
+      </div>
+
+      <!-- Cart Content (hidden when empty) -->
+      <div id="cartContent" style="display: none;">
+        <div class="select-all">
+          <input type="checkbox" id="selectAll" checked>
+          <span>전체 선택</span>
+        </div>
+
+        <div class="cart-items">
+          <!-- Cart Item Example -->
+          <div class="cart-item">
+            <input type="checkbox" class="cart-item-check" checked>
+            <div class="cart-item-img">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200" alt="비건 볶음밥">
+            </div>
+            <div class="cart-item-info">
+              <p class="cart-item-name">비건 볶음밥</p>
+              <p class="cart-item-option">옵션: 매운맛</p>
+              <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span class="qty-value">1</span>
+                <button class="qty-btn">+</button>
+              </div>
+            </div>
+            <div class="cart-item-price">
+              <p class="current">12,000원</p>
+            </div>
+            <button class="cart-item-remove" aria-label="삭제">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="cart-item">
+            <input type="checkbox" class="cart-item-check" checked>
+            <div class="cart-item-img">
+              <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=200" alt="두부 스테이크">
+            </div>
+            <div class="cart-item-info">
+              <p class="cart-item-name">두부 스테이크</p>
+              <p class="cart-item-option">옵션: 기본</p>
+              <div class="cart-item-qty">
+                <button class="qty-btn">-</button>
+                <span class="qty-value">2</span>
+                <button class="qty-btn">+</button>
+              </div>
+            </div>
+            <div class="cart-item-price">
+              <p class="original">32,000원</p>
+              <p class="current">30,000원</p>
+            </div>
+            <button class="cart-item-remove" aria-label="삭제">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>상품 금액</span>
+            <span>44,000원</span>
+          </div>
+          <div class="summary-row">
+            <span>할인 금액</span>
+            <span class="discount">-2,000원</span>
+          </div>
+          <div class="summary-row">
+            <span>배송비</span>
+            <span>무료</span>
+          </div>
+          <div class="summary-row total">
+            <span>총 결제 금액</span>
+            <span>42,000원</span>
+          </div>
+        </div>
+
+        <button class="checkout-btn">주문하기</button>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-grid">
+        <div>
+          <p class="footer-title">ABOUT</p>
+          <a href="about.html" class="footer-link">Slow and Lunch</a>
+          <a href="about-branch.html" class="footer-link">Branch</a>
+          <a href="about-b2b.html" class="footer-link">B2B & V-tech</a>
+        </div>
+        <div>
+          <p class="footer-title">NEWSLETTER</p>
+          <p class="footer-text">슬런치 에디터가 발행하는 아티클</p>
+        </div>
+        <div>
+          <p class="footer-title">CONTACT</p>
+          <a href="mailto:slunch@slunch.co.kr" class="footer-link">일반문의 slunch@slunch.co.kr</a>
+          <a href="mailto:export@slunch.co.kr" class="footer-link">B2B export@slunch.co.kr</a>
+        </div>
+        <div>
+          <p class="footer-title">SOCIAL</p>
+          <a href="https://instagram.com/slunch_factory" target="_blank" class="footer-link">Instagram</a>
+          <a href="https://youtube.com" target="_blank" class="footer-link">Youtube</a>
+          <a href="https://linkedin.com" target="_blank" class="footer-link">Linked In</a>
+        </div>
+        <div>
+          <p class="footer-title">BANK</p>
+          <p class="footer-text" style="font-family: monospace;">우리은행 1005-504-450570</p>
+          <p class="footer-text">(주)슬런치팩토리</p>
+          <p class="footer-title" style="margin-top: 24px;">CS</p>
+          <p class="footer-text" style="font-family: monospace;">032-224-6525</p>
+          <p class="footer-text">카카오톡 채널 문의</p>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <p>(주)슬런치팩토리 | 대표 이현아 | 사업자번호 288-86-02863 | 통신판매업 제2023-경기부천-0868호 | 경기 부천시 소사로160번길 23-8</p>
+        <p>© 2024 Slunch Factory. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Toggle between empty state and cart content for demo
+      // In real implementation, this would check localStorage or API
+      const hasItems = false; // Set to true to show cart items
+
+      if (hasItems) {
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('cartContent').style.display = 'block';
+      }
+    </script>
+  </body>
+</html>
