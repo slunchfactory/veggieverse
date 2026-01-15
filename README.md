@@ -138,6 +138,53 @@ VeggieVerse 프로젝트는 3명의 전문 AI 에이전트가 협업하여 개�
 - 🎁 이벤트 및 쿠폰 시스템
 - 💬 챗봇 (Spirit Chatbot)
 
+## 📄 페이지 구조
+
+### 1. 메인 (Main)
+
+- [x] `index.html` : 메인 홈 (히어로, 띠배너, 벤토그리드 포함)
+
+### 2. 브랜드 (About)
+
+- [x] `about.html` : 브랜드 메인
+- [x] `about-story.html` : 브랜드 스토리 상세
+- [x] `about-branch.html` : 지점 소개
+- [x] `about-b2b.html` : 제휴 문의
+
+### 3. 위클리 구독 (Weekly)
+
+- [x] `subscribe.html` : 정기 구독 신청 및 플랜 소개
+
+### 4. 스토어 (Store)
+
+- [x] `store.html` : 전체 상품 리스트 및 큐레이션
+
+### 5. 레시피 (Recipe)
+
+- [x] `recipe.html` : 레시피 커뮤니티 및 명예의 전당
+
+### 6. 커뮤니티 (Community)
+
+- [x] `event.html` : 이벤트 및 공지사항
+- [x] `newsletter.html` : 뉴스레터 아카이브
+
+### 7. 스피릿 파인더 (Spirit / Onboarding)
+
+**진단 문항 (총 6단계):**
+
+- [x] `spirit-question-diet.html` (식단)
+- [x] `spirit-question-meaning.html` (가치관)
+- [x] `spirit-question-mood.html` (무드)
+- [x] `spirit-question-option.html` (옵션)
+- [x] `spirit-question-pattern.html` (패턴)
+- [x] `spirit-question-priority.html` (우선순위)
+
+**결과 페이지:**
+
+- [x] `spirit-result.html`
+
+> **검수 코멘트**: 현재 폴더 내에 모든 페이지의 뼈대(HTML)가 누락 없이 준비되어 있습니다. 이제 각 파일의 내부 코드(레이아웃 및 CSS 연결) 작업으로 넘어가면 되겠습니다.
+
 ## 📚 문서
 
 - [개선 체크리스트](./IMPROVEMENT_CHECKLIST.md)
