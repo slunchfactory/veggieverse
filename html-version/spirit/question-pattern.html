@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
-    <title>Spirit Finder - 질문 5 - 슬런치 팩토리</title>
+    <title>Spirit Finder - 질문 6 - 슬런치 팩토리</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../index.css">
-    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
       :root { --lime: #DCFD4A; --brown: #8C451D; }
       body { background: #B2B2B2; min-height: 100vh; margin: 0; padding: 0; }
@@ -50,52 +50,52 @@
             <button class="back-btn" onclick="goBack()" aria-label="이전">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <h1 class="question-text">식사 시간, 어떤 의미예요?</h1>
+            <h1 class="question-text">평소 식사 패턴은?</h1>
           </div>
           <div class="progress-line"></div>
-          <div class="progress-fill" style="width: 83.3%;"></div>
+          <div class="progress-fill" style="width: 100%;"></div>
         </div>
 
         <!-- 모바일 -->
         <div class="mobile-scroll">
-          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('family')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/table.png" alt="The Table"></div>
-            <div class="card-label"><div class="name">원탁</div><div class="desc">누군가와 함께 나누는 시간이에요</div></div>
+          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('regular')">
+            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/clock.png" alt="The Clock"></div>
+            <div class="card-label"><div class="name">시계</div><div class="desc">정해진 시간에 규칙적으로 먹어요</div></div>
           </div>
-          <div class="card-wrapper" onclick="selectOption('health')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/tree.png" alt="The Tree"></div>
-            <div class="card-label"><div class="name">생명나무</div><div class="desc">몸과 마음을 돌보는 시간이에요</div></div>
+          <div class="card-wrapper" onclick="selectOption('flexible')">
+            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/bird.png" alt="The Bird"></div>
+            <div class="card-label"><div class="name">새</div><div class="desc">배고플 때 자유롭게 먹어요</div></div>
           </div>
-          <div class="card-wrapper" onclick="selectOption('quick')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/hourglass.png" alt="The Hourglass"></div>
-            <div class="card-label"><div class="name">모래시계</div><div class="desc">빠르게 해결하고 다른 일에 집중해요</div></div>
+          <div class="card-wrapper" onclick="selectOption('planned')">
+            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/architect.png" alt="The Architect"></div>
+            <div class="card-label"><div class="name">설계자</div><div class="desc">일주일 식단을 미리 계획해요</div></div>
           </div>
-          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('experience')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/map.png" alt="The Map"></div>
-            <div class="card-label"><div class="name">지도</div><div class="desc">새로운 맛을 발견하는 탐험이에요</div></div>
+          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('spontaneous')">
+            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/spark.png" alt="The Spark"></div>
+            <div class="card-label"><div class="name">불꽃</div><div class="desc">그때그때 끌리는 대로 정해요</div></div>
           </div>
         </div>
 
         <!-- 데스크탑 -->
         <div class="desktop-grid">
           <div class="desktop-row">
-            <div class="card-wrapper" onclick="selectOption('family')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/table.png" alt="The Table"></div>
-              <div class="card-label"><div class="name">원탁</div><div class="desc">누군가와 함께 나누는 시간이에요</div></div>
+            <div class="card-wrapper" onclick="selectOption('regular')">
+              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/clock.png" alt="The Clock"></div>
+              <div class="card-label"><div class="name">시계</div><div class="desc">정해진 시간에 규칙적으로 먹어요</div></div>
             </div>
-            <div class="card-wrapper" onclick="selectOption('health')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/tree.png" alt="The Tree"></div>
-              <div class="card-label"><div class="name">생명나무</div><div class="desc">몸과 마음을 돌보는 시간이에요</div></div>
+            <div class="card-wrapper" onclick="selectOption('flexible')">
+              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/bird.png" alt="The Bird"></div>
+              <div class="card-label"><div class="name">새</div><div class="desc">배고플 때 자유롭게 먹어요</div></div>
             </div>
           </div>
           <div class="desktop-row">
-            <div class="card-wrapper" onclick="selectOption('quick')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/hourglass.png" alt="The Hourglass"></div>
-              <div class="card-label"><div class="name">모래시계</div><div class="desc">빠르게 해결하고 다른 일에 집중해요</div></div>
+            <div class="card-wrapper" onclick="selectOption('planned')">
+              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/architect.png" alt="The Architect"></div>
+              <div class="card-label"><div class="name">설계자</div><div class="desc">일주일 식단을 미리 계획해요</div></div>
             </div>
-            <div class="card-wrapper" onclick="selectOption('experience')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-meaning/map.png" alt="The Map"></div>
-              <div class="card-label"><div class="name">지도</div><div class="desc">새로운 맛을 발견하는 탐험이에요</div></div>
+            <div class="card-wrapper" onclick="selectOption('spontaneous')">
+              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/spark.png" alt="The Spark"></div>
+              <div class="card-label"><div class="name">불꽃</div><div class="desc">그때그때 끌리는 대로 정해요</div></div>
             </div>
           </div>
         </div>
@@ -103,12 +103,13 @@
     </main>
 
     <script>
-      function goBack() { window.location.href = 'spirit-question-priority.html'; }
+      function goBack() { window.location.href = 'question-meaning.html'; }
       function selectOption(value) {
         let answers = JSON.parse(localStorage.getItem('spirit-finder-answers') || '{}');
-        answers[5] = value;
+        answers[6] = value;
         localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
-        setTimeout(() => { window.location.href = 'spirit-question-pattern.html'; }, 300);
+        // 마지막 질문 -> 결과 페이지로 이동
+        setTimeout(() => { window.location.href = 'result.html'; }, 300);
       }
     </script>
   </body>

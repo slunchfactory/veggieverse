@@ -6,8 +6,8 @@
     <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
     <title>Spirit Finder - 질문 3 - 슬런치 팩토리</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../index.css">
-    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
       :root { --lime: #DCFD4A; --brown: #8C451D; }
       body { background: #B2B2B2; min-height: 100vh; margin: 0; padding: 0; }
@@ -103,12 +103,12 @@
     </main>
 
     <script>
-      function goBack() { window.location.href = 'spirit-question-option.html'; }
+      function goBack() { window.location.href = 'question-option.html'; }
       function selectOption(value) {
         let answers = JSON.parse(localStorage.getItem('spirit-finder-answers') || '{}');
         answers[3] = value;
         localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
-        setTimeout(() => { window.location.href = 'spirit-question-priority.html'; }, 300);
+        setTimeout(() => { window.location.href = 'question-priority.html'; }, 300);
       }
     </script>
   </body>

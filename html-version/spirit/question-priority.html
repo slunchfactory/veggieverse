@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
-    <title>Spirit Finder - 질문 2 - 슬런치 팩토리</title>
+    <title>Spirit Finder - 질문 4 - 슬런치 팩토리</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../index.css">
-    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
       :root { --lime: #DCFD4A; --brown: #8C451D; }
       body { background: #B2B2B2; min-height: 100vh; margin: 0; padding: 0; }
@@ -50,42 +50,52 @@
             <button class="back-btn" onclick="goBack()" aria-label="이전">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <h1 class="question-text">추가 옵션이 있나요?</h1>
+            <h1 class="question-text">요리에서 가장 중요한 건?</h1>
           </div>
           <div class="progress-line"></div>
-          <div class="progress-fill" style="width: 33.3%;"></div>
+          <div class="progress-fill" style="width: 66.6%;"></div>
         </div>
 
         <!-- 모바일 -->
         <div class="mobile-scroll">
-          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('gluten-free')">
-            <div class="tarot-card"><img src="../public/images/tarot/diet-option/grain.png" alt="The Grain"></div>
-            <div class="card-label"><div class="name">곡물</div><div class="desc">밀, 보리 등 글루텐을 피해요</div></div>
+          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('nutrition')">
+            <div class="tarot-card"><img src="../public/images/tarot/priority/scale.png" alt="The Scale"></div>
+            <div class="card-label"><div class="name">저울</div><div class="desc">탄단지, 영양소 균형이 맞아야 해요</div></div>
           </div>
-          <div class="card-wrapper" onclick="selectOption('lactose-free')">
-            <div class="tarot-card"><img src="../public/images/tarot/diet-option/milkyway.png" alt="The Milkyway"></div>
-            <div class="card-label"><div class="name">은하수</div><div class="desc">우유, 치즈 등 유제품을 피해요</div></div>
+          <div class="card-wrapper" onclick="selectOption('taste')">
+            <div class="tarot-card"><img src="../public/images/tarot/priority/tongue.png" alt="The Tongue"></div>
+            <div class="card-label"><div class="name">혀</div><div class="desc">뭐니뭐니해도 맛있어야 해요</div></div>
           </div>
-          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('none')">
-            <div class="tarot-card"><img src="../public/images/tarot/card-back.png" alt="없음"></div>
-            <div class="card-label"><div class="name">없음</div><div class="desc">추가 옵션 없이 진행해요</div></div>
+          <div class="card-wrapper" onclick="selectOption('convenience')">
+            <div class="tarot-card"><img src="../public/images/tarot/priority/wind.png" alt="The Wind"></div>
+            <div class="card-label"><div class="name">바람</div><div class="desc">빠르고 간편하게 먹을 수 있어야 해요</div></div>
+          </div>
+          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('novelty')">
+            <div class="tarot-card"><img src="../public/images/tarot/priority/compass.png" alt="The Compass"></div>
+            <div class="card-label"><div class="name">나침반</div><div class="desc">새로운 맛을 시도하고 싶어요</div></div>
           </div>
         </div>
 
         <!-- 데스크탑 -->
         <div class="desktop-grid">
           <div class="desktop-row">
-            <div class="card-wrapper" onclick="selectOption('gluten-free')">
-              <div class="tarot-card"><img src="../public/images/tarot/diet-option/grain.png" alt="The Grain"></div>
-              <div class="card-label"><div class="name">곡물</div><div class="desc">밀, 보리 등 글루텐을 피해요</div></div>
+            <div class="card-wrapper" onclick="selectOption('nutrition')">
+              <div class="tarot-card"><img src="../public/images/tarot/priority/scale.png" alt="The Scale"></div>
+              <div class="card-label"><div class="name">저울</div><div class="desc">탄단지, 영양소 균형이 맞아야 해요</div></div>
             </div>
-            <div class="card-wrapper" onclick="selectOption('lactose-free')">
-              <div class="tarot-card"><img src="../public/images/tarot/diet-option/milkyway.png" alt="The Milkyway"></div>
-              <div class="card-label"><div class="name">은하수</div><div class="desc">우유, 치즈 등 유제품을 피해요</div></div>
+            <div class="card-wrapper" onclick="selectOption('taste')">
+              <div class="tarot-card"><img src="../public/images/tarot/priority/tongue.png" alt="The Tongue"></div>
+              <div class="card-label"><div class="name">혀</div><div class="desc">뭐니뭐니해도 맛있어야 해요</div></div>
             </div>
-            <div class="card-wrapper" onclick="selectOption('none')">
-              <div class="tarot-card"><img src="../public/images/tarot/card-back.png" alt="없음"></div>
-              <div class="card-label"><div class="name">없음</div><div class="desc">추가 옵션 없이 진행해요</div></div>
+          </div>
+          <div class="desktop-row">
+            <div class="card-wrapper" onclick="selectOption('convenience')">
+              <div class="tarot-card"><img src="../public/images/tarot/priority/wind.png" alt="The Wind"></div>
+              <div class="card-label"><div class="name">바람</div><div class="desc">빠르고 간편하게 먹을 수 있어야 해요</div></div>
+            </div>
+            <div class="card-wrapper" onclick="selectOption('novelty')">
+              <div class="tarot-card"><img src="../public/images/tarot/priority/compass.png" alt="The Compass"></div>
+              <div class="card-label"><div class="name">나침반</div><div class="desc">새로운 맛을 시도하고 싶어요</div></div>
             </div>
           </div>
         </div>
@@ -93,12 +103,12 @@
     </main>
 
     <script>
-      function goBack() { window.location.href = 'spirit-question-diet.html'; }
+      function goBack() { window.location.href = 'question-mood.html'; }
       function selectOption(value) {
         let answers = JSON.parse(localStorage.getItem('spirit-finder-answers') || '{}');
-        answers[2] = value;
+        answers[4] = value;
         localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
-        setTimeout(() => { window.location.href = 'spirit-question-mood.html'; }, 300);
+        setTimeout(() => { window.location.href = 'question-meaning.html'; }, 300);
       }
     </script>
   </body>

@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="슬런치 팩토리 - 나의 슬로우 스피릿 찾기" />
-    <title>Spirit Finder - 질문 6 - 슬런치 팩토리</title>
+    <title>Spirit Finder - 질문 2 - 슬런치 팩토리</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="../index.css">
-    <link rel="icon" type="image/png" href="../public/common/logo.png" />
+    <link rel="stylesheet" href="../../index.css">
+    <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
       :root { --lime: #DCFD4A; --brown: #8C451D; }
       body { background: #B2B2B2; min-height: 100vh; margin: 0; padding: 0; }
@@ -50,52 +50,42 @@
             <button class="back-btn" onclick="goBack()" aria-label="이전">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <h1 class="question-text">평소 식사 패턴은?</h1>
+            <h1 class="question-text">추가 옵션이 있나요?</h1>
           </div>
           <div class="progress-line"></div>
-          <div class="progress-fill" style="width: 100%;"></div>
+          <div class="progress-fill" style="width: 33.3%;"></div>
         </div>
 
         <!-- 모바일 -->
         <div class="mobile-scroll">
-          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('regular')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/clock.png" alt="The Clock"></div>
-            <div class="card-label"><div class="name">시계</div><div class="desc">정해진 시간에 규칙적으로 먹어요</div></div>
+          <div class="card-wrapper" style="margin-left: 12px;" onclick="selectOption('gluten-free')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-option/grain.png" alt="The Grain"></div>
+            <div class="card-label"><div class="name">곡물</div><div class="desc">밀, 보리 등 글루텐을 피해요</div></div>
           </div>
-          <div class="card-wrapper" onclick="selectOption('flexible')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/bird.png" alt="The Bird"></div>
-            <div class="card-label"><div class="name">새</div><div class="desc">배고플 때 자유롭게 먹어요</div></div>
+          <div class="card-wrapper" onclick="selectOption('lactose-free')">
+            <div class="tarot-card"><img src="../public/images/tarot/diet-option/milkyway.png" alt="The Milkyway"></div>
+            <div class="card-label"><div class="name">은하수</div><div class="desc">우유, 치즈 등 유제품을 피해요</div></div>
           </div>
-          <div class="card-wrapper" onclick="selectOption('planned')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/architect.png" alt="The Architect"></div>
-            <div class="card-label"><div class="name">설계자</div><div class="desc">일주일 식단을 미리 계획해요</div></div>
-          </div>
-          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('spontaneous')">
-            <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/spark.png" alt="The Spark"></div>
-            <div class="card-label"><div class="name">불꽃</div><div class="desc">그때그때 끌리는 대로 정해요</div></div>
+          <div class="card-wrapper" style="margin-right: 12px;" onclick="selectOption('none')">
+            <div class="tarot-card"><img src="../public/images/tarot/card-back.png" alt="없음"></div>
+            <div class="card-label"><div class="name">없음</div><div class="desc">추가 옵션 없이 진행해요</div></div>
           </div>
         </div>
 
         <!-- 데스크탑 -->
         <div class="desktop-grid">
           <div class="desktop-row">
-            <div class="card-wrapper" onclick="selectOption('regular')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/clock.png" alt="The Clock"></div>
-              <div class="card-label"><div class="name">시계</div><div class="desc">정해진 시간에 규칙적으로 먹어요</div></div>
+            <div class="card-wrapper" onclick="selectOption('gluten-free')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-option/grain.png" alt="The Grain"></div>
+              <div class="card-label"><div class="name">곡물</div><div class="desc">밀, 보리 등 글루텐을 피해요</div></div>
             </div>
-            <div class="card-wrapper" onclick="selectOption('flexible')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/bird.png" alt="The Bird"></div>
-              <div class="card-label"><div class="name">새</div><div class="desc">배고플 때 자유롭게 먹어요</div></div>
+            <div class="card-wrapper" onclick="selectOption('lactose-free')">
+              <div class="tarot-card"><img src="../public/images/tarot/diet-option/milkyway.png" alt="The Milkyway"></div>
+              <div class="card-label"><div class="name">은하수</div><div class="desc">우유, 치즈 등 유제품을 피해요</div></div>
             </div>
-          </div>
-          <div class="desktop-row">
-            <div class="card-wrapper" onclick="selectOption('planned')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/architect.png" alt="The Architect"></div>
-              <div class="card-label"><div class="name">설계자</div><div class="desc">일주일 식단을 미리 계획해요</div></div>
-            </div>
-            <div class="card-wrapper" onclick="selectOption('spontaneous')">
-              <div class="tarot-card"><img src="../public/images/tarot/meal-pattern/spark.png" alt="The Spark"></div>
-              <div class="card-label"><div class="name">불꽃</div><div class="desc">그때그때 끌리는 대로 정해요</div></div>
+            <div class="card-wrapper" onclick="selectOption('none')">
+              <div class="tarot-card"><img src="../public/images/tarot/card-back.png" alt="없음"></div>
+              <div class="card-label"><div class="name">없음</div><div class="desc">추가 옵션 없이 진행해요</div></div>
             </div>
           </div>
         </div>
@@ -103,13 +93,12 @@
     </main>
 
     <script>
-      function goBack() { window.location.href = 'spirit-question-meaning.html'; }
+      function goBack() { window.location.href = 'question-diet.html'; }
       function selectOption(value) {
         let answers = JSON.parse(localStorage.getItem('spirit-finder-answers') || '{}');
-        answers[6] = value;
+        answers[2] = value;
         localStorage.setItem('spirit-finder-answers', JSON.stringify(answers));
-        // 마지막 질문 -> 결과 페이지로 이동
-        setTimeout(() => { window.location.href = 'spirit-result.html'; }, 300);
+        setTimeout(() => { window.location.href = 'question-mood.html'; }, 300);
       }
     </script>
   </body>
