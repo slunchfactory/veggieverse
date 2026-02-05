@@ -34,6 +34,16 @@ interface FloatingItem extends VegetableItem {
   zIndex: number;
   vx: number;
   vy: number;
+  moveX1: number;
+  moveY1: number;
+  moveX2: number;
+  moveY2: number;
+  moveX3: number;
+  moveY3: number;
+  moveX4: number;
+  moveY4: number;
+  floatDuration: number;
+  floatDelay: number;
 }
 
 // 무드 슬라이더 이미지 데이터
@@ -406,14 +416,14 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
   useEffect(() => {
     const isMobile = window.innerWidth < 640;
     const sizeMultiplier = isMobile ? 0.78 : 1;
-    const baseSize = 90;
-    
+    const baseSize = 180;
+
     const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
-      // 랜덤 위치 배치 (퍼센트 기반, 10% ~ 90% 범위)
-      const xPercent = 10 + Math.random() * 80; // 10% ~ 90%
-      const yPercent = 10 + Math.random() * 80; // 10% ~ 90%
-      // 더 다양한 크기 (0.6 ~ 2.5 배)
-      const scale = (0.6 + Math.random() * 1.9) * sizeMultiplier;
+      // 랜덤 위치 배치 (퍼센트 기반, 프레임 경계 포함)
+      const xPercent = Math.random() * 100; // 0% ~ 100%
+      const yPercent = Math.random() * 100; // 0% ~ 100%
+      // 크기 범위 80% ~ 130%
+      const scale = (0.8 + Math.random() * 0.5) * sizeMultiplier;
       
       return {
         id: `produce-${index}`,
@@ -439,10 +449,52 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
         zIndex: 1 + index, // 텍스트 뒤에 배치
         vx: 0,
         vy: 0,
+        moveX1: (Math.random() - 0.5) * 120,
+        moveY1: (Math.random() - 0.5) * 120,
+        moveX2: (Math.random() - 0.5) * 150,
+        moveY2: (Math.random() - 0.5) * 150,
+        moveX3: (Math.random() - 0.5) * 130,
+        moveY3: (Math.random() - 0.5) * 130,
+        moveX4: (Math.random() - 0.5) * 100,
+        moveY4: (Math.random() - 0.5) * 100,
+        floatDuration: 10 + Math.random() * 8,
+        floatDelay: Math.random() * 4,
       };
     });
     setItems(initialItems);
   }, [headerOffset]);
+
+  // 야채 float + rotate keyframes를 <head>에 직접 주입 (React 19 style 호이스팅 우회)
+  useEffect(() => {
+    if (items.length === 0) return;
+    const css = items.map((item) => {
+      const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
+      return `
+        @keyframes float-${itemId} {
+          0%   { transform: translate(0px, 0px); }
+          20%  { transform: translate(${item.moveX1}px, ${item.moveY1}px); }
+          40%  { transform: translate(${item.moveX2}px, ${item.moveY2}px); }
+          60%  { transform: translate(${item.moveX3}px, ${item.moveY3}px); }
+          80%  { transform: translate(${item.moveX4}px, ${item.moveY4}px); }
+          100% { transform: translate(0px, 0px); }
+        }
+        @keyframes rotate-${itemId} {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(${item.rotateDirection * 360}deg); }
+        }
+        .vegetable-rotate-${itemId} {
+          animation: rotate-${itemId} ${item.rotationDuration}s linear infinite;
+        }
+      `;
+    }).join('');
+    const styleEl = document.createElement('style');
+    styleEl.id = 'vegetable-animations';
+    styleEl.textContent = css;
+    document.head.appendChild(styleEl);
+    return () => {
+      document.getElementById('vegetable-animations')?.remove();
+    };
+  }, [items]);
 
   const handleItemClick = useCallback((item: FloatingItem, e?: React.MouseEvent) => {
     if (e) e.stopPropagation();
@@ -480,7 +532,7 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
 
 
   return (
-    <div className="min-h-screen w-full" style={{ backgroundColor: '#ffffff', width: '100%' }}>
+    <div className="min-h-screen w-full" style={{ backgroundColor: '#ffffff', width: '100%', overflowX: 'hidden' }}>
       {/* ============================================
           HERO SECTION - 나의 슬로우 스피릿 찾기
           ============================================ */}
@@ -496,66 +548,17 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
           backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
           position: 'relative',
-          overflow: 'hidden',
           paddingTop: 'clamp(40px, 8vw, 80px)',
           paddingLeft: 'clamp(20px, 5vw, 60px)',
           paddingRight: 'clamp(20px, 5vw, 60px)',
           paddingBottom: '0',
           display: 'flex',
           flexDirection: 'column',
+          clipPath: step === 3 ? undefined : 'inset(-40px -50px 0 -50px)',
         }}
       >
-        {/* 둥실둥실 애니메이션 keyframes - 더 넓은 범위, 프레임 밖으로도 */}
-        <style>
-          {items.map((item, index) => {
-            const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
-            // 각 야채마다 다른 이동 경로 생성 (매우 넓은 범위, 프레임 밖으로도)
-            const moveX1 = (Math.random() - 0.5) * 120;
-            const moveY1 = (Math.random() - 0.5) * 120;
-            const moveX2 = (Math.random() - 0.5) * 150;
-            const moveY2 = (Math.random() - 0.5) * 150;
-            const moveX3 = (Math.random() - 0.5) * 130;
-            const moveY3 = (Math.random() - 0.5) * 130;
-            const moveX4 = (Math.random() - 0.5) * 100;
-            const moveY4 = (Math.random() - 0.5) * 100;
-            
-            // 더 느린 애니메이션 (10~18초)
-            const duration = 10 + Math.random() * 8;
-            const delay = Math.random() * 4; // 0~4초 딜레이
-            
-            return `
-              @keyframes float-${itemId} {
-                0% { 
-                  transform: translate(0, 0); 
-                }
-                20% { 
-                  transform: translate(${moveX1}px, ${moveY1}px); 
-                }
-                40% { 
-                  transform: translate(${moveX2}px, ${moveY2}px); 
-                }
-                60% { 
-                  transform: translate(${moveX3}px, ${moveY3}px); 
-                }
-                80% { 
-                  transform: translate(${moveX4}px, ${moveY4}px); 
-                }
-                100% { 
-                  transform: translate(0, 0); 
-                }
-              }
-              .vegetable-${itemId} {
-                animation: float-${itemId} ${duration}s ease-in-out infinite;
-                animation-delay: ${delay}s;
-                will-change: transform;
-              }
-            `;
-          }).join('')}
-        </style>
-
-
-        {/* 야채 플로팅 영역 */}
-        <div className="flex-1 relative" style={{ minHeight: '300px' }}>
+        {/* 야채 플로팅 영역 - 섹션 경계를 살짝 넘어감 */}
+        <div className="absolute" style={{ top: '-40px', left: '-50px', right: '-50px', bottom: '-40px', pointerEvents: 'none' }}>
           {step !== 3 && items.map((item) => {
             const isSelected = selectedItems.some(i => i.id === item.id);
             const itemId = item.id.replace(/[^a-zA-Z0-9]/g, '');
@@ -567,84 +570,86 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                 onMouseLeave={() => setHoveredItemId(null)}
                 className="absolute group cursor-pointer"
                 style={{
-                  left: `${item.x}%`, // 퍼센트 값 사용
-                  top: `${item.y}%`, // 퍼센트 값 사용
+                  left: `${item.x}%`,
+                  top: `${item.y}%`,
                   width: `${item.size * item.scale}px`,
                   height: `${item.size * item.scale}px`,
-                  transform: 'translate(-50%, -50%)',
-                  zIndex: isSelected ? 20 : item.zIndex || 1, // 호버 시 z-index 변경 제거
+                  marginLeft: `-${(item.size * item.scale) / 2}px`,
+                  marginTop: `-${(item.size * item.scale) / 2}px`,
+                  zIndex: isSelected ? 19 : (item.zIndex % 10) + 1,
                   pointerEvents: 'auto',
-                  willChange: isSelected ? 'auto' : 'transform',
-                  isolation: 'isolate', // stacking context 분리
+                  isolation: 'isolate',
+                  animation: isSelected ? 'none' : `float-${itemId} ${item.floatDuration}s ease-in-out infinite`,
+                  animationDelay: isSelected ? undefined : `${item.floatDelay}s`,
                 }}
               >
+                {/* 회전 래퍼 */}
                 <div
-                  className={`w-full h-full ${!isSelected ? `vegetable-${itemId}` : ''}`}
-                  style={{
-                    animation: isSelected ? 'none' : undefined,
-                    position: 'relative',
-                    willChange: isSelected ? 'auto' : 'transform',
-                  }}
+                  className={`w-full h-full relative ${!isSelected ? `vegetable-rotate-${itemId}` : ''}`}
+                  style={{ animation: isSelected ? 'none' : undefined }}
                 >
-                  {/* 원본 이미지 (항상 렌더링) */}
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full h-full object-contain absolute inset-0"
-                    style={{
-                      opacity: (isSelected || hoveredItemId === item.id) ? 0 : 1,
-                      zIndex: 1,
-                    }}
-                    draggable={false}
-                  />
-                  
-                  {/* 컬러 실루엣 (호버 또는 선택 시 표시) */}
-                  <div 
-                    className="w-full h-full absolute inset-0"
-                    style={{
-                      backgroundColor: item.labelColor,
-                      WebkitMaskImage: `url(${item.imageUrl})`,
-                      WebkitMaskSize: 'contain',
-                      WebkitMaskRepeat: 'no-repeat',
-                      WebkitMaskPosition: 'center',
-                      maskImage: `url(${item.imageUrl})`,
-                      maskSize: 'contain',
-                      maskRepeat: 'no-repeat',
-                      maskPosition: 'center',
-                      filter: isSelected ? 'drop-shadow(0 0 0 3px #000000)' : 'none',
-                      opacity: (isSelected || hoveredItemId === item.id) ? 1 : 0,
-                      zIndex: 2,
-                      pointerEvents: 'none',
-                    }}
-                  />
-                  
-                  {/* 호버 시 야채 이름 표시 (이미지 안에) */}
-                  <div
-                    className="absolute inset-0 flex items-center justify-center"
-                    style={{
-                      zIndex: 30,
-                      pointerEvents: 'none',
-                      opacity: (hoveredItemId === item.id && !isSelected) ? 1 : 0,
-                    }}
-                  >
-                    <span
-                      className="text-white text-sm font-medium px-3 py-1.5 rounded"
+                    {/* 원본 이미지 (항상 렌더링) */}
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-contain absolute inset-0"
                       style={{
-                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                        backdropFilter: 'blur(4px)',
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                        opacity: (isSelected || hoveredItemId === item.id) ? 0 : 1,
+                        zIndex: 1,
+                      }}
+                      draggable={false}
+                    />
+
+                    {/* 컬러 실루엣 (호버 또는 선택 시 표시) */}
+                    <div
+                      className="w-full h-full absolute inset-0"
+                      style={{
+                        backgroundColor: item.labelColor,
+                        WebkitMaskImage: `url(${item.imageUrl})`,
+                        WebkitMaskSize: 'contain',
+                        WebkitMaskRepeat: 'no-repeat',
+                        WebkitMaskPosition: 'center',
+                        maskImage: `url(${item.imageUrl})`,
+                        maskSize: 'contain',
+                        maskRepeat: 'no-repeat',
+                        maskPosition: 'center',
+                        filter: isSelected ? 'drop-shadow(0 0 0 3px #000000)' : 'none',
+                        opacity: (isSelected || hoveredItemId === item.id) ? 1 : 0,
+                        zIndex: 2,
+                        pointerEvents: 'none',
+                      }}
+                    />
+
+                    {/* 호버 시 야채 이름 표시 (이미지 안에) */}
+                    <div
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{
+                        zIndex: 30,
+                        pointerEvents: 'none',
+                        opacity: (hoveredItemId === item.id && !isSelected) ? 1 : 0,
                       }}
                     >
-                      {item.name}
-                    </span>
+                      <span
+                        className="text-white text-sm font-medium px-3 py-1.5 rounded"
+                        style={{
+                          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                          backdropFilter: 'blur(4px)',
+                          boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                        }}
+                      >
+                        {item.name}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
             );
           })}
         </div>
+
+        {/* 플로팅 영역 간격 유지 */}
+        <div className="flex-1" style={{ minHeight: '300px' }} />
 
         {/* 서브헤드라인 (본문 위로 이동) */}
         <p 
@@ -703,8 +708,8 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
               `}
             </style>
 
-            {/* 마름모 형태 박스 - DEBUG: 항상 표시 (Figma 캡처용) */}
-            {(selectedItems.length >= 1 || true) && (
+            {/* 마름모 형태 박스 - 과일 선택시 표시 */}
+            {selectedItems.length >= 1 && (
               <div 
                 className="absolute z-40"
                 style={{
@@ -764,13 +769,9 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
                     padding: '20px',
                   }}
                 >
-                  {/* 선택된 야채 실루엣 3개 - DEBUG: mock 데이터 추가 */}
+                  {/* 선택된 야채 실루엣 */}
                   <div className="flex items-center gap-2">
-                    {(selectedItems.length > 0 ? selectedItems : [
-                      { id: 'mock1', labelColor: '#FF6B6B', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/tomato.png` },
-                      { id: 'mock2', labelColor: '#4ECDC4', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/broccoli.png` },
-                      { id: 'mock3', labelColor: '#FFE66D', imageUrl: `${import.meta.env.BASE_URL}vege_flot_img/lemon.png` },
-                    ]).map((item, index) => (
+                    {selectedItems.map((item, index) => (
                       <div
                         key={item.id}
                         className="relative"
