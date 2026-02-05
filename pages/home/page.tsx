@@ -418,18 +418,37 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
     const sizeMultiplier = isMobile ? 0.78 : 1;
     const baseSize = 180;
 
+    // 그리드 기반 위치 생성 → shuffle → 각 아이템에 배정 (겹침 감소)
+    const cols = isMobile ? 5 : 7;
+    const rows = Math.ceil(PRODUCE_ITEMS.length / cols);
+    const xMin = 5, xMax = 95, yMin = 8, yMax = 85;
+    const cellW = (xMax - xMin) / cols;
+    const cellH = (yMax - yMin) / rows;
+
+    const gridPositions: { x: number; y: number }[] = [];
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        gridPositions.push({
+          x: xMin + (col + 0.5) * cellW + (Math.random() - 0.5) * cellW * 0.6,
+          y: yMin + (row + 0.5) * cellH + (Math.random() - 0.5) * cellH * 0.6,
+        });
+      }
+    }
+    for (let i = gridPositions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [gridPositions[i], gridPositions[j]] = [gridPositions[j], gridPositions[i]];
+    }
+
     const initialItems: FloatingItem[] = PRODUCE_ITEMS.map((produce, index) => {
-      // 랜덤 위치 배치 (퍼센트 기반, 프레임 경계 포함)
-      const xPercent = Math.random() * 100; // 0% ~ 100%
-      const yPercent = Math.random() * 100; // 0% ~ 100%
+      const pos = gridPositions[index];
       // 크기 범위 80% ~ 130%
       const scale = (0.8 + Math.random() * 0.5) * sizeMultiplier;
-      
+
       return {
         id: `produce-${index}`,
         name: produce.name,
-        x: xPercent, // 퍼센트 값으로 저장
-        y: yPercent, // 퍼센트 값으로 저장
+        x: pos.x,
+        y: pos.y,
         scale,
         rotation: Math.random() * 360,
         imageUrl: produce.image,
