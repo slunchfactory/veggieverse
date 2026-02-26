@@ -182,6 +182,13 @@ const SLUG_TO_QUESTION_ID: Record<string, number> = Object.fromEntries(
 // Slug 배열 (순서대로)
 const QUESTION_SLUG_ORDER = ['diet', 'option', 'mood', 'priority', 'meaning', 'pattern', 'reason'];
 
+// public/images/tarot 기준 URL (base 한 번만 붙이기)
+const getTarotImageSrc = (imagePath: string): string => {
+  const pathWithoutBase = imagePath.replace(/^\/veggieverse\/?/, '').replace(/^\//, '');
+  const base = import.meta.env.BASE_URL || '/veggieverse/';
+  return base.endsWith('/') ? `${base}${pathWithoutBase}` : `${base}/${pathWithoutBase}`;
+};
+
 // 16가지 비건 유형
 const VEGAN_TYPES = [
   { mbti: 'ENFP', name: 'Bloomist', emoji: '🌻', description: '새로운 거 시도하고 나누는 거 좋아해요', color: '#F3B562' },
@@ -679,6 +686,9 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
   // 타로 카드 호버 상태
   const [hoveredCard, setHoveredCard] = useState<{ label: string; description: string } | null>(null);
 
+  // 현재 세션에서 사용자가 직접 상호작용한 질문 추적 (localStorage 복원 시 테두리 미표시)
+  const [interactedQuestions, setInteractedQuestions] = useState<Set<number>>(new Set());
+
   const scrollToTop = () => {
     navigate('/spirit');
   };
@@ -687,6 +697,9 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
 
   const handleOptionSelect = (questionId: number, value: string) => {
     const question = QUESTIONS.find(q => q.id === questionId);
+
+    // 현재 세션에서 상호작용한 질문으로 표시
+    setInteractedQuestions(prev => new Set(prev).add(questionId));
 
     if ((question as any)?.isMultiple) {
       // 다중 선택 가능한 질문
@@ -707,6 +720,7 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
   };
 
   const handleDietSelect = (value: string) => {
+    setInteractedQuestions(prev => new Set(prev).add(1));
     setAnswers(prev => {
       const currentSelections = Array.isArray(prev[1]) ? prev[1] : (prev[1] ? [prev[1]] : []);
       let newSelections: string[];
@@ -744,6 +758,7 @@ const SpiritFinderStep: React.FC<SpiritFinderStepProps> = ({ headerOffset = 96 }
       ...result.additionalRestrictions
     ].filter(Boolean) as string[];
 
+    setInteractedQuestions(prev => new Set(prev).add(1));
     setAnswers(prev => ({ ...prev, [1]: dietSelections }));
     // 다음 질문으로 URL 이동
     const nextQuestion = availableQuestions[1];
@@ -1827,6 +1842,7 @@ ${result.description}
                 const isSelected = isMultiple
                   ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
                   : currentAnswer === option.value;
+                const showSelected = isSelected && interactedQuestions.has(currentQuestion.id);
                 const tarot = option.tarot;
                 const isFirst = index === 0;
                 const isLast = index === currentQuestion.options.length - 1;
@@ -1851,14 +1867,14 @@ ${result.description}
                         height: '208px',
                         borderRadius: '12px',
                         overflow: 'hidden',
-                        border: isSelected ? '2px solid #DCFD4A' : 'none',
-                        transform: isSelected ? 'scale(1.02)' : 'scale(1)',
+                        border: showSelected ? '2px solid #DCFD4A' : 'none',
+                        transform: showSelected ? 'scale(1.02)' : 'scale(1)',
                         background: '#E5E5E5',
                       }}
                     >
                       {tarot?.image ? (
                         <img
-                          src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                          src={getTarotImageSrc(tarot.image)}
                           alt={tarot.title}
                           className="w-full h-full object-cover pointer-events-none"
                           draggable={false}
@@ -1891,6 +1907,7 @@ ${result.description}
                   const isSelected = isMultiple
                     ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
                     : currentAnswer === option.value;
+                  const showSelected = isSelected && interactedQuestions.has(currentQuestion.id);
                   const tarot = option.tarot;
                   const isHovered = hoveredCard?.value === option.value;
                   return (
@@ -1912,14 +1929,14 @@ ${result.description}
                           borderRadius: '12px',
                           overflow: 'hidden',
                           boxShadow: 'none',
-                          border: isSelected ? '2px solid #DCFD4A' : 'none',
-                          transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                          border: showSelected ? '2px solid #DCFD4A' : 'none',
+                          transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
                           background: '#E5E5E5',
                         }}
                       >
                         {tarot?.image ? (
                           <img
-                            src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                            src={getTarotImageSrc(tarot.image)}
                             alt={tarot.title}
                             className="w-full h-full object-cover"
                           />
@@ -1948,6 +1965,7 @@ ${result.description}
                     const isSelected = isMultiple
                       ? (Array.isArray(currentAnswer) && currentAnswer.includes(option.value))
                       : currentAnswer === option.value;
+                    const showSelected = isSelected && interactedQuestions.has(currentQuestion.id);
                     const tarot = option.tarot;
                     const isHovered = hoveredCard?.value === option.value;
                     return (
@@ -1969,14 +1987,14 @@ ${result.description}
                             borderRadius: '12px',
                             overflow: 'hidden',
                             boxShadow: 'none',
-                            border: isSelected ? '2px solid #DCFD4A' : 'none',
-                            transform: isSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                            border: showSelected ? '2px solid #DCFD4A' : 'none',
+                            transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
                             background: '#E5E5E5',
                           }}
                         >
                           {tarot?.image ? (
                             <img
-                              src={`${import.meta.env.BASE_URL}${tarot.image.startsWith('/') ? tarot.image.slice(1) : tarot.image}`}
+                              src={getTarotImageSrc(tarot.image)}
                               alt={tarot.title}
                               className="w-full h-full object-cover"
                             />
