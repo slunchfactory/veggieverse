@@ -408,22 +408,19 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
 
                 {/* 선택 시: 솔리드 컬러 실루엣 */}
                 {isSelected && (
-                  <div 
+                  <div
                     className="absolute inset-0"
                     style={{
                       backgroundColor: item.labelColor,
-                      WebkitMaskImage: `url(${item.imageUrl})`,
+                      WebkitMaskImage: `url("${item.imageUrl}")`,
                       WebkitMaskSize: 'contain',
                       WebkitMaskRepeat: 'no-repeat',
                       WebkitMaskPosition: 'center',
-                      maskImage: `url(${item.imageUrl})`,
+                      maskImage: `url("${item.imageUrl}")`,
                       maskSize: 'contain',
                       maskRepeat: 'no-repeat',
                       maskPosition: 'center',
-                      borderRadius: '50%',
-                      zIndex: 10,
-                      backfaceVisibility: 'hidden',
-                      transform: 'translateZ(0)',
+                      zIndex: 25,
                     }}
                   />
                 )}
@@ -440,8 +437,6 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                   style={{
                     position: 'relative',
                     zIndex: 20,
-                    backfaceVisibility: 'hidden',
-                    transform: 'translateZ(0)',
                     transition: 'opacity 0.3s ease',
                   }}
                   draggable={false}

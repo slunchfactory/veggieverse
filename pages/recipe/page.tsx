@@ -1102,7 +1102,7 @@ const RecipePage: React.FC = () => {
             <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                 {spiritName} 추천 레시피
               </h1>
-            <p className="text-stone-600 text-left max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B' }}>
+            <p className="text-stone-600 text-center max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B' }}>
                 "{spiritInfo.description}"
               </p>
             </section>
