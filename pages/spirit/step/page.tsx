@@ -1861,14 +1861,15 @@ ${result.description}
                         handleOptionSelect(currentQuestion.id, option.value);
                         if (!isMultiple) setTimeout(() => handleNext(), 300);
                       }}
-                      className="cursor-pointer transition-all duration-300"
+                      className="cursor-pointer"
                       style={{
                         width: '130px',
                         height: '208px',
                         borderRadius: '12px',
                         overflow: 'hidden',
-                        border: showSelected ? '2px solid #DCFD4A' : 'none',
+                        border: showSelected ? '2px solid #DCFD4A' : '2px solid transparent',
                         transform: showSelected ? 'scale(1.02)' : 'scale(1)',
+                        transition: 'transform 0.2s ease, border-color 0.2s ease',
                         background: '#E5E5E5',
                       }}
                     >
@@ -1922,15 +1923,16 @@ ${result.description}
                           handleOptionSelect(currentQuestion.id, option.value);
                           if (!isMultiple) setTimeout(() => handleNext(), 300);
                         }}
-                        className="cursor-pointer transition-all duration-300"
+                        className="cursor-pointer"
                         style={{
                           width: '192px',
                           height: '307px',
                           borderRadius: '12px',
                           overflow: 'hidden',
                           boxShadow: 'none',
-                          border: showSelected ? '2px solid #DCFD4A' : 'none',
+                          border: showSelected ? '2px solid #DCFD4A' : '2px solid transparent',
                           transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                          transition: 'transform 0.2s ease, border-color 0.2s ease',
                           background: '#E5E5E5',
                         }}
                       >
@@ -1980,15 +1982,16 @@ ${result.description}
                             handleOptionSelect(currentQuestion.id, option.value);
                             if (!isMultiple) setTimeout(() => handleNext(), 300);
                           }}
-                          className="cursor-pointer transition-all duration-300"
+                          className="cursor-pointer"
                           style={{
                             width: '192px',
                             height: '307px',
                             borderRadius: '12px',
                             overflow: 'hidden',
                             boxShadow: 'none',
-                            border: showSelected ? '2px solid #DCFD4A' : 'none',
+                            border: showSelected ? '2px solid #DCFD4A' : '2px solid transparent',
                             transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
+                            transition: 'transform 0.2s ease, border-color 0.2s ease',
                             background: '#E5E5E5',
                           }}
                         >
