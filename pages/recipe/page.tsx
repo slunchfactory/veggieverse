@@ -1079,15 +1079,10 @@ const RecipePage: React.FC = () => {
   // 스피릿 타입 정보 가져오기
   const spiritInfo = fromSpirit ? VEGAN_TYPES.find(type => type.mbti === spiritType) : null;
 
-  // 스피릿 진입 시 스크롤 애니메이션
+  // 스피릿 진입 시 맨 위로 스크롤
   useEffect(() => {
     if (fromSpirit) {
-      setTimeout(() => {
-        document.getElementById('spirit-pick')?.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }, 300);
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
   }, [fromSpirit]);
 
