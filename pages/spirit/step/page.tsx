@@ -1848,7 +1848,7 @@ ${result.description}
                 const isLast = index === currentQuestion.options.length - 1;
                 return (
                   <div
-                    key={option.value}
+                    key={`${currentQuestion.id}-${option.value}`}
                     className="flex-shrink-0 flex flex-col items-center"
                     style={{
                       scrollSnapAlign: 'center',
@@ -1868,8 +1868,7 @@ ${result.description}
                         borderRadius: '12px',
                         overflow: 'hidden',
                         boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
-                        transform: showSelected ? 'scale(1.02)' : 'scale(1)',
-                        transition: 'transform 0.2s ease',
+                        transform: showSelected ? 'scale(1.02)' : 'none',
                         background: '#E5E5E5',
                       }}
                     >
@@ -1913,7 +1912,7 @@ ${result.description}
                   const isHovered = hoveredCard?.value === option.value;
                   return (
                     <div
-                      key={option.value}
+                      key={`${currentQuestion.id}-${option.value}`}
                       className="flex flex-col items-center"
                       onMouseEnter={() => setHoveredCard(option)}
                       onMouseLeave={() => setHoveredCard(null)}
@@ -1930,8 +1929,7 @@ ${result.description}
                           borderRadius: '12px',
                           overflow: 'hidden',
                           boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
-                          transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                          transition: 'transform 0.2s ease',
+                          transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'none',
                           background: '#E5E5E5',
                         }}
                       >
@@ -1971,7 +1969,7 @@ ${result.description}
                     const isHovered = hoveredCard?.value === option.value;
                     return (
                       <div
-                        key={option.value}
+                        key={`${currentQuestion.id}-${option.value}`}
                         className="flex flex-col items-center"
                         onMouseEnter={() => setHoveredCard(option)}
                         onMouseLeave={() => setHoveredCard(null)}
@@ -1988,8 +1986,7 @@ ${result.description}
                             borderRadius: '12px',
                             overflow: 'hidden',
                             boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
-                            transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'translateY(0)',
-                            transition: 'transform 0.2s ease',
+                            transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'none',
                             background: '#E5E5E5',
                           }}
                         >
