@@ -355,6 +355,21 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
           }).join('')}
         </style>
 
+        {/* SVG 컬러 필터 정의 (실루엣용) */}
+        <svg style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
+          <defs>
+            {items.map((item) => {
+              const filterId = `silhouette-${item.id.replace(/[^a-zA-Z0-9]/g, '')}`;
+              return (
+                <filter key={filterId} id={filterId} colorInterpolationFilters="sRGB">
+                  <feFlood floodColor={item.labelColor} floodOpacity="1" result="color" />
+                  <feComposite in="color" in2="SourceAlpha" operator="in" />
+                </filter>
+              );
+            })}
+          </defs>
+        </svg>
+
         {/* 떠다니는 야채/과일들 */}
         {items.map((item) => {
           const isSelected = selectedItems.some(i => i.id === item.id);
@@ -406,38 +421,20 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                   </span>
                 </div>
 
-                {/* 선택 시: 솔리드 컬러 실루엣 */}
-                {isSelected && (
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      backgroundColor: item.labelColor,
-                      WebkitMaskImage: `url("${item.imageUrl}")`,
-                      WebkitMaskSize: 'contain',
-                      WebkitMaskRepeat: 'no-repeat',
-                      WebkitMaskPosition: 'center',
-                      maskImage: `url("${item.imageUrl}")`,
-                      maskSize: 'contain',
-                      maskRepeat: 'no-repeat',
-                      maskPosition: 'center',
-                      zIndex: 25,
-                    }}
-                  />
-                )}
-
-                {/* 실제 이미지 */}
+                {/* 실제 이미지 (선택 시 SVG 필터로 컬러 실루엣 적용) */}
                 <img
                   src={item.imageUrl}
                   alt={item.name}
                   loading="lazy"
                   decoding="async"
                   className={`w-full h-full object-contain ${
-                    isSelected ? 'opacity-0' : 'group-hover:scale-105'
+                    isSelected ? '' : 'group-hover:scale-105'
                   }`}
                   style={{
                     position: 'relative',
                     zIndex: 20,
-                    transition: 'opacity 0.3s ease',
+                    filter: isSelected ? `url(#silhouette-${itemId})` : 'none',
+                    transition: 'filter 0.3s ease',
                   }}
                   draggable={false}
                 />
