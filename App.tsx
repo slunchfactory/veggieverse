@@ -38,7 +38,6 @@ import { ProductDetailPage } from './pages/store/product/page';
 // ============================================
 import RecipePage from './pages/recipe/page';
 import RecipeList from './pages/recipe/list/page';
-import RecipeDetail from './pages/recipe/detail/page';
 import RecipeCategoryPage from './pages/recipe/category/page';
 import RecipeHallOfFamePage from './pages/recipe/hall-of-fame/page';
 import RecipeDetailPage from './pages/recipe/detail-legacy/page';
@@ -285,11 +284,11 @@ const AppContent: React.FC = () => {
           path="/recipe/:id"
           element={
             <ErrorBoundary>
-              <RecipeDetail />
+              <RecipeDetailPage />
             </ErrorBoundary>
           }
         />
-        {/* 기존 RecipeDetailPage 경로도 유지 */}
+        {/* 기존 경로도 유지 (하위 호환성) */}
         <Route path="/recipe/detail/:id" element={<RecipeDetailPage />} />
 
         {/* ============================================
