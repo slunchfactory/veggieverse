@@ -6,6 +6,7 @@ import { getRecipeThumbnailImage, getFallbackRecipeImage } from '../../utils/rec
 import HallOfFameMarquee from '../../components/HallOfFameMarquee';
 import { PopularRecipes } from '../../components/PopularRecipes';
 import { TopControlBar, TabItem } from '../../components/TopControlBar';
+import { recipes as slunchRecipes } from '../../data/slunchList';
 
 // 카테고리별 레시피 데이터
 interface Recipe {
@@ -26,57 +27,19 @@ interface RecipeCategory {
   recipes: Recipe[];
 }
 
-// 인기 레시피 데이터
-const popularRecipes: Recipe[] = [
-  {
-    id: 1,
-    title: '두부 스테이크',
-    description: '크리미한 버섯 소스와 구운 채소를 곁들인',
-    image: '/veggieverse/vege_flot_img/mushroom.png',
-  },
-  {
-    id: 2,
-    title: '비건 파스타',
-    description: '발사믹 토마토 소스와 신선한 바질을 곁들인',
-    image: '/veggieverse/vege_flot_img/tomato.png',
-  },
-  {
-    id: 3,
-    title: '아보카도 샐러드 볼',
-    description: '구운 감자 웨지와 신선한 채소를 곁들인',
-    image: '/veggieverse/vege_flot_img/avocado.png',
-  },
-  {
-    id: 4,
-    title: '버섯 리조또',
-    description: '치즈 풍미 가득한 크리미 주키니와 토마토를 곁들인',
-    image: '/veggieverse/vege_flot_img/mushroom.png',
-  },
-  {
-    id: 5,
-    title: '채소 볶음밥',
-    description: '브로콜리와 당근을 곁들인 건강한 한 끼',
-    image: '/veggieverse/vege_flot_img/broccoli.png',
-  },
-  {
-    id: 6,
-    title: '레몬 허브 샐러드',
-    description: '상큼한 레몬 드레싱과 신선한 허브를 곁들인',
-    image: '/veggieverse/vege_flot_img/lemon.png',
-  },
-  {
-    id: 7,
-    title: '고구마 수프',
-    description: '부드럽고 달콤한 비건 수프',
-    image: '/veggieverse/vege_flot_img/sweet potato.png',
-  },
-  {
-    id: 8,
-    title: '망고 스무디 볼',
-    description: '열대 과일과 그래놀라를 곁들인',
-    image: '/veggieverse/vege_flot_img/mango.png',
-  },
-];
+// 슬런치 데이터에서 인기 레시피 생성 (placeholder 제외)
+const validSlunchRecipes = slunchRecipes.filter(r => r.code !== 'No.');
+
+const popularRecipes: Recipe[] = validSlunchRecipes
+  .filter(r => r.category === '인기')
+  .map(r => ({
+    id: r.id,
+    title: r.name,
+    description: r.ingredients.split(',').slice(0, 3).join(', ').replace(/\s*\d+[gml개쪽장]+/g, ''),
+    image: getRecipeThumbnailImage(r.id),
+    author: r.author.replace('@', ''),
+    likes: r.likes,
+  }));
 
 // 카테고리별 색상 매핑
 const categoryColors: Record<string, { text: string; bg: string }> = {
@@ -171,84 +134,35 @@ const addTagsToRecipes = (recipes: Recipe[], tags: string[]): Recipe[] => {
   }));
 };
 
-// 카테고리별 레시피 데이터
-const recipeCategories: RecipeCategory[] = [
-  {
-    id: 'new',
-    title: '이번 주 새로 올라온 레시피',
-    subtitle: '신규레시피',
-    recipes: addTagsToRecipes([
-      { id: 101, title: '콩나물 비빔밥', description: '고소한 참기름 향 가득', image: '/veggieverse/vege_flot_img/edamame.png', author: '비건셰프', likes: 234 },
-      { id: 102, title: '당근 라페 샌드위치', description: '아삭한 식감이 일품', image: '/veggieverse/vege_flot_img/carrot.png', author: '채식러버', likes: 189 },
-      { id: 103, title: '올리브 파스타', description: '지중해 풍미 가득', image: '/veggieverse/vege_flot_img/olive.png', author: '이탈리안', likes: 156 },
-      { id: 104, title: '피스타치오 페스토', description: '고급스러운 녹색 소스', image: '/veggieverse/vege_flot_img/pistachio.png', author: '홈쿡러', likes: 312 },
-      { id: 105, title: '무화과 샐러드', description: '달콤한 제철 과일과 함께', image: '/veggieverse/vege_flot_img/fig.png', author: '계절요리', likes: 278 },
-    ], ['효율적', '자연주의', '간편조리']),
-  },
-  {
-    id: 'lunch',
-    title: '맛있는 점심으로 하루 채우기',
-    subtitle: '점심',
-    recipes: addTagsToRecipes([
-      { id: 201, title: '두부 덮밥', description: '든든한 단백질 한 그릇', image: '/veggieverse/vege_flot_img/lettuce.png', author: '점심왕', likes: 445 },
-      { id: 202, title: '야채 카레', description: '향신료 가득한 건강식', image: '/veggieverse/vege_flot_img/potato.png', author: '카레매니아', likes: 389 },
-      { id: 203, title: '비빔국수', description: '새콤달콤 입맛 돋우는', image: '/veggieverse/vege_flot_img/chili pepper.png', author: '면요리사', likes: 521 },
-      { id: 204, title: '샐러드 랩', description: '간편하고 건강한 한 끼', image: '/veggieverse/vege_flot_img/green bean.png', author: '다이어터', likes: 298 },
-      { id: 205, title: '버섯 덮밥', description: '쫄깃한 식감의 영양밥', image: '/veggieverse/vege_flot_img/mushroom.png', author: '버섯사랑', likes: 367 },
-      { id: 206, title: '아보카도 토스트', description: '영양 가득 브런치 메뉴', image: '/veggieverse/vege_flot_img/avocado.png', author: '브런치러버', likes: 412 },
-      { id: 207, title: '토마토 리조또', description: '이탈리안 정통 레시피', image: '/veggieverse/vege_flot_img/tomato.png', author: '리조또장인', likes: 356 },
-      { id: 208, title: '호박 크림 수프', description: '부드럽고 든든한 한 그릇', image: '/veggieverse/vege_flot_img/pumpkin.png', author: '수프마스터', likes: 423 },
-    ], ['효율적', '간편조리', '고단백']),
-  },
-  {
-    id: 'dessert',
-    title: '디저트는 내 삶의 낙이야',
-    subtitle: '디저트',
-    recipes: addTagsToRecipes([
-      { id: 301, title: '코코넛 푸딩', description: '열대의 달콤함을 담아', image: '/veggieverse/vege_flot_img/coconut.png', author: '디저트왕', likes: 623 },
-      { id: 302, title: '블루베리 타르트', description: '상큼한 보라빛 유혹', image: '/veggieverse/vege_flot_img/blueberry.png', author: '베이커리', likes: 578 },
-      { id: 303, title: '망고스틴 아이스크림', description: '이국적인 과일의 향연', image: '/veggieverse/vege_flot_img/mangosteen.png', author: '아이스크림', likes: 445 },
-      { id: 304, title: '포도 젤리', description: '탱글탱글 보석같은', image: '/veggieverse/vege_flot_img/grape.png', author: '젤리장인', likes: 389 },
-      { id: 305, title: '라즈베리 무스', description: '부드럽고 새콤한', image: '/veggieverse/vege_flot_img/raspberry.png', author: '무스마스터', likes: 512 },
-    ], ['감성적', '예술적', '즐거움']),
-  },
-  {
-    id: 'korean',
-    title: '할머니 손맛이 그리울 때',
-    subtitle: '한식',
-    recipes: addTagsToRecipes([
-      { id: 401, title: '배추된장국', description: '구수한 된장의 깊은 맛', image: '/veggieverse/vege_flot_img/napa cabbage.png', author: '한식셰프', likes: 734 },
-      { id: 402, title: '마늘종 볶음', description: '밥도둑 반찬의 정석', image: '/veggieverse/vege_flot_img/garlic.png', author: '반찬왕', likes: 623 },
-      { id: 403, title: '생강차', description: '몸을 따뜻하게 해주는', image: '/veggieverse/vege_flot_img/ginger.png', author: '차전문가', likes: 456 },
-      { id: 404, title: '파전', description: '비 오는 날의 필수템', image: '/veggieverse/vege_flot_img/leek.png', author: '전요리사', likes: 589 },
-      { id: 405, title: '고추장 비빔밥', description: '매콤 달콤 환상 조합', image: '/veggieverse/vege_flot_img/pepper.png', author: '비빔밥러버', likes: 678 },
-    ], ['전통', '건강', '효율적']),
-  },
-  {
-    id: 'drink',
-    title: '오늘 한 잔, 안주는 내가 만들게',
-    subtitle: '술안주',
-    recipes: addTagsToRecipes([
-      { id: 501, title: '땅콩 조림', description: '짭짤하고 고소한', image: '/veggieverse/vege_flot_img/peanut.png', author: '술꾼', likes: 445 },
-      { id: 502, title: '옥수수 치즈구이', description: '달콤 짭짤 중독성', image: '/veggieverse/vege_flot_img/corn.png', author: '안주왕', likes: 534 },
-      { id: 503, title: '아스파라거스 구이', description: '고급스러운 바 스타일', image: '/veggieverse/vege_flot_img/asparagus.png', author: '바텐더', likes: 367 },
-      { id: 504, title: '브로콜리 튀김', description: '바삭한 식감의 매력', image: '/veggieverse/vege_flot_img/broccoli.png', author: '튀김장인', likes: 423 },
-      { id: 505, title: '딜 감자튀김', description: '허브 향 가득한', image: '/veggieverse/vege_flot_img/dill.png', author: '감자사랑', likes: 489 },
-    ], ['즐거움', '함께', '간편조리']),
-  },
-  {
-    id: 'date',
-    title: '오늘 저녁, 특별한 사람과 함께',
-    subtitle: '데이트',
-    recipes: addTagsToRecipes([
-      { id: 601, title: '트러플 리조또', description: '로맨틱한 저녁을 위해', image: '/veggieverse/vege_flot_img/mushroom.png', author: '로맨티스트', likes: 789 },
-      { id: 602, title: '레몬 파스타', description: '상큼한 지중해 풍미', image: '/veggieverse/vege_flot_img/lemon.png', author: '파스타장인', likes: 656 },
-      { id: 603, title: '복숭아 카프레제', description: '여름밤의 상큼함', image: '/veggieverse/vege_flot_img/peach.png', author: '샐러드마스터', likes: 534 },
-      { id: 604, title: '키위 모히또', description: '청량한 칵테일 한 잔', image: '/veggieverse/vege_flot_img/kiwi.png', author: '믹솔로지스트', likes: 612 },
-      { id: 605, title: '리치 샴페인', description: '달콤한 축배를 위해', image: '/veggieverse/vege_flot_img/lychee.png', author: '소믈리에', likes: 567 },
-    ], ['함께', '예술적', '로맨틱']),
-  },
+// 슬런치 데이터를 Recipe 형태로 변환하는 헬퍼
+const toRecipe = (r: typeof slunchRecipes[0]): Recipe => ({
+  id: r.id,
+  title: r.name,
+  description: r.ingredients.split(',').slice(0, 3).join(', ').replace(/\s*\d+[gml개쪽장]+/g, ''),
+  image: getRecipeThumbnailImage(r.id),
+  author: r.author.replace('@', ''),
+  likes: r.likes,
+});
+
+// 카테고리별 레시피 데이터 (슬런치 실제 데이터)
+const categoryConfig: { id: string; title: string; subtitle: string; slunchCategory: string; tags: string[] }[] = [
+  { id: 'new', title: '이번 주 새로 올라온 레시피', subtitle: '신규레시피', slunchCategory: '신규', tags: ['효율적', '자연주의', '간편조리'] },
+  { id: 'lunch', title: '맛있는 점심으로 하루 채우기', subtitle: '점심', slunchCategory: '점심', tags: ['효율적', '간편조리', '고단백'] },
+  { id: 'popular', title: '가장 사랑받는 인기 레시피', subtitle: '인기', slunchCategory: '인기', tags: ['인기', '고단백', '간편조리'] },
+  { id: 'dessert', title: '디저트는 내 삶의 낙이야', subtitle: '디저트', slunchCategory: '디저트', tags: ['감성적', '예술적', '즐거움'] },
 ];
+
+const recipeCategories: RecipeCategory[] = categoryConfig.map(config => ({
+  id: config.id,
+  title: config.title,
+  subtitle: config.subtitle,
+  recipes: addTagsToRecipes(
+    validSlunchRecipes
+      .filter(r => r.category === config.slunchCategory)
+      .map(toRecipe),
+    config.tags
+  ),
+}));
 
 // 모든 레시피를 하나의 배열로 합치기
 const allRecipes: Recipe[] = recipeCategories.flatMap(category => category.recipes);
@@ -429,7 +343,7 @@ const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmark
           flexDirection: 'column',
           minWidth: '200px',
           maxWidth: '200px',
-          height: '300px',
+          height: '330px',
           background: '#FFFFFF',
           borderRadius: '16px',
           overflow: 'hidden',
@@ -553,7 +467,7 @@ const ViewAllCard: React.FC<{ categoryId: string; categoryTitle: string }> = ({ 
         justifyContent: 'center',
         minWidth: '200px',
         maxWidth: '200px',
-        height: '300px',
+        height: '330px',
         background: '#F5F5F5',
         borderRadius: '16px',
         textDecoration: 'none',
