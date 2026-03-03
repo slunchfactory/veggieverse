@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 export default function RecipeList() {
-  return <h1>RecipeList</h1>;
+  return <Navigate to="/recipe" replace />;
 }

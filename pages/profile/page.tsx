@@ -165,7 +165,7 @@ const ProfilePage: React.FC = () => {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div>
                 <h1 style={{ fontSize: '20px', fontWeight: 400, color: '#000' }}>
-                  {user.name || user.email?.split('@')[0] || 'Guest'}님, 어서오세요
+                  {user.username || 'Guest'}님, 어서오세요
                 </h1>
                 {spiritProfile?.veganType && (
                   <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', marginTop: '4px' }}>

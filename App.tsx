@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate, useParams } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 
@@ -30,7 +30,7 @@ import SpiritFinderStep from './pages/spirit/step/page';
 // ============================================
 import { StorePage } from './pages/store/page';
 import StoreList from './pages/store/list/page';
-import StoreDetail from './pages/store/detail/page';
+// StoreDetail은 스텁이므로 제거, /store/detail/:id → /store/product/:id 리다이렉트로 대체
 import { ProductDetailPage } from './pages/store/product/page';
 
 // ============================================
@@ -255,7 +255,7 @@ const AppContent: React.FC = () => {
         <Route path="/store/list" element={<StoreList />} />
         <Route path="/store/ai-recommendation" element={<ComingSoonPage title="AI 상품 추천" description="사용자 취향 및 알러지 필터링 기반 추천" />} />
         <Route path="/store/goal-based" element={<ComingSoonPage title="목표별 큐레이션" description="저염/저당/제로미트 등 목표별 상품 추천" />} />
-        <Route path="/store/detail/:id" element={<StoreDetail />} />
+        <Route path="/store/detail/:id" element={<StoreDetailRedirect />} />
         <Route path="/store/product/:productId" element={<ProductDetailPage />} />
         <Route path="/store/inquiry-guide" element={<ComingSoonPage title="상품문의 방법" />} />
 
@@ -289,7 +289,7 @@ const AppContent: React.FC = () => {
           }
         />
         {/* 기존 경로도 유지 (하위 호환성) */}
-        <Route path="/recipe/detail/:id" element={<RecipeDetailPage />} />
+        <Route path="/recipe/detail/:id" element={<ErrorBoundary><RecipeDetailPage /></ErrorBoundary>} />
 
         {/* ============================================
             6. 이벤트 및 뉴스레터
@@ -340,6 +340,12 @@ const AppContent: React.FC = () => {
     </Layout>
     </>
   );
+};
+
+// /store/detail/:id → /store/product/:id 리다이렉트
+const StoreDetailRedirect: React.FC = () => {
+  const { id } = useParams();
+  return <Navigate to={`/store/product/${id}`} replace />;
 };
 
 // Coming Soon 페이지

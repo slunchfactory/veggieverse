@@ -18,7 +18,7 @@ const ProfileEditPage: React.FC = () => {
   const { user } = useUser();
   const [formData, setFormData] = useState({
     username: user?.username || '비건탐험가',
-    email: user?.email || 'vegan@slunch.com',
+    email: 'vegan@slunch.com',
     phone: '010-1234-5678',
     veganType: user?.spiritName?.toLowerCase().includes('비건') ? 'vegan' : 'flexitarian',
     birthYear: '1990',
@@ -80,7 +80,7 @@ const ProfileEditPage: React.FC = () => {
                   overflow: 'hidden',
                 }}
               >
-                {user.profileImage ? (
+                {user?.profileImage ? (
                   <img src={user.profileImage} alt="프로필" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <User size={40} color="#9A9A9A" />

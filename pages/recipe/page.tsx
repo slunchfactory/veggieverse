@@ -1017,7 +1017,7 @@ const RecipePage: React.FC = () => {
             </section>
 
           {/* Section 2: 스피릿 PICK 섹션 - 좌측 1440px 정렬, 우측 오버플로우 */}
-            {spiritPickRecipes.length > 0 && (
+            {spiritPickRecipes.length > 0 ? (
               <section
                 id="spirit-pick"
                 className="w-full py-20"
@@ -1047,6 +1047,24 @@ const RecipePage: React.FC = () => {
                   <SpiritRecipeCarousel recipes={spiritPickRecipes} showRank />
                 </div>
               </section>
+            ) : (
+              <section
+                className="w-full py-20"
+                style={{
+                  background: '#EEF2EB',
+                  paddingLeft: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+                  paddingRight: 'max(40px, calc((100vw - 1440px) / 2 + 40px))',
+                }}
+              >
+                <div style={{ maxWidth: '1360px', textAlign: 'center', padding: '40px 0' }}>
+                  <p style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B', marginBottom: '8px' }}>
+                    {spiritName} 스피릿에 맞는 추천 레시피를 준비 중이에요
+                  </p>
+                  <p style={{ fontSize: '14px', fontWeight: 400, color: '#999' }}>
+                    곧 새로운 레시피가 추가될 예정입니다
+                  </p>
+                </div>
+              </section>
             )}
 
           {/* Section 3: 큐레이션 섹션 - 좌측 1440px 정렬, 우측 오버플로우 */}
@@ -1058,7 +1076,7 @@ const RecipePage: React.FC = () => {
             }}
           >
             {/* 큐레이션 섹션 */}
-            {displayCategories.length > 0 && (
+            {displayCategories.length > 0 ? (
               <div style={{ padding: '40px 0' }}>
                 {/* 텍스트 콘텐츠 - 1360px 제한 */}
                 <div style={{ maxWidth: '1360px', paddingRight: '40px' }}>
@@ -1101,6 +1119,15 @@ const RecipePage: React.FC = () => {
                     );
                   })}
                 </div>
+              </div>
+            ) : (
+              <div style={{ padding: '80px 40px', textAlign: 'center' }}>
+                <p style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B', marginBottom: '8px' }}>
+                  조건에 맞는 레시피가 없습니다
+                </p>
+                <p style={{ fontSize: '14px', fontWeight: 400, color: '#999' }}>
+                  다른 스피릿 유형으로 다시 시도해보세요
+                </p>
               </div>
             )}
 

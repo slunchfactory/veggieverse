@@ -11,7 +11,7 @@ const newsletterTabs: TabItem[] = [
   { id: 'slunch', label: "Slunch's Pick" },
 ];
 
-interface Article {
+export interface Article {
   id: number;
   category: string;
   title: string;
@@ -32,7 +32,7 @@ interface Article {
 }
 
 // 작성자 정보 매핑
-const AUTHOR_BIO: Record<string, string> = {
+export const AUTHOR_BIO: Record<string, string> = {
   'Huna': '슬런치팩토리의 대표. 맛있는 것 앞에서는 누구보다 솔직해진다.\n먹는 것에 진심인 사람들과 함께 이 공간을 만들어가고 있다.',
   'Josin': '12년 차가 넘어가는 슬런치팩토리의 기둥. 오래 머물고 싶은 맛을 고민한다.\n묵묵히 주방을 지키며 팀의 중심을 잡아주는 사람.',
   'ChaCha': '작고 동그랗고 귀여운 것을 좋아하는 디자이너. 사소한 것에서 영감을 얻는 편이다.',
@@ -40,14 +40,14 @@ const AUTHOR_BIO: Record<string, string> = {
 };
 
 // 작성자 프로필 이미지 매핑
-const AUTHOR_AVATAR: Record<string, string> = {
+export const AUTHOR_AVATAR: Record<string, string> = {
   'Huna': 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&h=200&fit=crop&crop=faces',
   'Josin': 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces',
   'ChaCha': 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&h=200&fit=crop&crop=faces',
   'Jin': 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces',
 };
 
-const ARTICLES: Article[] = [
+export const ARTICLES: Article[] = [
   {
     id: 1,
     category: 'Health',

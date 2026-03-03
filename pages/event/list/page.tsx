@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 export default function EventList() {
-  return <h1>EventList</h1>;
+  return <Navigate to="/event" replace />;
 }

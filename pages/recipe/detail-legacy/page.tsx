@@ -36,6 +36,13 @@ const RecipeDetailPage: React.FC = () => {
   const [photoReviews, setPhotoReviews] = useState<PhotoReview[]>([]);
   const [activeRecipeTab, setActiveRecipeTab] = useState('popular');
 
+  // 동적 레시피 데이터 로딩 (Hook 호출보다 앞에 위치해야 하므로 여기서 조회)
+  const recipe = getDetailedRecipe(id || '1');
+
+  // ✅ 모든 useState를 조건부 return보다 위에 선언
+  const [servings, setServings] = useState(recipe?.servings || 2);
+  const [isLiked, setIsLiked] = useState(false);
+
   // 탭 변경 핸들러 - 해당 카테고리 페이지로 이동
   const handleRecipeTabChange = (tabId: string) => {
     setActiveRecipeTab(tabId);
@@ -53,10 +60,7 @@ const RecipeDetailPage: React.FC = () => {
       }
     }
   }, [id]);
-  
-  // 동적 레시피 데이터 로딩
-  const recipe = getDetailedRecipe(id || '1');
-  
+
   // 이전/다음 레시피 찾기
   const currentRecipeId = Number(id) || 1;
   const sortedRecipes = [...allRecipes].sort((a, b) => a.id - b.id);
@@ -64,72 +68,8 @@ const RecipeDetailPage: React.FC = () => {
   const prevRecipe = currentIndex > 0 ? sortedRecipes[currentIndex - 1] : null;
   const nextRecipe = currentIndex < sortedRecipes.length - 1 ? sortedRecipes[currentIndex + 1] : null;
   
-  // 레시피가 없을 때 Fallback UI
-  if (!recipe) {
-    return (
-      <div className="min-h-screen flex flex-col bg-stone-50" style={{ paddingTop: '48px' }}>
-        {/* 카테고리 탭 바 (스티키) */}
-        <TopControlBar
-          tabs={recipeTabs}
-          activeTab={activeRecipeTab}
-          onTabChange={handleRecipeTabChange}
-        />
-        <div className="flex-1 flex items-center justify-center px-4">
-          <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
-            <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <ChefHat className="w-10 h-10 text-stone-400" />
-            </div>
-            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>준비 중인 레시피입니다</h1>
-            <p className="text-stone-600 mb-6">
-              아직 이 레시피의 상세 정보가 준비되지 않았습니다.
-              <br />
-              곧 만나볼 수 있을 거예요!
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-  
-  const [servings, setServings] = useState(recipe.servings || 2);
-  const [isLiked, setIsLiked] = useState(false);
-  
-  const multiplier = servings / (recipe.servings || 2);
-  
-  // 이미지 URL 결정 (에러 발생 시 기본 이미지 사용)
-  const getImageUrl = (imagePath?: string | null) => {
-    if (imageError || !imagePath) {
-      return DEFAULT_RECIPE_IMAGE;
-    }
-    return imagePath;
-  };
-  
-  // 기본 작성자 정보 (실제로는 레시피 데이터에서 가져와야 함)
-  const author = {
-    name: recipe.author || '비건셰프',
-    avatar: '/veggieverse/vege_flot_img/avocado.png',
-    date: '2025년 12월 8일',
-  };
-  
-  // 기본 AI 추천 (실제로는 레시피 데이터에서 가져와야 함)
-  const aiRecommendations = {
-    title: '🤖 AI 셰프의 추천',
-    tips: [
-      {
-        type: 'upgrade',
-        icon: '✨',
-        title: '더 깊은 풍미를 원한다면',
-        content: '말린 포르치니 버섯을 따뜻한 물에 30분 불려 함께 사용하면 더욱 깊고 진한 버섯 향을 즐길 수 있어요.',
-      },
-      {
-        type: 'substitute',
-        icon: '🔄',
-        title: '비건 버전으로 만들기',
-        content: '파마산 치즈 대신 뉴트리셔널 이스트 3큰술을 사용하고, 버터는 코코넛 오일이나 비건 버터로 대체하세요.',
-      },
-    ],
-  };
-  
+  const multiplier = servings / (recipe?.servings || 2);
+
   // 토스트 추가
   const addToast = (toast: Omit<ToastProps, 'id' | 'onClose'>) => {
     const newToast: ToastProps = {
@@ -141,12 +81,12 @@ const RecipeDetailPage: React.FC = () => {
     };
     setToasts(prev => [...prev, newToast]);
   };
-  
+
   // 토스트 제거
   const removeToast = (toastId: string) => {
     setToasts(prev => prev.filter(t => t.id !== toastId));
   };
-  
+
   // 포토 리뷰 제출 핸들러
   const handleReviewSubmitted = useCallback((newReview: PhotoReview) => {
     setPhotoReviews((prev) => {
@@ -193,26 +133,88 @@ const RecipeDetailPage: React.FC = () => {
       }, 300);
     }
   }, [searchParams]);
-  
+
   // 스크롤 시 현재 단계 하이라이트
   useEffect(() => {
     const handleScroll = () => {
       const stepElements = document.querySelectorAll('[data-step]');
       const scrollPosition = window.scrollY + 200; // 헤더 높이 고려
-      
+
       stepElements.forEach((el, index) => {
         const rect = el.getBoundingClientRect();
         const elementTop = rect.top + window.scrollY;
-        
+
         if (scrollPosition >= elementTop - 100 && scrollPosition < elementTop + rect.height) {
           setCurrentStep(index + 1);
         }
       });
     };
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // ✅ 모든 Hook이 선언된 후, 조건부 return 처리
+  // 레시피가 없을 때 Fallback UI
+  if (!recipe) {
+    return (
+      <div className="min-h-screen flex flex-col bg-stone-50" style={{ paddingTop: '48px' }}>
+        {/* 카테고리 탭 바 (스티키) */}
+        <TopControlBar
+          tabs={recipeTabs}
+          activeTab={activeRecipeTab}
+          onTabChange={handleRecipeTabChange}
+        />
+        <div className="flex-1 flex items-center justify-center px-4">
+          <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
+            <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <ChefHat className="w-10 h-10 text-stone-400" />
+            </div>
+            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>준비 중인 레시피입니다</h1>
+            <p className="text-stone-600 mb-6">
+              아직 이 레시피의 상세 정보가 준비되지 않았습니다.
+              <br />
+              곧 만나볼 수 있을 거예요!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 이미지 URL 결정 (에러 발생 시 기본 이미지 사용)
+  const getImageUrl = (imagePath?: string | null) => {
+    if (imageError || !imagePath) {
+      return DEFAULT_RECIPE_IMAGE;
+    }
+    return imagePath;
+  };
+
+  // 기본 작성자 정보 (실제로는 레시피 데이터에서 가져와야 함)
+  const author = {
+    name: recipe.author || '비건셰프',
+    avatar: '/veggieverse/vege_flot_img/avocado.png',
+    date: '2025년 12월 8일',
+  };
+
+  // 기본 AI 추천 (실제로는 레시피 데이터에서 가져와야 함)
+  const aiRecommendations = {
+    title: '🤖 AI 셰프의 추천',
+    tips: [
+      {
+        type: 'upgrade',
+        icon: '✨',
+        title: '더 깊은 풍미를 원한다면',
+        content: '말린 포르치니 버섯을 따뜻한 물에 30분 불려 함께 사용하면 더욱 깊고 진한 버섯 향을 즐길 수 있어요.',
+      },
+      {
+        type: 'substitute',
+        icon: '🔄',
+        title: '비건 버전으로 만들기',
+        content: '파마산 치즈 대신 뉴트리셔널 이스트 3큰술을 사용하고, 버터는 코코넛 오일이나 비건 버터로 대체하세요.',
+      },
+    ],
+  };
 
   const parseAmount = (amount: string) => {
     if (!amount) return amount;

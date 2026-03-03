@@ -1947,7 +1947,7 @@ ${result.description}
                       </div>
                       <div className="mt-3 text-center" style={{ width: '192px' }}>
                         <span className="text-base font-bold text-stone-800">{option.label}</span>
-                        <div className="text-sm text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '38px' }}>
+                        <div className="text-sm text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
                           {option.description}
                         </div>
                       </div>
@@ -2004,7 +2004,7 @@ ${result.description}
                         </div>
                         <div className="mt-3 text-center" style={{ width: '192px' }}>
                           <span className="text-base font-bold text-stone-800">{option.label}</span>
-                          <div className="text-sm text-stone-500 mt-1 transition-opacity duration-200" style={{ opacity: isHovered ? 1 : 0, height: '38px' }}>
+                          <div className="text-sm text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
                             {option.description}
                           </div>
                         </div>

@@ -698,7 +698,15 @@ export const StorePage: React.FC = () => {
 
       {/* 우측 필터 드로어 (슬라이드 패널) */}
       {isFilterOpen && (
-        <div className="fixed inset-0 z-[100]">
+        <div
+          className="fixed z-[100]"
+          style={{
+            top: 'calc(var(--header-area-h, 72px) + 48px)',
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        >
           {/* Backdrop */}
           <div
             className="absolute inset-0"

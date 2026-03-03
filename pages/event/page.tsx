@@ -8,7 +8,7 @@ const eventTabs: TabItem[] = [
   { id: 'ended', label: 'Ended' },
 ];
 
-interface Event {
+export interface Event {
   id: number;
   status: 'ongoing' | 'upcoming' | 'ended';
   title: string;
@@ -19,7 +19,7 @@ interface Event {
   badge?: string;
 }
 
-const EVENTS: Event[] = [
+export const EVENTS: Event[] = [
   {
     id: 1,
     status: 'ongoing',
@@ -68,7 +68,7 @@ const EVENTS: Event[] = [
   },
 ];
 
-const getStatusLabel = (status: Event['status']) => {
+export const getStatusLabel = (status: Event['status']) => {
   switch (status) {
     case 'ongoing':
       return '진행중';
@@ -79,7 +79,7 @@ const getStatusLabel = (status: Event['status']) => {
   }
 };
 
-const getStatusColor = (status: Event['status']) => {
+export const getStatusColor = (status: Event['status']) => {
   switch (status) {
     case 'ongoing':
       return '#000000';

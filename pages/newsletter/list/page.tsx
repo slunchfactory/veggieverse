@@ -1,3 +1,5 @@
+import { Navigate } from 'react-router-dom';
+
 export default function NewsletterList() {
-  return <h1>NewsletterList</h1>;
+  return <Navigate to="/newsletter" replace />;
 }
