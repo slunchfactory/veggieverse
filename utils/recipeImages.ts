@@ -21,7 +21,17 @@ const recipeImageMap: Record<number, string> = {
   18: 'https://images.unsplash.com/photo-1603048297172-c92544798d5a?w=500&h=500&fit=crop', // 타르트
   19: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&h=500&fit=crop', // 볶음밥
   20: 'https://images.unsplash.com/photo-1567515004624-219c11d31f2e?w=500&h=500&fit=crop', // 가스파초
-  
+  21: 'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?w=500&h=500&fit=crop', // 콜리플라워 타코
+  22: 'https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=500&h=500&fit=crop', // 채소 파스타
+  23: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=500&h=500&fit=crop', // 두부 스크램블
+  24: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=500&h=500&fit=crop', // 스시 볼
+  25: 'https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=500&h=500&fit=crop', // 시저 샐러드
+  26: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&h=500&fit=crop', // 두부 샐러드
+  27: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&h=500&fit=crop', // 카레 라이스
+  28: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&h=500&fit=crop', // 비빔면
+  29: 'https://images.unsplash.com/photo-1505576399279-0a997dd7a2d0?w=500&h=500&fit=crop', // 퀴노아 샐러드
+  30: 'https://images.unsplash.com/photo-1553909489-cd47e0907980?w=500&h=500&fit=crop', // 반미 샌드위치
+
   // 신규 (101-105)
   101: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=500&h=500&fit=crop', // 비빔밥
   102: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=500&h=500&fit=crop', // 샌드위치
