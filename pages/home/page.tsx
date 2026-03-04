@@ -900,21 +900,21 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
       </section>
 
       {/* ============================================
-          SLUNCH WEEKLY - 2x2 그리드
+          SLUNCH WEEKLY - 3열 그리드
           ============================================ */}
-      <section 
-        className="bg-white w-full px-5 md:px-20" 
-        style={{ 
-          paddingTop: '120px', 
-          paddingBottom: '120px'
+      <section
+        className="scroll-snap-section-flex"
+        style={{
+          paddingTop: '80px',
+          paddingBottom: '80px',
+          backgroundColor: '#FFFFFF',
         }}
       >
-        <div className="page-container">
-          {/* 섹션 헤더 */}
-          <div className="mb-12 max-w-3xl">
-            <h2 
+        <div className="page-container mb-12">
+          <div className="max-w-3xl">
+            <h2
               className="text-stone-900 mb-4 text-left font-normal"
-              style={{ 
+              style={{
                 fontSize: 'var(--font-size-h2)',
                 fontWeight: 400,
                 letterSpacing: 'var(--letter-spacing-tight)',
@@ -923,190 +923,59 @@ export const HomePage: React.FC<HomePageProps> = ({ headerOffset = 96 }) => {
             >
               Slunch Weekly
             </h2>
-            <p 
+            <p
               className="text-stone-600 text-left"
-              style={{ 
+              style={{
                 fontSize: 'var(--font-size-body)',
                 fontWeight: 400,
                 lineHeight: 'var(--line-height-body)',
                 letterSpacing: 'var(--letter-spacing-tight)'
               }}
             >
-              하루 2끼, 균형 잡힌 식단을 문 앞까지. 내 몸을 위한 가장 쉬운 선택
+              잘 먹고 싶은데 매번 챙기기는 쉽지 않죠.{'\n'}
+              Slunch Weekly는 하루 2끼, 주 14끼 식단을 매주 새벽에 보내드려요.{'\n'}
+              영양은 이미 맞춰뒀고, 재료는 새벽에 신선하게 출발해요.{'\n'}
+              식단 고민, 장보기, 칼로리 계산 같은 건 저희한테 맡겨두세요.{'\n'}
+              월요일 아침에 문 열면, 일주일이 조금 가벼워질 거예요.
             </p>
           </div>
-          
-          {/* 반응형 그리드: 모바일 1열 3행, 데스크탑 3열 1행 */}
-          <div
-            className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          >
-            {/* 영역 1: 주 14끼 식단 */}
+        </div>
+        <div className="page-container">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-white flex flex-col">
-              {/* 이미지 */}
-              <div
-                style={{
-                  border: '1px solid #eee',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  aspectRatio: '4/3',
-                }}
-              >
-                <img
-                  src={`${import.meta.env.BASE_URL}14meals.png`}
-                  alt="주 14끼 식단"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
+              <div style={{ border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden', aspectRatio: '4/3' }}>
+                <img src={`${import.meta.env.BASE_URL}14meals.png`} alt="주 14끼 식단" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              {/* 텍스트 - 이미지 아래 */}
               <div style={{ paddingTop: '12px' }}>
-                <h3
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    letterSpacing: '-0.01em',
-                    color: '#1a1a1a',
-                    marginBottom: '4px'
-                  }}
-                >
-                  주 14끼 식단
-                </h3>
-                <p
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    lineHeight: '1.6',
-                    color: '#666'
-                  }}
-                >
-                  하루 2끼, 일주일치 완벽한 식단
-                </p>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, letterSpacing: '-0.01em', color: '#1a1a1a', marginBottom: '4px' }}>주 14끼 식단</h3>
+                <p style={{ fontSize: '12px', fontWeight: 400, lineHeight: '1.6', color: '#666' }}>하루 2끼, 일주일치 완벽한 식단</p>
               </div>
             </div>
-
-            {/* 영역 2: 신선 새벽 배송 */}
             <div className="bg-white flex flex-col">
-              {/* 이미지 */}
-              <div
-                style={{
-                  border: '1px solid #eee',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  aspectRatio: '4/3',
-                }}
-              >
-                <img
-                  src={`${import.meta.env.BASE_URL}dawn.png`}
-                  alt="신선 새벽 배송"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
+              <div style={{ border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden', aspectRatio: '4/3' }}>
+                <img src={`${import.meta.env.BASE_URL}dawn.png`} alt="신선 새벽 배송" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              {/* 텍스트 - 이미지 아래 */}
               <div style={{ paddingTop: '12px' }}>
-                <h3
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    letterSpacing: '-0.01em',
-                    color: '#1a1a1a',
-                    marginBottom: '4px'
-                  }}
-                >
-                  신선 새벽 배송
-                </h3>
-                <p
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    lineHeight: '1.6',
-                    color: '#666'
-                  }}
-                >
-                  매주 월요일 아침, 문 앞까지 신선하게
-                </p>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, letterSpacing: '-0.01em', color: '#1a1a1a', marginBottom: '4px' }}>신선 새벽 배송</h3>
+                <p style={{ fontSize: '12px', fontWeight: 400, lineHeight: '1.6', color: '#666' }}>매주 월요일 아침, 문 앞까지 신선하게</p>
               </div>
             </div>
-
-            {/* 영역 3: 영양 밸런스 완벽 설계 */}
             <div className="bg-white flex flex-col">
-              {/* 이미지 */}
-              <div
-                style={{
-                  border: '1px solid #eee',
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  aspectRatio: '4/3',
-                }}
-              >
-                <img
-                  src={`${import.meta.env.BASE_URL}balance.png`}
-                  alt="영양 밸런스 완벽 설계"
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
+              <div style={{ border: '1px solid #eee', borderRadius: '12px', overflow: 'hidden', aspectRatio: '4/3' }}>
+                <img src={`${import.meta.env.BASE_URL}balance.png`} alt="영양 밸런스 완벽 설계" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
-              {/* 텍스트 - 이미지 아래 */}
               <div style={{ paddingTop: '12px' }}>
-                <h3
-                  style={{
-                    fontSize: '16px',
-                    fontWeight: 500,
-                    letterSpacing: '-0.01em',
-                    color: '#1a1a1a',
-                    marginBottom: '4px'
-                  }}
-                >
-                  영양 밸런스 완벽 설계
-                </h3>
-                <p
-                  style={{
-                    fontSize: '12px',
-                    fontWeight: 400,
-                    lineHeight: '1.6',
-                    color: '#666'
-                  }}
-                >
-                  전문가와 AI가 설계한 균형 잡힌 식단
-                </p>
+                <h3 style={{ fontSize: '16px', fontWeight: 500, letterSpacing: '-0.01em', color: '#1a1a1a', marginBottom: '4px' }}>영양 밸런스 완벽 설계</h3>
+                <p style={{ fontSize: '12px', fontWeight: 400, lineHeight: '1.6', color: '#666' }}>전문가와 AI가 설계한 균형 잡힌 식단</p>
               </div>
             </div>
           </div>
-          
-          {/* 하단 CTA 버튼 */}
           <div style={{ textAlign: 'center', marginTop: '48px' }}>
             <Link 
               to="/subscribe"
-              style={{
-                display: 'inline-block',
-                padding: '12px 24px',
-                border: 'none',
-                backgroundColor: '#B2B2B2',
-                color: '#FFFFFF',
-                fontSize: '15px',
-                fontWeight: 400,
-                textDecoration: 'none',
-                transition: 'all 0.15s ease',
-                minHeight: '44px',
-                minWidth: '120px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#8C451D';
-                e.currentTarget.style.color = '#FFFFFF';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = '#B2B2B2';
-                e.currentTarget.style.color = '#FFFFFF';
-              }}
+              style={{ display: 'inline-block', padding: '12px 24px', border: 'none', backgroundColor: '#B2B2B2', color: '#FFFFFF', fontSize: '15px', fontWeight: 400, textDecoration: 'none', transition: 'all 0.15s ease', minHeight: '44px', minWidth: '120px' }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = '#8C451D'; e.currentTarget.style.color = '#FFFFFF'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#B2B2B2'; e.currentTarget.style.color = '#FFFFFF'; }}
             >
               슬런치 위클리 보러가기
             </Link>

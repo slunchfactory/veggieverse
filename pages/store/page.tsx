@@ -864,26 +864,51 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onClick }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<string[]>([]);
-  const images = getProductThumbnailImages(product.id);
-  const hasMultipleImages = images.length > 1;
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
 
-  // 이미지 로드 성공 추적
+  const rawImages = getProductThumbnailImages(product.id);
+  // 최소 3개 ~ 최대 5개: 3개 미만이면 슬라이더 비활성화(단일 이미지), 5개 초과면 앞 5개만 사용
+  const images = rawImages.length >= 3
+    ? rawImages.slice(0, 5)
+    : rawImages.length > 0
+      ? [rawImages[0]]
+      : [];
+  const useSlider = images.length >= 3;
+
+  // 이미지 로드/상품 변경 시 초기화
   useEffect(() => {
     setLoadedImages([]);
     setCurrentImageIndex(0);
   }, [product.id]);
 
-  // 자동 슬라이드
-  useEffect(() => {
-    if (!hasMultipleImages) return;
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % images.length);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [hasMultipleImages, images.length]);
+  const goTo = (index: number) => {
+    const next = Math.max(0, Math.min(index, images.length - 1));
+    setCurrentImageIndex(next);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    if (!useSlider) return;
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+    setDragStartX(e.clientX);
+  };
+
+  const handlePointerUp = (e: React.PointerEvent) => {
+    if (!useSlider || dragStartX === null) return;
+    (e.target as HTMLElement).releasePointerCapture?.(e.pointerId);
+    const delta = e.clientX - dragStartX;
+    const threshold = 40;
+    if (delta > threshold) goTo(currentImageIndex - 1);
+    else if (delta < -threshold) goTo(currentImageIndex + 1);
+    setDragStartX(null);
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    // 드래그 중 취소 시 (예: 포인터가 영역 밖으로 나감) 초기화만
+    if (e.buttons === 0 && dragStartX !== null) setDragStartX(null);
+  };
 
   const handleImageClick = (e: React.MouseEvent) => {
-    if (hasMultipleImages) {
+    if (useSlider) {
       e.stopPropagation();
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }
@@ -911,13 +936,83 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           overflow: 'hidden',
         }}
       >
-        {/* 이미지 슬라이드 */}
+        {/* 이미지: 슬라이더(3~5장) 또는 단일 이미지 */}
         {images.length > 0 ? (
-          <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-            {images.map((img, idx) => (
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: '100%',
+              overflow: 'hidden',
+              touchAction: 'pan-y',
+            }}
+            onPointerDown={handlePointerDown}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onPointerMove={handlePointerMove}
+          >
+            {useSlider ? (
+              /* 우측→좌측 슬라이드 트랙 (translateX) */
+              <div
+                className="menu-card-img-track"
+                style={{
+                  display: 'flex',
+                  width: `${images.length * 100}%`,
+                  height: '100%',
+                  transform: `translateX(-${currentImageIndex * (100 / images.length)}%)`,
+                  transition: dragStartX === null ? 'transform 0.3s ease-out' : 'none',
+                }}
+              >
+                {images.map((img, idx) => {
+                  const shouldRender = Math.abs(idx - currentImageIndex) <= 1;
+                  return (
+                    <div
+                      key={`${product.id}-${idx}`}
+                      style={{
+                        flex: '0 0 auto',
+                        width: `${100 / images.length}%`,
+                        height: '100%',
+                        position: 'relative',
+                        backgroundColor: '#F5F5F5',
+                      }}
+                      onClick={handleImageClick}
+                    >
+                      {shouldRender ? (
+                        <img
+                          src={img}
+                          alt={product.name}
+                          className="menu-card-img"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                          }}
+                          loading="lazy"
+                          onLoad={() => {
+                            if (!loadedImages.includes(img)) {
+                              setLoadedImages(prev => [...prev, img]);
+                            }
+                          }}
+                          onError={(e) => {
+                            if (import.meta.env.DEV) {
+                              console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
+                            }
+                            const target = e.target as HTMLImageElement;
+                            target.style.opacity = '0';
+                          }}
+                        />
+                      ) : null}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              /* 단일 이미지 (3장 미만일 때) */
               <img
-                key={`${product.id}-${idx}`}
-                src={img}
+                src={images[0]}
                 alt={product.name}
                 className="menu-card-img"
                 style={{
@@ -927,27 +1022,19 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  transition: 'transform 0.3s ease, opacity 0.5s ease',
-                  opacity: idx === currentImageIndex ? 1 : 0,
-                  zIndex: idx === currentImageIndex ? 10 : 0,
                 }}
-                onClick={handleImageClick}
                 loading="lazy"
                 onLoad={() => {
-                  if (!loadedImages.includes(img)) {
-                    setLoadedImages(prev => [...prev, img]);
+                  if (!loadedImages.includes(images[0])) {
+                    setLoadedImages(prev => [...prev, images[0]]);
                   }
                 }}
                 onError={(e) => {
-                  if (import.meta.env.DEV) {
-                    console.warn(`이미지 로드 실패 [상품 ${product.id}]:`, img);
-                  }
                   const target = e.target as HTMLImageElement;
                   target.style.opacity = '0';
                 }}
               />
-            ))}
-            {/* 모든 이미지 로드 실패 시 기본 배경 */}
+            )}
             {loadedImages.length === 0 && images.length > 0 && (
               <div style={{
                 position: 'absolute',
@@ -1006,8 +1093,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           </div>
         )}
 
-        {/* 이미지 인디케이터 (하단 중앙) */}
-        {hasMultipleImages && !product.soldOut && (
+        {/* 이미지 인디케이터 dot (슬라이더일 때만, 현재 활성 슬라이드 반영) */}
+        {useSlider && !product.soldOut && (
           <div style={{
             position: 'absolute',
             bottom: '8px',
@@ -1020,6 +1107,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             {images.map((_, idx) => (
               <button
                 key={idx}
+                type="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   setCurrentImageIndex(idx);
@@ -1034,6 +1122,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                   transition: 'all 0.3s ease',
                 }}
                 aria-label={`이미지 ${idx + 1}`}
+                aria-current={idx === currentImageIndex ? 'true' : undefined}
               />
             ))}
           </div>
