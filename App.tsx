@@ -129,7 +129,7 @@ const Layout: React.FC<{
       {/* === PAGE CONTENT === */}
       {/* 메인 콘텐츠 - 고정 헤더 높이만큼 상단 여백 추가 */}
       <main
-        className="flex-1 flex flex-col"
+        className="flex min-h-0 flex-1 flex-col"
         style={{
           zIndex: 0,
           overflow: 'visible',

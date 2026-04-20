@@ -4,12 +4,17 @@
  * "실선과 여백이 만드는 시원한 개방감 + 신선한 채소의 생동감"
  */
 export default {
+  /* 기존 index.css 디자인 시스템과 충돌 방지 (Tailwind 리셋 비활성화) */
+  corePlugins: {
+    preflight: false,
+  },
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
     "./App.tsx",
+    "./agents/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

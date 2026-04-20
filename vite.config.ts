@@ -4,6 +4,25 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 const BASE = '/veggieverse/';
+const BASE_NO_SLASH = '/veggieverse';
+
+/** 로컬 dev 고정 포트: http://localhost:3003/veggieverse/ (점유 시 터미널 에러 → 해당 포트 프로세스 종료) */
+const DEV_PORT = 3003;
+
+/** `/veggieverse` → `/veggieverse/` (Vite는 trailing slash 없으면 404 → SPA·에셋 로드 실패 방지) */
+const basePathRedirectPlugin = () => ({
+  name: 'base-path-redirect',
+  configureServer(server: any) {
+    server.middlewares.use((req: any, res: any, next: () => void) => {
+      const raw = req.url || '';
+      const pathOnly = raw.split('?')[0];
+      if (pathOnly !== BASE_NO_SLASH) return next();
+      const q = raw.includes('?') ? raw.slice(raw.indexOf('?')) : '';
+      res.writeHead(302, { Location: `${BASE}${q}` });
+      res.end();
+    });
+  },
+});
 
 // dev: public 폴더를 base 경로(/veggieverse/images/...)로 서빙
 const publicUnderBasePlugin = () => ({
@@ -34,12 +53,27 @@ const publicUnderBasePlugin = () => ({
 
 export default defineConfig({
   base: BASE,
-      server: {
-        port: 3000,
+  clearScreen: false,
+  server: {
+    port: DEV_PORT,
+    strictPort: true,
     host: 'localhost',
-      },
+    open: `${BASE}subscribe`,
+    headers: {
+      'Cache-Control': 'no-store',
+    },
+    // 소스 저장 시 브라우저 즉시 반영 (React Fast Refresh). 터미널 재시작 불필요 — vite.config 수정 시만 dev 재실행
+    watch: {
+      ignored: ['**/node_modules/**', '**/dist/**', '**/.git/**'],
+    },
+    hmr: {
+      host: 'localhost',
+      port: DEV_PORT,
+      clientPort: DEV_PORT,
+    },
+  },
   publicDir: 'public',
-      plugins: [react(), publicUnderBasePlugin()],
+      plugins: [react(), basePathRedirectPlugin(), publicUnderBasePlugin()],
   envPrefix: ['VITE_', 'GEMINI_'],
       define: {
     'process.env.API_KEY': JSON.stringify(process.env.GEMINI_API_KEY || ''),
