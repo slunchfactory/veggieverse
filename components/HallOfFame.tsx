@@ -69,26 +69,26 @@ export const HallOfFame: React.FC = () => {
 
   if (topUsers.length === 0) {
     return (
-      <section className="py-16 border-t border-stone-200">
+      <section className="py-16 border-t border-[color:var(--border-hairline)]">
         <div className="text-center">
           <Trophy className="w-16 h-16 text-amber-400 mx-auto mb-4" />
-          <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>명예의 전당</h2>
-          <p className="text-stone-500">아직 데이터가 없습니다. 첫 레시피를 올려보세요!</p>
+          <h2 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>명예의 전당</h2>
+          <p className="text-warm-gray">아직 데이터가 없습니다. 첫 레시피를 올려보세요!</p>
         </div>
       </section>
     );
   }
 
   return (
-    <section className="py-16 border-t border-stone-200 bg-gradient-to-br from-amber-50/30 to-orange-50/30">
+    <section className="py-16 border-t border-[color:var(--border-hairline)] bg-gradient-to-br from-amber-50/30 to-orange-50/30">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-100 rounded-none mb-4">
             <Trophy className="w-6 h-6 text-amber-700" />
             <span className="text-amber-700 font-normal">이번 달 베스트 인플루언서</span>
           </div>
-          <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>명예의 전당</h2>
-          <p className="text-stone-600">가장 활발한 커뮤니티 멤버들을 소개합니다</p>
+          <h2 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>명예의 전당</h2>
+          <p className="text-warm-gray">가장 활발한 커뮤니티 멤버들을 소개합니다</p>
         </div>
 
         <div className="space-y-4">
@@ -113,14 +113,14 @@ export const HallOfFame: React.FC = () => {
                 {/* 유저 정보 */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-1">
-                    <h3 className="text-lg font-normal text-stone-900">{user.username}</h3>
+                    <h3 className="text-lg font-normal text-black">{user.username}</h3>
                     {user.spiritName && (
                       <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-none">
                         {user.spiritName}
                       </span>
                     )}
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-stone-600">
+                  <div className="flex items-center gap-4 text-sm text-warm-gray">
                     <div className="flex items-center gap-1">
                       <ChefHat className="w-4 h-4" />
                       <span>{user.recipes}개 레시피</span>
@@ -139,7 +139,7 @@ export const HallOfFame: React.FC = () => {
                 {/* 점수 */}
                 <div className="text-right">
                   <div className="text-amber-600 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{user.score}</div>
-                  <div className="text-xs text-stone-500">점수</div>
+                  <div className="text-xs text-warm-gray">점수</div>
                 </div>
               </div>
             </Link>

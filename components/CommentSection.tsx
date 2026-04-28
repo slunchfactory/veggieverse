@@ -177,8 +177,8 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
       {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
-          <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>리뷰</h2>
-          <span className="text-sm text-stone-500">({reviews.length})</span>
+          <h2 className="text-black font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>리뷰</h2>
+          <span className="text-sm text-warm-gray">({reviews.length})</span>
           {reviews.length > 0 && (
             <div className="flex items-center gap-1 ml-2">
               {[1, 2, 3, 4, 5].map((star) => (
@@ -187,7 +187,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
                   className={`w-4 h-4 ${
                     star <= Math.round(averageRating)
                       ? 'fill-amber-400 text-amber-400'
-                      : 'text-stone-300'
+                      : 'text-gray-light'
                   }`}
                 />
               ))}
@@ -198,17 +198,17 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setSortOption('recommended')}
-              className={`text-xs text-stone-500 hover:text-stone-900 transition-colors ${
-                sortOption === 'recommended' ? 'text-stone-900 font-medium' : ''
+              className={`text-xs text-warm-gray hover:text-black transition-colors ${
+                sortOption === 'recommended' ? 'text-black font-medium' : ''
               }`}
             >
               추천순
             </button>
-            <span className="text-stone-300">|</span>
+            <span className="text-gray-light">|</span>
             <button
               onClick={() => setSortOption('latest')}
-              className={`text-xs text-stone-500 hover:text-stone-900 transition-colors ${
-                sortOption === 'latest' ? 'text-stone-900 font-medium' : ''
+              className={`text-xs text-warm-gray hover:text-black transition-colors ${
+                sortOption === 'latest' ? 'text-black font-medium' : ''
               }`}
             >
               최신순
@@ -228,7 +228,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               return (
                 <div
                   key={review.id}
-                  className="relative aspect-square rounded-none overflow-hidden bg-stone-100 cursor-pointer hover:opacity-90 transition-opacity"
+                  className="relative aspect-square rounded-none overflow-hidden bg-eggshell cursor-pointer hover:opacity-90 transition-opacity"
                   onClick={() => {
                     if (showMoreOverlay) {
                       // 전체 포토 리뷰 모달 열기 (추후 구현)
@@ -260,7 +260,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               Array.from({ length: photoGridLimit - photoGridItems.length }).map((_, idx) => (
                 <div
                   key={`empty-${idx}`}
-                  className="aspect-square rounded-none bg-stone-50"
+                  className="aspect-square rounded-none bg-cream"
                 />
               ))
             }
@@ -271,7 +271,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
 
       {/* 리뷰 리스트 */}
       {paginatedReviews.length === 0 ? (
-        <div className="py-12 text-center text-stone-500 text-sm">
+        <div className="py-12 text-center text-warm-gray text-sm">
           아직 리뷰가 없습니다. 첫 리뷰를 작성해보세요!
         </div>
       ) : (
@@ -300,21 +300,21 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
                             className={`w-3.5 h-3.5 ${
                               star <= review.rating
                                 ? 'fill-amber-400 text-amber-400'
-                                : 'text-stone-300'
+                                : 'text-gray-light'
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-xs text-stone-500">
+                      <span className="text-xs text-warm-gray">
                         {maskUserId(review.authorId)}
                       </span>
-                      <span className="text-xs text-stone-400">
+                      <span className="text-xs text-muted">
                         {formatDate(review.createdAt)}
                       </span>
                     </div>
 
                     {/* 본문 텍스트 */}
-                    <p className="text-sm text-stone-700 leading-relaxed mb-2">
+                    <p className="text-sm text-charcoal leading-relaxed mb-2">
                       {displayContent}
                     </p>
 
@@ -322,7 +322,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
                     {shouldShowMore && (
                       <button
                         onClick={() => toggleExpand(review.id)}
-                        className="text-xs text-stone-500 hover:text-stone-700 transition-colors"
+                        className="text-xs text-warm-gray hover:text-charcoal transition-colors"
                       >
                         {isExpanded ? '접기' : '더보기'}
                       </button>
@@ -331,7 +331,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
 
                   {/* 우측 썸네일 */}
                   {review.image && (
-                    <div className="flex-shrink-0 w-20 h-20 rounded-none overflow-hidden bg-stone-100">
+                    <div className="flex-shrink-0 w-20 h-20 rounded-none overflow-hidden bg-eggshell">
                       <img
                         src={review.image}
                         alt={`${review.authorName}의 리뷰 사진`}
@@ -357,8 +357,8 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
               onClick={() => setCurrentPage(page)}
               className={`w-8 h-8 flex items-center justify-center text-sm transition-colors ${
                 currentPage === page
-                  ? 'font-normal text-stone-900'
-                  : 'text-stone-400 hover:text-stone-700'
+                  ? 'font-normal text-black'
+                  : 'text-muted hover:text-charcoal'
               }`}
             >
               {page}
@@ -367,7 +367,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({
           {currentPage < totalPages && (
             <button
               onClick={() => setCurrentPage(currentPage + 1)}
-              className="w-8 h-8 flex items-center justify-center text-stone-400 hover:text-stone-700 transition-colors"
+              className="w-8 h-8 flex items-center justify-center text-muted hover:text-charcoal transition-colors"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

@@ -23,16 +23,16 @@ const hallOfFameRecipes = slunchListData
 
 // 카드별 색상 배열
 const cardColors = [
-  { bg: '#000000', text: '#FFFFFF' },  // 1등
-  { bg: '#333333', text: '#FFFFFF' },   // 2등
-  { bg: '#666666', text: '#FFFFFF' },  // 3등
-  { bg: '#E0E0E0', text: '#000000' },
-  { bg: '#333333', text: '#FFFFFF' },
-  { bg: '#000000', text: '#FFFFFF' },
-  { bg: '#333333', text: '#FFFFFF' },
-  { bg: '#666666', text: '#FFFFFF' },
-  { bg: '#000000', text: '#FFFFFF' },
-  { bg: '#E0E0E0', text: '#000000' },
+  { bg: 'var(--palette-text)', text: '#FFFFFF' },  // 1등
+  { bg: 'var(--charcoal)', text: '#FFFFFF' },   // 2등
+  { bg: 'var(--warm-gray)', text: '#FFFFFF' },  // 3등
+  { bg: 'var(--border-divider)', text: 'var(--palette-text)' },
+  { bg: 'var(--charcoal)', text: '#FFFFFF' },
+  { bg: 'var(--palette-text)', text: '#FFFFFF' },
+  { bg: 'var(--charcoal)', text: '#FFFFFF' },
+  { bg: 'var(--warm-gray)', text: '#FFFFFF' },
+  { bg: 'var(--palette-text)', text: '#FFFFFF' },
+  { bg: 'var(--border-divider)', text: 'var(--palette-text)' },
 ];
 
 const RecipeHallOfFamePage: React.FC = () => {
@@ -41,7 +41,7 @@ const RecipeHallOfFamePage: React.FC = () => {
       {/* 히어로 헤더 */}
       <div 
         className="relative overflow-hidden py-16 sm:py-20"
-        style={{ backgroundColor: '#000000' }}
+        style={{ backgroundColor: 'var(--palette-text)' }}
       >
         {/* 배경 장식 */}
         <div className="absolute inset-0 opacity-20">
@@ -55,7 +55,7 @@ const RecipeHallOfFamePage: React.FC = () => {
           <div className="text-center">
             <div 
               className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 shadow-lg bg-white"
-              style={{ color: '#000000' }}
+              style={{ color: 'var(--palette-text)' }}
             >
               <Trophy className="w-10 h-10" />
             </div>
@@ -84,7 +84,7 @@ const RecipeHallOfFamePage: React.FC = () => {
                 className="bg-white rounded-none overflow-hidden transition-transform duration-200 hover:scale-[1.02]"
                 style={recipe.rank <= 3 ? {
                   border: `1px solid ${cardColors[(recipe.rank - 1) % cardColors.length].bg}`
-                } : { border: '1px solid #000' }}
+                } : { border: '1px solid var(--palette-text)' }}
               >
                 {/* 이미지 영역 */}
                 <div className={`relative ${recipe.rank <= 3 ? 'aspect-[16/10]' : 'aspect-square'}`}>
@@ -123,17 +123,17 @@ const RecipeHallOfFamePage: React.FC = () => {
                 
                 {/* 텍스트 영역 */}
                 <div className="p-4">
-                  <h3 className={`font-normal text-stone-900 mb-1 group-hover:text-black transition-colors ${
+                  <h3 className={`font-normal text-black mb-1 group-hover:text-black transition-colors ${
                     recipe.rank <= 3 ? 'text-xl' : 'text-base'
                   }`}>
                     {recipe.title}
                   </h3>
-                  <p className="text-stone-500 text-sm mb-3 line-clamp-1">
+                  <p className="text-warm-gray text-sm mb-3 line-clamp-1">
                     {recipe.description}
                   </p>
                   
                   {/* 메타 정보 */}
-                  <div className="flex items-center justify-between text-xs text-stone-400">
+                  <div className="flex items-center justify-between text-xs text-muted">
                     <span>by {recipe.author}</span>
                     <div className="flex items-center gap-3">
                       <span className="flex items-center gap-1">

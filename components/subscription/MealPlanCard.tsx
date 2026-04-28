@@ -57,7 +57,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
     <div
       style={{
         background: '#fff',
-        border: isSelected ? '2px solid #000' : '1px solid #e0e0e0',
+        border: isSelected ? '2px solid var(--palette-text)' : '1px solid var(--border-divider)',
         marginBottom: '24px',
         overflow: 'hidden',
       }}
@@ -67,14 +67,14 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
         style={{
           width: '100%',
           aspectRatio: '16/9',
-          background: 'linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%)',
+          background: 'linear-gradient(135deg, var(--palette-bg-2) 0%, #e8e8e8 100%)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           position: 'relative',
         }}
       >
-        <span style={{ fontSize: '14px', color: '#999' }}>
+        <span style={{ fontSize: '14px', color: 'var(--muted)' }}>
           {planInfo.nameEn} MEAL PLAN IMAGE
         </span>
 
@@ -85,7 +85,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
               position: 'absolute',
               top: '16px',
               right: '16px',
-              background: '#000',
+              background: 'var(--palette-text)',
               color: '#fff',
               padding: '8px 16px',
               fontSize: '13px',
@@ -125,7 +125,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
             <p
               style={{
                 fontSize: '13px',
-                color: '#888',
+                color: 'var(--gray-light)',
                 letterSpacing: '1px',
               }}
             >
@@ -139,9 +139,9 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
               padding: '12px 24px',
               fontSize: '14px',
               fontWeight: 500,
-              border: isSelected ? '2px solid #000' : '2px solid #000',
-              background: isSelected ? '#fff' : '#000',
-              color: isSelected ? '#000' : '#fff',
+              border: isSelected ? '2px solid var(--palette-text)' : '2px solid var(--palette-text)',
+              background: isSelected ? '#fff' : 'var(--palette-text)',
+              color: isSelected ? 'var(--palette-text)' : '#fff',
               cursor: 'pointer',
               display: 'flex',
               alignItems: 'center',
@@ -168,7 +168,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
           style={{
             display: 'inline-block',
             padding: '6px 12px',
-            background: '#f5f5f5',
+            background: 'var(--palette-bg-2)',
             fontSize: '13px',
             fontWeight: 500,
             marginBottom: '12px',
@@ -182,7 +182,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
           style={{
             fontSize: '15px',
             lineHeight: '1.6',
-            color: '#333',
+            color: 'var(--charcoal)',
             marginBottom: '24px',
           }}
         >
@@ -193,7 +193,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
         <div
           style={{
             height: '1px',
-            background: '#eee',
+            background: 'var(--border-hairline)',
             margin: '0 0 20px 0',
           }}
         />
@@ -204,7 +204,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
             style={{
               fontSize: '14px',
               fontWeight: 500,
-              color: '#666',
+              color: 'var(--warm-gray)',
               marginBottom: '16px',
             }}
           >
@@ -247,12 +247,12 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
                     style={{
                       width: '100px',
                       height: '100px',
-                      background: '#f0f0f0',
+                      background: 'var(--border-hairline)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       fontSize: '10px',
-                      color: '#999',
+                      color: 'var(--muted)',
                       marginBottom: '8px',
                       position: 'relative',
                     }}
@@ -286,7 +286,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
                     style={{
                       fontSize: '12px',
                       textAlign: 'center',
-                      color: isExcluded ? '#999' : '#333',
+                      color: isExcluded ? 'var(--muted)' : 'var(--charcoal)',
                       textDecoration: isExcluded ? 'line-through' : 'none',
                     }}
                   >
@@ -302,7 +302,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
             <p
               style={{
                 fontSize: '12px',
-                color: '#888',
+                color: 'var(--gray-light)',
                 marginTop: '12px',
               }}
             >
@@ -315,7 +315,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
         <div
           style={{
             height: '1px',
-            background: '#eee',
+            background: 'var(--border-hairline)',
             margin: '20px 0',
           }}
         />
@@ -332,7 +332,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
             <span
               style={{
                 fontSize: '14px',
-                color: '#666',
+                color: 'var(--warm-gray)',
               }}
             >
               {activeMenuCount}끼 /{' '}
@@ -350,7 +350,7 @@ export const MealPlanCard: React.FC<MealPlanCardProps> = ({
           <span
             style={{
               fontSize: '13px',
-              color: '#888',
+              color: 'var(--gray-light)',
             }}
           >
             끼당 {planInfo.pricePerMeal.toLocaleString()}원

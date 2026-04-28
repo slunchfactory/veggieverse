@@ -56,7 +56,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={handleClose}
     >
       <div
@@ -64,7 +64,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
           width: '100%',
           maxWidth: '400px',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           padding: '32px',
           position: 'relative',
@@ -91,7 +91,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
           }}
           aria-label="닫기"
         >
-          <X size={20} strokeWidth={1} color="#000" />
+          <X size={20} strokeWidth={1} color="var(--palette-text)" />
         </button>
 
         {/* 헤더 */}
@@ -100,7 +100,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
           marginBottom: '24px',
           fontSize: '18px',
           fontWeight: 400,
-          color: '#000',
+          color: 'var(--palette-text)',
         }}>
           쿠폰 등록
         </h2>
@@ -109,7 +109,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
         <p style={{
           fontSize: '13px',
           fontWeight: 400,
-          color: '#6B6B6B',
+          color: 'var(--warm-gray)',
           textAlign: 'center',
           marginBottom: '24px',
           lineHeight: '1.5',
@@ -132,7 +132,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
               width: '100%',
               padding: '14px',
               marginBottom: '12px',
-              border: status === 'error' ? '1px solid #D64545' : '1px solid #000',
+              border: status === 'error' ? '1px solid var(--palette-orange)' : '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
@@ -154,7 +154,7 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
                 marginBottom: '16px',
                 fontSize: '13px',
                 fontWeight: 400,
-                color: status === 'success' ? '#3fa945' : '#D64545',
+                color: status === 'success' ? 'var(--status-success-icon)' : 'var(--palette-orange)',
               }}
             >
               {status === 'success' ? (
@@ -173,12 +173,12 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
             style={{
               width: '100%',
               padding: '14px',
-              background: status === 'success' ? '#3fa945' : '#000',
+              background: status === 'success' ? 'var(--palette-mint)' : 'var(--palette-text)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#fff',
+              color: status === 'success' ? 'var(--palette-text)' : 'var(--primary)',
               cursor: status === 'success' ? 'default' : 'pointer',
               transition: 'background 0.2s',
             }}
@@ -191,13 +191,13 @@ export const CouponRegisterModal: React.FC<CouponRegisterModalProps> = ({
         <div style={{
           marginTop: '20px',
           padding: '16px',
-          background: '#F9F9F9',
+          background: 'var(--palette-bg-2)',
           borderRadius: '8px',
         }}>
           <p style={{
             fontSize: '11px',
             fontWeight: 400,
-            color: '#999',
+            color: 'var(--muted)',
             lineHeight: '1.6',
           }}>
             • 쿠폰은 중복 사용이 불가합니다.<br />

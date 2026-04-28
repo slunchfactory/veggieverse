@@ -1,10 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 /**
- * Slunch Design System v2 - Tailwind Configuration
- * "실선과 여백이 만드는 시원한 개방감 + 신선한 채소의 생동감"
+ * VeggieVerse — 2026 브랜드 팔레트 (index.css --palette-* 와 동기)
  */
 export default {
-  /* 기존 index.css 디자인 시스템과 충돌 방지 (Tailwind 리셋 비활성화) */
   corePlugins: {
     preflight: false,
   },
@@ -19,58 +17,64 @@ export default {
   theme: {
     extend: {
       colors: {
-        /* Primary - Fresh Veggie Green (신선한 채소 그린) */
-        'primary': {
-          DEFAULT: '#3fa945',
-          light: '#6B9B7A',
-          dark: '#365E43',
-          50: '#F0F5F1',
+        black: '#1a0a05',
+        white: '#ffffff',
+        primary: {
+          DEFAULT: '#dfff4f',
+          light: '#e8ff85',
+          dark: '#c8e845',
+          50: '#f6ffcc',
         },
-
-        /* Secondary - Carrot Orange (당근 오렌지) */
         'secondary': {
-          DEFAULT: '#E07B39',
-          light: '#F4A261',
-          dark: '#C45D1E',
+          DEFAULT: '#ffab91',
+          light: '#ffcbbb',
+          dark: '#e89578',
+        },
+        'tomato': '#ffab91',
+        'corn': '#fff59d',
+        'eggplant': '#d1c4e9',
+
+        'cream': '#f2eeee',
+        'eggshell': '#f2eeee',
+
+        'deep-forest': '#1a0a05',
+        'charcoal': '#3d3836',
+        'warm-gray': '#6b6560',
+        'muted': '#9a928c',
+
+        'palette': {
+          'bg-1': '#bdbdbd',
+          'bg-2': '#f2eeee',
+          'bg-3': '#ffffff',
+          'text': '#1a0a05',
+          'accent': '#dfff4f',
+          'lavender': '#d1c4e9',
+          'yellow': '#fff59d',
+          'tan': '#bcaaa4',
+          'sky': '#81d4fa',
+          'mint': '#c8e6c9',
+          'orange': '#ffab91',
         },
 
-        /* Accent - Vivid Points (비비드 포인트) */
-        'tomato': '#D64545',
-        'corn': '#F2C94C',
-        'eggplant': '#7B5EA7',
-
-        /* Background - Warm Cream (오끼뜨 감성) */
-        'cream': '#FDFBF7',
-        'eggshell': '#F7F4EF',
-
-        /* Text & Line - Pure Black */
-        'deep-forest': '#000000',
-        'charcoal': '#3D3D3D',
-        'warm-gray': '#6B6B6B',
-        'muted': '#A0A0A0',
-
-        /* Legacy aliases for compatibility */
-        'slunch-black': '#000000',
-        'slunch-gray': '#6B6B6B',
-        'slunch-gray-light': '#9A9A9A',
-        'slunch-gray-lighter': '#D4D4D4',
-        'slunch-white': '#FDFBF7',
-        'slunch-white-pure': '#FFFFFF',
-        'slunch-lime': '#3fa945',
-        'slunch-lime-dark': '#365E43',
-        'slunch-olive': '#365E43',
-        'slunch-error': '#D64545',
-        'slunch-warning': '#F2C94C',
-        'slunch-info': '#7B5EA7',
+        'slunch-black': '#1a0a05',
+        'slunch-gray': '#6b6560',
+        'slunch-gray-light': '#8a827c',
+        'slunch-gray-lighter': '#ccc5c0',
+        'slunch-white': '#f2eeee',
+        'slunch-white-pure': '#ffffff',
+        'slunch-lime': '#dfff4f',
+        'slunch-lime-dark': '#c8e845',
+        'slunch-olive': '#1a0a05',
+        'slunch-error': '#ffab91',
+        'slunch-warning': '#fff59d',
+        'slunch-info': '#81d4fa',
       },
 
       fontFamily: {
-        /* Pretendard Only - KBP 스타일 산세리프 통일 */
         'sans': ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
         'primary': ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
       },
 
-      /* NO BOLD RULE - 모든 font-weight를 400으로 통일 */
       fontWeight: {
         'thin': '400',
         'extralight': '400',
@@ -109,22 +113,19 @@ export default {
       },
 
       borderColor: {
-        'section': '#000000',
-        'light': 'rgba(0, 0, 0, 0.2)',
+        'section': '#1a0a05',
+        'light': 'rgba(26, 10, 5, 0.2)',
       },
 
       boxShadow: {
-        /* Flat Design - 최소화된 그림자 */
         'none': 'none',
-        'sm': '0 2px 4px rgba(0, 0, 0, 0.05)',
-        'DEFAULT': '0 4px 12px rgba(0, 0, 0, 0.1)',
-        'focus': '0 0 0 3px #F0F5F1',
-        /* Legacy alias */
-        'hover-shadow': '0 4px 12px rgba(0, 0, 0, 0.1)',
+        'sm': '0 2px 4px rgba(26, 10, 5, 0.06)',
+        'DEFAULT': '0 4px 12px rgba(26, 10, 5, 0.1)',
+        'focus': '0 0 0 3px #f6ffcc',
+        'hover-shadow': '0 4px 12px rgba(26, 10, 5, 0.1)',
       },
 
       spacing: {
-        /* Section Spacing - 과감하게 넓은 여백 */
         '18': '72px',
         '22': '88px',
         '30': '120px',

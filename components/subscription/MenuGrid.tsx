@@ -68,13 +68,13 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
   };
 
   return (
-    <section style={{ padding: '24px', background: '#fafafa' }}>
+    <section style={{ padding: '24px', background: 'var(--palette-bg-2)' }}>
       {/* Header */}
       <div style={{ marginBottom: '16px' }}>
         <h2 style={{ fontSize: '18px', fontWeight: 500, marginBottom: '4px' }}>
           전체 메뉴
         </h2>
-        <p style={{ fontSize: '13px', color: '#666' }}>
+        <p style={{ fontSize: '13px', color: 'var(--warm-gray)' }}>
           낱개로 추가할 수 있어요
         </p>
       </div>
@@ -95,10 +95,10 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
             style={{
               padding: '8px 16px',
               fontSize: '13px',
-              border: dietFilter === filter.id ? '2px solid #000' : '1px solid #ddd',
+              border: dietFilter === filter.id ? '2px solid var(--palette-text)' : '1px solid var(--border-divider)',
               borderRadius: '20px',
-              background: dietFilter === filter.id ? '#000' : '#fff',
-              color: dietFilter === filter.id ? '#fff' : '#333',
+              background: dietFilter === filter.id ? 'var(--palette-text)' : '#fff',
+              color: dietFilter === filter.id ? '#fff' : 'var(--charcoal)',
               cursor: 'pointer',
               whiteSpace: 'nowrap',
             }}
@@ -116,7 +116,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
           marginBottom: '12px',
         }}
       >
-        <span style={{ fontSize: '12px', color: '#888' }}>추천순</span>
+        <span style={{ fontSize: '12px', color: 'var(--gray-light)' }}>추천순</span>
       </div>
 
       {/* Menu Grid */}
@@ -136,7 +136,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
               key={menu.id}
               style={{
                 background: '#fff',
-                border: quantity > 0 ? '2px solid #000' : '1px solid #eee',
+                border: quantity > 0 ? '2px solid var(--palette-text)' : '1px solid var(--border-hairline)',
                 overflow: 'hidden',
               }}
             >
@@ -145,12 +145,12 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                 style={{
                   width: '100%',
                   aspectRatio: '1',
-                  background: '#f0f0f0',
+                  background: 'var(--border-hairline)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontSize: '11px',
-                  color: '#999',
+                  color: 'var(--muted)',
                   position: 'relative',
                 }}
               >
@@ -162,7 +162,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                       position: 'absolute',
                       top: '8px',
                       left: '8px',
-                      background: '#000',
+                      background: 'var(--palette-text)',
                       color: '#fff',
                       fontSize: '10px',
                       padding: '4px 8px',
@@ -192,7 +192,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                   style={{
                     fontSize: '14px',
                     fontWeight: 500,
-                    color: '#000',
+                    color: 'var(--palette-text)',
                     marginBottom: '8px',
                   }}
                 >
@@ -214,7 +214,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                       style={{
                         width: '28px',
                         height: '28px',
-                        border: '1px solid #ddd',
+                        border: '1px solid var(--border-divider)',
                         background: '#fff',
                         fontSize: '16px',
                         cursor: 'pointer',
@@ -233,8 +233,8 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                       style={{
                         width: '28px',
                         height: '28px',
-                        border: '1px solid #000',
-                        background: '#000',
+                        border: '1px solid var(--palette-text)',
+                        background: 'var(--palette-text)',
                         color: '#fff',
                         fontSize: '16px',
                         cursor: 'pointer',
@@ -252,7 +252,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
                     style={{
                       width: '100%',
                       padding: '8px',
-                      border: '1px solid #000',
+                      border: '1px solid var(--palette-text)',
                       background: '#fff',
                       fontSize: '13px',
                       cursor: 'pointer',
@@ -277,7 +277,7 @@ export const MenuGrid: React.FC<MenuGridProps> = ({
           style={{
             padding: '40px',
             textAlign: 'center',
-            color: '#888',
+            color: 'var(--gray-light)',
           }}
         >
           조건에 맞는 메뉴가 없어요

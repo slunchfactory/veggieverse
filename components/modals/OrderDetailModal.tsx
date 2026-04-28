@@ -38,11 +38,11 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
       case 'pending':
         return { label: '주문 확인중', icon: Clock, color: '#F59E0B' };
       case 'confirmed':
-        return { label: '주문 확인', icon: CheckCircle, color: '#3fa945' };
+        return { label: '주문 확인', icon: CheckCircle, color: 'var(--status-success-icon)' };
       case 'shipping':
         return { label: '배송중', icon: Truck, color: '#3B82F6' };
       case 'delivered':
-        return { label: '배송 완료', icon: Package, color: '#000' };
+        return { label: '배송 완료', icon: Package, color: 'var(--palette-text)' };
       case 'cancelled':
         return { label: '주문 취소', icon: X, color: '#EF4444' };
     }
@@ -58,7 +58,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -67,7 +67,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           maxWidth: '480px',
           maxHeight: '90vh',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           position: 'relative',
           margin: '16px',
@@ -81,14 +81,14 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         <div
           style={{
             padding: '20px 24px',
-            borderBottom: '1px solid #E0E0E0',
+            borderBottom: '1px solid var(--border-divider)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexShrink: 0,
           }}
         >
-          <h2 style={{ fontSize: '16px', fontWeight: 400, color: '#000' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)' }}>
             주문 상세
           </h2>
           <button
@@ -106,7 +106,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             }}
             aria-label="닫기"
           >
-            <X size={20} strokeWidth={1} color="#000" />
+            <X size={20} strokeWidth={1} color="var(--palette-text)" />
           </button>
         </div>
 
@@ -119,7 +119,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               alignItems: 'center',
               gap: '12px',
               padding: '16px',
-              background: '#FAFAFA',
+              background: 'var(--palette-bg-2)',
               borderRadius: '8px',
               marginBottom: '24px',
             }}
@@ -139,10 +139,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <StatusIcon size={20} strokeWidth={1} color={statusInfo.color} />
             </div>
             <div>
-              <p style={{ fontSize: '15px', fontWeight: 400, color: '#000', marginBottom: '2px' }}>
+              <p style={{ fontSize: '15px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '2px' }}>
                 {statusInfo.label}
               </p>
-              <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>
+              <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 주문번호: {order.id}
               </p>
             </div>
@@ -150,10 +150,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
 
           {/* 주문 일시 */}
           <div style={{ marginBottom: '24px' }}>
-            <p style={{ fontSize: '12px', fontWeight: 400, color: '#999', marginBottom: '4px' }}>
+            <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--muted)', marginBottom: '4px' }}>
               주문 일시
             </p>
-            <p style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>
+            <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
               {order.orderDate}
             </p>
           </div>
@@ -163,10 +163,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             <h3 style={{
               fontSize: '13px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               marginBottom: '12px',
               paddingBottom: '8px',
-              borderBottom: '1px solid #E0E0E0',
+              borderBottom: '1px solid var(--border-divider)',
             }}>
               주문 상품 ({order.items.length})
             </h3>
@@ -184,13 +184,13 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     style={{
                       width: '60px',
                       height: '60px',
-                      background: '#F5F5F5',
+                      background: 'var(--palette-bg-2)',
                       borderRadius: '8px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexShrink: 0,
-                      border: '1px solid #E0E0E0',
+                      border: '1px solid var(--border-divider)',
                     }}
                   >
                     {item.image ? (
@@ -205,7 +205,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                         }}
                       />
                     ) : (
-                      <Package size={24} strokeWidth={1} color="#999" />
+                      <Package size={24} strokeWidth={1} color="var(--muted)" />
                     )}
                   </div>
                   {/* 상품 정보 */}
@@ -213,7 +213,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     <p style={{
                       fontSize: '14px',
                       fontWeight: 400,
-                      color: '#000',
+                      color: 'var(--palette-text)',
                       marginBottom: '4px',
                     }}>
                       {item.name}
@@ -221,7 +221,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                     <p style={{
                       fontSize: '12px',
                       fontWeight: 400,
-                      color: '#6B6B6B',
+                      color: 'var(--warm-gray)',
                     }}>
                       {formatPrice(item.price)} · {item.quantity}개
                     </p>
@@ -237,7 +237,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <h3 style={{
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
                 marginBottom: '8px',
               }}>
                 배송지
@@ -245,7 +245,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <p style={{
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 lineHeight: '1.5',
               }}>
                 {order.address}
@@ -259,7 +259,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               <h3 style={{
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
                 marginBottom: '8px',
               }}>
                 운송장 번호
@@ -288,7 +288,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
           <div
             style={{
               padding: '16px',
-              background: '#FAFAFA',
+              background: 'var(--palette-bg-2)',
               borderRadius: '8px',
             }}
           >
@@ -297,10 +297,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               justifyContent: 'space-between',
               marginBottom: '8px',
             }}>
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 상품 금액
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {formatPrice(order.totalPrice - order.shippingFee)}
               </span>
             </div>
@@ -309,12 +309,12 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               justifyContent: 'space-between',
               marginBottom: '12px',
               paddingBottom: '12px',
-              borderBottom: '1px solid #E0E0E0',
+              borderBottom: '1px solid var(--border-divider)',
             }}>
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 배송비
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {order.shippingFee === 0 ? '무료' : formatPrice(order.shippingFee)}
               </span>
             </div>
@@ -322,10 +322,10 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
               display: 'flex',
               justifyContent: 'space-between',
             }}>
-              <span style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 총 결제 금액
               </span>
-              <span style={{ fontSize: '16px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {formatPrice(order.totalPrice)}
               </span>
             </div>
@@ -336,7 +336,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
         <div
           style={{
             padding: '16px 24px',
-            borderTop: '1px solid #E0E0E0',
+            borderTop: '1px solid var(--border-divider)',
             display: 'flex',
             gap: '12px',
             flexShrink: 0,
@@ -348,11 +348,11 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
                 flex: 1,
                 padding: '14px',
                 background: 'transparent',
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 cursor: 'pointer',
               }}
             >
@@ -364,7 +364,7 @@ export const OrderDetailModal: React.FC<OrderDetailModalProps> = ({
             style={{
               flex: 1,
               padding: '14px',
-              background: '#000',
+              background: 'var(--palette-text)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',

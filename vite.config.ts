@@ -24,6 +24,23 @@ const basePathRedirectPlugin = () => ({
   },
 });
 
+// dev: public/ 정적 HTML/CSS/JS 변경 시 브라우저 자동 새로고침
+//   subscribe-calendar.html 같이 publicDir에 있는 파일은 모듈 그래프에 없어서
+//   기본 HMR이 동작하지 않음 — 변경 감지해서 full-reload 신호 전송.
+const publicAutoReloadPlugin = () => ({
+  name: 'public-auto-reload',
+  configureServer(server: any) {
+    const publicDir = path.resolve(__dirname, 'public');
+    server.watcher.add(`${publicDir}/**/*.{html,css,js}`);
+    server.watcher.on('change', (changedPath: string) => {
+      const abs = path.resolve(changedPath);
+      if (abs.startsWith(publicDir) && /\.(html|css|js)$/i.test(abs)) {
+        server.ws.send({ type: 'full-reload', path: '*' });
+      }
+    });
+  },
+});
+
 // dev: public 폴더를 base 경로(/veggieverse/images/...)로 서빙
 const publicUnderBasePlugin = () => ({
   name: 'public-under-base',
@@ -41,7 +58,24 @@ const publicUnderBasePlugin = () => ({
         readFile(filePath, (readErr, data) => {
           if (readErr) return next();
           const ext = path.extname(filePath);
-          const types: Record<string, string> = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon' };
+          const types: Record<string, string> = {
+            '.html': 'text/html; charset=utf-8',
+            '.css': 'text/css; charset=utf-8',
+            '.js': 'text/javascript; charset=utf-8',
+            '.mjs': 'text/javascript; charset=utf-8',
+            '.json': 'application/json; charset=utf-8',
+            '.txt': 'text/plain; charset=utf-8',
+            '.woff2': 'font/woff2',
+            '.woff': 'font/woff',
+            '.ttf': 'font/ttf',
+            '.png': 'image/png',
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.gif': 'image/gif',
+            '.svg': 'image/svg+xml',
+            '.webp': 'image/webp',
+            '.ico': 'image/x-icon',
+          };
           res.statusCode = 200;
           res.setHeader('Content-Type', types[ext] || 'application/octet-stream');
           res.end(data);
@@ -73,7 +107,7 @@ export default defineConfig({
     },
   },
   publicDir: 'public',
-      plugins: [react(), basePathRedirectPlugin(), publicUnderBasePlugin()],
+      plugins: [react(), basePathRedirectPlugin(), publicUnderBasePlugin(), publicAutoReloadPlugin()],
   envPrefix: ['VITE_', 'GEMINI_'],
       define: {
     'process.env.API_KEY': JSON.stringify(process.env.GEMINI_API_KEY || ''),

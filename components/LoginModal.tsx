@@ -34,7 +34,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -42,7 +42,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
           width: '100%',
           maxWidth: '400px',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           padding: '32px',
           position: 'relative',
@@ -68,7 +68,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
           }}
           aria-label="닫기"
         >
-          <X size={20} strokeWidth={1} color="#000" />
+          <X size={20} strokeWidth={1} color="var(--palette-text)" />
         </button>
 
         {/* 헤더 */}
@@ -77,7 +77,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
           marginBottom: '32px',
           fontSize: '20px',
           fontWeight: 400,
-          color: '#000',
+          color: 'var(--palette-text)',
         }}>
           Log-in
         </h2>
@@ -94,7 +94,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               width: '100%',
               padding: '14px',
               marginBottom: '12px',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
@@ -114,7 +114,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               width: '100%',
               padding: '14px',
               marginBottom: '16px',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
@@ -144,14 +144,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
                 style={{
                   width: '16px',
                   height: '16px',
-                  accentColor: '#000',
+                  accentColor: 'var(--palette-text)',
                 }}
               />
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 아이디 저장
               </span>
             </label>
-            <span style={{ fontSize: '13px', fontWeight: 400, color: '#888' }}>
+            <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--gray-light)' }}>
               보안접속
             </span>
           </div>
@@ -163,7 +163,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               width: '100%',
               padding: '14px',
               marginBottom: '12px',
-              background: '#000',
+              background: 'var(--palette-text)',
               border: 'none',
               borderRadius: '8px',
               fontSize: '14px',
@@ -184,11 +184,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               padding: '14px',
               marginBottom: '20px',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               cursor: 'pointer',
             }}
           >
@@ -208,17 +208,17 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
             gap: '8px',
             fontSize: '12px',
             fontWeight: 400,
-            color: '#888',
+            color: 'var(--gray-light)',
           }}>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-light)' }}>
               아이디 찾기
             </button>
             <span>|</span>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-light)' }}>
               비밀번호 찾기
             </button>
             <span>|</span>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--gray-light)' }}>
               회원가입
             </button>
           </div>
@@ -237,11 +237,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               justifyContent: 'center',
               gap: '8px',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               cursor: 'pointer',
             }}
           >
@@ -259,11 +259,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               justifyContent: 'center',
               gap: '8px',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               cursor: 'pointer',
             }}
           >
@@ -281,11 +281,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               justifyContent: 'center',
               gap: '8px',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               cursor: 'pointer',
             }}
           >
@@ -303,11 +303,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin
               justifyContent: 'center',
               gap: '8px',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               cursor: 'pointer',
             }}
           >

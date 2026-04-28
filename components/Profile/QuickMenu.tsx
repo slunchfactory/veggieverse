@@ -15,13 +15,13 @@ const menuItems = [
 const QuickMenu: React.FC = () => {
   return (
     <section style={{ marginBottom: '32px' }}>
-      <h2 style={{ fontSize: '15px', fontWeight: 400, color: '#000', marginBottom: '12px' }}>Quick Menu</h2>
+      <h2 style={{ fontSize: '15px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '12px' }}>Quick Menu</h2>
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
-          borderTop: '1px solid #000',
-          borderBottom: '1px solid #000',
+          borderTop: '1px solid var(--palette-text)',
+          borderBottom: '1px solid var(--palette-text)',
           padding: '20px 0',
         }}
       >
@@ -48,15 +48,15 @@ const QuickMenu: React.FC = () => {
                   width: '40px',
                   height: '40px',
                   borderRadius: '50%',
-                  background: '#F5F5F5',
+                  background: 'var(--palette-bg-2)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
-                <IconComponent size={18} strokeWidth={1} color="#000" />
+                <IconComponent size={18} strokeWidth={1} color="var(--palette-text)" />
               </div>
-              <span style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B' }}>{item.label}</span>
+              <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)' }}>{item.label}</span>
             </button>
           );
         })}

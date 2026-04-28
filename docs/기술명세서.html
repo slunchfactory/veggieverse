@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VeggieVerse 기술명세서</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, sans-serif;
+      color: #172B4D;
+      background: #fff;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 32px 80px;
+    }
+
+    /* ── Title ── */
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #172B4D;
+      margin-bottom: 8px;
+    }
+
+    .doc-meta {
+      font-size: 13px;
+      color: #6B778C;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #DFE1E6;
+    }
+    .doc-meta span { margin-right: 20px; }
+
+    /* ── Section Headers ── */
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: #172B4D;
+      margin: 48px 0 8px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #0052CC;
+    }
+    h2 .num {
+      color: #0052CC;
+      margin-right: 6px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #172B4D;
+      margin: 28px 0 12px;
+    }
+
+    h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #42526E;
+      margin: 20px 0 8px;
+    }
+
+    p { margin-bottom: 8px; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 13px;
+    }
+
+    th {
+      background: #F4F5F7;
+      color: #172B4D;
+      font-weight: 600;
+      text-align: left;
+      padding: 10px 12px;
+      border: 1px solid #DFE1E6;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid #DFE1E6;
+      vertical-align: top;
+    }
+
+    /* overview table */
+    .tbl-overview th { width: 160px; background: #DEEBFF; color: #0052CC; }
+    .tbl-overview td { background: #fff; }
+
+    /* feature spec table */
+    .tbl-spec th { background: #DEEBFF; }
+    .tbl-spec th:nth-child(1) { width: 40px; text-align: center; }
+    .tbl-spec th:nth-child(2) { width: 140px; }
+    .tbl-spec th:nth-child(3) { width: 200px; }
+    .tbl-spec th:nth-child(5) { width: 160px; }
+    .tbl-spec td:nth-child(1) { text-align: center; font-weight: 600; color: #0052CC; }
+    .tbl-spec td:nth-child(2) { font-weight: 500; background: #FAFBFC; }
+
+    /* screen spec table */
+    .tbl-screen th { background: #DEEBFF; }
+    .tbl-screen th:nth-child(1) { width: 50px; text-align: center; }
+    .tbl-screen th:nth-child(2) { width: 130px; }
+    .tbl-screen th:nth-child(4) { width: 180px; }
+    .tbl-screen td:nth-child(1) { text-align: center; }
+
+    /* section header row in spec tables */
+    .section-header td {
+      background: #F4F5F7;
+      font-weight: 600;
+      color: #172B4D;
+      font-size: 13px;
+      padding: 10px 12px;
+    }
+
+    .subsection-label {
+      font-weight: 600;
+      color: #0052CC;
+      font-size: 12px;
+      display: block;
+      margin-top: 6px;
+      margin-bottom: 2px;
+    }
+
+    /* detail list inside td */
+    td ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    td ul li {
+      padding: 1px 0;
+      line-height: 1.7;
+    }
+    td ul li::before {
+      content: "•";
+      color: #6B778C;
+      margin-right: 6px;
+    }
+    td ol {
+      padding-left: 16px;
+      margin: 0;
+    }
+    td ol li { padding: 1px 0; line-height: 1.7; }
+
+    /* ── Code / Mono ── */
+    code {
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+      background: #F4F5F7;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 12px;
+      color: #172B4D;
+    }
+
+    /* ── Sitemap tree ── */
+    .sitemap {
+      background: #FAFBFC;
+      border: 1px solid #DFE1E6;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin: 12px 0 24px;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      white-space: pre;
+      overflow-x: auto;
+      color: #172B4D;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .badge-blue { background: #DEEBFF; color: #0052CC; }
+    .badge-green { background: #E3FCEF; color: #006644; }
+    .badge-yellow { background: #FFFAE6; color: #FF8B00; }
+    .badge-red { background: #FFEBE6; color: #DE350B; }
+    .badge-purple { background: #EAE6FF; color: #5243AA; }
+    .badge-gray { background: #F4F5F7; color: #6B778C; }
+
+    /* ── Color swatch ── */
+    .swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      vertical-align: middle;
+      margin-right: 6px;
+      border: 1px solid rgba(26, 10, 5, 0.1);
+    }
+
+    /* ── TOC ── */
+    .toc {
+      background: #F4F5F7;
+      border: 1px solid #DFE1E6;
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-bottom: 32px;
+    }
+    .toc-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #172B4D;
+    }
+    .toc ul {
+      list-style: none;
+      padding: 0;
+    }
+    .toc li { padding: 3px 0; }
+    .toc a {
+      color: #0052CC;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Coming Soon table ── */
+    .tbl-coming th { background: #FFFAE6; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .container { padding: 24px 16px 60px; }
+      table { font-size: 12px; }
+      th, td { padding: 6px 8px; }
+    }
+
+    /* Print */
+    @media print {
+      .container { max-width: 100%; padding: 20px; }
+      h2 { break-before: page; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============================================================ -->
+  <!-- TITLE -->
+  <!-- ============================================================ -->
+  <h1>VeggieVerse 기술명세서</h1>
+  <div class="doc-meta">
+    <span>작성일: 2026-03-05</span>
+    <span>버전: v1.0</span>
+    <span>상태: <span class="badge badge-green">작성완료</span></span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TOC -->
+  <!-- ============================================================ -->
+  <div class="toc">
+    <div class="toc-title">목차</div>
+    <ul>
+      <li><a href="#overview">프로젝트 개요</a></li>
+      <li><a href="#design-system">디자인 시스템</a></li>
+      <li><a href="#ia">01. IA (Information Architecture) / User Flow</a></li>
+      <li><a href="#feature-spec">02. 기능 정의서</a></li>
+      <li><a href="#screen-spec">03. 화면 SPEC</a></li>
+      <li><a href="#data">04. 데이터 구조</a></li>
+      <li><a href="#deploy">05. 배포 및 빌드</a></li>
+      <li><a href="#coming-soon">06. Coming Soon 기능 목록</a></li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- PROJECT OVERVIEW -->
+  <!-- ============================================================ -->
+  <h2 id="overview">프로젝트 개요</h2>
+
+  <table class="tbl-overview">
+    <tr><th>서비스명</th><td>VeggieVerse (베지버스)</td></tr>
+    <tr><th>서비스 설명</th><td>슬런치팩토리 기반 비건 라이프스타일 이커머스 플랫폼</td></tr>
+    <tr><th>서비스 URL</th><td><a href="https://slunchfactory.github.io/veggieverse" target="_blank">https://slunchfactory.github.io/veggieverse</a></td></tr>
+    <tr><th>Framework</th><td>React 19.2.1 + TypeScript 5.9.3</td></tr>
+    <tr><th>빌드 도구</th><td>Vite 7.2.7</td></tr>
+    <tr><th>라우팅</th><td>React Router DOM 7.10.1 (SPA, Hash 없는 브라우저 라우터)</td></tr>
+    <tr><th>스타일링</th><td>Tailwind CSS 3 + CSS Custom Properties (디자인 토큰)</td></tr>
+    <tr><th>애니메이션</th><td>Framer Motion 12.23.26</td></tr>
+    <tr><th>아이콘</th><td>Lucide React 0.561.0</td></tr>
+    <tr><th>AI 연동</th><td>Google Gemini API (<code>@google/genai</code> 1.31.0, gemini-2.5-flash 모델)</td></tr>
+    <tr><th>상태 관리</th><td>React Context API (UserContext) + localStorage</td></tr>
+    <tr><th>배포</th><td>GitHub Pages (<code>gh-pages</code> 6.3.0), base path: <code>/veggieverse/</code></td></tr>
+    <tr><th>폰트</th><td>Pretendard (전체 weight 400 통일)</td></tr>
+    <tr><th>최소 지원 너비</th><td>360px</td></tr>
+    <tr><th>코딩 컨벤션</th><td>App Router 스타일 디렉토리 구조 (<code>pages/[영역]/page.tsx</code>)</td></tr>
+    <tr><th>버전</th><td>0.0.0</td></tr>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- DESIGN SYSTEM -->
+  <!-- ============================================================ -->
+  <h2 id="design-system">디자인 시스템</h2>
+
+  <h3>컬러 토큰</h3>
+  <table>
+    <thead>
+      <tr><th>토큰</th><th>값</th><th>용도</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Primary</strong></td><td><span class="swatch" style="background:#3FA945"></span><code>#3FA945</code> Fresh Veggie Green</td><td>브랜드 메인 컬러, CTA</td></tr>
+      <tr><td><strong>Secondary</strong></td><td><span class="swatch" style="background:#E07B39"></span><code>#E07B39</code> Carrot Orange</td><td>강조, 액센트</td></tr>
+      <tr><td><strong>Accent - Red</strong></td><td><span class="swatch" style="background:#D64545"></span><code>#D64545</code> Tomato Red</td><td>에러, 경고</td></tr>
+      <tr><td><strong>Accent - Yellow</strong></td><td><span class="swatch" style="background:#F2C94C"></span><code>#F2C94C</code> Corn Yellow</td><td>알림, 하이라이트</td></tr>
+      <tr><td><strong>Accent - Purple</strong></td><td><span class="swatch" style="background:#7B5EA7"></span><code>#7B5EA7</code> Eggplant Purple</td><td>프리미엄 요소</td></tr>
+      <tr><td><strong>Background</strong></td><td><span class="swatch" style="background:#FDFBF7"></span><code>#FDFBF7</code> Cream, <span class="swatch" style="background:#F7F4EF"></span><code>#F7F4EF</code> Eggshell</td><td>페이지 배경</td></tr>
+      <tr><td><strong>Text</strong></td><td><span class="swatch" style="background:var(--palette-text)"></span><code>var(--palette-text)</code>, <span class="swatch" style="background:var(--charcoal)"></span><code>var(--charcoal)</code>, <span class="swatch" style="background:var(--warm-gray)"></span><code>var(--warm-gray)</code></td><td>본문 텍스트 (Deep Forest / Charcoal / Warm Gray)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>타이포그래피</h3>
+  <table>
+    <thead>
+      <tr><th>스케일</th><th>크기</th><th>Line Height</th><th>용도</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Display</td><td>48px</td><td>1.3</td><td>히어로 타이틀</td></tr>
+      <tr><td>H1</td><td>36px</td><td>1.3</td><td>페이지 타이틀</td></tr>
+      <tr><td>H2</td><td>28px</td><td>1.4</td><td>섹션 타이틀</td></tr>
+      <tr><td>H3</td><td>20px</td><td>1.5</td><td>카드 타이틀</td></tr>
+      <tr><td>Body</td><td>16px</td><td>1.6</td><td>본문</td></tr>
+      <tr><td>Small</td><td>14px</td><td>1.5</td><td>캡션, 부가 텍스트</td></tr>
+      <tr><td>Caption</td><td>12px</td><td>1.5</td><td>라벨, 태그</td></tr>
+    </tbody>
+  </table>
+
+  <h3>기타 토큰</h3>
+  <table>
+    <thead>
+      <tr><th>항목</th><th>값</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Border Radius</strong></td><td>sm: 4px, md: 6px, lg: 8px, xl: 12px, full: 9999px</td></tr>
+      <tr><td><strong>Shadow</strong></td><td>sm: 2px, default: 4px 12px, focus: 3px primary-50</td></tr>
+      <tr><td><strong>Section Spacing</strong></td><td>Desktop: 120px, Mobile: 80px</td></tr>
+      <tr><td><strong>Card Spacing</strong></td><td>32px</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- IA / USER FLOW -->
+  <!-- ============================================================ -->
+  <h2 id="ia"><span class="num">01.</span> IA (Information Architecture) / User Flow</h2>
+
+  <h3>사이트맵</h3>
+  <div class="sitemap">VeggieVerse
+│
+├── 홈 (/)
+│   ├── 플로팅 채소 인터랙션
+│   ├── 무드 슬라이더
+│   ├── 인기 레시피 캐러셀
+│   ├── 슬런치 위클리 섹션
+│   └── CTA → 스피릿 찾기
+│
+├── 스피릿 찾기 (/spirit)
+│   ├── 인트로 - 채소 3개 선택 (/spirit, /spirit/intro)
+│   ├── 질문 단계 (/spirit/question/:stepId) — 7개 질문
+│   └── 결과 (/spirit/result) — 16개 비건 스피릿 타입
+│
+├── 소개 (/about)
+│   ├── 브랜드 스토리 (/about/story)
+│   ├── 매장 안내 (/about/branch)
+│   └── B2B 솔루션 (/about/b2b)
+│
+├── 스토어 (/store)
+│   ├── 스토어 메인 (/store)
+│   ├── 상품 목록 (/store/list)
+│   ├── 상품 상세 (/store/product/:productId)
+│   ├── AI 상품 추천 (/store/ai-recommendation) — Coming Soon
+│   └── 목표별 큐레이션 (/store/goal-based) — Coming Soon
+│
+├── 구독 (/subscribe)
+│   ├── 구독 메인 - 플랜 선택 (/subscribe)
+│   ├── 오피스 팩 (/subscribe/office) — Coming Soon
+│   ├── 실버 케어 (/subscribe/silver) — Coming Soon
+│   └── 챌린지 다이어트 (/subscribe/diet) — Coming Soon
+│
+├── 레시피 (/recipe)
+│   ├── 레시피 메인 (/recipe)
+│   ├── 레시피 갤러리 (/recipe/list)
+│   ├── 카테고리별 (/recipe/category/:categoryId)
+│   ├── 레시피 상세 (/recipe/:id)
+│   ├── 명예의 전당 (/recipe/hall-of-fame)
+│   ├── AI 맞춤 식단 (/recipe/ai-diet-planner) — Coming Soon
+│   └── 알러지 프리 (/recipe/allergy-free) — Coming Soon
+│
+├── 이벤트 (/event)
+│   ├── 이벤트 메인 (/event)
+│   ├── 이벤트 목록 (/event/list)
+│   └── 이벤트 상세 (/event/:id)
+│
+├── 뉴스레터 (/newsletter)
+│   ├── 뉴스레터 메인 (/newsletter)
+│   ├── 뉴스레터 목록 (/newsletter/list)
+│   └── 뉴스레터 상세 (/newsletter/:id)
+│
+├── 마이페이지 (/mypage)
+│   ├── 대시보드 (/mypage)
+│   ├── 주문 내역 (/mypage/orders)
+│   ├── 즐겨찾기 (/mypage/bookmarks)
+│   ├── 위시리스트 (/mypage/wishlist)
+│   ├── 리뷰 관리 (/mypage/reviews)
+│   ├── 내 정보 (/mypage/info)
+│   ├── 프로필 수정 (/mypage/info/edit-profile)
+│   ├── AI 분석 리포트 (/mypage/ai-analysis) — Coming Soon
+│   ├── 활동배지 (/mypage/badges) — Coming Soon
+│   └── 회원 등급 (/mypage/level) — Coming Soon
+│
+├── 장바구니 (/cart) — Coming Soon
+│
+└── 공통
+    ├── 헤더 (Global)
+    ├── 푸터 (Global, 홈 제외)
+    ├── AI 챗봇 위젯 (Global)
+    ├── 스크롤 투 탑 (Global)
+    └── 프로모 배너 (Global, 닫기 가능)</div>
+
+  <h3>User Flow</h3>
+  <div class="sitemap">[첫 방문] → 홈(플로팅 채소) → "나의 스피릿 찾기" CTA 클릭
+    ↓
+[스피릿 찾기] → 채소 3개 선택 → 7단계 질문 → 16개 유형 중 결과
+    ↓
+[결과 저장] → localStorage에 프로필 저장 → 헤더에 스피릿 아바타 표시
+    ↓
+[콘텐츠 탐색]
+    ├── 레시피 → 카테고리 탐색 → 상세 보기 → 북마크/리뷰 작성
+    ├── 스토어 → 필터/정렬 → 상품 상세 → 장바구니 → 구매 (Coming Soon)
+    ├── 구독 → 플랜 선택 → 메뉴 커스텀 → 결제 (Coming Soon)
+    ├── 뉴스레터 → 아티클 읽기
+    └── 이벤트 → 이벤트 참여
+    ↓
+[마이페이지] → 주문 관리 / 즐겨찾기 / 위시리스트 / 리뷰 / 프로필</div>
+
+  <!-- ============================================================ -->
+  <!-- 02. FEATURE SPEC -->
+  <!-- ============================================================ -->
+  <h2 id="feature-spec"><span class="num">02.</span> 기능 정의서</h2>
+
+  <!-- ── 공통 ── -->
+  <h3>공통 기능</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <!-- 1 -->
+      <tr>
+        <td rowspan="10">1</td>
+        <td rowspan="10">공통_헤더</td>
+        <td rowspan="10">사이트 헤더를 통해 주요 페이지에 접근할 수 있다.</td>
+        <td><span class="subsection-label">구성 요소</span></td>
+        <td rowspan="10"></td>
+      </tr>
+      <tr><td><ul><li>왼쪽: 햄버거 메뉴 버튼 (NavigationDrawer 열기)</li></ul></td></tr>
+      <tr><td><ul><li>중앙: VeggieVerse 로고 (홈 링크)</li></ul></td></tr>
+      <tr><td><ul><li>오른쪽: 장바구니 아이콘 (뱃지 카운트), 사용자 프로필 아이콘</li></ul></td></tr>
+      <tr><td><span class="subsection-label">사용자 상태별 분기</span></td></tr>
+      <tr><td><ul><li>비로그인: 기본 프로필 아이콘 → 클릭 시 로그인 모달</li></ul></td></tr>
+      <tr><td><ul><li>로그인: 스피릿 아바타 이미지 표시</li></ul></td></tr>
+      <tr><td><span class="subsection-label">동작</span></td></tr>
+      <tr><td><ul><li>Sticky 포지셔닝 (top: 0, z-index: 50)</li></ul></td></tr>
+      <tr><td><ul><li>프로모 배너 유무에 따라 높이 가변 (64px / 96px)</li></ul></td></tr>
+
+      <!-- 2 -->
+      <tr>
+        <td rowspan="4">2</td>
+        <td rowspan="4">공통_프로모배너</td>
+        <td rowspan="4">상단 프로모션 배너를 표시/닫기할 수 있다.</td>
+        <td><span class="subsection-label">기능</span></td>
+        <td rowspan="4"></td>
+      </tr>
+      <tr><td><ul><li>페이지 최상단에 프로모 메시지 표시</li></ul></td></tr>
+      <tr><td><ul><li>X 버튼으로 닫기 가능 (세션 내 유지)</li></ul></td></tr>
+      <tr><td><ul><li>닫기 시 헤더 높이 자동 조정</li></ul></td></tr>
+
+      <!-- 3 -->
+      <tr>
+        <td rowspan="5">3</td>
+        <td rowspan="5">공통_네비게이션드로어</td>
+        <td rowspan="5">햄버거 메뉴에서 전체 사이트 메뉴를 탐색할 수 있다.</td>
+        <td><span class="subsection-label">기능</span></td>
+        <td rowspan="5"></td>
+      </tr>
+      <tr><td><ul><li>왼쪽에서 슬라이드인 되는 풀스크린 드로어</li></ul></td></tr>
+      <tr><td><ul><li>주요 메뉴: 스토어, 레시피, 구독, 이벤트, 뉴스레터, 소개</li></ul></td></tr>
+      <tr><td><ul><li>마이페이지 바로가기 포함</li></ul></td></tr>
+      <tr><td><ul><li>배경 오버레이 클릭 시 닫힘</li></ul></td></tr>
+
+      <!-- 4 -->
+      <tr>
+        <td rowspan="8">4</td>
+        <td rowspan="8">공통_푸터</td>
+        <td rowspan="8">사이트 하단에 기업 정보 및 링크를 제공한다.</td>
+        <td><span class="subsection-label">구성 (반응형)</span></td>
+        <td rowspan="8">홈 페이지에서는 미표시</td>
+      </tr>
+      <tr><td><ul><li>ABOUT: 브랜드 스토리, 매장, B2B 링크</li></ul></td></tr>
+      <tr><td><ul><li>NEWSLETTER: 뉴스레터 안내</li></ul></td></tr>
+      <tr><td><ul><li>CONTACT: 이메일 주소</li></ul></td></tr>
+      <tr><td><ul><li>SOCIAL: Instagram, YouTube, LinkedIn 외부 링크</li></ul></td></tr>
+      <tr><td><ul><li>BANK: 계좌 정보</li></ul></td></tr>
+      <tr><td><ul><li>CS: 고객센터 정보</li></ul></td></tr>
+      <tr><td><ul><li>모바일 2열 / 데스크톱 5열 반응형 레이아웃</li></ul></td></tr>
+
+      <!-- 5 -->
+      <tr>
+        <td rowspan="9">5</td>
+        <td rowspan="9">공통_AI챗봇</td>
+        <td rowspan="9">AI 챗봇을 통해 대화형으로 추천/정보를 받을 수 있다.</td>
+        <td><span class="subsection-label">ChatTrigger</span></td>
+        <td rowspan="9"></td>
+      </tr>
+      <tr><td><ul><li>화면 우하단 고정 플로팅 버튼</li></ul></td></tr>
+      <tr><td><span class="subsection-label">ChatPanel</span></td></tr>
+      <tr><td><ul><li>데스크톱: 360&times;600px 패널</li></ul></td></tr>
+      <tr><td><ul><li>모바일: 80vh 바텀시트</li></ul></td></tr>
+      <tr><td><span class="subsection-label">3개 탭</span></td></tr>
+      <tr><td><ul><li>Chat: 대화 탭 + 빠른 질문 버튼 (점심 추천, 주간 식단, 장보기 리스트, 저염&middot;고단백)</li></ul></td></tr>
+      <tr><td><ul><li>My Spirit: 프로필 정보 (식단 유형, 좋아하는/싫어하는 것, 알러지)</li></ul></td></tr>
+      <tr><td><ul><li>Bookmarks: 저장된 레시피 그리드 (2열, 12개 목업)</li></ul></td></tr>
+
+      <!-- 6 -->
+      <tr>
+        <td rowspan="2">6</td>
+        <td rowspan="2">공통_스크롤투탑</td>
+        <td rowspan="2">페이지 최상단으로 스크롤하는 버튼을 제공한다.</td>
+        <td><ul><li>ScrollToTop 컴포넌트</li></ul></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr><td><ul><li>라우트 변경 시 자동 스크롤 투 탑</li></ul></td></tr>
+
+      <!-- 7 -->
+      <tr>
+        <td rowspan="5">7</td>
+        <td rowspan="5">공통_로그인</td>
+        <td rowspan="5">사용자 로그인/로그아웃 기능을 제공한다.</td>
+        <td><span class="subsection-label">로그인 모달</span></td>
+        <td rowspan="5"></td>
+      </tr>
+      <tr><td><ul><li>프로필 아이콘 클릭 시 LoginModal 표시</li></ul></td></tr>
+      <tr><td><ul><li>로그인 시 UserContext에 사용자 정보 저장</li></ul></td></tr>
+      <tr><td><span class="subsection-label">로그아웃</span></td></tr>
+      <tr><td><ul><li>LogoutConfirmModal로 확인 후 처리, localStorage 초기화</li></ul></td></tr>
+
+      <!-- 8 -->
+      <tr>
+        <td rowspan="2">8</td>
+        <td rowspan="2">공통_에러처리</td>
+        <td rowspan="2">페이지 렌더링 에러를 우아하게 처리한다.</td>
+        <td><ul><li>ErrorBoundary 컴포넌트로 레시피 상세 등 감싸기</li></ul></td>
+        <td rowspan="2"></td>
+      </tr>
+      <tr><td><ul><li>에러 발생 시 폴백 UI 표시</li></ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 홈 ── -->
+  <h3>홈</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="16">9</td>
+        <td rowspan="16">홈</td>
+        <td rowspan="16">사용자는 홈 화면에서 플로팅 채소 인터랙션과 주요 콘텐츠를 탐색할 수 있다.</td>
+        <td><span class="subsection-label">플로팅 채소 인터랙션</span></td>
+        <td rowspan="16">푸터 미표시<br>headerOffset prop 사용</td>
+      </tr>
+      <tr><td><ul><li>43개 채소/과일 이미지가 물리 기반 애니메이션으로 부유</li></ul></td></tr>
+      <tr><td><ul><li>드래그로 채소 이동 가능 (포인터 이벤트 기반)</li></ul></td></tr>
+      <tr><td><ul><li>충돌 시뮬레이션 적용</li></ul></td></tr>
+      <tr><td><span class="subsection-label">무드 슬라이더</span></td></tr>
+      <tr><td><ul><li>5개 무드 테마 자동 캐러셀 (Unsplash 이미지 활용)</li></ul></td></tr>
+      <tr><td><ul><li>좌/우 이미지 쌍으로 라이프스타일 무드 연출</li></ul></td></tr>
+      <tr><td><ul><li>자동 재생 + 수동 네비게이션</li></ul></td></tr>
+      <tr><td><span class="subsection-label">인기 레시피 캐러셀</span></td></tr>
+      <tr><td><ul><li>드래그 가능한 슬라이드 배너</li></ul></td></tr>
+      <tr><td><ul><li>인기 레시피 카드 수평 스크롤</li></ul></td></tr>
+      <tr><td><span class="subsection-label">슬런치 위클리 섹션</span></td></tr>
+      <tr><td><ul><li>주간 뉴스레터/아티클 미리보기</li></ul></td></tr>
+      <tr><td><span class="subsection-label">CTA 영역</span></td></tr>
+      <tr><td><ul><li>"나의 스피릿 찾기" 버튼 → /spirit 이동</li></ul></td></tr>
+      <tr><td><ul><li>뉴스레터 이메일 구독 입력</li></ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 스피릿 찾기 ── -->
+  <h3>스피릿 찾기</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <!-- 10 -->
+      <tr>
+        <td rowspan="8">10</td>
+        <td rowspan="8">스피릿_인트로</td>
+        <td rowspan="8">사용자는 플로팅 채소 중 3개를 선택하여 테스트를 시작할 수 있다.</td>
+        <td><span class="subsection-label">채소 선택 인터랙션</span></td>
+        <td rowspan="8">body 스크롤 비활성화</td>
+      </tr>
+      <tr><td><ul><li>풀스크린 플로팅 채소 영역 (물리 시뮬레이션)</li></ul></td></tr>
+      <tr><td><ul><li>1:1 비율 이미지, 호버 시 이름 라벨 노출</li></ul></td></tr>
+      <tr><td><ul><li>채소 클릭 시 하단 선택바에 추가 (최대 3개)</li></ul></td></tr>
+      <tr><td><span class="subsection-label">하단 선택바</span></td></tr>
+      <tr><td><ul><li>고정 하단 바에 선택된 채소 3개 미리보기 표시</li></ul></td></tr>
+      <tr><td><ul><li>3개 선택 완료 시 "시작하기" 버튼 활성화</li></ul></td></tr>
+      <tr><td><ul><li>Skip 버튼으로 선택 없이 질문 단계로 직행 가능</li></ul></td></tr>
+
+      <!-- 11 -->
+      <tr>
+        <td rowspan="12">11</td>
+        <td rowspan="12">스피릿_질문</td>
+        <td rowspan="12">사용자는 7단계 질문에 답하여 비건 스피릿 유형을 진단받을 수 있다.</td>
+        <td><span class="subsection-label">질문 구성 (7단계)</span></td>
+        <td rowspan="12"><code>/spirit/question/:stepId</code></td>
+      </tr>
+      <tr><td><ol>
+        <li>식단 유형: The Feast / The Garden / The Ocean / The Dawn / The Balance</li>
+        <li>추가 옵션: 글루텐프리 / 유당불내증 / 없음</li>
+        <li>요리 무드: 전통 / 퓨전 / 심플 / 고메</li>
+        <li>우선순위: 영양 / 맛 / 편의 / 새로움</li>
+        <li>식사 의미: 가족 / 건강 / 간편 / 경험</li>
+        <li>식사 패턴: 규칙적 / 유연 / 계획적 / 즉흥적</li>
+        <li>채식 이유 (조건부): 건강 / 환경 / 동물 / 호기심</li>
+      </ol></td></tr>
+      <tr><td><span class="subsection-label">UI</span></td></tr>
+      <tr><td><ul><li>타로 카드 스타일 옵션 표시</li></ul></td></tr>
+      <tr><td><ul><li>진행률 인디케이터</li></ul></td></tr>
+      <tr><td><ul><li>URL 기반 단계 네비게이션</li></ul></td></tr>
+      <tr><td><ul><li>localStorage에 답변 중간 저장</li></ul></td></tr>
+
+      <!-- 12 -->
+      <tr>
+        <td rowspan="12">12</td>
+        <td rowspan="12">스피릿_결과</td>
+        <td rowspan="12">사용자는 16개 비건 스피릿 유형 중 결과를 확인하고 공유할 수 있다.</td>
+        <td><span class="subsection-label">16개 스피릿 유형 (MBTI 기반)</span></td>
+        <td rowspan="12"><code>/spirit/result</code></td>
+      </tr>
+      <tr><td><ul>
+        <li>Bloomist (ENFP), Mindgrower (INFP), Quiet Root (INFJ), Lightgiver (ENFJ)</li>
+        <li>Forger (ENTJ), Groundtype (ESTJ), Planter (ISTJ), Strategreen (INTJ)</li>
+        <li>Floret (ISFP), Joybean (ESFP), Careleaf (ESFJ), Nurturer (ISFJ)</li>
+        <li>Thinkroot (INTP), Sparknut (ENTP), Craftbean (ISTP), Wildgrain (ESTP)</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">결과 화면</span></td></tr>
+      <tr><td><ul><li>스피릿 이름, 이모지, 컬러, 설명 표시</li></ul></td></tr>
+      <tr><td><ul><li>스피릿 기반 추천 레시피 캐러셀</li></ul></td></tr>
+      <tr><td><span class="subsection-label">프로필 저장</span></td></tr>
+      <tr><td><ul><li>localStorage <code>veggieverse-profile</code> 키에 저장</li></ul></td></tr>
+      <tr><td><ul><li>저장: profileImage, veganType, savedAt</li></ul></td></tr>
+      <tr><td><ul><li>헤더에 스피릿 아바타 즉시 반영</li></ul></td></tr>
+      <tr><td><span class="subsection-label">공유 기능</span></td></tr>
+      <tr><td><ul><li>결과 카드 소셜 공유 모달</li></ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 소개 ── -->
+  <h3>소개 (About)</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="9">13</td>
+        <td rowspan="9">소개_스토리</td>
+        <td rowspan="9">사용자는 슬런치팩토리의 브랜드 스토리를 확인할 수 있다.</td>
+        <td><span class="subsection-label">레이아웃</span></td>
+        <td rowspan="9">AboutLayout 중첩 라우트<br><code>/about/story</code></td>
+      </tr>
+      <tr><td><ul><li>2열 히어로: 이미지 + 브랜드 스토리 텍스트</li></ul></td></tr>
+      <tr><td><ul><li>3열 그리드: 철학 / 생산 / 비전</li></ul></td></tr>
+      <tr><td><ul><li>풀 와이드 이미지 섹션</li></ul></td></tr>
+      <tr><td><ul><li>브랜드 가치 태그 클라우드</li></ul></td></tr>
+      <tr><td><span class="subsection-label">콘텐츠</span></td></tr>
+      <tr><td><ul><li>"Since 2019" 창업 스토리</li></ul></td></tr>
+      <tr><td><ul><li>철학: "맛있으니까, 비건이니까" / 생산: 직접 제조</li></ul></td></tr>
+      <tr><td><ul><li>비전: 식물 기반이 일상이 되는 편한 식사</li></ul></td></tr>
+
+      <tr>
+        <td rowspan="5">14</td>
+        <td rowspan="5">소개_매장</td>
+        <td rowspan="5">사용자는 오프라인 매장 위치와 운영 정보를 확인할 수 있다.</td>
+        <td><span class="subsection-label">매장 목록</span></td>
+        <td rowspan="5"><code>/about/branch</code></td>
+      </tr>
+      <tr><td><ol>
+        <li>홍대점 (플래그십): 주소, 영업시간, 전화, 길찾기 링크</li>
+        <li>더현대 서울점: B1 푸드마켓, 영업시간</li>
+        <li>온라인 스토어: 네이버 스마트스토어 링크</li>
+      </ol></td></tr>
+      <tr><td><span class="subsection-label">UI</span></td></tr>
+      <tr><td><ul><li>2열 그리드 카드 레이아웃</li></ul></td></tr>
+      <tr><td><ul><li>MapPin, Clock, Phone 아이콘 활용, 외부 링크 버튼</li></ul></td></tr>
+
+      <tr>
+        <td rowspan="5">15</td>
+        <td rowspan="5">소개_B2B</td>
+        <td rowspan="5">사용자는 B2B 파트너십 정보를 확인하고 문의할 수 있다.</td>
+        <td><span class="subsection-label">섹션 구성</span></td>
+        <td rowspan="5"><code>/about/b2b</code></td>
+      </tr>
+      <tr><td><ul>
+        <li>공장 개요 (2:1 비율 그리드)</li>
+        <li>레시피 아카이브 (500+ 비건 레시피)</li>
+        <li>특허/기술 (2건 특허 소개)</li>
+        <li>B2B 파트너십 + 파트너 로고 그리드 (4열)</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">인터랙션</span></td></tr>
+      <tr><td><ul><li>이메일 문의 버튼</li></ul></td></tr>
+      <tr><td><ul><li>수상 아이콘 표시</li></ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 스토어 ── -->
+  <h3>스토어</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="12">16</td>
+        <td rowspan="12">스토어_메인</td>
+        <td rowspan="12">사용자는 상품을 필터링/정렬하여 탐색할 수 있다.</td>
+        <td><span class="subsection-label">상품 데이터</span></td>
+        <td rowspan="12"><code>/store</code></td>
+      </tr>
+      <tr><td><ul><li>15개 슬런치 상품 (밀키트, 베이커리, 소스, 세트, 구독)</li></ul></td></tr>
+      <tr><td><span class="subsection-label">필터링</span></td></tr>
+      <tr><td><ul>
+        <li>요리 유형: 한식, 양식, 디저트</li>
+        <li>식단 스펙트럼: 일반, 비건, 락토, 오보, 락토오보, 플렉시테리언, 페스코, 폴로</li>
+        <li>추가 제한: 글루텐프리, 할랄, 코셔</li>
+        <li>오른쪽 슬라이드인 필터 패널 (라디오 + 체크박스)</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">정렬</span></td></tr>
+      <tr><td><ul><li>기본순, 이름(A-Z/Z-A), 가격(낮은/높은), 인기순, 알고리즘</li></ul></td></tr>
+      <tr><td><span class="subsection-label">상품 카드</span></td></tr>
+      <tr><td><ul>
+        <li>이미지 슬라이더 (드래그 플립)</li>
+        <li>좋아요/하트 카운트</li>
+        <li>상태 뱃지: <span class="badge badge-blue">NEW</span> <span class="badge badge-green">BEST</span> <span class="badge badge-gray">SOLD_OUT</span></li>
+        <li>반응형 그리드 (2~5열)</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">상단 컨트롤바</span></td></tr>
+      <tr><td><ul><li>TopControlBar 컴포넌트: 탭 + 필터 토글</li></ul></td></tr>
+
+      <tr>
+        <td rowspan="10">17</td>
+        <td rowspan="10">스토어_상품상세</td>
+        <td rowspan="10">사용자는 상품 상세 정보를 확인하고 구매 행동을 수행할 수 있다.</td>
+        <td><span class="subsection-label">메인 섹션</span></td>
+        <td rowspan="10"><code>/store/product/:productId</code></td>
+      </tr>
+      <tr><td><ul>
+        <li>상품 이미지 갤러리 (인디케이터 포함)</li>
+        <li>가격 표시: 원가, 할인율%, 최종가</li>
+        <li>퀵 스탯: 조리시간, 난이도, 인분 (+/- 버튼)</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">스티키 탭 네비게이션</span></td></tr>
+      <tr><td><ul>
+        <li>리뷰 / 상세정보 / 교환반품 / Q&amp;A 4개 탭</li>
+        <li>스크롤 깊이에 따라 활성 섹션 추적</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">구매 인터랙션</span></td></tr>
+      <tr><td><ul>
+        <li>수량 조절기 (min/max)</li>
+        <li>하트/좋아요 토글</li>
+        <li>장바구니 담기 / 바로 구매 버튼</li>
+        <li>모바일: 하단 고정 구매 버튼</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">관련 상품</span></td></tr>
+      <tr><td><ul><li>하단에 관련 상품 섹션</li></ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 구독 ── -->
+  <h3>구독</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="11">18</td>
+        <td rowspan="11">구독_메인</td>
+        <td rowspan="11">사용자는 식단 구독 플랜을 선택하고 메뉴를 커스터마이징할 수 있다.</td>
+        <td><span class="subsection-label">레이아웃: 50/50 분할</span></td>
+        <td rowspan="11"><code>/subscribe</code></td>
+      </tr>
+      <tr><td><span class="subsection-label">왼쪽 패널</span></td></tr>
+      <tr><td><ul>
+        <li>기간 선택: 1주 / 2주</li>
+        <li>플랜 유형 선택: Glow, Wellness, Balance, Light, Clean (컬러 테마별)</li>
+        <li>7일 캘린더 그리드 (식단 슬롯)</li>
+        <li>스티키 체크아웃 바: 총 가격, 할인 표시</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">오른쪽 패널</span></td></tr>
+      <tr><td><ul>
+        <li>제외 필터 (8개): 유제품, 갑각류, 생선, 견과류, 닭고기, 달걀, 글루텐, 매운맛</li>
+        <li>메뉴 그리드 (3열, 30개 메뉴)</li>
+        <li>제외 항목에 따른 메뉴 자동 필터링</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">인터랙션</span></td></tr>
+      <tr><td><ul>
+        <li>플랜 선택 시 호버 팝업 배너</li>
+        <li>메뉴 자동 채움 기능</li>
+        <li>비용/가격 브레이크다운</li>
+        <li>NPay 결제 버튼, 구독 신청 버튼</li>
+      </ul></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 레시피 ── -->
+  <h3>레시피</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="8">19</td>
+        <td rowspan="8">레시피_메인</td>
+        <td rowspan="8">사용자는 카테고리별 레시피를 탐색할 수 있다.</td>
+        <td><span class="subsection-label">카테고리 섹션 (6개)</span></td>
+        <td rowspan="8"><code>/recipe</code></td>
+      </tr>
+      <tr><td><ul><li>New, Lunch, Dessert, Korean, Drinks, Date</li></ul></td></tr>
+      <tr><td><ul><li>각 카테고리 10개 항목 + "더 보기" 카드</li></ul></td></tr>
+      <tr><td><span class="subsection-label">인기 레시피</span></td></tr>
+      <tr><td><ul><li>8개 인기 레시피 그리드, 수평 스크롤 + 좌우 네비게이션</li></ul></td></tr>
+      <tr><td><span class="subsection-label">스피릿 기반 필터링</span></td></tr>
+      <tr><td><ul><li>사용자 스피릿 유형에 맞는 레시피 큐레이션</li></ul></td></tr>
+      <tr><td><ul><li>타로 카드 스타일 (200&times;330px), 명예의 전당 링크</li></ul></td></tr>
+
+      <tr>
+        <td rowspan="12">20</td>
+        <td rowspan="12">레시피_상세</td>
+        <td rowspan="12">사용자는 레시피 상세 정보를 확인하고 리뷰를 작성할 수 있다.</td>
+        <td><span class="subsection-label">히어로 영역</span></td>
+        <td rowspan="12"><code>/recipe/:id</code><br>ErrorBoundary 적용</td>
+      </tr>
+      <tr><td><ul><li>대형 히어로 이미지 + 그라데이션 오버레이 + 타이틀</li></ul></td></tr>
+      <tr><td><span class="subsection-label">재료 &amp; 영양</span></td></tr>
+      <tr><td><ul>
+        <li>재료 목록 (아이콘 + 수량, 인분수에 따라 자동 계산)</li>
+        <li>영양 정보 테이블 / 2열 레이아웃</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">조리 단계</span></td></tr>
+      <tr><td><ul><li>단계별 비주얼 가이드 (이미지 + 팁 포함)</li></ul></td></tr>
+      <tr><td><span class="subsection-label">사용자 참여</span></td></tr>
+      <tr><td><ul>
+        <li>포토 리뷰 제출 (PhotoReviewModal) + 갤러리</li>
+        <li>댓글 섹션 (스레드 지원)</li>
+        <li>북마크/좋아요 버튼, 소셜 공유</li>
+      </ul></td></tr>
+      <tr><td><span class="subsection-label">관련 콘텐츠</span></td></tr>
+      <tr><td><ul>
+        <li>관련 레시피 그리드, 작성자 바이오</li>
+        <li>AI 셰프 추천 섹션</li>
+        <li>이전/다음 레시피 네비게이션</li>
+      </ul></td></tr>
+
+      <tr>
+        <td rowspan="4">21</td>
+        <td rowspan="4">레시피_명예의전당</td>
+        <td rowspan="4">사용자는 좋아요 기준 상위 20개 레시피를 확인할 수 있다.</td>
+        <td><ul>
+          <li>좋아요 기준 Top 20 레시피</li>
+          <li>Top 3: 특별 스타일링 + 아이콘 (왕관 1위, 메달 2~3위)</li>
+          <li>4~20위: 숫자 뱃지</li>
+          <li>마키 스크롤 애니메이션 (HallOfFameMarquee)</li>
+        </ul></td>
+        <td rowspan="4"><code>/recipe/hall-of-fame</code></td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">22</td>
+        <td rowspan="2">레시피_카테고리</td>
+        <td rowspan="2">사용자는 특정 카테고리의 레시피를 탐색할 수 있다.</td>
+        <td><ul>
+          <li>URL 파라미터 기반 카테고리 필터링</li>
+          <li>카테고리별 컬러코딩 섹션</li>
+        </ul></td>
+        <td rowspan="2"><code>/recipe/category/:categoryId</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 이벤트 ── -->
+  <h3>이벤트</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="5">23</td>
+        <td rowspan="5">이벤트_메인</td>
+        <td rowspan="5">사용자는 진행/예정/종료 이벤트를 필터링하여 확인할 수 있다.</td>
+        <td><span class="subsection-label">탭 필터링</span></td>
+        <td rowspan="5"><code>/event</code></td>
+      </tr>
+      <tr><td><ul><li>전체 / 진행 중 / 예정 / 종료</li></ul></td></tr>
+      <tr><td><span class="subsection-label">이벤트 카드 그리드 (2열)</span></td></tr>
+      <tr><td><ul>
+        <li>이미지, 타이틀, 설명, 기간</li>
+        <li>상태 뱃지 (검정: 진행중, 초록: 예정, 회색: 종료)</li>
+        <li>HOT 뱃지 (주요 이벤트)</li>
+      </ul></td></tr>
+      <tr><td><ul><li>샘플 이벤트 5개 (겨울 비건 페스티벌, 새해 스페셜 등)</li></ul></td></tr>
+
+      <tr>
+        <td>24</td>
+        <td>이벤트_상세</td>
+        <td>사용자는 이벤트 상세 내용을 확인할 수 있다.</td>
+        <td><ul>
+          <li>이벤트 이미지, 상세 설명, 참여 방법</li>
+          <li>이벤트 기간 표시</li>
+          <li>참여 CTA 버튼</li>
+        </ul></td>
+        <td><code>/event/:id</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 뉴스레터 ── -->
+  <h3>뉴스레터</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="6">25</td>
+        <td rowspan="6">뉴스레터_메인</td>
+        <td rowspan="6">사용자는 카테고리별 아티클을 탐색할 수 있다.</td>
+        <td><span class="subsection-label">탭 카테고리</span></td>
+        <td rowspan="6"><code>/newsletter</code></td>
+      </tr>
+      <tr><td><ul><li>전체, Health, Culture, Food, Life, Slunch's Pick</li></ul></td></tr>
+      <tr><td><span class="subsection-label">벤토 그리드 레이아웃</span></td></tr>
+      <tr><td><ul><li>위치별 다양한 카드 사이즈 (BentoCard)</li></ul></td></tr>
+      <tr><td><span class="subsection-label">아티클 상세 모달</span></td></tr>
+      <tr><td><ul>
+        <li>매거진 스타일 분할 레이아웃</li>
+        <li>작성자 바이오: Huna, Josin, ChaCha, Jin</li>
+        <li>이전/다음 네비게이션</li>
+      </ul></td></tr>
+
+      <tr>
+        <td>26</td>
+        <td>뉴스레터_상세</td>
+        <td>사용자는 아티클 전문을 읽을 수 있다.</td>
+        <td><ul>
+          <li>히어로 이미지 + 풀 콘텐츠</li>
+          <li>작성자 정보, 인용구 섹션</li>
+          <li>멀티 이미지 갤러리</li>
+        </ul></td>
+        <td><code>/newsletter/:id</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 마이페이지 ── -->
+  <h3>마이페이지</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="5">27</td>
+        <td rowspan="5">마이페이지_대시보드</td>
+        <td rowspan="5">사용자는 대시보드에서 활동 현황을 한눈에 확인할 수 있다.</td>
+        <td><ul>
+          <li>프로필 요약 카드: 아바타, 유저네임, 스피릿 정보, 뱃지 카운트</li>
+          <li>활동 통계: 레시피 수, 댓글 수, 좋아요 수 타일</li>
+          <li>최근 주문 리스트 (상태 뱃지 포함)</li>
+          <li>퀵 메뉴: 위시리스트, 즐겨찾기, 리뷰, 내 정보 바로가기</li>
+        </ul></td>
+        <td rowspan="5"><code>/mypage</code></td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td>마이페이지_주문</td>
+        <td>사용자는 주문 내역을 확인할 수 있다.</td>
+        <td><ul><li>주문 목록 (상태, 가격, 배송추적), 주문 상태 뱃지</li></ul></td>
+        <td><code>/mypage/orders</code></td>
+      </tr>
+      <tr>
+        <td>29</td>
+        <td>마이페이지_즐겨찾기</td>
+        <td>사용자는 저장한 레시피를 관리할 수 있다.</td>
+        <td><ul><li>북마크한 레시피 카드 그리드, 북마크 해제 기능</li></ul></td>
+        <td><code>/mypage/bookmarks</code></td>
+      </tr>
+      <tr>
+        <td>30</td>
+        <td>마이페이지_위시리스트</td>
+        <td>사용자는 찜한 상품을 관리할 수 있다.</td>
+        <td><ul><li>위시리스트 상품 카드 그리드, 제거 기능</li></ul></td>
+        <td><code>/mypage/wishlist</code></td>
+      </tr>
+      <tr>
+        <td>31</td>
+        <td>마이페이지_리뷰</td>
+        <td>사용자는 작성한 포토리뷰를 확인할 수 있다.</td>
+        <td><ul><li>제출한 포토 리뷰 목록</li></ul></td>
+        <td><code>/mypage/reviews</code></td>
+      </tr>
+      <tr>
+        <td>32</td>
+        <td>마이페이지_내정보</td>
+        <td>사용자는 계정 정보를 확인하고 수정할 수 있다.</td>
+        <td><ul>
+          <li>프로필 수정 (<code>/mypage/info/edit-profile</code>)</li>
+          <li>배송지 관리 — <span class="badge badge-yellow">Coming Soon</span></li>
+          <li>취향/건강 프로필 — <span class="badge badge-yellow">Coming Soon</span></li>
+        </ul></td>
+        <td><code>/mypage/info</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 상태관리 ── -->
+  <h3>사용자 상태 관리 (UserContext)</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="7">33</td>
+        <td rowspan="7">상태관리_유저</td>
+        <td rowspan="7">전역 사용자 상태를 Context API로 관리한다.</td>
+        <td><span class="subsection-label">사용자 객체</span>
+          <ul><li>id, username, profileImage, spiritType, spiritName</li></ul>
+        </td>
+        <td rowspan="7"><code>contexts/UserContext.tsx</code><br>localStorage 기반 영속화</td>
+      </tr>
+      <tr><td><span class="subsection-label">뱃지 시스템 (총 30개)</span>
+        <ul>
+          <li>스피릿 뱃지 (16개): MBTI 기반 유형별</li>
+          <li>활동 뱃지 (4개): 첫 레시피, 댓글 마스터, 레시피 러버, 커뮤니티 스타</li>
+          <li>등급 뱃지 (5개): Seed &rarr; Sprout &rarr; Stem &rarr; Leaf &rarr; Fruit</li>
+          <li>히든 뱃지 (5개): 시크릿 달성</li>
+        </ul>
+      </td></tr>
+      <tr><td><span class="subsection-label">쿠폰 시스템</span>
+        <ul>
+          <li>뱃지 획득 시 자동 쿠폰 발급</li>
+          <li>할인율, 사용 상태 추적</li>
+        </ul>
+      </td></tr>
+      <tr><td><span class="subsection-label">제공 메서드</span>
+        <ul>
+          <li><code>login</code> / <code>logout</code></li>
+          <li><code>addBadge</code> (쿠폰 리워드 연동)</li>
+          <li><code>updateUserStats</code> (뱃지 트리거)</li>
+          <li><code>hasBadge</code> (소유 확인) / <code>addCoupon</code></li>
+        </ul>
+      </td></tr>
+    </tbody>
+  </table>
+
+  <!-- ── 외부 API ── -->
+  <h3>외부 API 연동</h3>
+  <table class="tbl-spec">
+    <thead>
+      <tr><th>No</th><th>영역</th><th>기능명</th><th>기능 설명</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>34</td>
+        <td>API_Gemini</td>
+        <td>Google Gemini AI를 통해 동적 채소 정보 및 레시피를 생성한다.</td>
+        <td>
+          <ul>
+            <li><strong>서비스 파일</strong>: <code>services/geminiService.ts</code></li>
+            <li><strong>모델</strong>: gemini-2.5-flash</li>
+            <li>채소 상세 정보 동적 생성</li>
+            <li>레시피 온디맨드 생성</li>
+            <li>JSON 구조화 출력 (스키마 검증)</li>
+            <li>API 실패 시 정적 레시피 데이터 폴백</li>
+            <li>환경변수: <code>VITE_GEMINI_API_KEY</code> (<code>.env.local</code>)</li>
+          </ul>
+        </td>
+        <td><code>@google/genai</code> 1.31.0</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- 03. SCREEN SPEC -->
+  <!-- ============================================================ -->
+  <h2 id="screen-spec"><span class="num">03.</span> 화면 SPEC</h2>
+
+  <!-- ── 홈 화면 ── -->
+  <h3>홈 화면</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 홈 화면에서 서비스의 핵심 콘텐츠에 접근할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>플로팅 채소</td>
+        <td><ul>
+          <li>43개 채소/과일 PNG가 물리 기반으로 부유</li>
+          <li>드래그 인터랙션으로 채소 이동 가능</li>
+          <li>포인터 기반 충돌 시뮬레이션</li>
+          <li>Animation frame 기반 물리 루프</li>
+        </ul></td>
+        <td>이미지 경로:<br><code>/public/vege_flot_img/</code></td>
+      </tr>
+      <tr><td>2</td><td>무드 슬라이더</td>
+        <td><ul>
+          <li>5개 무드 테마 (좌/우 이미지 쌍)</li>
+          <li>자동 재생 캐러셀 + 수동 네비게이션</li>
+        </ul></td>
+        <td>Unsplash CDN 이미지</td>
+      </tr>
+      <tr><td>3</td><td>인기 레시피</td>
+        <td><ul>
+          <li>드래그 가능한 수평 슬라이드 배너</li>
+          <li>레시피 카드: 이미지, 제목, 좋아요 수</li>
+        </ul></td>
+        <td>PopularRecipes 컴포넌트</td>
+      </tr>
+      <tr><td>4</td><td>슬런치 위클리</td>
+        <td><ul>
+          <li>주간 아티클 미리보기 카드</li>
+          <li>"더보기" 링크 &rarr; 뉴스레터 목록</li>
+        </ul></td>
+        <td></td>
+      </tr>
+      <tr><td>5</td><td>CTA</td>
+        <td><ul>
+          <li>"나의 스피릿 찾기" 버튼 &rarr; /spirit</li>
+          <li>뉴스레터 이메일 구독 입력란</li>
+        </ul></td>
+        <td></td>
+      </tr>
+      <tr><td>6</td><td>레이아웃 특이사항</td>
+        <td><ul>
+          <li>푸터 미표시</li>
+          <li>headerOffset: 배너 유무에 따라 64px / 96px</li>
+        </ul></td>
+        <td><code>shouldShowFooter = false</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 스피릿 찾기 ── -->
+  <h3>스피릿 찾기</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 채소를 선택하고 질문에 답하여 비건 스피릿을 진단받을 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>인트로 (채소 선택)</td>
+        <td><ul>
+          <li>풀스크린 플로팅 채소 영역</li>
+          <li>1:1 이미지, 호버 시 이름 라벨</li>
+          <li>클릭하여 최대 3개 선택</li>
+          <li>하단 고정바: 선택 미리보기 + "시작하기" 버튼</li>
+          <li>Skip 버튼으로 건너뛰기</li>
+        </ul></td>
+        <td>body 스크롤 비활성화<br>3개 선택 시 버튼 활성화</td>
+      </tr>
+      <tr><td>2</td><td>질문 단계</td>
+        <td><ul>
+          <li>7단계 질문 (URL 기반 네비게이션)</li>
+          <li>타로 카드 스타일 옵션 표시</li>
+          <li>진행률 인디케이터</li>
+          <li>답변 localStorage 중간 저장</li>
+          <li>7번째 질문은 조건부 표시</li>
+        </ul></td>
+        <td><code>/spirit/question/:stepId</code></td>
+      </tr>
+      <tr><td>3</td><td>결과</td>
+        <td><ul>
+          <li>16개 유형 중 매칭된 스피릿 표시</li>
+          <li>스피릿 이름, 이모지, 컬러, 설명</li>
+          <li>추천 레시피 캐러셀</li>
+          <li>결과 공유 모달</li>
+          <li>프로필 localStorage 저장</li>
+        </ul></td>
+        <td><code>/spirit/result</code><br><code>veggieverse-profile</code> 키</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 스토어 ── -->
+  <h3>스토어</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 상품을 필터링하여 탐색하고 상세를 확인할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>상품 목록</td>
+        <td><ul>
+          <li>15개 상품 (밀키트, 베이커리, 소스, 세트, 구독)</li>
+          <li>필터: 요리유형 / 식단스펙트럼 / 추가제한</li>
+          <li>정렬: 기본, 이름, 가격, 인기, 알고리즘</li>
+          <li>반응형 그리드 (2~5열)</li>
+          <li>상품 카드: 이미지 슬라이더, 하트, 뱃지</li>
+        </ul></td>
+        <td>인라인 PRODUCTS 배열<br>TopControlBar 컴포넌트</td>
+      </tr>
+      <tr><td>2</td><td>상품 상세</td>
+        <td><ul>
+          <li>이미지 갤러리 + 인디케이터</li>
+          <li>가격: 원가, 할인율, 최종가</li>
+          <li>퀵 스탯: 조리시간, 난이도, 인분(+/-)</li>
+          <li>스티키 탭: 리뷰 / 상세 / 교환반품 / Q&amp;A</li>
+          <li>수량 조절 + 장바구니/바로구매 버튼</li>
+          <li>모바일: 하단 고정 구매바</li>
+          <li>관련 상품 섹션</li>
+        </ul></td>
+        <td><code>/store/product/:productId</code><br>스크롤 깊이 추적</td>
+      </tr>
+      <tr><td>3</td><td>레거시 리다이렉트</td>
+        <td><ul><li>/store/detail/:id &rarr; /store/product/:id 자동 리다이렉트</li></ul></td>
+        <td>StoreDetailRedirect</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 구독 ── -->
+  <h3>구독</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 식단 플랜을 선택하고 메뉴를 커스터마이징할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>왼쪽 패널</td>
+        <td><ul>
+          <li>기간 토글: 1주 / 2주</li>
+          <li>플랜 선택: Glow, Wellness, Balance, Light, Clean</li>
+          <li>7일 캘린더 그리드 (식단 슬롯)</li>
+          <li>스티키 체크아웃 바 (총 가격 + 할인)</li>
+        </ul></td>
+        <td>50/50 분할 레이아웃<br>컬러 테마별 카드</td>
+      </tr>
+      <tr><td>2</td><td>오른쪽 패널</td>
+        <td><ul>
+          <li>제외 필터 8개: 유제품, 갑각류, 생선, 견과류, 닭고기, 달걀, 글루텐, 매운맛</li>
+          <li>메뉴 그리드 (3열, 30개 메뉴)</li>
+          <li>제외 항목 기반 자동 필터링</li>
+        </ul></td>
+        <td></td>
+      </tr>
+      <tr><td>3</td><td>인터랙션</td>
+        <td><ul>
+          <li>플랜 호버 팝업 배너</li>
+          <li>메뉴 자동 채움</li>
+          <li>NPay 결제 / 구독 신청 버튼</li>
+        </ul></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 레시피 ── -->
+  <h3>레시피</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 카테고리별 레시피를 탐색하고 상세를 확인할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>메인</td>
+        <td><ul>
+          <li>6개 카테고리 수평 스크롤 섹션 (New, Lunch, Dessert, Korean, Drinks, Date)</li>
+          <li>카테고리당 10개 + "더보기" 카드</li>
+          <li>타로 카드 스타일 (200&times;330px)</li>
+          <li>인기 레시피 8개 그리드</li>
+          <li>스피릿 기반 큐레이션</li>
+          <li>명예의 전당 링크</li>
+        </ul></td>
+        <td>PortraitRecipeCard<br>SpiritRecipeCarousel</td>
+      </tr>
+      <tr><td>2</td><td>상세</td>
+        <td><ul>
+          <li>히어로 이미지 + 그라데이션 오버레이</li>
+          <li>메타: 조리시간, 난이도, 인분수(조절 가능)</li>
+          <li>재료: 아이콘 + 수량 (인분수 연동 자동 계산)</li>
+          <li>영양 정보 테이블</li>
+          <li>단계별 조리 가이드 (이미지 + 팁)</li>
+          <li>포토 리뷰: 제출 + 갤러리</li>
+          <li>댓글 섹션 (스레드)</li>
+          <li>북마크/좋아요/공유</li>
+          <li>관련 레시피 + 작성자 바이오 + AI 셰프 추천</li>
+          <li>이전/다음 네비게이션</li>
+        </ul></td>
+        <td><code>/recipe/:id</code><br>ingredientIcon.ts 활용<br>localStorage 리뷰 저장</td>
+      </tr>
+      <tr><td>3</td><td>명예의 전당</td>
+        <td><ul>
+          <li>Top 20 (좋아요 기준)</li>
+          <li>Top 3 특별 카드 (왕관/메달 아이콘)</li>
+          <li>4~20위 숫자 뱃지</li>
+          <li>마키 스크롤 애니메이션</li>
+        </ul></td>
+        <td><code>/recipe/hall-of-fame</code><br>HallOfFameMarquee</td>
+      </tr>
+      <tr><td>4</td><td>카테고리</td>
+        <td><ul>
+          <li>URL 파라미터 기반 필터링</li>
+          <li>카테고리별 컬러코딩</li>
+        </ul></td>
+        <td><code>/recipe/category/:categoryId</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 이벤트 ── -->
+  <h3>이벤트</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 이벤트를 상태별로 필터링하여 확인할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>이벤트 목록</td>
+        <td><ul>
+          <li>탭 필터: 전체 / 진행중 / 예정 / 종료</li>
+          <li>2열 카드 그리드</li>
+          <li>상태 뱃지 (검정/초록/회색)</li>
+          <li>HOT 뱃지</li>
+          <li>5개 샘플 이벤트</li>
+        </ul></td>
+        <td>TopControlBar<br>인라인 EVENTS 배열</td>
+      </tr>
+      <tr><td>2</td><td>이벤트 상세</td>
+        <td><ul>
+          <li>이벤트 이미지 + 상세 설명</li>
+          <li>기간 표시 + 참여 CTA</li>
+        </ul></td>
+        <td><code>/event/:id</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 뉴스레터 ── -->
+  <h3>뉴스레터</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 카테고리별 아티클을 탐색하고 읽을 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>아티클 목록</td>
+        <td><ul>
+          <li>탭: 전체, Health, Culture, Food, Life, Slunch's Pick</li>
+          <li>벤토 그리드 레이아웃 (가변 카드 사이즈)</li>
+          <li>작성자: Huna, Josin, ChaCha, Jin</li>
+        </ul></td>
+        <td>BentoCard 컴포넌트<br>바이오 + 아바타</td>
+      </tr>
+      <tr><td>2</td><td>아티클 상세</td>
+        <td><ul>
+          <li>매거진 스타일 분할 레이아웃 (모달)</li>
+          <li>스티키 사이드바 이미지 + 텍스트</li>
+          <li>작성자 바이오</li>
+          <li>이전/다음 네비게이션</li>
+        </ul></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 마이페이지 ── -->
+  <h3>마이페이지</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 마이페이지에서 활동 현황과 개인 정보를 관리할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>대시보드</td>
+        <td><ul>
+          <li>프로필 카드: 아바타, 유저네임, 스피릿, 뱃지 수</li>
+          <li>활동 통계: 레시피/댓글/좋아요 타일</li>
+          <li>최근 주문 (상태 뱃지)</li>
+          <li>퀵 메뉴 (위시리스트/즐겨찾기/리뷰/내정보)</li>
+        </ul></td>
+        <td><code>/mypage</code></td>
+      </tr>
+      <tr><td>2</td><td>주문 내역</td>
+        <td><ul><li>주문 리스트 (상태, 가격, 배송추적)</li></ul></td>
+        <td><code>/mypage/orders</code></td>
+      </tr>
+      <tr><td>3</td><td>즐겨찾기</td>
+        <td><ul><li>북마크 레시피 카드 그리드 + 해제 기능</li></ul></td>
+        <td><code>/mypage/bookmarks</code></td>
+      </tr>
+      <tr><td>4</td><td>위시리스트</td>
+        <td><ul><li>찜 상품 카드 그리드 + 제거 기능</li></ul></td>
+        <td><code>/mypage/wishlist</code></td>
+      </tr>
+      <tr><td>5</td><td>리뷰</td>
+        <td><ul><li>제출한 포토리뷰 목록</li></ul></td>
+        <td><code>/mypage/reviews</code></td>
+      </tr>
+      <tr><td>6</td><td>내 정보</td>
+        <td><ul>
+          <li>프로필 수정 페이지</li>
+          <li>배송지 관리 — <span class="badge badge-yellow">Coming Soon</span></li>
+          <li>취향/건강 프로필 — <span class="badge badge-yellow">Coming Soon</span></li>
+        </ul></td>
+        <td><code>/mypage/info</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── 소개 ── -->
+  <h3>소개</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 브랜드 정보와 매장/B2B 정보를 확인할 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>브랜드 스토리</td>
+        <td><ul>
+          <li>2열 히어로 + 3열 철학/생산/비전</li>
+          <li>풀 와이드 이미지 + 태그 클라우드</li>
+        </ul></td>
+        <td><code>/about/story</code> (기본)<br>AboutLayout 중첩 라우트</td>
+      </tr>
+      <tr><td>2</td><td>매장 안내</td>
+        <td><ul>
+          <li>홍대점, 더현대 서울, 온라인 스토어</li>
+          <li>주소, 시간, 전화, 길찾기 링크</li>
+        </ul></td>
+        <td><code>/about/branch</code></td>
+      </tr>
+      <tr><td>3</td><td>B2B</td>
+        <td><ul>
+          <li>공장 개요 + 500+ 레시피 아카이브</li>
+          <li>2건 특허 + 파트너 로고 그리드</li>
+          <li>이메일 문의 CTA</li>
+        </ul></td>
+        <td><code>/about/b2b</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── AI 챗봇 ── -->
+  <h3>AI 챗봇 위젯</h3>
+  <table class="tbl-screen">
+    <thead>
+      <tr><th style="width:30px"></th><th>영역</th><th>기능 설명</th><th>수기 사항</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-header">
+        <td colspan="4">사용자는 AI 챗봇을 통해 추천과 정보를 대화형으로 받을 수 있다.</td>
+      </tr>
+      <tr><td>1</td><td>트리거</td>
+        <td><ul><li>화면 우하단 고정 플로팅 버튼</li></ul></td>
+        <td>ChatTrigger 컴포넌트</td>
+      </tr>
+      <tr><td>2</td><td>Chat 탭</td>
+        <td><ul>
+          <li>대화 인터페이스 + 텍스트 입력</li>
+          <li>빠른 질문: 점심 추천, 주간 식단, 장보기, 저염&middot;고단백</li>
+        </ul></td>
+        <td></td>
+      </tr>
+      <tr><td>3</td><td>My Spirit 탭</td>
+        <td><ul><li>프로필 정보: 식단 유형, 좋아하는/싫어하는 것, 알러지</li></ul></td>
+        <td>로그인 연동</td>
+      </tr>
+      <tr><td>4</td><td>Bookmarks 탭</td>
+        <td><ul><li>저장 레시피 2열 그리드 (12개 목업)</li></ul></td>
+        <td></td>
+      </tr>
+      <tr><td>5</td><td>반응형</td>
+        <td><ul>
+          <li>데스크톱: 360&times;600px 패널</li>
+          <li>모바일: 80vh 바텀시트</li>
+        </ul></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- 04. DATA STRUCTURE -->
+  <!-- ============================================================ -->
+  <h2 id="data"><span class="num">04.</span> 데이터 구조</h2>
+
+  <h3>로컬 데이터 파일</h3>
+  <table>
+    <thead>
+      <tr><th>파일</th><th>설명</th><th>데이터 수</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>data/slunchList.ts</code></td><td>슬런치팩토리 레시피 카탈로그 (이름, 재료, 작성자, 카테고리)</td><td>10+</td></tr>
+      <tr><td><code>data/slunchRecipes.ts</code></td><td>상세 레시피 (단계, 재료, 영양)</td><td>10+</td></tr>
+      <tr><td><code>data/recipes.ts</code></td><td>통합 Recipe 인터페이스</td><td>&mdash;</td></tr>
+      <tr><td><code>data/recipeDetails.ts</code></td><td>추가 레시피 메타데이터</td><td>&mdash;</td></tr>
+      <tr><td><code>constants.ts</code></td><td>PRODUCE_ITEMS 배열 (스피릿 찾기용 채소/과일)</td><td>43개</td></tr>
+      <tr><td><code>utils/productImages.ts</code></td><td>상품 ID &rarr; 이미지 경로 매핑</td><td>&mdash;</td></tr>
+      <tr><td><code>utils/recipeImages.ts</code></td><td>레시피 ID &rarr; Unsplash URL 매핑</td><td>300+</td></tr>
+      <tr><td><code>utils/ingredientIcon.ts</code></td><td>재료 &rarr; 이모지/아이콘 매핑</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+
+  <h3>인라인 데이터 (페이지 내)</h3>
+  <table>
+    <thead>
+      <tr><th>위치</th><th>데이터</th><th>비고</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>pages/store/page.tsx</code></td><td>PRODUCTS 배열 (~15개 상품)</td><td>가격, 설명, 카테고리</td></tr>
+      <tr><td><code>pages/home/page.tsx</code></td><td>MOOD_SLIDES (5개 무드 이미지)</td><td>Unsplash URL</td></tr>
+      <tr><td><code>pages/recipe/page.tsx</code></td><td>VEGAN_TYPES (16개 스피릿 유형)</td><td>MBTI 매핑</td></tr>
+      <tr><td><code>pages/newsletter/page.tsx</code></td><td>ARTICLES (샘플 아티클)</td><td>콘텐츠, 이미지</td></tr>
+      <tr><td><code>pages/event/page.tsx</code></td><td>EVENTS (5개 이벤트)</td><td>기간, 설명</td></tr>
+    </tbody>
+  </table>
+
+  <h3>localStorage 키</h3>
+  <table>
+    <thead>
+      <tr><th>키</th><th>용도</th><th>형식</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>veggieverse-profile</code></td><td>스피릿 결과 프로필</td><td><code>{ profileImage, veganType, savedAt }</code></td></tr>
+      <tr><td><code>veggieverse-recipe-{id}-reviews</code></td><td>레시피별 포토리뷰</td><td>리뷰 배열</td></tr>
+    </tbody>
+  </table>
+
+  <h3>TypeScript 타입 정의</h3>
+  <table>
+    <thead>
+      <tr><th>타입</th><th>설명</th><th>파일</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>VegetableItem</code></td><td>플로팅 채소: id, name, x, y, scale, rotation, imageUrl, color</td><td><code>types.ts</code></td></tr>
+      <tr><td><code>VegetableDetail</code></td><td>채소 상세: name, scientificName, description, funFact, bestSeason, simpleRecipe</td><td><code>types.ts</code></td></tr>
+      <tr><td><code>UserProfile</code></td><td>유저 프로필: profileImage, veganType, savedAt</td><td><code>App.tsx</code></td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- 05. DEPLOY -->
+  <!-- ============================================================ -->
+  <h2 id="deploy"><span class="num">05.</span> 배포 및 빌드</h2>
+
+  <table class="tbl-overview">
+    <tr><th>호스팅</th><td>GitHub Pages</td></tr>
+    <tr><th>레포지토리</th><td>slunchfactory/veggieverse</td></tr>
+    <tr><th>Base URL</th><td><code>/veggieverse/</code></td></tr>
+    <tr><th>빌드 출력</th><td><code>dist/</code> 디렉토리</td></tr>
+    <tr><th>환경변수</th><td><code>.env.local</code> &rarr; <code>VITE_GEMINI_API_KEY</code></td></tr>
+  </table>
+
+  <h3>빌드 스크립트</h3>
+  <table>
+    <thead>
+      <tr><th>명령어</th><th>설명</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>npm run dev</code></td><td>개발 서버 (localhost:3000/veggieverse)</td></tr>
+      <tr><td><code>npm run build</code></td><td>프로덕션 빌드 &rarr; dist/</td></tr>
+      <tr><td><code>npm run preview</code></td><td>빌드 결과 로컬 프리뷰</td></tr>
+      <tr><td><code>npm run deploy</code></td><td>빌드 + GitHub Pages 배포</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Vite 설정</h3>
+  <table>
+    <thead>
+      <tr><th>항목</th><th>값</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Base path</td><td><code>/veggieverse/</code></td></tr>
+      <tr><td>Dev server</td><td>localhost:3000</td></tr>
+      <tr><td>Public directory</td><td><code>public/</code></td></tr>
+      <tr><td>커스텀 미들웨어</td><td><code>publicUnderBasePlugin()</code> (서브패스 라우팅)</td></tr>
+      <tr><td>Alias</td><td><code>@/</code> &rarr; 루트 디렉토리</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============================================================ -->
+  <!-- 06. COMING SOON -->
+  <!-- ============================================================ -->
+  <h2 id="coming-soon"><span class="num">06.</span> Coming Soon 기능 목록</h2>
+  <p>현재 <code>ComingSoonPage</code> 컴포넌트로 플레이스홀더 처리된 예정 기능:</p>
+
+  <table class="tbl-coming">
+    <thead>
+      <tr><th>영역</th><th>기능</th><th>경로</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>스토어</td><td>AI 상품 추천</td><td><code>/store/ai-recommendation</code></td></tr>
+      <tr><td>스토어</td><td>목표별 큐레이션</td><td><code>/store/goal-based</code></td></tr>
+      <tr><td>스토어</td><td>상품문의 방법</td><td><code>/store/inquiry-guide</code></td></tr>
+      <tr><td>구독</td><td>구독 홈</td><td><code>/subscribe/home</code></td></tr>
+      <tr><td>구독</td><td>오피스 팩</td><td><code>/subscribe/office</code></td></tr>
+      <tr><td>구독</td><td>실버 케어</td><td><code>/subscribe/silver</code></td></tr>
+      <tr><td>구독</td><td>챌린지 다이어트</td><td><code>/subscribe/diet</code></td></tr>
+      <tr><td>구독</td><td>구독 상세</td><td><code>/subscribe/detail/:id</code></td></tr>
+      <tr><td>레시피</td><td>AI 맞춤 식단</td><td><code>/recipe/ai-diet-planner</code></td></tr>
+      <tr><td>레시피</td><td>알러지 프리 레시피</td><td><code>/recipe/allergy-free</code></td></tr>
+      <tr><td>마이페이지</td><td>AI 분석 리포트</td><td><code>/mypage/ai-analysis</code></td></tr>
+      <tr><td>마이페이지</td><td>배송 관리</td><td><code>/mypage/delivery</code></td></tr>
+      <tr><td>마이페이지</td><td>배송지 관리</td><td><code>/mypage/info/addresses</code></td></tr>
+      <tr><td>마이페이지</td><td>취향/건강 프로필</td><td><code>/mypage/info/health-profile</code></td></tr>
+      <tr><td>마이페이지</td><td>활동배지 리스트</td><td><code>/mypage/badges</code></td></tr>
+      <tr><td>마이페이지</td><td>배지 지급 조건</td><td><code>/mypage/badges/criteria</code></td></tr>
+      <tr><td>마이페이지</td><td>취소/반품</td><td><code>/mypage/cancel-return</code></td></tr>
+      <tr><td>마이페이지</td><td>영수증 발급</td><td><code>/mypage/receipt</code></td></tr>
+      <tr><td>마이페이지</td><td>1:1 문의 내역</td><td><code>/mypage/inquiry</code></td></tr>
+      <tr><td>마이페이지</td><td>배송지 관리</td><td><code>/mypage/address</code></td></tr>
+      <tr><td>마이페이지</td><td>회원 등급</td><td><code>/mypage/level</code></td></tr>
+      <tr><td>공통</td><td>장바구니</td><td><code>/cart</code></td></tr>
+    </tbody>
+  </table>
+
+  <br>
+  <hr style="border:0; border-top:1px solid #DFE1E6; margin:40px 0 20px;">
+  <p style="color:#6B778C; font-size:12px; text-align:center;">VeggieVerse 기술명세서 &mdash; 2026.03.05 작성</p>
+
+</div>
+</body>
+</html>

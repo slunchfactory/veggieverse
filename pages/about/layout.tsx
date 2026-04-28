@@ -24,7 +24,7 @@ const AboutLayout: React.FC = () => {
           top: 'var(--header-h)',
           zIndex: 40,
           background: 'var(--cream)',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid var(--palette-text)',
         }}
       >
         <div
@@ -48,9 +48,9 @@ const AboutLayout: React.FC = () => {
                 justifyContent: 'center',
                 fontSize: '14px',
                 fontWeight: isActive ? 500 : 400,
-                color: isActive ? '#000' : 'var(--warm-gray)',
-                background: isActive ? 'rgba(0,0,0,0.03)' : 'transparent',
-                borderRight: index < aboutTabs.length - 1 ? '1px solid #000' : 'none',
+                color: isActive ? 'var(--palette-text)' : 'var(--warm-gray)',
+                background: isActive ? 'rgba(26, 10, 5, 0.03)' : 'transparent',
+                borderRight: index < aboutTabs.length - 1 ? '1px solid var(--palette-text)' : 'none',
                 textDecoration: 'none',
                 transition: 'all 0.2s ease',
               })}

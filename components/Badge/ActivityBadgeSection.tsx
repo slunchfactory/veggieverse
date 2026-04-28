@@ -41,15 +41,15 @@ const BadgeItem: React.FC<BadgeItemProps> = ({ badge, isLocked, earnedAt, onClic
         className={`
           relative w-16 h-16 mb-2 rounded-full
           flex items-center justify-center border transition-all duration-300
-          ${isLocked ? 'border-gray-200 bg-gray-50' : 'border-black bg-white group-hover:scale-105'}
+          ${isLocked ? 'border-[color:var(--border-hairline)] bg-cream' : 'border-black bg-white group-hover:scale-105'}
           ${isHidden && isLocked ? 'border-dashed' : ''}
         `}
       >
         {isLocked ? (
           isHidden ? (
-            <span className="text-gray-300 text-lg" style={{ fontWeight: 400 }}>?</span>
+            <span className="text-gray-light text-lg" style={{ fontWeight: 400 }}>?</span>
           ) : (
-            <Lock strokeWidth={1} className="w-4 h-4 text-gray-300" />
+            <Lock strokeWidth={1} className="w-4 h-4 text-gray-light" />
           )
         ) : (
           <span className="text-2xl">{badge.icon}</span>
@@ -59,12 +59,12 @@ const BadgeItem: React.FC<BadgeItemProps> = ({ badge, isLocked, earnedAt, onClic
       {/* Text Info */}
       <div className="w-full px-0.5">
         <h3
-          className={`text-[11px] truncate mb-0.5 tracking-tight ${isLocked ? 'text-gray-400' : 'text-gray-900'}`}
+          className={`text-[11px] truncate mb-0.5 tracking-tight ${isLocked ? 'text-muted' : 'text-black'}`}
           style={{ fontWeight: 400 }}
         >
           {badge.name}
         </h3>
-        <p className="text-[10px] text-gray-400 leading-tight truncate" style={{ fontWeight: 400 }}>
+        <p className="text-[10px] text-muted leading-tight truncate" style={{ fontWeight: 400 }}>
           {isLocked ? badge.description : earnedAt ? new Date(earnedAt).toLocaleDateString('ko-KR') : ''}
         </p>
       </div>
@@ -123,8 +123,8 @@ const ActivityBadgeSection: React.FC<ActivityBadgeSectionProps> = ({
     <section style={{ marginBottom: '32px' }}>
       {/* Header - 최근 주문과 동일한 구조 */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-        <h2 style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>
-          {title} <span style={{ color: '#6B6B6B' }}>({unlockedCount}/{totalCount})</span>
+        <h2 style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
+          {title} <span style={{ color: 'var(--warm-gray)' }}>({unlockedCount}/{totalCount})</span>
         </h2>
         {allBadgesList.length > ITEMS_COLLAPSED && (
           <button
@@ -132,7 +132,7 @@ const ActivityBadgeSection: React.FC<ActivityBadgeSectionProps> = ({
             style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -196,8 +196,8 @@ const ActivityBadgeSection: React.FC<ActivityBadgeSectionProps> = ({
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      border: isActive ? '1px solid #000' : '1px solid transparent',
-                      background: isActive ? '#000' : 'transparent',
+                      border: isActive ? '1px solid var(--palette-text)' : '1px solid transparent',
+                      background: isActive ? 'var(--palette-text)' : 'transparent',
                       color: isActive ? '#fff' : '#9CA3AF',
                       fontSize: '12px',
                       fontWeight: 400,

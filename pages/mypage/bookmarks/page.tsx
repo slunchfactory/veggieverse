@@ -103,7 +103,7 @@ const BookmarksPage: React.FC = () => {
                   padding: '0',
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: selectedCategory === cat ? '#000000' : '#6B6B6B',
+                  color: selectedCategory === cat ? 'var(--palette-text)' : 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -111,8 +111,8 @@ const BookmarksPage: React.FC = () => {
                   textUnderlineOffset: '4px',
                   transition: 'color 0.15s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#000000'; }}
-                onMouseLeave={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#6B6B6B'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--palette-text)'; }}
+                onMouseLeave={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = 'var(--warm-gray)'; }}
               >
                 {cat}
               </button>
@@ -148,7 +148,7 @@ const BookmarksPage: React.FC = () => {
                         zIndex: 10,
                       }}
                     >
-                      <X size={14} color="#6B6B6B" />
+                      <X size={14} color="var(--warm-gray)" />
                     </button>
 
                     {/* 카드 */}
@@ -160,7 +160,7 @@ const BookmarksPage: React.FC = () => {
                         style={{
                           aspectRatio: '1/1',
                           overflow: 'hidden',
-                          background: '#F5F5F5',
+                          background: 'var(--palette-bg-2)',
                           borderRadius: '4px',
                         }}
                       >
@@ -174,16 +174,16 @@ const BookmarksPage: React.FC = () => {
                         />
                       </div>
                       <div style={{ paddingTop: '12px' }}>
-                        <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', marginBottom: '4px' }}>
+                        <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '4px' }}>
                           {recipe.category}
                         </p>
-                        <h4 style={{ fontSize: '14px', fontWeight: 400, color: '#000000', marginBottom: '6px', lineHeight: 1.3 }}>
+                        <h4 style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '6px', lineHeight: 1.3 }}>
                           {recipe.title}
                         </h4>
                         <p style={{
                           fontSize: '12px',
                           fontWeight: 400,
-                          color: '#6B6B6B',
+                          color: 'var(--warm-gray)',
                           marginBottom: '6px',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -192,10 +192,10 @@ const BookmarksPage: React.FC = () => {
                           {recipe.description}
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                          <span style={{ fontSize: '12px', fontWeight: 400, color: '#9A9A9A' }}>
+                          <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--muted)' }}>
                             @{recipe.author}
                           </span>
-                          <span style={{ fontSize: '11px', fontWeight: 400, color: '#9A9A9A' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 400, color: 'var(--muted)' }}>
                             {recipe.likes.toLocaleString()} likes
                           </span>
                         </div>
@@ -207,8 +207,8 @@ const BookmarksPage: React.FC = () => {
             </div>
           ) : (
             <div style={{ padding: '80px 0', textAlign: 'center' }}>
-              <Bookmark size={40} color="#D4D4D4" style={{ marginBottom: '16px' }} />
-              <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B', marginBottom: '16px' }}>
+              <Bookmark size={40} color="var(--gray-lighter)" style={{ marginBottom: '16px' }} />
+              <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '16px' }}>
                 북마크한 레시피가 없습니다.
               </p>
               <Link
@@ -216,7 +216,7 @@ const BookmarksPage: React.FC = () => {
                 style={{
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: '#000000',
+                  color: 'var(--palette-text)',
                   textDecoration: 'underline',
                   textUnderlineOffset: '3px',
                 }}

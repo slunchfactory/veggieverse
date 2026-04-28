@@ -37,7 +37,7 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const variantStyles: Record<string, React.CSSProperties> = {
     // NEW: Sky Blue - 신상품 강조
-    NEW: { ...baseStyles, backgroundColor: '#87b5e1', color: '#ffffff' },
+    NEW: { ...baseStyles, backgroundColor: 'var(--palette-sky)', color: '#ffffff' },
     // BEST: Fresh Veggie Green - 베스트셀러
     BEST: { ...baseStyles, backgroundColor: 'var(--primary)', color: 'var(--white-pure)' },
     // SOLD_OUT: Muted Gray - 품절 상태

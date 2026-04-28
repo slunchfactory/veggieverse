@@ -174,11 +174,11 @@ export const SpiritChatbotPopup: React.FC<SpiritChatbotPopupProps> = ({
           </div>
 
           {/* 말풍선 - 기존 챗봇 스타일 */}
-          <div className="bg-white rounded-none shadow-xl border border-stone-200 p-4 relative flex-1">
+          <div className="bg-white rounded-none shadow-xl border border-[color:var(--border-hairline)] p-4 relative flex-1">
             {/* 닫기 버튼 */}
             <button
               onClick={handleClose}
-              className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center text-stone-400 hover:text-stone-600 transition-colors"
+              className="absolute top-2 right-2 w-5 h-5 flex items-center justify-center text-muted hover:text-warm-gray transition-colors"
               aria-label="닫기"
             >
               <X className="w-4 h-4" strokeWidth={1.5} />
@@ -186,7 +186,7 @@ export const SpiritChatbotPopup: React.FC<SpiritChatbotPopupProps> = ({
 
             {/* 메시지 */}
             <div className="pr-6">
-              <p className="text-sm text-stone-900 mb-4 leading-relaxed" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
+              <p className="text-sm text-black mb-4 leading-relaxed" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
                 벌써 다 만드셨나요? 요리 사진을 공유해주시면 제가 특별한 선물을 드릴게요! 🎁
               </p>
 
@@ -202,7 +202,7 @@ export const SpiritChatbotPopup: React.FC<SpiritChatbotPopupProps> = ({
                 </button>
                 <button
                   onClick={handleLater}
-                  className="w-full py-2 px-4 text-stone-500 hover:text-stone-700 text-sm transition-colors text-center"
+                  className="w-full py-2 px-4 text-warm-gray hover:text-charcoal text-sm transition-colors text-center"
                   style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
                 >
                   나중에 하기

@@ -40,18 +40,18 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
   const getStatusColor = (status: EventInfo['status']) => {
     switch (status) {
       case 'ongoing':
-        return '#3fa945';
+        return 'var(--status-success-icon)';
       case 'upcoming':
-        return '#6B6B6B';
+        return 'var(--warm-gray)';
       case 'ended':
-        return '#999';
+        return 'var(--muted)';
     }
   };
 
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -60,7 +60,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           maxWidth: '480px',
           maxHeight: '90vh',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           position: 'relative',
           margin: '16px',
@@ -83,7 +83,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
             alignItems: 'center',
             justifyContent: 'center',
             background: 'rgba(255,255,255,0.9)',
-            border: '1px solid #000',
+            border: '1px solid var(--palette-text)',
             borderRadius: '50%',
             cursor: 'pointer',
             padding: 0,
@@ -91,7 +91,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           }}
           aria-label="닫기"
         >
-          <X size={16} strokeWidth={1} color="#000" />
+          <X size={16} strokeWidth={1} color="var(--palette-text)" />
         </button>
 
         {/* 이벤트 이미지 */}
@@ -99,11 +99,11 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           style={{
             width: '100%',
             height: '200px',
-            background: '#F5F5F5',
+            background: 'var(--palette-bg-2)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderBottom: '1px solid #E0E0E0',
+            borderBottom: '1px solid var(--border-divider)',
             flexShrink: 0,
           }}
         >
@@ -118,7 +118,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               }}
             />
           ) : (
-            <Gift size={48} strokeWidth={1} color="#999" />
+            <Gift size={48} strokeWidth={1} color="var(--muted)" />
           )}
         </div>
 
@@ -145,7 +145,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           <h2 style={{
             fontSize: '18px',
             fontWeight: 400,
-            color: '#000',
+            color: 'var(--palette-text)',
             marginBottom: '12px',
             lineHeight: '1.4',
           }}>
@@ -161,7 +161,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               marginBottom: '20px',
               fontSize: '13px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
             }}
           >
             <Calendar size={14} strokeWidth={1} />
@@ -172,7 +172,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           <div
             style={{
               padding: '20px',
-              background: '#FAFAFA',
+              background: 'var(--palette-bg-2)',
               borderRadius: '8px',
               marginBottom: '20px',
             }}
@@ -180,7 +180,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
             <p style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#333',
+              color: 'var(--charcoal)',
               lineHeight: '1.6',
             }}>
               {event.description}
@@ -193,7 +193,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               <h3 style={{
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
                 marginBottom: '8px',
               }}>
                 혜택
@@ -201,7 +201,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               <p style={{
                 fontSize: '15px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
               }}>
                 {event.reward}
               </p>
@@ -214,7 +214,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               <h3 style={{
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
                 marginBottom: '8px',
               }}>
                 참여 조건
@@ -222,7 +222,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               <p style={{
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#333',
+                color: 'var(--charcoal)',
                 lineHeight: '1.5',
               }}>
                 {event.condition}
@@ -240,7 +240,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               style={{
                 width: '100%',
                 padding: '14px',
-                background: '#000',
+                background: 'var(--palette-text)',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '14px',
@@ -263,12 +263,12 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               style={{
                 width: '100%',
                 padding: '14px',
-                background: '#F5F5F5',
-                border: '1px solid #E0E0E0',
+                background: 'var(--palette-bg-2)',
+                border: '1px solid var(--border-divider)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#999',
+                color: 'var(--muted)',
                 textAlign: 'center',
               }}
             >

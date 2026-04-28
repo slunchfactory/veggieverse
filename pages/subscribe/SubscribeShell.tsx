@@ -36,7 +36,7 @@ export const SubscribeShell: React.FC<SubscribeShellProps> = ({
     >
       {/* 데스크탑 2열 */}
       <div className="hidden lg:grid grid-cols-[minmax(0,7fr)_minmax(0,3fr)] h-full min-h-0">
-        <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden border-0 border-r border-solid border-black bg-[#FAFAFA]">
+        <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden border-0 border-r border-solid border-black bg-[var(--palette-bg-2)]">
           {menuColumn}
         </div>
         <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-white">

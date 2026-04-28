@@ -333,10 +333,10 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
           style={{
             top: `${headerOffset + 16}px`,
             background: 'var(--cream)',
-            border: '1px solid #000000',
+            border: '1px solid var(--palette-text)',
           }}
         >
-          <X className="w-5 h-5" style={{ color: '#000000' }} />
+          <X className="w-5 h-5" style={{ color: 'var(--palette-text)' }} />
         </Link>
 
         {/* 모든 아이템의 keyframes */}
@@ -409,7 +409,7 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                       fontFamily: 'Jost, sans-serif',
                       fontSize: '13px',
                       backgroundColor: `${item.labelColor}dd`,
-                      color: isLightColor(item.labelColor) ? '#000000' : '#ffffff',
+                      color: isLightColor(item.labelColor) ? 'var(--palette-text)' : '#ffffff',
                       padding: '8px 20px',
                       borderRadius: '9999px',
                       transform: 'rotate(0deg)',
@@ -450,7 +450,7 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
               className="flex items-center gap-4"
               style={{
                 background: 'var(--cream)',
-                border: '1px solid #000000',
+                border: '1px solid var(--palette-text)',
                 padding: '12px 24px',
               }}
             >
@@ -466,8 +466,8 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                       <div
                         className="w-14 h-14 flex items-center justify-center"
                         style={{
-                          background: item ? '#F7F4EF' : 'transparent',
-                          border: item ? '1px solid #000000' : '1px dashed #000000',
+                          background: item ? 'var(--cream)' : 'transparent',
+                          border: item ? '1px solid var(--palette-text)' : '1px dashed var(--palette-text)',
                         }}
                       >
                         {item ? (
@@ -479,7 +479,7 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                             className="w-10 h-10 object-contain"
                           />
                         ) : (
-                          <span style={{ color: '#6B6B6B', fontSize: '12px', fontWeight: 400 }}>{index + 1}</span>
+                          <span style={{ color: 'var(--warm-gray)', fontSize: '12px', fontWeight: 400 }}>{index + 1}</span>
                         )}
                       </div>
                       {/* 취소 버튼 */}
@@ -487,7 +487,7 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                         <button
                           onClick={() => removeSelection(item.id)}
                           className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center z-10"
-                          style={{ backgroundColor: '#000000', border: '1px solid #000000' }}
+                          style={{ backgroundColor: 'var(--palette-text)', border: '1px solid var(--palette-text)' }}
                         >
                           <X className="w-3 h-3 text-white" />
                         </button>
@@ -498,7 +498,7 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
               </div>
 
               {/* 구분선 */}
-              <div style={{ width: '1px', height: '32px', background: '#000000' }} />
+              <div style={{ width: '1px', height: '32px', background: 'var(--palette-text)' }} />
 
               {/* 시작하기 버튼 */}
               <button
@@ -509,9 +509,9 @@ const SpiritFinder: React.FC<SpiritFinderProps> = ({ headerOffset = 96 }) => {
                   padding: '10px 20px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  backgroundColor: selectedItems.length === 3 ? '#000000' : 'transparent',
-                  color: selectedItems.length === 3 ? '#fff' : '#6B6B6B',
-                  border: '1px solid #000000',
+                  backgroundColor: selectedItems.length === 3 ? 'var(--palette-text)' : 'transparent',
+                  color: selectedItems.length === 3 ? '#fff' : 'var(--warm-gray)',
+                  border: '1px solid var(--palette-text)',
                   cursor: selectedItems.length === 3 ? 'pointer' : 'not-allowed',
                 }}
               >

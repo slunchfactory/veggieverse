@@ -10,17 +10,17 @@
     <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
       :root { --lime: #DCFD4A; --brown: #8C451D; }
-      body { background: #B2B2B2; min-height: 100vh; margin: 0; padding: 0; }
+      body { background: var(--palette-bg-1); min-height: 100vh; margin: 0; padding: 0; }
       .question-container { min-height: 100vh; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
       .content-wrapper { width: 100%; max-width: 1000px; padding: 24px 8px; }
-      .question-area { position: sticky; top: 16px; z-index: 10; background: #B2B2B2; padding: 16px 0; margin-bottom: 40px; }
+      .question-area { position: sticky; top: 16px; z-index: 10; background: var(--palette-bg-1); padding: 16px 0; margin-bottom: 40px; }
       .question-header { position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
       .back-btn { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border-radius: 50%; background: var(--brown); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--lime); }
       .back-btn:focus { outline: none; }
       .question-text { font-size: 16px; font-weight: 400; color: #44403c; text-align: center; padding: 0 40px; }
       @media (min-width: 768px) { .question-text { font-size: 20px; } }
-      .progress-line { width: 100%; height: 1px; background: #000; margin-top: 16px; }
-      .progress-fill { height: 4px; background: #000; transition: width 0.3s ease; margin-top: 0; }
+      .progress-line { width: 100%; height: 1px; background: var(--palette-text); margin-top: 16px; }
+      .progress-fill { height: 4px; background: var(--palette-text); transition: width 0.3s ease; margin-top: 0; }
       .mobile-scroll { display: flex; overflow-x: auto; gap: 12px; padding: 0 12px 16px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; width: calc(100% + 32px); margin-left: -16px; cursor: grab; }
       .mobile-scroll:active { cursor: grabbing; }
       .mobile-scroll::-webkit-scrollbar { display: none; }
@@ -29,7 +29,7 @@
       .desktop-row { display: flex; justify-content: center; gap: 24px; }
       @media (min-width: 768px) { .mobile-scroll { display: none !important; } .desktop-grid { display: flex !important; } }
       .card-wrapper { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; scroll-snap-align: center; cursor: pointer; }
-      .tarot-card { width: 130px; height: 208px; border-radius: 12px; overflow: hidden; background: #E5E5E5; transition: all 0.3s ease; border: 2px solid transparent; }
+      .tarot-card { width: 130px; height: 208px; border-radius: 12px; overflow: hidden; background: var(--border-divider); transition: all 0.3s ease; border: 2px solid transparent; }
       @media (min-width: 768px) { .tarot-card { width: 192px; height: 307px; } }
       .tarot-card:hover { transform: translateY(-8px) scale(1.02); }
       .tarot-card.selected { border-color: var(--lime); transform: translateY(-8px) scale(1.02); }

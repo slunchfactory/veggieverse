@@ -47,7 +47,7 @@ const ProfileEditPage: React.FC = () => {
     padding: '12px 16px',
     fontSize: '14px',
     fontWeight: 400,
-    border: '1px solid rgba(0,0,0,0.15)',
+    border: '1px solid rgba(26, 10, 5, 0.15)',
     borderRadius: '4px',
     background: 'transparent',
     outline: 'none',
@@ -57,7 +57,7 @@ const ProfileEditPage: React.FC = () => {
     display: 'block',
     fontSize: '13px',
     fontWeight: 400,
-    color: '#6B6B6B',
+    color: 'var(--warm-gray)',
     marginBottom: '8px',
   };
 
@@ -72,7 +72,7 @@ const ProfileEditPage: React.FC = () => {
                   width: '100px',
                   height: '100px',
                   borderRadius: '50%',
-                  background: '#F7F4EF',
+                  background: 'var(--cream)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -83,14 +83,14 @@ const ProfileEditPage: React.FC = () => {
                 {user?.profileImage ? (
                   <img src={user.profileImage} alt="프로필" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
-                  <User size={40} color="#9A9A9A" />
+                  <User size={40} color="var(--muted)" />
                 )}
               </div>
               <button
                 style={{
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -162,7 +162,7 @@ const ProfileEditPage: React.FC = () => {
                 </select>
                 <ChevronDown
                   size={16}
-                  color="#6B6B6B"
+                  color="var(--warm-gray)"
                   style={{
                     position: 'absolute',
                     right: '16px',
@@ -193,7 +193,7 @@ const ProfileEditPage: React.FC = () => {
                       <option key={year} value={year}>{year}년</option>
                     ))}
                   </select>
-                  <ChevronDown size={14} color="#6B6B6B" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                  <ChevronDown size={14} color="var(--warm-gray)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
                 </div>
               </div>
               <div>
@@ -213,13 +213,13 @@ const ProfileEditPage: React.FC = () => {
                     <option value="female">여성</option>
                     <option value="prefer-not-to-say">선택 안함</option>
                   </select>
-                  <ChevronDown size={14} color="#6B6B6B" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                  <ChevronDown size={14} color="var(--warm-gray)" style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
                 </div>
               </div>
             </div>
 
             {/* 구분선 */}
-            <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', margin: '8px 0' }} />
+            <div style={{ borderTop: '1px solid rgba(26, 10, 5, 0.08)', margin: '8px 0' }} />
 
             {/* 비밀번호 변경 */}
             <div>
@@ -230,9 +230,9 @@ const ProfileEditPage: React.FC = () => {
                   padding: '14px 16px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: '#000000',
+                  color: 'var(--palette-text)',
                   background: 'transparent',
-                  border: '1px solid rgba(0,0,0,0.15)',
+                  border: '1px solid rgba(26, 10, 5, 0.15)',
                   borderRadius: '4px',
                   cursor: 'pointer',
                   display: 'flex',
@@ -247,11 +247,11 @@ const ProfileEditPage: React.FC = () => {
             </div>
 
             {/* 구분선 */}
-            <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', margin: '8px 0' }} />
+            <div style={{ borderTop: '1px solid rgba(26, 10, 5, 0.08)', margin: '8px 0' }} />
 
             {/* 마케팅 수신 동의 */}
             <div>
-              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B', marginBottom: '12px' }}>마케팅 정보 수신 동의</p>
+              <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '12px' }}>마케팅 정보 수신 동의</p>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                   <input
@@ -259,9 +259,9 @@ const ProfileEditPage: React.FC = () => {
                     name="marketingEmail"
                     checked={formData.marketingEmail}
                     onChange={handleChange}
-                    style={{ width: '16px', height: '16px', accentColor: '#000000' }}
+                    style={{ width: '16px', height: '16px', accentColor: 'var(--palette-text)' }}
                   />
-                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>이메일 수신 동의</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>이메일 수신 동의</span>
                 </label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
                   <input
@@ -269,9 +269,9 @@ const ProfileEditPage: React.FC = () => {
                     name="marketingSms"
                     checked={formData.marketingSms}
                     onChange={handleChange}
-                    style={{ width: '16px', height: '16px', accentColor: '#000000' }}
+                    style={{ width: '16px', height: '16px', accentColor: 'var(--palette-text)' }}
                   />
-                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>SMS 수신 동의</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>SMS 수신 동의</span>
                 </label>
               </div>
             </div>
@@ -285,7 +285,7 @@ const ProfileEditPage: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: 400,
                 color: '#fff',
-                background: '#000000',
+                background: 'var(--palette-text)',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
@@ -302,7 +302,7 @@ const ProfileEditPage: React.FC = () => {
                 style={{
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: '#9A9A9A',
+                  color: 'var(--muted)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',

@@ -8,11 +8,11 @@ const AboutB2BPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '2fr 1fr',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <div style={{
           padding: '64px',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
         }}>
           <p style={{
             fontSize: '11px',
@@ -66,11 +66,11 @@ const AboutB2BPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <div style={{
           padding: '48px',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
         }}>
           <p style={{
             fontSize: '11px',
@@ -132,7 +132,7 @@ const AboutB2BPage: React.FC = () => {
       {/* B2B Partnership */}
       <div style={{
         padding: '64px',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <div style={{ maxWidth: '600px' }}>
           <p style={{
@@ -168,7 +168,7 @@ const AboutB2BPage: React.FC = () => {
               alignItems: 'center',
               gap: '8px',
               padding: '14px 28px',
-              background: '#000',
+              background: 'var(--palette-text)',
               color: '#fff',
               fontSize: '14px',
               fontWeight: 400,
@@ -193,8 +193,8 @@ const AboutB2BPage: React.FC = () => {
             style={{
               padding: '48px 32px',
               textAlign: 'center',
-              borderRight: idx < 3 ? '1px solid #000' : 'none',
-              borderBottom: '1px solid #000',
+              borderRight: idx < 3 ? '1px solid var(--palette-text)' : 'none',
+              borderBottom: '1px solid var(--palette-text)',
             }}
           >
             <div style={{

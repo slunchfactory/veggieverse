@@ -63,7 +63,7 @@ export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => 
       className="fixed bottom-[120px] right-6 z-[90] w-14 h-14 rounded-full shadow-lg cursor-pointer transition-transform hover:scale-105"
       style={{
         background: '#fff',
-        border: '1px solid #000',
+        border: '1px solid var(--palette-text)',
         padding: 0,
         overflow: 'hidden',
       }}
@@ -78,7 +78,7 @@ export const ChatTrigger: React.FC<ChatWidgetProps> = ({ isOpen, onToggle }) => 
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '28px',
-            background: '#f5f5f5',
+            background: 'var(--palette-bg-2)',
           }}
         >
           🥗
@@ -127,7 +127,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
   return (
     <>
       {/* 데스크탑: Fixed Bottom Right */}
-      <div className="hidden md:block fixed bottom-8 right-8 z-[90] w-[360px] h-[600px] bg-white border border-black flex flex-col" style={{ boxShadow: '4px 4px 0 #000' }}>
+      <div className="hidden md:block fixed bottom-8 right-8 z-[90] w-[360px] h-[600px] bg-white border border-black flex flex-col" style={{ boxShadow: '4px 4px 0 var(--palette-text)' }}>
         {/* 헤더 */}
         <div className="h-16 px-4 flex items-center gap-3 border-b border-black">
           {avatarError ? (
@@ -146,14 +146,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
           <div className="flex-1 flex flex-col">
             <p className="text-base font-normal text-black" style={{ fontSize: '16px' }}>VeggieVerse GPT</p>
             {isLoggedIn ? (
-              <span className="text-[11px] text-gray-500 flex items-center gap-1 cursor-default">
+              <span className="text-[11px] text-warm-gray flex items-center gap-1 cursor-default">
                 <Check className="w-3 h-3" />
                 대화가 저장되고 있습니다
               </span>
             ) : (
               <button
                 onClick={handleLogin}
-                className="text-[11px] text-black underline text-left hover:text-gray-600 transition-colors"
+                className="text-[11px] text-black underline text-left hover:text-warm-gray transition-colors"
               >
                 로그인하고 대화 기억하기
               </button>
@@ -199,7 +199,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                   checked={contextTasteOn}
                   onChange={() => setContextTasteOn(!contextTasteOn)}
                   className="w-3 h-3 border border-black accent-black"
-                  style={{ accentColor: '#000' }}
+                  style={{ accentColor: 'var(--palette-text)' }}
                 />
                 <span className="text-xs text-black font-normal" style={{ fontSize: '13px' }}>취향/알레르기 적용</span>
               </label>
@@ -260,7 +260,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                   className="group flex flex-col border border-black bg-white hover:bg-black transition-colors cursor-pointer"
                 >
                   {/* 이미지 */}
-                  <div className="w-full h-[100px] border-b border-black bg-gray-200 overflow-hidden relative">
+                  <div className="w-full h-[100px] border-b border-black bg-[rgba(26,10,5,0.04)] overflow-hidden relative">
                     <img
                       src={bookmark.image}
                       alt={bookmark.title}
@@ -271,7 +271,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">IMG</div>';
+                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-muted">IMG</div>';
                         }
                       }}
                     />
@@ -282,7 +282,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                     <p className="text-[12px] font-medium mb-1 truncate group-hover:text-white">
                       {bookmark.title}
                     </p>
-                    <p className="text-[10px] text-gray-500 group-hover:text-gray-300 truncate">
+                    <p className="text-[10px] text-warm-gray group-hover:text-gray-light truncate">
                       {getTagsString(bookmark)}
                     </p>
                   </div>
@@ -340,14 +340,14 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
           <div className="flex-1 flex flex-col">
             <p className="text-base font-normal text-black" style={{ fontSize: '16px' }}>VeggieVerse GPT</p>
             {isLoggedIn ? (
-              <span className="text-[11px] text-gray-500 flex items-center gap-1 cursor-default">
+              <span className="text-[11px] text-warm-gray flex items-center gap-1 cursor-default">
                 <Check className="w-3 h-3" />
                 대화가 저장되고 있습니다
               </span>
             ) : (
               <button
                 onClick={handleLogin}
-                className="text-[11px] text-black underline text-left hover:text-gray-600 transition-colors"
+                className="text-[11px] text-black underline text-left hover:text-warm-gray transition-colors"
               >
                 로그인하고 대화 기억하기
               </button>
@@ -393,7 +393,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                   checked={contextTasteOn}
                   onChange={() => setContextTasteOn(!contextTasteOn)}
                   className="w-3 h-3 border border-black accent-black"
-                  style={{ accentColor: '#000' }}
+                  style={{ accentColor: 'var(--palette-text)' }}
                 />
                 <span className="text-xs text-black font-normal" style={{ fontSize: '13px' }}>취향/알레르기 적용</span>
               </label>
@@ -454,7 +454,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                   className="group flex flex-col border border-black bg-white hover:bg-black transition-colors cursor-pointer"
                 >
                   {/* 이미지 */}
-                  <div className="w-full h-[100px] border-b border-black bg-gray-200 overflow-hidden relative">
+                  <div className="w-full h-[100px] border-b border-black bg-[rgba(26,10,5,0.04)] overflow-hidden relative">
                     <img
                       src={bookmark.image}
                       alt={bookmark.title}
@@ -465,7 +465,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                         target.style.display = 'none';
                         const parent = target.parentElement;
                         if (parent) {
-                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-gray-400">IMG</div>';
+                          parent.innerHTML = '<div class="w-full h-full flex items-center justify-center text-[10px] text-muted">IMG</div>';
                         }
                       }}
                     />
@@ -476,7 +476,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ isOpen, onToggle }) => {
                     <p className="text-[12px] font-medium mb-1 truncate group-hover:text-white">
                       {bookmark.title}
                     </p>
-                    <p className="text-[10px] text-gray-500 group-hover:text-gray-300 truncate">
+                    <p className="text-[10px] text-warm-gray group-hover:text-gray-light truncate">
                       {getTagsString(bookmark)}
                     </p>
                   </div>

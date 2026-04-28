@@ -97,7 +97,21 @@ const Layout: React.FC<{
   isChatOpen: boolean;
   chatPanel: React.ReactNode;
   shouldShowFooter: boolean;
-}> = ({ children, userProfile, showProfileMenu, onProfileMenuToggle, onResetProfile, showTopBanner, onCloseBanner, isChatOpen, chatPanel, shouldShowFooter }) => {
+  /** 구독 캘린더 등: 앱 헤더/푸터/배너 없이 전체 화면(iframe 단일 레이어) */
+  bareSiteChrome?: boolean;
+}> = ({
+  children,
+  userProfile,
+  showProfileMenu,
+  onProfileMenuToggle,
+  onResetProfile,
+  showTopBanner,
+  onCloseBanner,
+  isChatOpen,
+  chatPanel,
+  shouldShowFooter,
+  bareSiteChrome = false,
+}) => {
   // CSS 변수로 현재 고정 헤더 전체 높이 설정 (프로모 바 + 헤더)
   const headerAreaStyle = {
     '--header-area-h': showTopBanner
@@ -106,12 +120,22 @@ const Layout: React.FC<{
   } as React.CSSProperties;
 
   // 기존 레이아웃 (About 포함 - 스크롤 체이닝 패턴)
+  if (bareSiteChrome) {
+    return (
+      <div className="flex h-[100dvh] min-h-0 min-w-[360px] flex-col bg-white">
+        <main className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ paddingTop: 0 }}>
+          {children}
+        </main>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen min-w-[360px] flex flex-col" style={{ backgroundColor: '#D7D7D7', ...headerAreaStyle }}>
+    <div className="min-h-screen min-w-[360px] flex flex-col" style={{ backgroundColor: 'var(--app-shell-bg)', ...headerAreaStyle }}>
       {/* === FIXED TOP CONTAINER === */}
       <div
         className="fixed top-0 left-0 right-0 z-50"
-        style={{ backgroundColor: '#D7D7D7' }}
+        style={{ backgroundColor: 'var(--app-shell-bg)' }}
       >
         {/* 1. Promo Banner (Conditional) */}
         {showTopBanner && <TopBanner onClose={onCloseBanner} />}
@@ -127,11 +151,10 @@ const Layout: React.FC<{
       </div>
 
       {/* === PAGE CONTENT === */}
-      {/* 메인 콘텐츠 - 고정 헤더 높이만큼 상단 여백 추가 */}
+      {/* 고정 헤더만큼 paddingTop — 본문 높이는 실제 콘텐츠에 맞춤(푸터는 문서 하단, 뷰포트에 고정하지 않음) */}
       <main
-        className="flex min-h-0 flex-1 flex-col"
+        className="relative z-0 flex w-full min-h-0 flex-col"
         style={{
-          zIndex: 0,
           overflow: 'visible',
           paddingTop: showTopBanner ? 'calc(var(--promo-h) + var(--header-h))' : 'var(--header-h)',
         }}
@@ -139,7 +162,6 @@ const Layout: React.FC<{
         {children}
       </main>
       {/* 챗봇 패널은 ChatPanel 컴포넌트 내부에서 fixed position으로 렌더링됨 */}
-      {/* Footer - Sticky Footer 패턴 (VeganTestPage 제외) */}
       {shouldShowFooter && <Footer />}
     </div>
   );
@@ -156,9 +178,11 @@ const AppContent: React.FC = () => {
   const [showTopBanner, setShowTopBanner] = useState(true);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const location = useLocation();
-  
-  // VeganTestPage는 자체 스크롤을 가지고 있어 Footer를 표시하지 않음
-  const shouldShowFooter = location.pathname !== '/';
+
+  /** 전체화면 전용(헤더 숨김) 라우트 — 필요 시만 true */
+  const bareSiteChrome = false;
+
+  const shouldShowFooter = location.pathname !== '/' && !bareSiteChrome;
 
   // localStorage에서 프로필 불러오기
   useEffect(() => {
@@ -214,7 +238,7 @@ const AppContent: React.FC = () => {
   return (
     <>
       <ScrollToTop />
-      <Layout 
+      <Layout
       userProfile={userProfile}
       showProfileMenu={showProfileMenu}
       onProfileMenuToggle={toggleProfileMenu}
@@ -224,6 +248,7 @@ const AppContent: React.FC = () => {
       isChatOpen={isChatOpen}
       chatPanel={null}
       shouldShowFooter={shouldShowFooter}
+      bareSiteChrome={bareSiteChrome}
     >
       <Routes>
         {/* ============================================
@@ -335,8 +360,12 @@ const AppContent: React.FC = () => {
         <Route path="/mypage/address" element={<ComingSoonPage title="배송지 관리" />} />
         <Route path="/mypage/level" element={<ComingSoonPage title="회원 등급" />} />
       </Routes>
-      <ChatTrigger isOpen={isChatOpen} onToggle={toggleChat} />
-      <ChatPanel isOpen={isChatOpen} onToggle={toggleChat} />
+      {!bareSiteChrome && (
+        <>
+          <ChatTrigger isOpen={isChatOpen} onToggle={toggleChat} />
+          <ChatPanel isOpen={isChatOpen} onToggle={toggleChat} />
+        </>
+      )}
     </Layout>
     </>
   );
@@ -354,9 +383,9 @@ const ComingSoonPage: React.FC<{ title: string; description?: string }> = ({ tit
     <div className="text-center">
       <h1 className="text-2xl font-bold mb-4" style={{ color: '#3D3A36' }}>{title}</h1>
       {description && (
-        <p className="text-stone-500 mb-2" style={{ fontSize: '14px', lineHeight: '1.6' }}>{description}</p>
+        <p className="text-warm-gray mb-2" style={{ fontSize: '14px', lineHeight: '1.6' }}>{description}</p>
       )}
-      <p className="text-stone-500" style={{ fontSize: '14px', lineHeight: '1.6' }}>페이지 준비 중입니다.</p>
+      <p className="text-warm-gray" style={{ fontSize: '14px', lineHeight: '1.6' }}>페이지 준비 중입니다.</p>
     </div>
   </div>
 );

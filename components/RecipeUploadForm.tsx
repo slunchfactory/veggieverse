@@ -170,14 +170,14 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
         onClick={(e) => e.stopPropagation()}
       >
         {/* 헤더 */}
-        <div className="sticky top-0 bg-white border-b border-stone-200 px-6 py-4 flex items-center justify-between">
-          <h2 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>레시피 투고하기</h2>
+        <div className="sticky top-0 bg-white border-b border-[color:var(--border-hairline)] px-6 py-4 flex items-center justify-between">
+          <h2 className="text-black font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>레시피 투고하기</h2>
           <button
             onClick={handleClose}
-            className="p-2 hover:bg-stone-100 transition-colors"
+            className="p-2 hover:bg-eggshell transition-colors"
             aria-label="닫기"
           >
-            <X className="w-5 h-5 text-stone-600" />
+            <X className="w-5 h-5 text-warm-gray" />
           </button>
         </div>
 
@@ -185,10 +185,10 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* 이미지 업로드 */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-sm font-medium text-charcoal mb-2">
               레시피 사진
             </label>
-            <div className="border-2 border-dashed border-stone-300 rounded-none p-8 text-center hover:border-emerald-400 transition-colors">
+            <div className="border-2 border-dashed border-[color:var(--border-divider)] rounded-none p-8 text-center hover:border-emerald-400 transition-colors">
               {formData.imagePreview ? (
                 <div className="relative">
                   <img
@@ -206,8 +206,8 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
                 </div>
               ) : (
                 <label className="cursor-pointer">
-                  <ImageIcon className="w-12 h-12 text-stone-400 mx-auto mb-2" />
-                  <p className="text-stone-600">클릭하여 이미지 업로드</p>
+                  <ImageIcon className="w-12 h-12 text-muted mx-auto mb-2" />
+                  <p className="text-warm-gray">클릭하여 이미지 업로드</p>
                   <input
                     type="file"
                     accept="image/*"
@@ -221,14 +221,14 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
 
           {/* 제목 */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-sm font-medium text-charcoal mb-2">
               레시피 제목 *
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-stone-200 rounded-none focus:outline-none focus:border-emerald-500 transition-colors"
+              className="w-full px-4 py-3 border-2 border-[color:var(--border-hairline)] rounded-none focus:outline-none focus:border-emerald-500 transition-colors"
               placeholder="예: 크리미 버섯 리조또"
               required
             />
@@ -236,13 +236,13 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
 
           {/* 재료 */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-sm font-medium text-charcoal mb-2">
               재료 * (줄바꿈으로 구분)
             </label>
             <textarea
               value={formData.ingredients}
               onChange={(e) => setFormData({ ...formData, ingredients: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-stone-200 rounded-none focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+              className="w-full px-4 py-3 border-2 border-[color:var(--border-hairline)] rounded-none focus:outline-none focus:border-emerald-500 transition-colors resize-none"
               rows={6}
               placeholder="예:&#10;아르보리오 쌀 200g&#10;양송이버섯 150g&#10;양파 1개"
               required
@@ -251,13 +251,13 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
 
           {/* 설명 */}
           <div>
-            <label className="block text-sm font-medium text-stone-700 mb-2">
+            <label className="block text-sm font-medium text-charcoal mb-2">
               간단한 설명 *
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-stone-200 rounded-none focus:outline-none focus:border-emerald-500 transition-colors resize-none"
+              className="w-full px-4 py-3 border-2 border-[color:var(--border-hairline)] rounded-none focus:outline-none focus:border-emerald-500 transition-colors resize-none"
               rows={4}
               placeholder="레시피에 대한 간단한 설명을 작성해주세요"
               required
@@ -269,7 +269,7 @@ export const RecipeUploadForm: React.FC<RecipeUploadFormProps> = ({ isOpen, onCl
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 py-3 px-6 border-2 border-stone-300 text-stone-700 rounded-none font-medium hover:bg-stone-50 transition-colors"
+              className="flex-1 py-3 px-6 border-2 border-[color:var(--border-divider)] text-charcoal rounded-none font-medium hover:bg-cream transition-colors"
             >
               취소
             </button>

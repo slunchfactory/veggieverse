@@ -82,11 +82,11 @@ export const getStatusLabel = (status: Event['status']) => {
 export const getStatusColor = (status: Event['status']) => {
   switch (status) {
     case 'ongoing':
-      return '#000000';
+      return 'var(--palette-text)';
     case 'upcoming':
-      return '#3fa945';
+      return 'var(--status-success-icon)';
     case 'ended':
-      return '#9A9A9A';
+      return 'var(--muted)';
   }
 };
 
@@ -113,7 +113,7 @@ const EventPage: React.FC = () => {
             style={{
               textAlign: 'center',
               padding: '120px 0',
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               fontSize: '14px',
             }}
           >
@@ -148,7 +148,7 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
           position: 'relative',
           width: '100%',
           aspectRatio: '16/9',
-          background: '#E5E5E0',
+          background: 'var(--border-divider)',
           overflow: 'hidden',
           borderRadius: '4px',
         }}
@@ -176,7 +176,7 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
               top: '12px',
               left: '12px',
               padding: '4px 8px',
-              background: '#000',
+              background: 'var(--palette-text)',
               color: '#fff',
               fontSize: '11px',
               fontWeight: 400,
@@ -212,7 +212,7 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
             fontSize: '16px',
             fontWeight: 400,
             lineHeight: 1.3,
-            color: '#000000',
+            color: 'var(--palette-text)',
             marginBottom: '6px',
           }}
         >
@@ -224,7 +224,7 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
           style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             lineHeight: 1.5,
             marginBottom: '12px',
           }}
@@ -236,7 +236,7 @@ const EventCard: React.FC<{ event: Event }> = ({ event }) => {
         <p
           style={{
             fontSize: '12px',
-            color: '#9A9A9A',
+            color: 'var(--muted)',
           }}
         >
           {event.startDate} - {event.endDate}

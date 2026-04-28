@@ -1,89 +1,99 @@
-/* VeggieVerse Global Styles - Slunch Design System v2 */
-/* "실선과 여백이 만드는 시원한 개방감 + 신선한 채소의 생동감" */
+/* VeggieVerse Global Styles — 2026 palette (배경 3단 + 초코 브라운 텍스트 + 네온 라임 포인트) */
 
-/* Font Import - Noto Sans KR (Google Fonts) */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+/* Font Import - Noto Sans KR + Noto Serif KR (에디토리얼 인용/헤드라인) */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ============================================
-   SLUNCH DESIGN SYSTEM v2 - DESIGN TOKENS
-   Open Border Grid + Flat & Clean
+   DESIGN TOKENS — 브랜드 팔레트
    ============================================ */
 
 :root {
-  /* ==========================================
-     COLOR PALETTE - Fresh Veggie Colors
-     ========================================== */
+  /* ——— 원색 (팔레트 표준) ——— */
+  --palette-bg-1: #bdbdbd;
+  --palette-bg-2: #f2eeee;
+  --palette-bg-3: #ffffff;
+  --palette-text: #1a0a05;
+  --palette-accent: #dfff4f;
+  --palette-lavender: #d1c4e9;
+  --palette-yellow: #fff59d;
+  --palette-tan: #bcaaa4;
+  --palette-sky: #81d4fa;
+  --palette-mint: #c8e6c9;
+  --palette-orange: #ffab91;
 
-  /* Primary - Fresh Veggie Green (신선한 채소 그린) */
-  --primary: #3fa945;
-  --primary-light: #6B9B7A;
-  --primary-dark: #365E43;
-  --primary-50: #F0F5F1;
+  /* 구독 캘린더 iframe · 상품 상세 — 기본 크림보다 밝은 본문면 */
+  --surface-soft: #fcfaf8;
 
-  /* Secondary - Carrot Orange (당근 오렌지) */
-  --secondary: #E07B39;
-  --secondary-light: #F4A261;
-  --secondary-dark: #C45D1E;
+  /* 포인트 / 헤더 — 네온 라임 */
+  --primary: var(--palette-accent);
+  --primary-light: #e8ff85;
+  --primary-dark: #c8e845;
+  --primary-50: #f6ffcc;
 
-  /* Accent - Vivid Points (비비드 포인트) */
-  --tomato-red: #D64545;
-  --corn-yellow: #F2C94C;
-  --eggplant-purple: #7B5EA7;
+  /* 배경 */
+  --cream: var(--palette-bg-2);
+  --eggshell: var(--palette-bg-2);
+  --white-pure: var(--palette-bg-3);
+  --white: var(--palette-bg-2);
+  --app-shell-bg: var(--palette-bg-1);
 
-  /* Background - Warm Cream (오끼뜨 감성) */
-  --cream: #FDFBF7;
-  --eggshell: #F7F4EF;
-  --white-pure: #FFFFFF;
-
-  /* Text & Line - Pure Black (선명한 실선) */
-  --deep-forest: #000000;
-  --charcoal: #3D3D3D;
-  --warm-gray: #6B6B6B;
-  --muted: #A0A0A0;
-
-  /* Legacy aliases for compatibility */
-  --black: #000000;
+  /* 텍스트·라인 (초코 브라운 기반) */
+  --deep-forest: var(--palette-text);
+  --black: var(--palette-text);
+  --charcoal: var(--charcoal);
+  --warm-gray: var(--warm-gray);
+  --muted: #9a928c;
   --gray: var(--warm-gray);
-  --gray-light: #9A9A9A;
-  --gray-lighter: #D4D4D4;
-  --white: var(--cream);
+  --gray-light: #8a827c;
+  --gray-lighter: #ccc5c0;
+
+  /* 보조 포인트 (기존 토큰명 호환) */
+  --secondary: var(--palette-orange);
+  --secondary-light: #ffcbbb;
+  --secondary-dark: #e89578;
+  --tomato-red: var(--palette-orange);
+  --corn-yellow: var(--palette-yellow);
+  --eggplant-purple: var(--palette-lavender);
+
   --lime: var(--primary);
   --lime-dark: var(--primary-dark);
-  --olive: var(--primary-dark);
+  --olive: var(--palette-text);
 
-  /* Semantic Colors */
-  --color-success: var(--primary);
-  --color-error: var(--tomato-red);
-  --color-warning: var(--corn-yellow);
-  --color-info: var(--eggplant-purple);
+  /* 시맨틱 (UI 박스·상태·알림용 보조색) */
+  --color-success: var(--palette-mint);
+  --color-error: var(--palette-orange);
+  --color-warning: var(--palette-yellow);
+  --color-info: var(--palette-sky);
 
-  /* Legacy color aliases */
-  --color-black: var(--deep-forest);
+  --color-black: var(--palette-text);
   --color-gray: var(--warm-gray);
   --color-gray-light: var(--gray-light);
   --color-white: var(--cream);
   --color-lime: var(--primary);
   --color-lime-dark: var(--primary-dark);
-  --color-olive: var(--primary-dark);
+  --color-olive: var(--palette-text);
   --color-white-pure: var(--white-pure);
   --color-gray-lighter: var(--gray-lighter);
-  --color-bg-primary: var(--cream);
-  --color-bg-secondary: var(--eggshell);
+  --color-bg-primary: var(--palette-bg-2);
+  --color-bg-secondary: var(--palette-bg-1);
   --color-text-primary: var(--charcoal);
   --color-text-secondary: var(--warm-gray);
   --color-text-muted: var(--muted);
-  --color-text-inverse: var(--cream);
+  --color-text-inverse: var(--palette-bg-3);
   --color-accent-primary: var(--primary);
   --color-accent-hover: var(--primary-dark);
-  --color-accent-olive: var(--primary-dark);
+  --color-accent-olive: var(--palette-text);
 
-  /* Overlay */
-  --overlay-dark: rgba(0, 0, 0, 0.7);
-  --overlay-light: rgba(253, 251, 247, 0.9);
+  --overlay-dark: rgba(26, 10, 5, 0.72);
+  --overlay-light: rgba(242, 238, 238, 0.92);
+
+  /* 긍정·진행 상태 아이콘 (라임과 구분: 민트/스카이) */
+  --status-success-icon: color-mix(in srgb, var(--palette-text) 28%, var(--palette-mint) 72%);
+  --status-progress-icon: color-mix(in srgb, var(--palette-text) 22%, var(--palette-sky) 78%);
 
   /* ==========================================
      TYPOGRAPHY - Pretendard Only (산세리프 통일)
@@ -176,8 +186,11 @@
   /* Border - 실선 스타일 */
   --border-width: 1px;
   --border-style: solid;
-  --border-color: var(--deep-forest);
-  --border-color-light: rgba(0, 0, 0, 0.2);
+  --border-color: var(--palette-text);
+  /* 연한 실선(구분·카드 얇은 테두리) — 브라운 톤, var(--border-divider) 대체용 */
+  --border-hairline: rgba(26, 10, 5, 0.1);
+  --border-divider: rgba(26, 10, 5, 0.14);
+  --border-color-light: rgba(26, 10, 5, 0.2);
 
   /* Border Radius - 살짝 둥근 모서리 (오끼뜨 감성) */
   --border-radius-sm: 4px;
@@ -185,6 +198,87 @@
   --border-radius-lg: 8px;
   --border-radius-xl: 12px;
   --border-radius-full: 9999px;
+
+  --ui-nav-hover-tint: #a09892;
+  --ui-nav-idle-tint: var(--warm-gray);
+  --ui-interactive-ease: 0.14s ease;
+}
+
+@supports not (color: color-mix(in srgb, black, white)) {
+  :root {
+    --status-success-icon: #6a9a72;
+    --status-progress-icon: #4a9ec4;
+  }
+}
+
+/* 원형 라인 아이콘 버튼 — public/subscribe-calendar.html 과 동일 토큰. 닫기·＋ 공통 */
+.icon-ring-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--deep-forest);
+  border-radius: 50%;
+  background: var(--white-pure);
+  color: var(--charcoal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+.icon-ring-btn:hover {
+  background: var(--black);
+  color: var(--lime);
+  border-color: var(--black);
+}
+.icon-ring-btn:active {
+  background: var(--black);
+  color: var(--lime);
+  border-color: var(--black);
+}
+.icon-ring-btn:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+  background: var(--black);
+  color: var(--lime);
+  border-color: var(--black);
+}
+.icon-ring-btn.icon-ring-btn--sm {
+  width: 28px;
+  height: 28px;
+  font-size: 15px;
+}
+.icon-ring-btn.icon-ring-btn--xs {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+}
+.icon-ring-btn.icon-ring-btn--on-dark {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+}
+.icon-ring-btn.icon-ring-btn--on-dark:hover {
+  background: var(--lime);
+  color: var(--black);
+  border-color: var(--lime);
+}
+.icon-ring-btn.icon-ring-btn--on-dark:active {
+  background: var(--lime);
+  color: var(--black);
+  border-color: var(--lime);
+}
+.icon-ring-btn.icon-ring-btn--on-dark:focus-visible {
+  outline: 2px solid var(--lime);
+  outline-offset: 2px;
+  background: var(--lime);
+  color: var(--black);
+  border-color: var(--lime);
 }
 
 /* 태블릿 (768px ~ 1024px) */
@@ -277,19 +371,19 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  overflow-y: auto; /* 브라우저 창이 스크롤 처리 */
+  /* 세로 스크롤은 html 한 곳만 (html·body 동시 overflow:auto 시 이중 스크롤로 새로고침 후 위치 튐 방지) */
+  overflow-y: visible;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #D7D7D7;
+  background: var(--app-shell-bg);
   color: var(--black);
   font-family: var(--font-family);
   position: relative;
 }
 
-/* Selection - Primary Green으로 강조 */
 ::selection {
   background: var(--primary);
-  color: var(--white-pure);
+  color: var(--palette-text);
 }
 
 /* React Root - 완전 초기화 */
@@ -357,7 +451,7 @@ body {
 
 /* 섹션 배경색 교차 (Warm Ivory) */
 .section-alt-bg {
-  background-color: #faf9f7;
+  background-color: var(--eggshell);
 }
 
 /* ============================================
@@ -613,8 +707,211 @@ body.no-scroll {
 /* Focus Styles */
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #a8a29e;
+  outline: 2px solid var(--palette-tan);
   outline-offset: 2px;
+}
+
+/* ============================================
+   일반 링크: 밑줄 없음 → 호버는 글자 연하게 → 클릭 중(:active)만 밑줄
+   ============================================ */
+a:any-link:not([data-no-interactive]):not(.link-plain) {
+  text-decoration: none;
+  text-underline-offset: max(0.15em, 2px);
+  transition:
+    color var(--ui-interactive-ease),
+    text-decoration var(--ui-interactive-ease),
+    opacity var(--ui-interactive-ease);
+}
+
+a:any-link:not([data-no-interactive]):not(.link-plain):hover {
+  color: color-mix(in srgb, currentColor 45%, #ffffff 55%);
+}
+
+a:any-link:not([data-no-interactive]):not(.link-plain):active {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+}
+
+/* color-mix 미지원 브라우저 */
+@supports not (color: color-mix(in srgb, black, white)) {
+  a:any-link:not([data-no-interactive]):not(.link-plain):hover {
+    color: var(--ui-nav-hover-tint);
+  }
+}
+
+/* 실질 링크인데 전역 규칙 제외 */
+a:any-link.link-plain,
+a:any-link[data-no-interactive] {
+  text-decoration: none;
+}
+a:any-link.link-plain:hover,
+a:any-link.link-plain:active,
+a:any-link[data-no-interactive]:hover,
+a:any-link[data-no-interactive]:active {
+  text-decoration: none;
+}
+
+/* ============================================
+   네비 탭·텍스트 버튼 (스토어 카테고리 등): 호버 연함 · 선택 시 라벨만 밑줄
+   ============================================ */
+.ui-nav-tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  color: var(--ui-nav-idle-tint);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.ui-nav-tab:hover {
+  color: var(--ui-nav-hover-tint);
+}
+
+.ui-nav-tab[data-ui-active='true'] {
+  color: var(--palette-text);
+}
+
+.ui-nav-tab[data-ui-active='true']:hover {
+  color: var(--ui-nav-hover-tint);
+}
+
+.ui-nav-tab__label {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ui-nav-tab[data-ui-active='true'] .ui-nav-tab__label {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.ui-nav-tab__meta {
+  margin-left: 4px;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.ui-nav-tab:hover .ui-nav-tab__meta {
+  color: var(--ui-nav-hover-tint);
+}
+
+.ui-nav-tab[data-ui-active='true'] .ui-nav-tab__meta {
+  color: var(--muted);
+}
+
+/* 드로어·세로 메뉴용 (줄 단위) */
+.ui-nav-tab--block {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  align-items: center;
+  line-height: inherit;
+  font-size: 15px;
+}
+
+/* 보조 텍스트 버튼 (Filter, 정렬 트리거 등): 호버만 연하게 */
+.ui-text-action {
+  transition: color 0.15s ease;
+}
+.ui-text-action:hover:not(:disabled) {
+  color: var(--ui-nav-hover-tint) !important;
+}
+
+/* 에디토리얼 / 랜딩 CTA — 배경 브라운·포인트 라임 글자, 호버 연함·클릭 시 밑줄
+   (link-plain 제외: link-plain:active 가 밑줄을 막음) */
+a:any-link.editorial-cta-primary {
+  box-sizing: border-box;
+  background-color: var(--palette-text);
+  border: 1px solid var(--palette-text);
+  color: var(--primary);
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease,
+    text-decoration 0.12s ease;
+}
+a:any-link.editorial-cta-primary:hover {
+  opacity: 0.9;
+}
+a:any-link.editorial-cta-primary:active {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+}
+
+a:any-link.editorial-cta-secondary {
+  box-sizing: border-box;
+  background-color: var(--white-pure);
+  border: 1px solid var(--palette-text);
+  color: var(--palette-text);
+  text-decoration: none;
+  text-underline-offset: 4px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    text-decoration 0.12s ease;
+}
+a:any-link.editorial-cta-secondary:hover {
+  color: var(--ui-nav-hover-tint) !important;
+  border-color: var(--ui-nav-hover-tint) !important;
+  background-color: var(--cream) !important;
+}
+a:any-link.editorial-cta-secondary:active {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: currentColor;
+}
+
+/* 햄버거 드로어 1차 메뉴 타이틀 */
+.ui-drawer-nav-primary {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--charcoal);
+  transition: color 0.15s ease;
+  text-decoration: none;
+}
+.ui-drawer-row:hover .ui-drawer-nav-primary {
+  color: var(--ui-nav-hover-tint);
+}
+.ui-drawer-nav-primary--active {
+  color: var(--palette-text);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+.ui-drawer-row:hover .ui-drawer-nav-primary--active {
+  color: var(--ui-nav-hover-tint);
+}
+
+/* 버튼: 호버는 컴포넌트별 유지, 클릭 중(:active)만 공통 피드백 */
+button:not(:disabled):not([data-no-interactive]):active,
+[role="button"]:not([aria-disabled="true"]):active {
+  filter: brightness(0.93);
+  transition: filter 0.1s ease;
+}
+
+button:not(:disabled):not([data-no-interactive]),
+[role="button"]:not([aria-disabled="true"]) {
+  transition:
+    color var(--ui-interactive-ease),
+    background-color var(--ui-interactive-ease),
+    border-color var(--ui-interactive-ease),
+    filter 0.1s ease,
+    opacity var(--ui-interactive-ease);
 }
 
 /* Selection Color */
@@ -838,7 +1135,7 @@ a:focus-visible {
 
 /* 이미지 드롭 쉐도우 효과 */
 .produce-shadow {
-  filter: drop-shadow(0 25px 50px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 25px 50px rgba(26, 10, 5, 0.12));
 }
 
 /* 헤더 텍스트 blend 효과 - 배경에 따라 색상 반전 */
@@ -892,7 +1189,7 @@ a:focus-visible {
 /* Hover Primary Effect */
 .hover-primary:hover {
   background: var(--primary) !important;
-  color: var(--white-pure) !important;
+  color: var(--palette-text) !important;
 }
 
 /* Hover Text Primary Effect */
@@ -914,7 +1211,7 @@ a:focus-visible {
 
 .hover-lime:hover {
   background: var(--primary) !important;
-  color: var(--white-pure) !important;
+  color: var(--palette-text) !important;
 }
 
 .hover-text-lime:hover {
@@ -927,7 +1224,7 @@ a:focus-visible {
 }
 
 .hover-shadow:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(26, 10, 5, 0.1);
 }
 
 /* 상단 메뉴바 호버 효과 */
@@ -990,7 +1287,7 @@ a:focus-visible {
 .recipe-card-img-wrapper,
 .menu-card-img-wrapper {
   aspect-ratio: 4 / 5;
-  background: #F5F5F5;
+  background: var(--palette-bg-2);
   overflow: hidden;
   position: relative;
 }
@@ -998,7 +1295,7 @@ a:focus-visible {
 /* 2-1. 이미지 영역 - 뉴스레터만 1:1 */
 .newsletter-card-img-wrapper {
   aspect-ratio: 1 / 1;
-  background: #F5F5F5;
+  background: var(--palette-bg-2);
   overflow: hidden;
   position: relative;
 }
@@ -1479,7 +1776,7 @@ a:focus-visible {
 .newsletter-empty {
   text-align: center;
   padding: 80px 0;
-  color: #6B6B6B;
+  color: var(--warm-gray);
   font-size: 14px;
 }
 
@@ -1491,7 +1788,7 @@ a:focus-visible {
 
 .newsletter-desc {
   font-size: 14px;
-  color: #6B6B6B;
+  color: var(--warm-gray);
 }
 
 /* 3. 그리드 - 4열 */
@@ -1530,7 +1827,7 @@ a:focus-visible {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: #6B6B6B;
+  color: var(--warm-gray);
   margin-bottom: 8px;
 }
 
@@ -1540,7 +1837,7 @@ a:focus-visible {
   line-height: 1.2;
   margin-bottom: 8px;
   line-height: 1.4;
-  color: #000000;
+  color: var(--palette-text);
 }
 
 .newsletter-card:hover .newsletter-card-title {
@@ -1551,7 +1848,7 @@ a:focus-visible {
 
 .newsletter-card-desc {
   font-size: 14px;
-  color: #6B6B6B;
+  color: var(--warm-gray);
   line-height: 1.6;
   margin-bottom: 13px;
   line-height: 1.5;
@@ -1562,7 +1859,7 @@ a:focus-visible {
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: #9A9A9A;
+  color: var(--muted);
 }
 
 /* ================================================
@@ -1584,7 +1881,7 @@ a:focus-visible {
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  color: #000000;
+  color: var(--palette-text);
   cursor: pointer;
   transition: all 0.15s ease;
   background: transparent;
@@ -1596,7 +1893,7 @@ a:focus-visible {
 }
 
 .pagination-arrow.disabled {
-  color: #CCCCCC;
+  color: var(--border-color-light);
   cursor: default;
 }
 
@@ -1621,7 +1918,7 @@ a:focus-visible {
 
 .pagination-number.active {
   font-weight: 700;
-  color: #000000;
+  color: var(--palette-text);
 }
 
 .pagination-number:hover {
@@ -1756,7 +2053,7 @@ a:focus-visible {
 .about-content {
   margin-left: 50%;
   padding: 64px;
-  border-left: 1px solid #000000;
+  border-left: 1px solid var(--palette-text);
   min-height: calc(100vh - 100px);
 }
 
@@ -1888,7 +2185,7 @@ a:focus-visible {
     flex-direction: row;
     gap: 16px;
     padding: 24px !important;
-    border-bottom: 1px solid #E5E5E5;
+    border-bottom: 1px solid var(--border-divider);
     flex-wrap: wrap;
   }
   
@@ -1994,7 +2291,7 @@ a:focus-visible {
 .filter-radio-circle {
   width: 14px;
   height: 14px;
-  border: 1px solid #CCCCCC;
+  border: 1px solid var(--border-color-light);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -2038,7 +2335,7 @@ a:focus-visible {
 .filter-checkbox-box {
   width: 14px;
   height: 14px;
-  border: 1px solid #CCCCCC;
+  border: 1px solid var(--border-color-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2094,7 +2391,7 @@ a:focus-visible {
     align-items: center;
     padding: 12px 20px;
     background: #fff;
-    border-bottom: 1px solid #E5E5E5;
+    border-bottom: 1px solid var(--border-divider);
     position: sticky;
     top: 64px;  /* 모바일 헤더 높이 */
     z-index: 40;
@@ -2106,7 +2403,7 @@ a:focus-visible {
     align-items: center;
     gap: 8px;
     padding: 10px 16px;
-    border: 1px solid #0D0D0D;
+    border: 1px solid var(--palette-text);
     background: #fff;
     font-size: 14px;
     font-weight: 600;
@@ -2128,7 +2425,7 @@ a:focus-visible {
   
   .mobile-sort {
     padding: 10px 12px;
-    border: 1px solid #E5E5E5;
+    border: 1px solid var(--border-divider);
     font-size: 14px;
     background: #fff;
     font-family: var(--font-family);
@@ -2195,7 +2492,7 @@ a:focus-visible {
 .bottomsheet-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(26, 10, 5, 0.5);
 }
 
 /* 시트 본체 */
@@ -2211,7 +2508,7 @@ a:focus-visible {
   flex-direction: column;
   transform: translateY(100%);
   transition: transform 0.3s ease;
-  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 -4px 20px rgba(26, 10, 5, 0.1);
 }
 
 .filter-bottomsheet.open .bottomsheet-content {
@@ -2224,7 +2521,7 @@ a:focus-visible {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #E5E5E5;
+  border-bottom: 1px solid var(--border-divider);
   flex-shrink: 0;
 }
 
@@ -2232,7 +2529,7 @@ a:focus-visible {
   font-size: 18px;
   font-weight: 700;
   margin: 0;
-  color: #000;
+  color: var(--palette-text);
   font-family: var(--font-family);
 }
 
@@ -2243,7 +2540,7 @@ a:focus-visible {
   background: none;
   font-size: 24px;
   cursor: pointer;
-  color: #000;
+  color: var(--palette-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2268,7 +2565,7 @@ a:focus-visible {
   display: flex;
   gap: 12px;
   padding: 16px 20px;
-  border-top: 1px solid #E5E5E5;
+  border-top: 1px solid var(--border-divider);
   background: #fff;
   flex-shrink: 0;
 }
@@ -2276,26 +2573,26 @@ a:focus-visible {
 .btn-reset {
   flex: 1;
   padding: 14px;
-  border: 1px solid #E5E5E5;
+  border: 1px solid var(--border-divider);
   background: #fff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   font-family: var(--font-family);
-  color: #000;
+  color: var(--palette-text);
   transition: all 0.2s ease;
 }
 
 .btn-reset:hover {
-  background: #F5F5F5;
-  border-color: #000;
+  background: var(--palette-bg-2);
+  border-color: var(--palette-text);
 }
 
 .btn-apply {
   flex: 2;
   padding: 14px;
   border: none;
-  background: #0D0D0D;
+  background: var(--palette-text);
   color: #fff;
   font-size: 14px;
   font-weight: 600;
@@ -2305,7 +2602,7 @@ a:focus-visible {
 }
 
 .btn-apply:hover {
-  background: #333;
+  background: var(--charcoal);
 }
 
 /* ================================================
@@ -2610,7 +2907,7 @@ a:focus-visible {
 /* 버튼 스타일 - Flat & Clean */
 .btn-primary {
   background: var(--primary);
-  color: var(--white-pure);
+  color: var(--palette-text);
   border: none;
   border-radius: var(--border-radius);
   padding: 14px 24px;
@@ -2620,6 +2917,11 @@ a:focus-visible {
 
 .btn-primary:hover {
   background: var(--primary-dark);
+}
+
+.btn-primary:active {
+  background: var(--primary-dark);
+  filter: brightness(0.94);
 }
 
 .btn-secondary {
@@ -2637,6 +2939,10 @@ a:focus-visible {
   color: var(--white-pure);
 }
 
+.btn-secondary:active {
+  filter: brightness(0.94);
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--warm-gray);
@@ -2648,6 +2954,11 @@ a:focus-visible {
 
 .btn-ghost:hover {
   color: var(--primary);
+}
+
+.btn-ghost:active {
+  color: var(--primary-dark);
+  filter: brightness(0.98);
 }
 
 /* 뱃지 스타일 */
@@ -2662,7 +2973,7 @@ a:focus-visible {
 
 .badge-best {
   background: var(--primary);
-  color: var(--white-pure);
+  color: var(--palette-text);
   padding: 4px 10px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-caption);
@@ -2671,7 +2982,7 @@ a:focus-visible {
 
 .badge-soldout {
   background: var(--muted);
-  color: var(--white-pure);
+  color: var(--palette-text);
   padding: 4px 10px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-caption);
@@ -2680,7 +2991,7 @@ a:focus-visible {
 
 .badge-limited {
   background: var(--tomato-red);
-  color: var(--white-pure);
+  color: var(--palette-text);
   padding: 4px 10px;
   border-radius: var(--border-radius-sm);
   font-size: var(--font-size-caption);

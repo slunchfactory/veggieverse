@@ -89,9 +89,9 @@ const MyOrders: React.FC = () => {
                 padding: '8px 16px',
                 fontSize: '13px',
                 fontWeight: 400,
-                color: activeTab === tab ? '#fff' : '#6B6B6B',
-                background: activeTab === tab ? '#000' : 'transparent',
-                border: `1px solid ${activeTab === tab ? '#000' : 'rgba(0,0,0,0.15)'}`,
+                color: activeTab === tab ? '#fff' : 'var(--warm-gray)',
+                background: activeTab === tab ? 'var(--palette-text)' : 'transparent',
+                border: `1px solid ${activeTab === tab ? 'var(--palette-text)' : 'rgba(26, 10, 5, 0.15)'}`,
                 borderRadius: '4px',
                 cursor: 'pointer',
               }}
@@ -109,8 +109,8 @@ const MyOrders: React.FC = () => {
               padding: '80px 0',
             }}
           >
-            <Package size={40} color="#D4D4D4" style={{ marginBottom: '12px' }} />
-            <p style={{ fontSize: '14px', color: '#6B6B6B' }}>
+            <Package size={40} color="var(--gray-lighter)" style={{ marginBottom: '12px' }} />
+            <p style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>
               해당 상태의 주문이 없습니다.
             </p>
           </div>
@@ -128,9 +128,9 @@ const MyOrders: React.FC = () => {
 
 const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
   const statusColorMap = {
-    '준비중': '#000000',
-    '배송중': '#3fa945',
-    '배송완료': '#9A9A9A',
+    '준비중': 'var(--palette-text)',
+    '배송중': 'var(--status-progress-icon)',
+    '배송완료': 'var(--muted)',
   };
 
   return (
@@ -138,7 +138,7 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
       style={{
         background: '#FFFFFF',
         borderRadius: '4px',
-        border: '1px solid rgba(0,0,0,0.08)',
+        border: '1px solid rgba(26, 10, 5, 0.08)',
         padding: '20px',
       }}
     >
@@ -150,14 +150,14 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
           alignItems: 'center',
           marginBottom: '16px',
           paddingBottom: '12px',
-          borderBottom: '1px solid rgba(0,0,0,0.05)',
+          borderBottom: '1px solid rgba(26, 10, 5, 0.05)',
         }}
       >
         <div>
-          <p style={{ fontSize: '13px', fontWeight: 400, color: '#9A9A9A', marginBottom: '2px' }}>
+          <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--muted)', marginBottom: '2px' }}>
             {order.id}
           </p>
-          <p style={{ fontSize: '12px', color: '#9A9A9A' }}>
+          <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
             {order.date}
           </p>
         </div>
@@ -186,13 +186,13 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
               alignItems: 'center',
             }}
           >
-            <p style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>
+            <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
               {item.name}
               {item.quantity > 1 && (
-                <span style={{ color: '#9A9A9A', marginLeft: '6px' }}>x{item.quantity}</span>
+                <span style={{ color: 'var(--muted)', marginLeft: '6px' }}>x{item.quantity}</span>
               )}
             </p>
-            <p style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>
+            <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
               {(item.price * item.quantity).toLocaleString()}원
             </p>
           </div>
@@ -206,11 +206,11 @@ const OrderCard: React.FC<{ order: Order }> = ({ order }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           paddingTop: '12px',
-          borderTop: '1px solid rgba(0,0,0,0.05)',
+          borderTop: '1px solid rgba(26, 10, 5, 0.05)',
         }}
       >
-        <span style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>합계</span>
-        <span style={{ fontSize: '15px', fontWeight: 400, color: '#000' }}>
+        <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)' }}>합계</span>
+        <span style={{ fontSize: '15px', fontWeight: 400, color: 'var(--palette-text)' }}>
           {order.total.toLocaleString()}원
         </span>
       </div>

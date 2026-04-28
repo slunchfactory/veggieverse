@@ -125,7 +125,7 @@ export const CommunityPage: React.FC = () => {
                 padding: '0',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: activeMenu === menu.id ? '#000000' : '#6B6B6B',
+                color: activeMenu === menu.id ? 'var(--palette-text)' : 'var(--warm-gray)',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
@@ -133,8 +133,8 @@ export const CommunityPage: React.FC = () => {
                 textUnderlineOffset: '4px',
                 transition: 'color 0.15s ease',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.color = '#000000'; }}
-              onMouseLeave={(e) => { if (activeMenu !== menu.id) e.currentTarget.style.color = '#6B6B6B'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--palette-text)'; }}
+              onMouseLeave={(e) => { if (activeMenu !== menu.id) e.currentTarget.style.color = 'var(--warm-gray)'; }}
             >
               {menu.name}
             </button>
@@ -153,10 +153,10 @@ export const CommunityPage: React.FC = () => {
               style={{
                 gridTemplateColumns: '60px 1fr 100px 60px',
                 padding: '12px 0',
-                borderBottom: '1px solid rgba(0,0,0,0.1)',
+                borderBottom: '1px solid rgba(26, 10, 5, 0.1)',
                 fontSize: '12px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
               }}
             >
               <div style={{ textAlign: 'center' }}>번호</div>
@@ -173,7 +173,7 @@ export const CommunityPage: React.FC = () => {
                   className="grid grid-cols-1 md:grid-cols-[60px_1fr_100px_60px]"
                   style={{
                     padding: '16px 0',
-                    borderBottom: '1px solid rgba(0,0,0,0.1)',
+                    borderBottom: '1px solid rgba(26, 10, 5, 0.1)',
                     fontSize: '14px',
                     fontWeight: 400,
                     cursor: 'pointer',
@@ -181,25 +181,25 @@ export const CommunityPage: React.FC = () => {
                     gap: '8px',
                   }}
                 >
-                  <div className="hidden md:block" style={{ textAlign: 'center', color: '#6B6B6B' }}>{notice.id}</div>
+                  <div className="hidden md:block" style={{ textAlign: 'center', color: 'var(--warm-gray)' }}>{notice.id}</div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{ color: '#000000' }}>{notice.title}</span>
+                    <span style={{ color: 'var(--palette-text)' }}>{notice.title}</span>
                     {notice.isNew && (
                       <span
                         style={{
                           fontSize: '10px',
                           fontWeight: 400,
-                          color: '#D64545',
+                          color: 'var(--palette-orange)',
                         }}
                       >
                         NEW
                       </span>
                     )}
                   </div>
-                  <div className="hidden md:block" style={{ textAlign: 'center', color: '#6B6B6B', fontSize: '13px' }}>{notice.date}</div>
-                  <div className="hidden md:block" style={{ textAlign: 'center', color: '#6B6B6B', fontSize: '13px' }}>{notice.views}</div>
+                  <div className="hidden md:block" style={{ textAlign: 'center', color: 'var(--warm-gray)', fontSize: '13px' }}>{notice.date}</div>
+                  <div className="hidden md:block" style={{ textAlign: 'center', color: 'var(--warm-gray)', fontSize: '13px' }}>{notice.views}</div>
                   {/* 모바일용 메타 정보 */}
-                  <div className="md:hidden" style={{ fontSize: '12px', color: '#6B6B6B' }}>
+                  <div className="md:hidden" style={{ fontSize: '12px', color: 'var(--warm-gray)' }}>
                     {notice.date} · 조회 {notice.views}
                   </div>
                 </div>
@@ -209,7 +209,7 @@ export const CommunityPage: React.FC = () => {
                 style={{
                   padding: '80px 0',
                   textAlign: 'center',
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   fontSize: '14px',
                 }}
               >
@@ -238,7 +238,7 @@ export const CommunityPage: React.FC = () => {
                   padding: '12px 16px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  border: '1px solid rgba(0,0,0,0.2)',
+                  border: '1px solid rgba(26, 10, 5, 0.2)',
                   borderRight: 'none',
                   borderRadius: '4px 0 0 4px',
                   background: 'transparent',
@@ -248,8 +248,8 @@ export const CommunityPage: React.FC = () => {
               <button
                 style={{
                   padding: '12px 16px',
-                  background: '#000000',
-                  border: '1px solid #000000',
+                  background: 'var(--palette-text)',
+                  border: '1px solid var(--palette-text)',
                   borderRadius: '0 4px 4px 0',
                   cursor: 'pointer',
                   display: 'flex',
@@ -276,7 +276,7 @@ export const CommunityPage: React.FC = () => {
                     padding: '0',
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: faqCategory === cat ? '#000000' : '#6B6B6B',
+                    color: faqCategory === cat ? 'var(--palette-text)' : 'var(--warm-gray)',
                     background: 'transparent',
                     border: 'none',
                     cursor: 'pointer',
@@ -284,8 +284,8 @@ export const CommunityPage: React.FC = () => {
                     textUnderlineOffset: '4px',
                     transition: 'color 0.15s ease',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.color = '#000000'; }}
-                  onMouseLeave={(e) => { if (faqCategory !== cat) e.currentTarget.style.color = '#6B6B6B'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--palette-text)'; }}
+                  onMouseLeave={(e) => { if (faqCategory !== cat) e.currentTarget.style.color = 'var(--warm-gray)'; }}
                 >
                   {cat}
                 </button>
@@ -294,7 +294,7 @@ export const CommunityPage: React.FC = () => {
 
             {/* FAQ List */}
             {filteredFaqs.map((faq) => (
-              <div key={faq.id} style={{ borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+              <div key={faq.id} style={{ borderBottom: '1px solid rgba(26, 10, 5, 0.1)' }}>
                 {/* Question */}
                 <button
                   onClick={() => setOpenFaqId(openFaqId === faq.id ? null : faq.id)}
@@ -316,20 +316,20 @@ export const CommunityPage: React.FC = () => {
                       style={{
                         fontSize: '12px',
                         fontWeight: 400,
-                        color: '#6B6B6B',
+                        color: 'var(--warm-gray)',
                         flexShrink: 0,
                       }}
                     >
                       [{faq.category}]
                     </span>
-                    <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>
+                    <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
                       {faq.question}
                     </span>
                   </div>
                   {openFaqId === faq.id ? (
-                    <Minus size={16} color="#6B6B6B" style={{ flexShrink: 0 }} />
+                    <Minus size={16} color="var(--warm-gray)" style={{ flexShrink: 0 }} />
                   ) : (
-                    <Plus size={16} color="#6B6B6B" style={{ flexShrink: 0 }} />
+                    <Plus size={16} color="var(--warm-gray)" style={{ flexShrink: 0 }} />
                   )}
                 </button>
 
@@ -343,7 +343,7 @@ export const CommunityPage: React.FC = () => {
                       style={{
                         fontSize: '14px',
                         fontWeight: 400,
-                        color: '#6B6B6B',
+                        color: 'var(--warm-gray)',
                         lineHeight: 1.7,
                       }}
                     >
@@ -371,7 +371,7 @@ export const CommunityPage: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     marginBottom: '8px',
                   }}
                 >
@@ -384,7 +384,7 @@ export const CommunityPage: React.FC = () => {
                       padding: '12px 16px',
                       fontSize: '14px',
                       fontWeight: 400,
-                      border: '1px solid rgba(0,0,0,0.2)',
+                      border: '1px solid rgba(26, 10, 5, 0.2)',
                       borderRadius: '4px',
                       background: 'transparent',
                       appearance: 'none',
@@ -399,7 +399,7 @@ export const CommunityPage: React.FC = () => {
                   </select>
                   <ChevronDown
                     size={16}
-                    color="#6B6B6B"
+                    color="var(--warm-gray)"
                     style={{
                       position: 'absolute',
                       right: '16px',
@@ -418,7 +418,7 @@ export const CommunityPage: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     marginBottom: '8px',
                   }}
                 >
@@ -432,7 +432,7 @@ export const CommunityPage: React.FC = () => {
                     padding: '12px 16px',
                     fontSize: '14px',
                     fontWeight: 400,
-                    border: '1px solid rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(26, 10, 5, 0.2)',
                     borderRadius: '4px',
                     background: 'transparent',
                     outline: 'none',
@@ -447,7 +447,7 @@ export const CommunityPage: React.FC = () => {
                     display: 'block',
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     marginBottom: '8px',
                   }}
                 >
@@ -461,7 +461,7 @@ export const CommunityPage: React.FC = () => {
                     padding: '12px 16px',
                     fontSize: '14px',
                     fontWeight: 400,
-                    border: '1px solid rgba(0,0,0,0.2)',
+                    border: '1px solid rgba(26, 10, 5, 0.2)',
                     borderRadius: '4px',
                     background: 'transparent',
                     resize: 'none',
@@ -479,7 +479,7 @@ export const CommunityPage: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: 400,
-                      color: '#6B6B6B',
+                      color: 'var(--warm-gray)',
                       marginBottom: '8px',
                     }}
                   >
@@ -493,7 +493,7 @@ export const CommunityPage: React.FC = () => {
                       padding: '12px 16px',
                       fontSize: '14px',
                       fontWeight: 400,
-                      border: '1px solid rgba(0,0,0,0.2)',
+                      border: '1px solid rgba(26, 10, 5, 0.2)',
                       borderRadius: '4px',
                       background: 'transparent',
                       outline: 'none',
@@ -506,7 +506,7 @@ export const CommunityPage: React.FC = () => {
                       display: 'block',
                       fontSize: '13px',
                       fontWeight: 400,
-                      color: '#6B6B6B',
+                      color: 'var(--warm-gray)',
                       marginBottom: '8px',
                     }}
                   >
@@ -520,7 +520,7 @@ export const CommunityPage: React.FC = () => {
                       padding: '12px 16px',
                       fontSize: '14px',
                       fontWeight: 400,
-                      border: '1px solid rgba(0,0,0,0.2)',
+                      border: '1px solid rgba(26, 10, 5, 0.2)',
                       borderRadius: '4px',
                       background: 'transparent',
                       outline: 'none',
@@ -537,7 +537,7 @@ export const CommunityPage: React.FC = () => {
                   style={{
                     width: '16px',
                     height: '16px',
-                    accentColor: '#000000',
+                    accentColor: 'var(--palette-text)',
                     cursor: 'pointer',
                     marginTop: '2px',
                   }}
@@ -547,7 +547,7 @@ export const CommunityPage: React.FC = () => {
                   style={{
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     lineHeight: 1.5,
                     cursor: 'pointer',
                   }}
@@ -564,7 +564,7 @@ export const CommunityPage: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: 400,
                   color: '#fff',
-                  background: '#000000',
+                  background: 'var(--palette-text)',
                   border: 'none',
                   borderRadius: '4px',
                   cursor: 'pointer',
@@ -592,7 +592,7 @@ export const CommunityPage: React.FC = () => {
                     style={{
                       width: '100%',
                       aspectRatio: '1/1',
-                      background: '#F5F5F5',
+                      background: 'var(--palette-bg-2)',
                       overflow: 'hidden',
                       borderRadius: '4px',
                     }}
@@ -620,7 +620,7 @@ export const CommunityPage: React.FC = () => {
                         style={{
                           fontSize: '12px',
                           fontWeight: 400,
-                          color: '#6B6B6B',
+                          color: 'var(--warm-gray)',
                         }}
                       >
                         {review.productName}
@@ -630,7 +630,7 @@ export const CommunityPage: React.FC = () => {
                           <span
                             key={i}
                             style={{
-                              color: i < review.rating ? '#000000' : '#D4D4D4',
+                              color: i < review.rating ? 'var(--palette-text)' : 'var(--gray-lighter)',
                               fontSize: '12px',
                             }}
                           >
@@ -645,7 +645,7 @@ export const CommunityPage: React.FC = () => {
                       style={{
                         fontSize: '14px',
                         fontWeight: 400,
-                        color: '#000000',
+                        color: 'var(--palette-text)',
                         lineHeight: 1.6,
                         marginBottom: '8px',
                       }}
@@ -660,7 +660,7 @@ export const CommunityPage: React.FC = () => {
                         alignItems: 'center',
                         gap: '6px',
                         fontSize: '12px',
-                        color: '#9A9A9A',
+                        color: 'var(--muted)',
                       }}
                     >
                       <span>{review.author}</span>
@@ -685,7 +685,7 @@ export const CommunityPage: React.FC = () => {
                   padding: '12px 32px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',

@@ -35,23 +35,23 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="min-h-screen flex items-center justify-center bg-stone-50 px-4">
+        <div className="min-h-screen flex items-center justify-center bg-cream px-4">
           <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
-            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>오류가 발생했습니다</h1>
-            <p className="text-stone-600 mb-6">
+            <h1 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400 }}>오류가 발생했습니다</h1>
+            <p className="text-warm-gray mb-6">
               레시피를 불러오는 중 문제가 발생했습니다.
               <br />
               잠시 후 다시 시도해주세요.
             </p>
             {this.state.error && (
               <details className="mb-6 text-left">
-                <summary className="text-sm text-stone-500 cursor-pointer mb-2">
+                <summary className="text-sm text-warm-gray cursor-pointer mb-2">
                   오류 상세 정보
                 </summary>
-                <pre className="text-xs text-stone-400 bg-stone-50 p-3 rounded-none overflow-auto">
+                <pre className="text-xs text-muted bg-cream p-3 rounded-none overflow-auto">
                   {this.state.error.toString()}
                 </pre>
               </details>
@@ -59,14 +59,14 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex gap-3 justify-center">
               <Link
                 to="/recipe"
-                className="flex items-center gap-2 px-6 py-3 bg-stone-900 text-white rounded-none font-medium hover:bg-stone-800 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-black text-white rounded-none font-medium hover:bg-charcoal transition-colors"
               >
                 <ArrowLeft className="w-4 h-4" />
                 레시피 목록으로
               </Link>
               <Link
                 to="/"
-                className="flex items-center gap-2 px-6 py-3 bg-stone-100 text-stone-700 rounded-none font-medium hover:bg-stone-200 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-eggshell text-charcoal rounded-none font-medium hover:bg-[rgba(26,10,5,0.05)] transition-colors"
               >
                 <Home className="w-4 h-4" />
                 홈으로

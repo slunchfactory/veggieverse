@@ -86,7 +86,7 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
         width: '100%',
         aspectRatio: '1 / 1',
         overflow: 'hidden',
-        background: '#f0f0f0',
+        background: 'var(--border-hairline)',
         flexShrink: 0,
         borderTopLeftRadius: '16px',
         borderTopRightRadius: '16px',
@@ -120,7 +120,7 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
           fontSize: '18px',
           fontWeight: 700,
           margin: 0,
-          color: '#000',
+          color: 'var(--palette-text)',
           lineHeight: 1.3,
           marginBottom: '4px',
           display: '-webkit-box',
@@ -137,7 +137,7 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
         <span style={{
           fontSize: '12px',
           fontWeight: 400,
-          color: '#888',
+          color: 'var(--gray-light)',
         }}>
           @{recipe.author || 'slunch'}
         </span>
@@ -158,9 +158,9 @@ const RecipeCard: React.FC<{ recipe: Recipe }> = ({ recipe }) => {
               borderRadius: '50%',
               fontSize: '12px',
               fontWeight: 400,
-              border: isBookmarkHovered ? 'none' : '1px solid #000',
-              background: isBookmarkHovered ? '#000' : 'transparent',
-              color: isBookmarkHovered ? '#fff' : '#000',
+              border: isBookmarkHovered ? 'none' : '1px solid var(--palette-text)',
+              background: isBookmarkHovered ? 'var(--palette-text)' : 'transparent',
+              color: isBookmarkHovered ? '#fff' : 'var(--palette-text)',
               transition: 'all 0.2s ease',
             }}
             onMouseEnter={() => setIsBookmarkHovered(true)}
@@ -262,8 +262,8 @@ const RecipeCategoryPage: React.FC = () => {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cream)' }}>
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '14px', color: '#666', marginBottom: '16px' }}>카테고리를 찾을 수 없습니다.</p>
-          <Link to="/recipe" style={{ fontSize: '14px', color: '#000', textDecoration: 'underline' }}>
+          <p style={{ fontSize: '14px', color: 'var(--warm-gray)', marginBottom: '16px' }}>카테고리를 찾을 수 없습니다.</p>
+          <Link to="/recipe" style={{ fontSize: '14px', color: 'var(--palette-text)', textDecoration: 'underline' }}>
             레시피 목록으로 돌아가기
           </Link>
         </div>
@@ -272,7 +272,7 @@ const RecipeCategoryPage: React.FC = () => {
   }
 
   return (
-    <div style={{ background: '#FAF9F6', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--palette-bg-2)', minHeight: '100vh' }}>
       {/* 상단 네비게이션 */}
       <div
         style={{
@@ -282,7 +282,7 @@ const RecipeCategoryPage: React.FC = () => {
           right: 0,
           zIndex: 45,
           background: '#FFFFFF',
-          borderBottom: '1px solid #E0E0E0',
+          borderBottom: '1px solid var(--border-divider)',
         }}
       >
         <div
@@ -303,15 +303,15 @@ const RecipeCategoryPage: React.FC = () => {
               alignItems: 'center',
               gap: '8px',
               fontSize: '14px',
-              color: '#000',
+              color: 'var(--palette-text)',
               textDecoration: 'none',
             }}
           >
             <ChevronLeft size={20} strokeWidth={1} />
             <span>레시피</span>
           </Link>
-          <span style={{ margin: '0 12px', color: '#ccc' }}>/</span>
-          <span style={{ fontSize: '14px', color: '#000', fontWeight: 400 }}>{category.subtitle}</span>
+          <span style={{ margin: '0 12px', color: 'var(--border-color-light)' }}>/</span>
+          <span style={{ fontSize: '14px', color: 'var(--palette-text)', fontWeight: 400 }}>{category.subtitle}</span>
         </div>
       </div>
 
@@ -338,12 +338,12 @@ const RecipeCategoryPage: React.FC = () => {
               <h1 style={{
                 fontSize: '28px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 marginBottom: '4px',
               }}>
                 {category.title}
               </h1>
-              <span style={{ fontSize: '14px', color: '#666' }}>
+              <span style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>
                 {filteredRecipes.length}개의 레시피
               </span>
             </div>
@@ -356,7 +356,7 @@ const RecipeCategoryPage: React.FC = () => {
                 style={{
                   width: '100%',
                   padding: '10px 36px 10px 14px',
-                  border: '1px solid #ddd',
+                  border: '1px solid var(--border-divider)',
                   borderRadius: '4px',
                   fontSize: '14px',
                   outline: 'none',
@@ -370,7 +370,7 @@ const RecipeCategoryPage: React.FC = () => {
                   right: '12px',
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  color: '#999',
+                  color: 'var(--muted)',
                 }}
               />
             </div>
@@ -389,9 +389,9 @@ const RecipeCategoryPage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id)}
                 style={{
                   padding: '8px 16px',
-                  border: '1px solid #000',
-                  background: activeTab === tab.id ? '#000' : '#fff',
-                  color: activeTab === tab.id ? '#fff' : '#000',
+                  border: '1px solid var(--palette-text)',
+                  background: activeTab === tab.id ? 'var(--palette-text)' : '#fff',
+                  color: activeTab === tab.id ? '#fff' : 'var(--palette-text)',
                   fontSize: '13px',
                   fontWeight: 400,
                   cursor: 'pointer',
@@ -425,13 +425,13 @@ const RecipeCategoryPage: React.FC = () => {
                 <div style={{
                   width: '24px',
                   height: '24px',
-                  border: '2px solid #ddd',
-                  borderTopColor: '#000',
+                  border: '2px solid var(--border-divider)',
+                  borderTopColor: 'var(--palette-text)',
                   borderRadius: '50%',
                   animation: 'spin 0.8s linear infinite',
                 }} />
               ) : (
-                <span style={{ fontSize: '14px', color: '#999' }}>
+                <span style={{ fontSize: '14px', color: 'var(--muted)' }}>
                   스크롤하여 더 보기
                 </span>
               )}
@@ -444,10 +444,10 @@ const RecipeCategoryPage: React.FC = () => {
             <div style={{
               textAlign: 'center',
               padding: '80px 0',
-              color: '#666',
+              color: 'var(--warm-gray)',
             }}>
               <p style={{ fontSize: '16px', marginBottom: '8px' }}>검색 결과가 없습니다</p>
-              <p style={{ fontSize: '14px', color: '#999' }}>다른 키워드로 검색해보세요</p>
+              <p style={{ fontSize: '14px', color: 'var(--muted)' }}>다른 키워드로 검색해보세요</p>
             </div>
           )}
         </div>

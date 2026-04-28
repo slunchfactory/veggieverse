@@ -88,7 +88,7 @@ const ReviewsPage: React.FC = () => {
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }).map((_, i) => (
-      <span key={i} style={{ color: i < rating ? '#000000' : '#D4D4D4', fontSize: '14px' }}>★</span>
+      <span key={i} style={{ color: i < rating ? 'var(--palette-text)' : 'var(--gray-lighter)', fontSize: '14px' }}>★</span>
     ));
   };
 
@@ -103,7 +103,7 @@ const ReviewsPage: React.FC = () => {
                 padding: '0',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: activeTab === 'written' ? '#000000' : '#6B6B6B',
+                color: activeTab === 'written' ? 'var(--palette-text)' : 'var(--warm-gray)',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
@@ -119,7 +119,7 @@ const ReviewsPage: React.FC = () => {
                 padding: '0',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: activeTab === 'pending' ? '#000000' : '#6B6B6B',
+                color: activeTab === 'pending' ? 'var(--palette-text)' : 'var(--warm-gray)',
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
@@ -136,14 +136,14 @@ const ReviewsPage: React.FC = () => {
             <div className="space-y-4">
               {SAMPLE_REVIEWS.length > 0 ? (
                 SAMPLE_REVIEWS.map((review) => (
-                  <div key={review.id} style={{ background: '#F7F4EF', borderRadius: '6px', padding: '20px' }}>
+                  <div key={review.id} style={{ background: 'var(--cream)', borderRadius: '6px', padding: '20px' }}>
                     {/* 상품 정보 */}
                     <div className="flex gap-3 mb-4">
                       <div
                         style={{
                           width: '60px',
                           height: '60px',
-                          background: '#E5E5E0',
+                          background: 'var(--border-divider)',
                           borderRadius: '4px',
                           flexShrink: 0,
                           overflow: 'hidden',
@@ -157,16 +157,16 @@ const ReviewsPage: React.FC = () => {
                         />
                       </div>
                       <div>
-                        <p style={{ fontSize: '14px', fontWeight: 400, color: '#000000', marginBottom: '4px' }}>
+                        <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                           {review.productName}
                         </p>
                         <div style={{ marginBottom: '4px' }}>{renderStars(review.rating)}</div>
-                        <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>{review.createdAt}</p>
+                        <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>{review.createdAt}</p>
                       </div>
                     </div>
 
                     {/* 리뷰 내용 */}
-                    <p style={{ fontSize: '14px', fontWeight: 400, color: '#000000', lineHeight: 1.6, marginBottom: '12px' }}>
+                    <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', lineHeight: 1.6, marginBottom: '12px' }}>
                       {review.content}
                     </p>
 
@@ -179,7 +179,7 @@ const ReviewsPage: React.FC = () => {
                             style={{
                               width: '80px',
                               height: '80px',
-                              background: '#E5E5E0',
+                              background: 'var(--border-divider)',
                               borderRadius: '4px',
                               overflow: 'hidden',
                             }}
@@ -192,7 +192,7 @@ const ReviewsPage: React.FC = () => {
 
                     {/* 푸터 */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>
+                      <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                         {review.helpful}명에게 도움이 됨
                       </span>
                       <button
@@ -200,7 +200,7 @@ const ReviewsPage: React.FC = () => {
                           padding: '6px 12px',
                           fontSize: '12px',
                           fontWeight: 400,
-                          color: '#6B6B6B',
+                          color: 'var(--warm-gray)',
                           background: 'transparent',
                           border: 'none',
                           cursor: 'pointer',
@@ -215,8 +215,8 @@ const ReviewsPage: React.FC = () => {
                 ))
               ) : (
                 <div style={{ padding: '80px 0', textAlign: 'center' }}>
-                  <MessageSquare size={40} color="#D4D4D4" style={{ marginBottom: '16px' }} />
-                  <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>작성한 리뷰가 없습니다.</p>
+                  <MessageSquare size={40} color="var(--gray-lighter)" style={{ marginBottom: '16px' }} />
+                  <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)' }}>작성한 리뷰가 없습니다.</p>
                 </div>
               )}
             </div>
@@ -227,13 +227,13 @@ const ReviewsPage: React.FC = () => {
             <div className="space-y-4">
               {SAMPLE_PENDING_REVIEWS.length > 0 ? (
                 SAMPLE_PENDING_REVIEWS.map((item) => (
-                  <div key={item.orderId + item.productId} style={{ background: '#F7F4EF', borderRadius: '6px', padding: '20px' }}>
+                  <div key={item.orderId + item.productId} style={{ background: 'var(--cream)', borderRadius: '6px', padding: '20px' }}>
                     <div className="flex gap-3 items-center">
                       <div
                         style={{
                           width: '60px',
                           height: '60px',
-                          background: '#E5E5E0',
+                          background: 'var(--border-divider)',
                           borderRadius: '4px',
                           flexShrink: 0,
                           overflow: 'hidden',
@@ -247,13 +247,13 @@ const ReviewsPage: React.FC = () => {
                         />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <p style={{ fontSize: '14px', fontWeight: 400, color: '#000000', marginBottom: '4px' }}>
+                        <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                           {item.productName}
                         </p>
-                        <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>
+                        <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                           주문일: {item.orderDate}
                         </p>
-                        <p style={{ fontSize: '12px', fontWeight: 400, color: '#D64545' }}>
+                        <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--palette-orange)' }}>
                           {item.expiresAt}까지 작성 가능
                         </p>
                       </div>
@@ -262,7 +262,7 @@ const ReviewsPage: React.FC = () => {
                           padding: '10px 16px',
                           fontSize: '13px',
                           fontWeight: 400,
-                          background: '#000000',
+                          background: 'var(--palette-text)',
                           color: '#fff',
                           border: 'none',
                           borderRadius: '4px',
@@ -276,8 +276,8 @@ const ReviewsPage: React.FC = () => {
                 ))
               ) : (
                 <div style={{ padding: '80px 0', textAlign: 'center' }}>
-                  <Star size={40} color="#D4D4D4" style={{ marginBottom: '16px' }} />
-                  <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>작성 가능한 리뷰가 없습니다.</p>
+                  <Star size={40} color="var(--gray-lighter)" style={{ marginBottom: '16px' }} />
+                  <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)' }}>작성 가능한 리뷰가 없습니다.</p>
                 </div>
               )}
             </div>

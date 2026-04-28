@@ -1146,16 +1146,16 @@ ${result.description}
     if (!result) {
       // result가 없으면 기본값 사용
       return (
-        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#B2B2B2' }}>
+        <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--palette-bg-1)' }}>
           <div className="text-center">
-            <p className="text-stone-500 mb-4">결과를 계산하는 중...</p>
+            <p className="text-warm-gray mb-4">결과를 계산하는 중...</p>
           </div>
         </div>
       );
     }
     
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#B2B2B2' }}>
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--palette-bg-1)' }}>
         <div className="flex items-center justify-center min-h-screen p-8">
           <div className="bg-white p-8 max-w-2xl w-full shadow-sm" style={{ borderRadius: '16px' }}>
             
@@ -1167,7 +1167,7 @@ ${result.description}
                   // 로딩 상태
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <div className="relative">
-                      <div className="w-20 h-20 border-4 border-[#E0E0E0] rounded-none animate-spin border-t-black"></div>
+                      <div className="w-20 h-20 border-4 border-[var(--border-divider)] rounded-none animate-spin border-t-black"></div>
                       <Sparkles className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 text-black animate-pulse" />
                     </div>
                     <p className="mt-4 text-black font-medium">스피릿 소환 중...</p>
@@ -1194,7 +1194,7 @@ ${result.description}
                         </div>
                       ))}
                     </div>
-                    <p className="text-stone-500 text-sm text-center">
+                    <p className="text-warm-gray text-sm text-center">
                       스피릿 소환 중...
                     </p>
                   </div>
@@ -1204,7 +1204,7 @@ ${result.description}
                 {!isGeneratingImage && (
                   <button
                     onClick={regenerateMonster}
-                    className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-none text-sm font-medium text-stone-700 hover:bg-white transition-colors shadow-lg flex items-center gap-2"
+                    className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-none text-sm font-medium text-charcoal hover:bg-white transition-colors shadow-lg flex items-center gap-2"
                     aria-label="다른 형상 보기"
                   >
                     <Sparkles className="w-4 h-4" aria-hidden="true" />
@@ -1218,12 +1218,12 @@ ${result.description}
                 {/* 라벨 */}
                 
                 {/* 스피릿 이름 - 가장 크게 */}
-                <h2 className="text-stone-800 mb-2" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 600 }}>
+                <h2 className="text-charcoal mb-2" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 600 }}>
                   {result.name}
                 </h2>
                 
                 {/* 한 줄 설명 */}
-                <p className="text-stone-500 text-sm mb-4">
+                <p className="text-warm-gray text-sm mb-4">
                   {result.description}
                 </p>
                 
@@ -1253,7 +1253,7 @@ ${result.description}
                     return keywords.map((keyword, idx) => (
                       <span 
                         key={idx}
-                        className="px-3 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-700"
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-eggshell text-charcoal"
                       >
                         #{keyword}
                       </span>
@@ -1274,7 +1274,7 @@ ${result.description}
                   setShowShareModal(true);
                 }}
                 className="flex-1 py-4 rounded-none font-normal text-base transition-all flex items-center justify-center gap-2 text-white"
-                style={{ backgroundColor: '#8C451D', color: '#FFFFFF' }}
+                style={{ backgroundColor: 'var(--palette-text)', color: 'var(--primary)' }}
                 aria-label="공유하기"
               >
                 <Share2 className="w-5 h-5" aria-hidden="true" />
@@ -1287,7 +1287,7 @@ ${result.description}
                   setShowRecipeCurationModal(true);
                 }}
                 className="flex-1 py-4 rounded-none font-normal text-base transition-all flex items-center justify-center gap-2 text-white"
-                style={{ backgroundColor: '#8C451D', color: '#FFFFFF' }}
+                style={{ backgroundColor: 'var(--palette-text)', color: 'var(--primary)' }}
                 aria-label="레시피 보기"
               >
                 레시피 보기
@@ -1320,7 +1320,7 @@ ${result.description}
                 >
                   {/* 헤더 */}
                   <div className="flex items-center justify-between mb-6">
-                    <h3 id="share-modal-title" className="text-stone-800 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                    <h3 id="share-modal-title" className="text-charcoal font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                       공유하기
                     </h3>
                     <button
@@ -1331,16 +1331,16 @@ ${result.description}
                           setShareCardPreview(null);
                         }
                       }}
-                      className="p-2 hover:bg-stone-100 transition-colors"
+                      className="p-2 hover:bg-eggshell transition-colors"
                       aria-label="공유 모달 닫기"
                     >
-                      <X className="w-5 h-5 text-stone-400" aria-hidden="true" />
+                      <X className="w-5 h-5 text-muted" aria-hidden="true" />
                     </button>
                   </div>
                   
                   {/* 카드 이미지 미리보기 */}
                   {shareCardPreview && (
-                    <div className="mb-6 border-2 border-stone-200 rounded-none overflow-hidden">
+                    <div className="mb-6 border-2 border-[color:var(--border-hairline)] rounded-none overflow-hidden">
                       <img 
                         src={shareCardPreview} 
                         alt="공유 카드 미리보기"
@@ -1351,7 +1351,7 @@ ${result.description}
                   
                   {/* 공유 멘트 입력창 */}
                   <div className="mb-4">
-                    <label className="block text-sm font-medium text-stone-700 mb-2">
+                    <label className="block text-sm font-medium text-charcoal mb-2">
                       공유 멘트
                     </label>
                     <textarea
@@ -1363,7 +1363,7 @@ ${result.description}
                           setShareMessage(text);
                         }
                       }}
-                      className="w-full p-3 border-2 border-stone-200 rounded-none resize-none focus:outline-none focus:border-stone-400 text-sm"
+                      className="w-full p-3 border-2 border-[color:var(--border-hairline)] rounded-none resize-none focus:outline-none focus:border-[color:var(--border-color-light)] text-sm"
                       rows={6}
                       placeholder="공유할 멘트를 입력하세요"
                     />
@@ -1379,11 +1379,11 @@ ${result.description}
 #테이스트스피릿 #슬런치`;
                           setShareMessage(defaultMessage);
                         }}
-                        className="text-xs text-stone-500 hover:text-stone-700 underline"
+                        className="text-xs text-warm-gray hover:text-charcoal underline"
                       >
                         기본 멘트로 되돌리기
                       </button>
-                      <span className={`text-xs ${shareMessage.length > 280 ? 'text-black' : 'text-stone-400'}`}>
+                      <span className={`text-xs ${shareMessage.length > 280 ? 'text-black' : 'text-muted'}`}>
                         {shareMessage.length}/280
                       </span>
                     </div>
@@ -1455,7 +1455,7 @@ ${result.description}
                         window.open(shareUrl, '_blank', 'width=600,height=600');
                         setShowShareModal(false);
                       }}
-                      className="w-14 h-14 flex items-center justify-center bg-black hover:bg-stone-800 transition-colors rounded-none"
+                      className="w-14 h-14 flex items-center justify-center bg-black hover:bg-charcoal transition-colors rounded-none"
                       title="X (트위터)"
                       aria-label="X(트위터)로 공유하기"
                     >
@@ -1474,11 +1474,11 @@ ${result.description}
                           alert('링크 복사에 실패했습니다.');
                         }
                       }}
-                      className="w-14 h-14 flex items-center justify-center bg-stone-100 hover:bg-stone-200 transition-colors rounded-none"
+                      className="w-14 h-14 flex items-center justify-center bg-eggshell hover:bg-[rgba(26,10,5,0.05)] transition-colors rounded-none"
                       title="링크 복사"
                       aria-label="링크 복사하기"
                     >
-                      <Link2 className="w-6 h-6 text-stone-700" />
+                      <Link2 className="w-6 h-6 text-charcoal" />
                     </button>
                   </div>
                 </div>
@@ -1487,7 +1487,7 @@ ${result.description}
             
             {/* 복사 완료 토스트 */}
             {copyToast && (
-              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[101] bg-stone-800 text-white px-6 py-3 rounded-none shadow-lg animate-fadeIn">
+              <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[101] bg-charcoal text-white px-6 py-3 rounded-none shadow-lg animate-fadeIn">
                 복사됨!
               </div>
             )}
@@ -1518,8 +1518,8 @@ ${result.description}
                     alert('이미지 저장에 실패했습니다. 다시 시도해주세요.');
                   }
                 }}
-                className="py-3 px-4 border-2 text-stone-600 rounded-none font-normal transition-colors flex items-center justify-center gap-2"
-                style={{ backgroundColor: '#B2B2B2', borderColor: '#B2B2B2' }}
+                className="py-3 px-4 border-2 text-warm-gray rounded-none font-normal transition-colors flex items-center justify-center gap-2"
+                style={{ backgroundColor: 'var(--palette-bg-1)', borderColor: 'var(--palette-bg-1)' }}
                 aria-label="이미지 저장하기"
               >
                 <Download className="w-5 h-5" aria-hidden="true" />
@@ -1537,10 +1537,10 @@ ${result.description}
                 disabled={profileSaved}
                 className={`py-3 px-4 border-2 rounded-none font-normal transition-all flex items-center justify-center gap-2 ${
                   profileSaved 
-                    ? 'border-[#E0E0E0] bg-[#F5F5F5] text-black cursor-default'
-                    : 'text-stone-600'
+                    ? 'border-[var(--border-divider)] bg-[var(--palette-bg-2)] text-black cursor-default'
+                    : 'text-warm-gray'
                 }`}
-                style={!profileSaved ? { backgroundColor: '#B2B2B2', borderColor: '#B2B2B2' } : {}}
+                style={!profileSaved ? { backgroundColor: 'var(--palette-bg-1)', borderColor: 'var(--palette-bg-1)' } : {}}
               >
                 {profileSaved ? (
                   <>
@@ -1612,10 +1612,10 @@ ${result.description}
                       </div>
                       
                       {/* 맞춤 메시지 */}
-                      <h3 id="curation-modal-title" className="text-stone-900 mb-2 text-center font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                      <h3 id="curation-modal-title" className="text-black mb-2 text-center font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                         {result.name}를 위한 레시피
                       </h3>
-                      <p className="text-stone-600 text-center leading-relaxed">
+                      <p className="text-warm-gray text-center leading-relaxed">
                         {getSpiritCurationMessage(result.name)}
                       </p>
                     </div>
@@ -1627,7 +1627,7 @@ ${result.description}
                         navigate(`/recipe?spirit=${encodeURIComponent(result.name)}&spiritType=${encodeURIComponent(result.mbti)}`);
                       }}
                       className="w-full py-4 rounded-none font-normal transition-colors flex items-center justify-center gap-2 text-white"
-                      style={{ backgroundColor: '#8C451D', color: '#FFFFFF' }}
+                      style={{ backgroundColor: 'var(--palette-text)', color: 'var(--primary)' }}
                     >
                       레시피 보기
                     </button>
@@ -1641,7 +1641,7 @@ ${result.description}
               onClick={() => {
                 navigate('/');
               }}
-              className="w-full mt-4 py-3 text-stone-500 hover:text-stone-700 transition-colors rounded-none"
+              className="w-full mt-4 py-3 text-warm-gray hover:text-charcoal transition-colors rounded-none"
               style={{ textDecoration: 'none' }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.textDecoration = 'underline';
@@ -1663,15 +1663,15 @@ ${result.description}
   if (currentStep >= availableQuestions.length || currentStep < 0) {
     // 잘못된 currentStep인 경우 첫 번째 질문으로 리셋
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#B2B2B2' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--palette-bg-1)' }}>
         <div className="text-center">
-          <p className="text-stone-500 mb-4">질문을 불러오는 중...</p>
+          <p className="text-warm-gray mb-4">질문을 불러오는 중...</p>
           <button
             onClick={() => {
               // 첫 번째 질문으로 이동
               navigate('/spirit/question/diet');
             }}
-            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-charcoal transition-colors"
           >
             다시 시작하기
           </button>
@@ -1683,15 +1683,15 @@ ${result.description}
   const currentQuestion = availableQuestions[currentStep];
   if (!currentQuestion) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#B2B2B2' }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: 'var(--palette-bg-1)' }}>
         <div className="text-center">
-          <p className="text-stone-500 mb-4">질문을 찾을 수 없습니다.</p>
+          <p className="text-warm-gray mb-4">질문을 찾을 수 없습니다.</p>
           <button
             onClick={() => {
               // 첫 번째 질문으로 이동
               navigate('/spirit/question/diet');
             }}
-            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-stone-800 transition-colors"
+            className="px-6 py-3 bg-black text-white rounded-none font-normal hover:bg-charcoal transition-colors"
           >
             다시 시작하기
           </button>
@@ -1710,14 +1710,14 @@ ${result.description}
         <button
           onClick={scrollToTop}
           className="fixed top-6 left-6 z-50 w-10 h-10 rounded-none flex items-center justify-center transition-opacity animate-fadeIn"
-          style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(0,0,0,0.6)' }}
+          style={{ backgroundColor: 'transparent', color: '#ffffff', textShadow: '0 0 6px rgba(26, 10, 5, 0.6)' }}
           aria-label="상단으로 이동"
         >
           <ChevronUp className="w-5 h-5" />
         </button>
       )}
 
-      <div className="flex items-center justify-center min-h-screen p-4 md:p-8" style={{ backgroundColor: '#B2B2B2' }}>
+      <div className="flex items-center justify-center min-h-screen p-4 md:p-8" style={{ backgroundColor: 'var(--palette-bg-1)' }}>
         <div className="rounded-none px-2 py-6 md:p-10 relative" style={{ backgroundColor: 'transparent', width: '1000px', maxWidth: '100%' }}>
           {/* 질문 영역 - 상단 고정 */}
           <div
@@ -1727,7 +1727,7 @@ ${result.description}
               position: 'sticky',
               top: '70px',
               zIndex: 10,
-              backgroundColor: '#B2B2B2',
+              backgroundColor: 'var(--palette-bg-1)',
               paddingTop: '16px',
               paddingBottom: '16px',
             }}
@@ -1742,10 +1742,10 @@ ${result.description}
                 borderRadius: '50%',
                 top: '20px',
                 left: '0',
-                backgroundColor: '#8C451D',
+                backgroundColor: 'var(--palette-text)',
                 border: 'none',
                 outline: 'none',
-                color: '#DCFD4A',
+                color: 'var(--primary)',
                 cursor: 'pointer',
               }}
               onFocus={(e) => e.target.blur()}
@@ -1755,7 +1755,7 @@ ${result.description}
             </button>
 
             {/* 질문 */}
-            <h2 className="text-center text-stone-800 font-normal px-8 md:px-0 text-base md:text-xl" style={{ fontWeight: 400, marginBottom: '12px' }}>
+            <h2 className="text-center text-charcoal font-normal px-8 md:px-0 text-base md:text-xl" style={{ fontWeight: 400, marginBottom: '12px' }}>
               {currentQuestion.question}
             </h2>
             
@@ -1763,7 +1763,7 @@ ${result.description}
             <div style={{ 
               width: '100%', 
               height: '1px', 
-              backgroundColor: '#000',
+              backgroundColor: 'var(--palette-text)',
               marginTop: '16px'
             }} />
             
@@ -1771,7 +1771,7 @@ ${result.description}
             <div style={{ 
               width: `${progress}%`, 
               height: '4px', 
-              backgroundColor: '#000',
+              backgroundColor: 'var(--palette-text)',
               marginTop: '0px'
             }} />
           </div>
@@ -1867,9 +1867,9 @@ ${result.description}
                         height: '208px',
                         borderRadius: '12px',
                         overflow: 'hidden',
-                        boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
+                        boxShadow: showSelected ? 'inset 0 0 0 2px var(--primary)' : 'none',
                         transform: showSelected ? 'scale(1.02)' : 'none',
-                        background: '#E5E5E5',
+                        background: 'var(--border-divider)',
                       }}
                     >
                       {tarot?.image ? (
@@ -1880,15 +1880,15 @@ ${result.description}
                           draggable={false}
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-stone-100 to-stone-200">
-                          <span className="text-sm font-bold text-stone-800">{option.label}</span>
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-charcoal to-gray-lighter">
+                          <span className="text-sm font-bold text-charcoal">{option.label}</span>
                         </div>
                       )}
                     </div>
                     <div className="mt-2 text-center" style={{ width: '130px' }}>
-                      <span className="text-xs font-bold text-stone-800">{option.label}</span>
+                      <span className="text-xs font-bold text-charcoal">{option.label}</span>
                       {/* 모바일에서는 설명 항상 표시 */}
-                      <div className="text-xs text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
+                      <div className="text-xs text-warm-gray mt-1" style={{ lineHeight: '1.3' }}>
                         {option.description}
                       </div>
                     </div>
@@ -1928,9 +1928,9 @@ ${result.description}
                           height: '307px',
                           borderRadius: '12px',
                           overflow: 'hidden',
-                          boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
+                          boxShadow: showSelected ? 'inset 0 0 0 2px var(--primary)' : 'none',
                           transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'none',
-                          background: '#E5E5E5',
+                          background: 'var(--border-divider)',
                         }}
                       >
                         {tarot?.image ? (
@@ -1941,13 +1941,13 @@ ${result.description}
                           />
                         ) : (
                           <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
-                            <span className="text-xl font-bold text-stone-800">{option.label}</span>
+                            <span className="text-xl font-bold text-charcoal">{option.label}</span>
                           </div>
                         )}
                       </div>
                       <div className="mt-3 text-center" style={{ width: '192px' }}>
-                        <span className="text-base font-bold text-stone-800">{option.label}</span>
-                        <div className="text-sm text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
+                        <span className="text-base font-bold text-charcoal">{option.label}</span>
+                        <div className="text-sm text-warm-gray mt-1" style={{ lineHeight: '1.3' }}>
                           {option.description}
                         </div>
                       </div>
@@ -1985,9 +1985,9 @@ ${result.description}
                             height: '307px',
                             borderRadius: '12px',
                             overflow: 'hidden',
-                            boxShadow: showSelected ? 'inset 0 0 0 2px #DCFD4A' : 'none',
+                            boxShadow: showSelected ? 'inset 0 0 0 2px var(--primary)' : 'none',
                             transform: showSelected || isHovered ? 'translateY(-8px) scale(1.02)' : 'none',
-                            background: '#E5E5E5',
+                            background: 'var(--border-divider)',
                           }}
                         >
                           {tarot?.image ? (
@@ -1998,13 +1998,13 @@ ${result.description}
                             />
                           ) : (
                             <div className="w-full h-full flex flex-col items-center justify-center p-4 text-center" style={{ background: 'linear-gradient(135deg, #F5F0E8 0%, #E8E0D5 100%)' }}>
-                              <span className="text-xl font-bold text-stone-800">{option.label}</span>
+                              <span className="text-xl font-bold text-charcoal">{option.label}</span>
                             </div>
                           )}
                         </div>
                         <div className="mt-3 text-center" style={{ width: '192px' }}>
-                          <span className="text-base font-bold text-stone-800">{option.label}</span>
-                          <div className="text-sm text-stone-500 mt-1" style={{ lineHeight: '1.3' }}>
+                          <span className="text-base font-bold text-charcoal">{option.label}</span>
+                          <div className="text-sm text-warm-gray mt-1" style={{ lineHeight: '1.3' }}>
                             {option.description}
                           </div>
                         </div>

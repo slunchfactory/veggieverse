@@ -16,7 +16,7 @@
 
 .hof-badge-tag {
   display: inline-block;
-  background: #000;
+  background: var(--palette-text);
   color: #fff;
   padding: 8px 16px;
   font-size: 12px;
@@ -29,13 +29,13 @@
   font-size: 32px;
   font-weight: 800;
   margin: 0 0 8px 0;
-  color: #000;
+  color: var(--palette-text);
   line-height: 1.2;
 }
 
 .hof-subtitle {
   font-size: 14px;
-  color: #6B6B6B;
+  color: var(--warm-gray);
   margin: 0;
 }
 
@@ -58,7 +58,7 @@
 
 .hof-badge {
   display: inline-block;
-  background: #000;
+  background: var(--palette-text);
   color: #fff;
   padding: 8px 16px;
   font-size: 12px;
@@ -71,13 +71,13 @@
   font-size: 32px !important;
   font-weight: 800 !important;
   margin: 0 0 8px 0 !important;
-  color: #000 !important;
+  color: var(--palette-text) !important;
   line-height: 1.2 !important;
 }
 
 .hof-desc {
   font-size: 14px !important;
-  color: #6B6B6B !important;
+  color: var(--warm-gray) !important;
   margin: 0 !important;
 }
 
@@ -120,7 +120,7 @@
   flex-shrink: 0;
   width: 240px;
   background: #fff;
-  border: 1px solid #E5E5E5;
+  border: 1px solid var(--border-divider);
   border-radius: 12px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -132,7 +132,7 @@
 
 .hof-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(26, 10, 5, 0.1);
 }
 
 /* 이미지 - 1:1 비율 */
@@ -140,7 +140,7 @@
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #F5F5F5;
+  background: var(--palette-bg-2);
 }
 
 .hof-card-img img {
@@ -159,8 +159,8 @@
   position: absolute;
   top: 12px;
   left: 12px;
-  background: #000;
-  color: #3fa945;
+  background: var(--palette-text);
+  color: var(--primary);
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 700;
@@ -179,12 +179,12 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: #000 !important;
+  color: var(--palette-text) !important;
 }
 
 .hof-card-likes {
   font-size: 13px;
-  color: #6B6B6B;
+  color: var(--warm-gray);
 }
 
 /* 푸터 */
@@ -197,15 +197,15 @@
   display: inline-block;
   font-size: 14px;
   font-weight: 600;
-  color: #000;
+  color: var(--palette-text);
   text-decoration: none;
   padding: 12px 24px;
-  border: 1px solid #000;
+  border: 1px solid var(--palette-text);
   transition: all 0.15s ease;
 }
 
 .hof-link:hover {
-  background: #000;
+  background: var(--palette-text);
   color: #fff;
 }
 

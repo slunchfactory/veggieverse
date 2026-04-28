@@ -96,6 +96,18 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
     return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
+  /** 스토어 하위 경로: /store vs /store?productType=… */
+  const isStoreSubActive = (path: string) => {
+    const [pathOnly, qs] = path.split('?');
+    if (location.pathname !== pathOnly) return false;
+    if (!qs) {
+      const cur = new URLSearchParams(location.search).get('productType');
+      return cur === null || cur === '';
+    }
+    const wanted = new URLSearchParams(qs).get('productType');
+    return new URLSearchParams(location.search).get('productType') === wanted;
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -121,7 +133,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
           display: 'flex',
           flexDirection: 'column',
           overflowY: 'auto',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -133,7 +145,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             alignItems: 'center',
             justifyContent: 'flex-start',
             padding: '0 16px',
-            borderBottom: '1px solid #000',
+            borderBottom: '1px solid var(--palette-text)',
             flexShrink: 0,
           }}
         >
@@ -153,7 +165,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             }}
             aria-label="메뉴 닫기"
           >
-            <X size={24} strokeWidth={1} color="#000" />
+            <X size={24} strokeWidth={1} color="var(--palette-text)" />
           </button>
         </div>
 
@@ -163,22 +175,19 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             <div key={item.name}>
               {/* Main Menu Item */}
               <div
+                className="ui-drawer-row"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '16px 24px',
-                  borderBottom: '1px solid #000',
+                  borderBottom: '1px solid var(--palette-text)',
                   cursor: 'pointer',
                 }}
                 onClick={() => handleMenuClick(item)}
               >
                 <span
-                  style={{
-                    fontSize: '18px',
-                    fontWeight: 400,
-                    color: isActive(item.path) ? '#000' : '#333',
-                  }}
+                  className={`ui-drawer-nav-primary ${isActive(item.path) ? 'ui-drawer-nav-primary--active' : ''}`}
                 >
                   {item.name}
                 </span>
@@ -199,9 +208,9 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                     }}
                   >
                     {expandedMenu === item.name ? (
-                      <Minus size={18} color="#000" strokeWidth={1} />
+                      <Minus size={18} color="var(--palette-text)" strokeWidth={1} />
                     ) : (
-                      <Plus size={18} color="#000" strokeWidth={1} />
+                      <Plus size={18} color="var(--palette-text)" strokeWidth={1} />
                     )}
                   </button>
                 )}
@@ -218,25 +227,22 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                   }}
                 >
                   {item.subItems.map((subItem) => (
-                    <div
+                    <button
+                      type="button"
                       key={subItem.path}
+                      className="ui-nav-tab ui-nav-tab--block"
+                      data-ui-active={isStoreSubActive(subItem.path) ? 'true' : 'false'}
                       style={{
                         padding: '14px 24px 14px 40px',
-                        borderBottom: '1px solid #000',
-                        cursor: 'pointer',
+                        border: 'none',
+                        borderBottom: '1px solid var(--palette-text)',
+                        borderRadius: 0,
+                        background: '#FFFFFF',
                       }}
                       onClick={() => handleSubItemClick(subItem.path)}
                     >
-                      <span
-                        style={{
-                          fontSize: '15px',
-                          fontWeight: 400,
-                          color: '#666',
-                        }}
-                      >
-                        {subItem.name}
-                      </span>
-                    </div>
+                      <span className="ui-nav-tab__label">{subItem.name}</span>
+                    </button>
                   ))}
                 </div>
               )}
@@ -248,12 +254,13 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
         <div
           style={{
             padding: '24px',
-            borderTop: '1px solid #000',
+            borderTop: '1px solid var(--palette-text)',
             marginTop: 'auto',
           }}
         >
           {/* Search */}
           <button
+            className="ui-text-action"
             onClick={() => {
               onClose();
               onSearchClick();
@@ -261,7 +268,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             style={{
               fontSize: '15px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
@@ -278,16 +285,19 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               <Link
                 to="/mypage"
                 onClick={onClose}
+                className="link-plain"
                 style={{
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#000',
+                  color: 'var(--palette-text)',
                   textDecoration: 'none',
                 }}
               >
                 My Page
               </Link>
               <button
+                type="button"
+                className="ui-text-action"
                 onClick={() => {
                   onClose();
                   onLogoutClick();
@@ -295,7 +305,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
                 style={{
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#666',
+                  color: 'var(--warm-gray)',
                   background: 'none',
                   border: 'none',
                   cursor: 'pointer',
@@ -308,6 +318,8 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
             </div>
           ) : (
             <button
+              type="button"
+              className="ui-text-action"
               onClick={() => {
                 onLoginClick();
                 onClose();
@@ -315,7 +327,7 @@ export const NavigationDrawer: React.FC<NavigationDrawerProps> = ({
               style={{
                 fontSize: '15px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',

@@ -21,7 +21,7 @@ const NewsletterDetail: React.FC = () => {
             padding: '120px 20px',
           }}
         >
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginBottom: '16px' }}>
+          <p style={{ fontSize: '14px', color: 'var(--warm-gray)', marginBottom: '16px' }}>
             존재하지 않는 아티클입니다.
           </p>
           <Link
@@ -29,7 +29,7 @@ const NewsletterDetail: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
             }}
@@ -52,7 +52,7 @@ const NewsletterDetail: React.FC = () => {
           right: 0,
           zIndex: 45,
           background: '#FFFFFF',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid var(--palette-text)',
         }}
       >
         <div
@@ -76,7 +76,7 @@ const NewsletterDetail: React.FC = () => {
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               padding: 0,
             }}
           >
@@ -99,10 +99,10 @@ const NewsletterDetail: React.FC = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
               }}
               onError={(e) => {
-                (e.target as HTMLImageElement).style.backgroundColor = '#e5ded8';
+                (e.target as HTMLImageElement).style.backgroundColor = 'var(--palette-bg-2)';
               }}
             />
             {/* 하단 그라데이션 */}
@@ -113,7 +113,7 @@ const NewsletterDetail: React.FC = () => {
                 left: 0,
                 right: 0,
                 height: '50%',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)',
+                background: 'linear-gradient(to top, rgba(26, 10, 5, 0.8) 0%, rgba(26, 10, 5, 0.4) 50%, transparent 100%)',
                 pointerEvents: 'none',
               }}
             />
@@ -183,8 +183,8 @@ const NewsletterDetail: React.FC = () => {
             {article.quote && (
               <div
                 style={{
-                  borderTop: '1px solid #000000',
-                  borderBottom: '1px solid #000000',
+                  borderTop: '1px solid var(--palette-text)',
+                  borderBottom: '1px solid var(--palette-text)',
                   padding: '32px 0',
                   marginBottom: '60px',
                 }}
@@ -194,7 +194,7 @@ const NewsletterDetail: React.FC = () => {
                     textAlign: 'center',
                     fontSize: '14px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     lineHeight: 1.8,
                     whiteSpace: 'pre-line',
                   }}
@@ -215,13 +215,13 @@ const NewsletterDetail: React.FC = () => {
                     style={{
                       width: '100%',
                       aspectRatio: '4/3',
-                      background: '#E0E0E0',
+                      background: 'var(--border-divider)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
-                    <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 1</span>
+                    <span style={{ color: 'var(--warm-gray)', fontSize: '14px' }}>이미지 1</span>
                   </div>
                 </div>
               )}
@@ -243,13 +243,13 @@ const NewsletterDetail: React.FC = () => {
                       key={idx}
                       style={{
                         aspectRatio: '1/1',
-                        background: '#E0E0E0',
+                        background: 'var(--border-divider)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}
                     >
-                      <span style={{ color: '#6B6B6B', fontSize: '14px' }}>이미지 {idx + 2}</span>
+                      <span style={{ color: 'var(--warm-gray)', fontSize: '14px' }}>이미지 {idx + 2}</span>
                     </div>
                   ))}
                 </div>
@@ -261,7 +261,7 @@ const NewsletterDetail: React.FC = () => {
             {/* 작성자 정보 */}
             <div
               style={{
-                borderTop: '1px solid #000000',
+                borderTop: '1px solid var(--palette-text)',
                 marginTop: '60px',
                 paddingTop: '20px',
               }}
@@ -274,7 +274,7 @@ const NewsletterDetail: React.FC = () => {
                       height: '50px',
                       borderRadius: '50%',
                       overflow: 'hidden',
-                      background: '#E5E5E0',
+                      background: 'var(--border-divider)',
                       flexShrink: 0,
                     }}
                   >
@@ -286,11 +286,11 @@ const NewsletterDetail: React.FC = () => {
                   </div>
                 )}
                 <div>
-                  <p style={{ fontSize: '14px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>
+                  <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                     {article.author}
                   </p>
                   {AUTHOR_BIO[article.author] && (
-                    <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B', lineHeight: 1.5 }}>
+                    <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)', lineHeight: 1.5 }}>
                       {AUTHOR_BIO[article.author].split('\n')[0]}
                     </p>
                   )}
@@ -305,7 +305,7 @@ const NewsletterDetail: React.FC = () => {
                 justifyContent: 'space-between',
                 marginTop: '60px',
                 paddingTop: '20px',
-                borderTop: '1px solid #000000',
+                borderTop: '1px solid var(--palette-text)',
               }}
             >
               {prevArticle ? (
@@ -320,7 +320,7 @@ const NewsletterDetail: React.FC = () => {
                     border: 'none',
                     cursor: 'pointer',
                     fontSize: '14px',
-                    color: '#000',
+                    color: 'var(--palette-text)',
                   }}
                 >
                   <ChevronLeft size={16} />
@@ -335,10 +335,10 @@ const NewsletterDetail: React.FC = () => {
                 style={{
                   padding: '12px 24px',
                   background: 'transparent',
-                  border: '1px solid #000',
+                  border: '1px solid var(--palette-text)',
                   cursor: 'pointer',
                   fontSize: '14px',
-                  color: '#000',
+                  color: 'var(--palette-text)',
                 }}
               >
                 목록
@@ -356,7 +356,7 @@ const NewsletterDetail: React.FC = () => {
                     border: 'none',
                     cursor: 'pointer',
                     fontSize: '14px',
-                    color: '#000',
+                    color: 'var(--palette-text)',
                   }}
                 >
                   <span>다음글</span>

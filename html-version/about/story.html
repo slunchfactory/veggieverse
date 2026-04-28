@@ -8,23 +8,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="../../public/common/logo.png" />
     <style>
-      :root { --lime: #DCFD4A; --charcoal: #333; --warm-gray: #888; --muted: #999; }
+      :root { --lime: #DCFD4A; --charcoal: var(--charcoal); --warm-gray: var(--gray-light); --muted: var(--muted); }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { background: #FFFDF5; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
       /* Header */
-      .header { height: 64px; background: var(--lime); border-bottom: 1px solid #000; position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
+      .header { height: 64px; background: var(--lime); border-bottom: 1px solid var(--palette-text); position: fixed; top: 0; left: 0; right: 0; z-index: 50; display: flex; align-items: center; justify-content: center; }
       .header-logo { height: 36px; }
-      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: #000; }
+      .header-back { position: absolute; left: 16px; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--palette-text); }
 
       /* Main */
       main { margin-top: 64px; }
 
       /* Hero Grid */
-      .hero-grid { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      .hero-grid { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .hero-grid { grid-template-columns: 1fr 1fr; } }
       .hero-image { aspect-ratio: 4/3; background: #E8E4DF; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
-      @media (min-width: 768px) { .hero-image { border-right: 1px solid #000; } }
+      @media (min-width: 768px) { .hero-image { border-right: 1px solid var(--palette-text); } }
       .hero-text { padding: 40px 24px; display: flex; flex-direction: column; justify-content: center; }
       @media (min-width: 768px) { .hero-text { padding: 64px; } }
       .hero-label { font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
@@ -33,21 +33,21 @@
       .hero-desc { font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal); }
 
       /* 3-Column Grid */
-      .three-col { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      .three-col { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .three-col { grid-template-columns: repeat(3, 1fr); } }
-      .col-item { padding: 32px 24px; border-bottom: 1px solid #000; }
-      @media (min-width: 768px) { .col-item { padding: 48px 32px; border-bottom: none; border-right: 1px solid #000; } .col-item:last-child { border-right: none; } }
+      .col-item { padding: 32px 24px; border-bottom: 1px solid var(--palette-text); }
+      @media (min-width: 768px) { .col-item { padding: 48px 32px; border-bottom: none; border-right: 1px solid var(--palette-text); } .col-item:last-child { border-right: none; } }
       .col-label { font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
       .col-text { font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal); }
 
       /* Full Image */
-      .full-image { height: 300px; background: #D4CFC7; border-bottom: 1px solid #000; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
+      .full-image { height: 300px; background: #D4CFC7; border-bottom: 1px solid var(--palette-text); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
       @media (min-width: 768px) { .full-image { height: 400px; } }
 
       /* Tags */
-      .tags-section { padding: 24px; display: flex; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid #000; }
+      .tags-section { padding: 24px; display: flex; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .tags-section { padding: 32px 64px; gap: 16px; } }
-      .tag { padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400; }
+      .tag { padding: 8px 16px; border: 1px solid var(--palette-text); font-size: 13px; font-weight: 400; }
     </style>
   </head>
   <body>

@@ -37,10 +37,10 @@ export const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badge, cou
             setIsVisible(false);
             setTimeout(onClose, 300);
           }}
-          className="absolute top-2 right-2 p-1 hover:bg-stone-100 transition-colors"
+          className="absolute top-2 right-2 p-1 hover:bg-eggshell transition-colors"
           aria-label="닫기"
         >
-          <X className="w-4 h-4 text-stone-400" />
+          <X className="w-4 h-4 text-muted" />
         </button>
 
         {badge && (
@@ -52,28 +52,28 @@ export const BadgeNotification: React.FC<BadgeNotificationProps> = ({ badge, cou
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Trophy className="w-5 h-5 text-emerald-600" />
-                  <span className="font-normal text-stone-900">배지 획득!</span>
+                  <span className="font-normal text-black">배지 획득!</span>
                 </div>
-                <h3 className="text-lg font-normal text-stone-900">{badge.name}</h3>
-                <p className="text-sm text-stone-600">{badge.description}</p>
+                <h3 className="text-lg font-normal text-black">{badge.name}</h3>
+                <p className="text-sm text-warm-gray">{badge.description}</p>
               </div>
             </div>
           </div>
         )}
 
         {coupon && (
-          <div className="pt-4 border-t border-stone-200">
+          <div className="pt-4 border-t border-[color:var(--border-hairline)]">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-amber-50 rounded-none flex items-center justify-center">
                 <Gift className="w-6 h-6 text-amber-600" />
               </div>
               <div className="flex-1">
-                <p className="font-normal text-stone-900 mb-1">스토어 쿠폰 발급!</p>
-                <p className="text-sm text-stone-600 mb-2">
+                <p className="font-normal text-black mb-1">스토어 쿠폰 발급!</p>
+                <p className="text-sm text-warm-gray mb-2">
                   {coupon.discount}{coupon.type === 'percentage' ? '%' : '원'} 할인 쿠폰
                 </p>
-                <div className="px-3 py-2 bg-stone-100 rounded-none">
-                  <p className="font-mono text-sm font-normal text-stone-900">{coupon.code}</p>
+                <div className="px-3 py-2 bg-eggshell rounded-none">
+                  <p className="font-mono text-sm font-normal text-black">{coupon.code}</p>
                 </div>
               </div>
             </div>

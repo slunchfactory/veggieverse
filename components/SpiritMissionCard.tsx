@@ -65,17 +65,17 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
       <div>
         {/* 헤더 */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+          <h2 className="text-black font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
             ✦ {user.spiritName}만을 위한 오늘의 스피릿 미션
           </h2>
         </div>
 
         {/* 미션 설명 */}
         <div className="mb-6">
-          <p className="text-sm text-stone-600 leading-relaxed mb-4">
+          <p className="text-sm text-warm-gray leading-relaxed mb-4">
             {user.spiritName} 스피릿의 특성에 맞는 레시피를 따라해보고, 나만의 변형 레시피를 공유해보세요.
           </p>
-          <p className="text-xs text-stone-500">
+          <p className="text-xs text-warm-gray">
             미션 완료 시 스피릿 배지와 스토어 혜택이 지급됩니다
           </p>
         </div>
@@ -84,7 +84,7 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
         <div className="mb-4">
           <button
             onClick={onPhotoReviewClick || (() => {})}
-            className="w-full py-4 bg-stone-900 hover:bg-stone-800 text-white rounded-md font-normal text-base transition-colors flex items-center justify-center gap-2"
+            className="w-full py-4 bg-black hover:bg-charcoal text-white rounded-md font-normal text-base transition-colors flex items-center justify-center gap-2"
           >
             <ChefHat className="w-5 h-5" />
             <span>I Made It! 요리 완료 인증하고 배지 받기</span>
@@ -95,14 +95,14 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
         <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleFollowRecipe}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-stone-300 text-stone-700 rounded-md text-sm font-medium hover:bg-stone-50 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-[color:var(--border-divider)] text-charcoal rounded-md text-sm font-medium hover:bg-cream transition-colors"
           >
             <ChefHat className="w-4 h-4" />
             <span>다른 레시피 보기</span>
           </button>
           <button
             onClick={handleUploadRecipe}
-            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-stone-300 text-stone-700 rounded-md text-sm font-medium hover:bg-stone-50 transition-colors"
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white border border-[color:var(--border-divider)] text-charcoal rounded-md text-sm font-medium hover:bg-cream transition-colors"
           >
             <Upload className="w-4 h-4" />
             <span>레시피 투고하기</span>
@@ -110,10 +110,10 @@ export const SpiritMissionCard: React.FC<SpiritMissionCardProps> = ({ recipeId, 
         </div>
 
         {/* 보상 안내 */}
-        <div className="mt-4 pt-4 border-t border-stone-100">
-          <p className="text-xs text-stone-500 text-center">
-            미션 완료 시 <span className="font-medium text-stone-900">{user.spiritName} 배지</span>와{' '}
-            <span className="font-medium text-stone-900">스토어 10% 할인 쿠폰</span>이 자동으로 지급됩니다
+        <div className="mt-4 pt-4 border-t border-[color:var(--border-hairline)]">
+          <p className="text-xs text-warm-gray text-center">
+            미션 완료 시 <span className="font-medium text-black">{user.spiritName} 배지</span>와{' '}
+            <span className="font-medium text-black">스토어 10% 할인 쿠폰</span>이 자동으로 지급됩니다
           </p>
         </div>
       </div>

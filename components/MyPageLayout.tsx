@@ -47,8 +47,8 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({ children }) => {
     return (
       <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--cream)' }}>
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B', marginBottom: '16px' }}>로그인이 필요합니다.</p>
-          <Link to="/" style={{ fontSize: '14px', fontWeight: 400, color: '#000000', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
+          <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '16px' }}>로그인이 필요합니다.</p>
+          <Link to="/" style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', textDecoration: 'underline', textUnderlineOffset: '3px' }}>
             테스트 시작하기
           </Link>
         </div>
@@ -67,7 +67,7 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({ children }) => {
           right: 0,
           zIndex: 45,
           background: '#FFFFFF',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid var(--palette-text)',
         }}
       >
         <div
@@ -107,7 +107,7 @@ const MyPageLayout: React.FC<MyPageLayoutProps> = ({ children }) => {
                   fontSize: '14px',
                   fontWeight: 400,
                   lineHeight: '48px',
-                  color: isActive(tab.path) ? '#000' : '#666',
+                  color: isActive(tab.path) ? 'var(--palette-text)' : 'var(--warm-gray)',
                   textDecoration: isActive(tab.path) ? 'underline' : 'none',
                   textUnderlineOffset: '4px',
                   cursor: 'pointer',

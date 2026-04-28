@@ -1,18 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-interface FooterProps {
-  scrollButtonZIndex?: number;
-}
-
-export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
-  const handleHover = (e: React.MouseEvent<HTMLElement>, isEnter: boolean) => {
-    e.currentTarget.style.textDecoration = isEnter ? 'underline' : 'none';
-    if (isEnter) e.currentTarget.style.textUnderlineOffset = '4px';
-  };
-
+export const Footer: React.FC = () => {
   return (
-    <footer className="text-black w-full" style={{ backgroundColor: '#DCFD4A', borderTop: '1px solid var(--black)' }}>
+    <footer className="text-black w-full" style={{ backgroundColor: 'var(--primary)', borderTop: '1px solid var(--palette-text)' }}>
       {/* === MOBILE FOOTER (Visible only < 768px) === */}
       <div className="block md:hidden px-5 py-10">
         {/* Mobile 2-Column Grid */}
@@ -22,32 +13,24 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
             <Link 
               to="/about"
               className="block text-[11px] font-normal tracking-widest uppercase mb-3 text-black"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               ABOUT
             </Link>
             <Link 
               to="/about?section=slow-and-lunch" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               Slow and Lunch
             </Link>
             <Link 
               to="/about?section=branch" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               Branch
             </Link>
             <Link 
               to="/about?section=b2b-vtech" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               B2B & V-tech
             </Link>
@@ -58,8 +41,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
             <Link 
               to="/newsletter"
               className="block text-[11px] font-normal tracking-widest uppercase mb-3 text-black"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               NEWSLETTER
             </Link>
@@ -74,16 +55,12 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
             <a 
               href="mailto:slunch@slunch.co.kr" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               일반문의 slunch@slunch.co.kr
             </a>
             <a 
               href="mailto:export@slunch.co.kr" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               B2B export@slunch.co.kr
             </a>
@@ -97,8 +74,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               target="_blank" 
               rel="noopener noreferrer" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               Instagram
             </a>
@@ -107,8 +82,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               target="_blank" 
               rel="noopener noreferrer" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               Youtube
             </a>
@@ -117,8 +90,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
               target="_blank" 
               rel="noopener noreferrer" 
               className="block text-[13px] text-black leading-relaxed mb-1"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               Linked In
             </a>
@@ -165,8 +136,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
             <Link 
               to="/about"
               className="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               ABOUT
             </Link>
@@ -175,8 +144,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                 <Link 
                   to="/about?section=slow-and-lunch" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   Slow and Lunch
                 </Link>
@@ -185,8 +152,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                 <Link 
                   to="/about?section=branch" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   Branch
                 </Link>
@@ -195,8 +160,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                 <Link 
                   to="/about?section=b2b-vtech" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   B2B & V-tech
                 </Link>
@@ -209,8 +172,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
             <Link 
               to="/newsletter"
               className="block text-[11px] font-normal tracking-[0.15em] uppercase mb-4 text-black"
-              onMouseEnter={(e) => handleHover(e, true)}
-              onMouseLeave={(e) => handleHover(e, false)}
             >
               NEWSLETTER
             </Link>
@@ -227,8 +188,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                 <a 
                   href="mailto:slunch@slunch.co.kr" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   일반문의 slunch@slunch.co.kr
                 </a>
@@ -237,8 +196,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                 <a 
                   href="mailto:export@slunch.co.kr" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   B2B export@slunch.co.kr
                 </a>
@@ -256,8 +213,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   Instagram
                 </a>
@@ -268,8 +223,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   Youtube
                 </a>
@@ -280,8 +233,6 @@ export const Footer: React.FC<FooterProps> = ({ scrollButtonZIndex = 80 }) => {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="block text-[13px] text-black font-normal leading-[1.8] hover:text-primary-light transition-colors"
-                  onMouseEnter={(e) => handleHover(e, true)}
-                  onMouseLeave={(e) => handleHover(e, false)}
                 >
                   Linked In
                 </a>

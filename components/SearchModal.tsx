@@ -55,7 +55,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
   return (
     <div
       className="fixed inset-0 z-[100] flex items-start justify-center pt-20"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -64,7 +64,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           maxWidth: '500px',
           margin: '0 16px',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           padding: '24px',
           position: 'relative',
@@ -90,7 +90,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           }}
           aria-label="닫기"
         >
-          <X size={20} strokeWidth={1} color="#000" />
+          <X size={20} strokeWidth={1} color="var(--palette-text)" />
         </button>
 
         {/* 헤더 */}
@@ -99,7 +99,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           marginBottom: '24px',
           fontSize: '18px',
           fontWeight: 400,
-          color: '#000',
+          color: 'var(--palette-text)',
         }}>
           Search
         </h2>
@@ -116,7 +116,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
               style={{
                 width: '100%',
                 padding: '14px 48px 14px 16px',
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 400,
@@ -143,7 +143,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
               }}
               aria-label="검색"
             >
-              <Search size={18} strokeWidth={1} color="#000" />
+              <Search size={18} strokeWidth={1} color="var(--palette-text)" />
             </button>
           </div>
         </form>
@@ -153,7 +153,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           <p style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             marginBottom: '12px',
           }}>
             Popular Keywords
@@ -167,15 +167,15 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
                   padding: '8px 14px',
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: '#000',
+                  color: 'var(--palette-text)',
                   background: 'transparent',
-                  border: '1px solid #E5E5E5',
+                  border: '1px solid var(--border-divider)',
                   borderRadius: '20px',
                   cursor: 'pointer',
                   transition: 'border-color 0.15s ease',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = '#000')}
-                onMouseLeave={(e) => (e.currentTarget.style.borderColor = '#E5E5E5')}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--palette-text)')}
+                onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-divider)')}
               >
                 {keyword}
               </button>

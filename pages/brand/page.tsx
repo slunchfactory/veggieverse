@@ -9,7 +9,7 @@ export const BrandPage: React.FC = () => {
           position: 'relative',
           height: '60vh',
           minHeight: '400px',
-          background: '#333',
+          background: 'var(--charcoal)',
           overflow: 'hidden',
         }}
       >
@@ -80,7 +80,7 @@ export const BrandPage: React.FC = () => {
         <div
           style={{
             aspectRatio: '4/3',
-            background: '#744b2f',
+            background: 'var(--palette-text)',
           }}
         >
           <img
@@ -111,7 +111,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '22px',
               fontWeight: 400,
-              color: '#000000',
+              color: 'var(--palette-text)',
               lineHeight: 1.4,
               marginBottom: '24px',
             }}
@@ -124,7 +124,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.8,
               marginBottom: '12px',
             }}
@@ -135,7 +135,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.8,
               marginBottom: '12px',
             }}
@@ -146,7 +146,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.8,
             }}
           >
@@ -158,7 +158,7 @@ export const BrandPage: React.FC = () => {
       {/* Section 2 - Reversed Grid */}
       <div
         className="grid grid-cols-1 md:grid-cols-2"
-        style={{ background: '#F7F4EF' }}
+        style={{ background: 'var(--cream)' }}
       >
         {/* Text Left - 모바일에서는 아래로 */}
         <div
@@ -173,7 +173,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '22px',
               fontWeight: 400,
-              color: '#000000',
+              color: 'var(--palette-text)',
               lineHeight: 1.4,
               marginBottom: '24px',
             }}
@@ -186,7 +186,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.8,
               marginBottom: '12px',
             }}
@@ -197,7 +197,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.8,
             }}
           >
@@ -210,7 +210,7 @@ export const BrandPage: React.FC = () => {
           className="order-1 md:order-2"
           style={{
             aspectRatio: '4/3',
-            background: '#5a7c59',
+            background: 'var(--palette-mint)',
           }}
         >
           <img
@@ -240,7 +240,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               letterSpacing: '0.1em',
               marginBottom: '12px',
             }}
@@ -251,7 +251,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '16px',
               fontWeight: 400,
-              color: '#000000',
+              color: 'var(--palette-text)',
               marginBottom: '12px',
             }}
           >
@@ -261,7 +261,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.7,
             }}
           >
@@ -275,7 +275,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               letterSpacing: '0.1em',
               marginBottom: '12px',
             }}
@@ -286,7 +286,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '16px',
               fontWeight: 400,
-              color: '#000000',
+              color: 'var(--palette-text)',
               marginBottom: '12px',
             }}
           >
@@ -296,7 +296,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.7,
             }}
           >
@@ -310,7 +310,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               letterSpacing: '0.1em',
               marginBottom: '12px',
             }}
@@ -321,7 +321,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '16px',
               fontWeight: 400,
-              color: '#000000',
+              color: 'var(--palette-text)',
               marginBottom: '12px',
             }}
           >
@@ -331,7 +331,7 @@ export const BrandPage: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.7,
             }}
           >
@@ -345,14 +345,14 @@ export const BrandPage: React.FC = () => {
         className="px-4 md:px-8 lg:px-16 py-16 md:py-20"
         style={{
           textAlign: 'center',
-          background: '#F7F4EF',
+          background: 'var(--cream)',
         }}
       >
         <p
           style={{
             fontSize: '18px',
             fontWeight: 400,
-            color: '#000000',
+            color: 'var(--palette-text)',
             lineHeight: 1.8,
             maxWidth: '640px',
             margin: '0 auto',
@@ -364,7 +364,7 @@ export const BrandPage: React.FC = () => {
           style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             marginTop: '20px',
           }}
         >
@@ -392,7 +392,7 @@ export const BrandPage: React.FC = () => {
               style={{
                 fontSize: '28px',
                 fontWeight: 400,
-                color: '#000000',
+                color: 'var(--palette-text)',
                 marginBottom: '6px',
               }}
             >
@@ -402,7 +402,7 @@ export const BrandPage: React.FC = () => {
               style={{
                 fontSize: '12px',
                 fontWeight: 400,
-                color: '#6B6B6B',
+                color: 'var(--warm-gray)',
               }}
             >
               {stat.label}

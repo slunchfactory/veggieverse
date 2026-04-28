@@ -94,7 +94,7 @@ export const CartBar: React.FC<CartBarProps> = ({
         left: 0,
         right: 0,
         background: '#fff',
-        borderTop: '1px solid #000',
+        borderTop: '1px solid var(--palette-text)',
         zIndex: 100,
         maxHeight: isExpanded ? '70vh' : 'auto',
         transition: 'max-height 0.3s',
@@ -133,7 +133,7 @@ export const CartBar: React.FC<CartBarProps> = ({
               <p
                 style={{
                   fontSize: '12px',
-                  color: '#999',
+                  color: 'var(--muted)',
                   textDecoration: 'line-through',
                 }}
               >
@@ -152,7 +152,7 @@ export const CartBar: React.FC<CartBarProps> = ({
             }}
             style={{
               padding: '12px 24px',
-              background: '#000',
+              background: 'var(--palette-text)',
               color: '#fff',
               border: 'none',
               fontSize: '14px',
@@ -167,11 +167,11 @@ export const CartBar: React.FC<CartBarProps> = ({
 
       {/* Expanded Detail */}
       {isExpanded && (
-        <div style={{ padding: '0 24px 24px', borderTop: '1px solid #eee' }}>
+        <div style={{ padding: '0 24px 24px', borderTop: '1px solid var(--border-hairline)' }}>
           {/* 추천 식단 목록 */}
           {selectedMealPlans.length > 0 && (
             <div style={{ marginTop: '16px' }}>
-              <p style={{ fontSize: '12px', color: '#888', marginBottom: '8px' }}>
+              <p style={{ fontSize: '12px', color: 'var(--gray-light)', marginBottom: '8px' }}>
                 — 추천 식단 —
               </p>
               {selectedMealPlans.map((planId) => {
@@ -189,7 +189,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 0',
-                      borderBottom: '1px solid #f0f0f0',
+                      borderBottom: '1px solid var(--border-hairline)',
                     }}
                   >
                     <div>
@@ -210,7 +210,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                           padding: '4px',
                         }}
                       >
-                        <X size={16} color="#888" />
+                        <X size={16} color="var(--gray-light)" />
                       </button>
                     </div>
                   </div>
@@ -222,7 +222,7 @@ export const CartBar: React.FC<CartBarProps> = ({
           {/* 낱개 목록 */}
           {cartData.singleItemCount > 0 && (
             <div style={{ marginTop: '16px' }}>
-              <p style={{ fontSize: '12px', color: '#888', marginBottom: '8px' }}>
+              <p style={{ fontSize: '12px', color: 'var(--gray-light)', marginBottom: '8px' }}>
                 — 낱개 —
               </p>
               {Array.from(singleItems.entries()).map(([menuId, quantity]) => {
@@ -238,7 +238,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       padding: '12px 0',
-                      borderBottom: '1px solid #f0f0f0',
+                      borderBottom: '1px solid var(--border-hairline)',
                     }}
                   >
                     <div>
@@ -259,7 +259,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                           padding: '4px',
                         }}
                       >
-                        <X size={16} color="#888" />
+                        <X size={16} color="var(--gray-light)" />
                       </button>
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export const CartBar: React.FC<CartBarProps> = ({
           )}
 
           {/* 가격 요약 */}
-          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #000' }}>
+          <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--palette-text)' }}>
             <div
               style={{
                 display: 'flex',
@@ -277,7 +277,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                 marginBottom: '8px',
               }}
             >
-              <span style={{ fontSize: '14px', color: '#666' }}>소계</span>
+              <span style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>소계</span>
               <span style={{ fontSize: '14px' }}>
                 {cartData.originalTotal.toLocaleString()}원
               </span>
@@ -305,7 +305,7 @@ export const CartBar: React.FC<CartBarProps> = ({
                 display: 'flex',
                 justifyContent: 'space-between',
                 paddingTop: '8px',
-                borderTop: '1px solid #eee',
+                borderTop: '1px solid var(--border-hairline)',
               }}
             >
               <span style={{ fontSize: '16px', fontWeight: 500 }}>결제 금액</span>

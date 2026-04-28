@@ -419,7 +419,7 @@ export const StorePage: React.FC = () => {
   const [spectrum, setSpectrum] = useState<string>('none');
   const [selectedRestrictions, setSelectedRestrictions] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('밀키트');
+  const [activeTab, setActiveTab] = useState<string>('전체');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
@@ -467,16 +467,16 @@ export const StorePage: React.FC = () => {
     return count.toLocaleString();
   };
 
-  // URL 파라미터로 카테고리 필터링
+  // URL 파라미터로 카테고리·제품타입 필터링
   useEffect(() => {
     const categoryParam = searchParams.get('category');
+    const productTypeParam = searchParams.get('productType');
+
     if (categoryParam) {
       setActiveTab(categoryParam);
-      // 카테고리에 따른 필터 설정
       if (categoryParam === 'NEW') {
         setSelectedCategories(['신메뉴']);
       } else {
-        // 세부 카테고리 매핑
         const categoryMap: Record<string, string> = {
           '슬런치 위클리': '슬런치 위클리',
           '소스와 오일': '소스와 오일',
@@ -488,10 +488,25 @@ export const StorePage: React.FC = () => {
           setSelectedCategories([mappedCategory]);
         }
       }
-    } else {
-      setActiveTab('ALL');
-      setSelectedCategories([]);
+      return;
     }
+
+    if (productTypeParam) {
+      setActiveTab(productTypeParam);
+      const categoryMap: Record<string, string> = {
+        '밀키트': '밀키트',
+        '베이커리': '베이커리',
+        '소스/오일': '소스와 오일',
+        '세트': '세트',
+        '구독': '구독',
+      };
+      const mapped = categoryMap[productTypeParam] ?? productTypeParam;
+      setSelectedCategories([mapped]);
+      return;
+    }
+
+    setActiveTab('전체');
+    setSelectedCategories([]);
   }, [searchParams]);
 
   // 현재 선택된 정렬 옵션 라벨
@@ -640,7 +655,7 @@ export const StorePage: React.FC = () => {
   const cardVideoIds = ['x7pnY0U5yYY', 'LeZQWQ_cXqU', '8cVFJrY89SA', 'IzNnBZMjbXU'];
 
   // 제품 형태 탭 목록
-  const productTypeTabs = ['밀키트', '베이커리', '소스/오일', '세트', '구독'];
+  const productTypeTabs = ['전체', '밀키트', '베이커리', '소스/오일', '세트', '구독'];
   
   // 제품 형태별 제품 개수 계산
   const getCategoryCount = (productType: string): number => {
@@ -722,7 +737,7 @@ export const StorePage: React.FC = () => {
   const FilterContent: React.FC = () => (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       {/* 식단 */}
-      <div style={{ paddingBottom: '20px', borderBottom: '1px solid #000' }}>
+      <div style={{ paddingBottom: '20px', borderBottom: '1px solid var(--palette-text)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {dietOptions.map((opt) => (
             <label
@@ -733,7 +748,7 @@ export const StorePage: React.FC = () => {
                 gap: '10px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: spectrum === opt.value ? '#000' : '#666',
+                color: spectrum === opt.value ? 'var(--palette-text)' : 'var(--warm-gray)',
                 cursor: 'pointer',
               }}
             >
@@ -742,7 +757,7 @@ export const StorePage: React.FC = () => {
                   width: '18px',
                   height: '18px',
                   borderRadius: '50%',
-                  border: '1px solid #000',
+                  border: '1px solid var(--palette-text)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -750,7 +765,7 @@ export const StorePage: React.FC = () => {
                 }}
               >
                 {spectrum === opt.value && (
-                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                  <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--palette-text)' }} />
                 )}
               </span>
               <span onClick={() => setSpectrum(opt.value)}>{opt.label}</span>
@@ -760,7 +775,7 @@ export const StorePage: React.FC = () => {
       </div>
 
       {/* 추가 제한 */}
-      <div style={{ padding: '20px 0', borderBottom: '1px solid #000' }}>
+      <div style={{ padding: '20px 0', borderBottom: '1px solid var(--palette-text)' }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {restrictionOptions.map((opt) => {
             const checked = selectedRestrictions.includes(opt.value);
@@ -773,7 +788,7 @@ export const StorePage: React.FC = () => {
                   gap: '10px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: checked ? '#000' : '#666',
+                  color: checked ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
                 onClick={() => {
@@ -789,7 +804,7 @@ export const StorePage: React.FC = () => {
                     width: '18px',
                     height: '18px',
                     borderRadius: '50%',
-                    border: '1px solid #000',
+                    border: '1px solid var(--palette-text)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -797,7 +812,7 @@ export const StorePage: React.FC = () => {
                   }}
                 >
                   {checked && (
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--palette-text)' }} />
                   )}
                 </span>
                 <span>{opt.label}</span>
@@ -821,7 +836,7 @@ export const StorePage: React.FC = () => {
                   gap: '10px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: checked ? '#000' : '#666',
+                  color: checked ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
                 onClick={() => toggleCuisine(c)}
@@ -831,7 +846,7 @@ export const StorePage: React.FC = () => {
                     width: '18px',
                     height: '18px',
                     borderRadius: '50%',
-                    border: '1px solid #000',
+                    border: '1px solid var(--palette-text)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -839,7 +854,7 @@ export const StorePage: React.FC = () => {
                   }}
                 >
                   {checked && (
-                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#000' }} />
+                    <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: 'var(--palette-text)' }} />
                   )}
                 </span>
                 <span>{c}</span>
@@ -906,7 +921,7 @@ export const StorePage: React.FC = () => {
               width: '320px',
               maxWidth: '100vw',
               background: '#FFFFFF',
-              borderLeft: '1px solid #000',
+              borderLeft: '1px solid var(--palette-text)',
               display: 'flex',
               flexDirection: 'column',
               animation: 'slideInRight 0.3s ease-out',
@@ -919,7 +934,7 @@ export const StorePage: React.FC = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '16px 20px',
-                borderBottom: '1px solid #000',
+                borderBottom: '1px solid var(--palette-text)',
               }}
             >
               <h3 style={{ fontSize: '16px', fontWeight: 400, margin: 0 }}>Filter</h3>
@@ -951,7 +966,7 @@ export const StorePage: React.FC = () => {
                 display: 'flex',
                 gap: '12px',
                 padding: '16px 20px',
-                borderTop: '1px solid #000',
+                borderTop: '1px solid var(--palette-text)',
               }}
             >
               <button
@@ -962,7 +977,7 @@ export const StorePage: React.FC = () => {
                   fontSize: '14px',
                   fontWeight: 400,
                   background: 'transparent',
-                  border: '1px solid #000',
+                  border: '1px solid var(--palette-text)',
                   cursor: 'pointer',
                 }}
               >
@@ -975,7 +990,7 @@ export const StorePage: React.FC = () => {
                   padding: '12px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  background: '#000',
+                  background: 'var(--palette-text)',
                   color: '#fff',
                   border: 'none',
                   cursor: 'pointer',
@@ -1015,7 +1030,7 @@ export const StorePage: React.FC = () => {
         {/* 상품이 없을 때 */}
         {sortedProducts.length === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-            <p style={{ fontSize: '15px', color: '#666' }}>
+            <p style={{ fontSize: '15px', color: 'var(--warm-gray)' }}>
               조건에 맞는 상품이 없습니다.
             </p>
             <button
@@ -1024,7 +1039,7 @@ export const StorePage: React.FC = () => {
                 marginTop: '16px',
                 padding: '10px 20px',
                 fontSize: '14px',
-                background: '#000',
+                background: 'var(--palette-text)',
                 color: '#fff',
                 border: 'none',
                 cursor: 'pointer',
@@ -1115,7 +1130,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
         style={{
           position: 'relative',
           aspectRatio: '1 / 1',
-          background: '#F5F5F5',
+          background: 'var(--palette-bg-2)',
           borderRadius: '4px',
           overflow: 'hidden',
         }}
@@ -1157,7 +1172,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                         width: `${100 / images.length}%`,
                         height: '100%',
                         position: 'relative',
-                        backgroundColor: '#F5F5F5',
+                        backgroundColor: 'var(--palette-bg-2)',
                       }}
                       onClick={handleImageClick}
                     >
@@ -1243,7 +1258,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: '#F5F5F5',
+            backgroundColor: 'var(--palette-bg-2)',
           }}>
             <span style={{ color: 'var(--gray-lighter)', fontSize: '13px' }}>IMG</span>
           </div>
@@ -1334,7 +1349,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           fontWeight: 400,
           lineHeight: '1.3',
           margin: '0 0 8px 0',
-          color: product.soldOut ? 'var(--gray)' : '#000000',
+          color: product.soldOut ? 'var(--gray)' : 'var(--palette-text)',
         }}>
           {product.name}
         </h3>
@@ -1344,7 +1359,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
           <p className="menu-card-desc" style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             margin: '0 0 12px 0',
             lineHeight: '1.5',
             overflow: 'hidden',
@@ -1383,7 +1398,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAlgorithmMode, onC
                     <span style={{
                       fontSize: '16px',
                       fontWeight: 600,
-                      color: '#87b5e1',
+                      color: 'var(--palette-sky)',
                     }}>
                       {discountRate}%
                     </span>

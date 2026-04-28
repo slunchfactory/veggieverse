@@ -25,7 +25,7 @@ const MyHome: React.FC = () => {
             padding: '24px',
             background: '#FFFFFF',
             borderRadius: '4px',
-            border: '1px solid rgba(0,0,0,0.08)',
+            border: '1px solid rgba(26, 10, 5, 0.08)',
             marginBottom: '32px',
           }}
         >
@@ -35,7 +35,7 @@ const MyHome: React.FC = () => {
               width: '72px',
               height: '72px',
               borderRadius: '50%',
-              background: '#F7F4EF',
+              background: 'var(--cream)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -46,21 +46,21 @@ const MyHome: React.FC = () => {
             {user?.profileImage ? (
               <img src={user.profileImage} alt="프로필" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <User size={32} color="#9A9A9A" />
+              <User size={32} color="var(--muted)" />
             )}
           </div>
 
           {/* 사용자 정보 */}
           <div style={{ flex: 1 }}>
-            <p style={{ fontSize: '16px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>
+            <p style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
               {user?.username || 'Guest'}
             </p>
             {user?.spiritName && (
-              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B', marginBottom: '4px' }}>
+              <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '4px' }}>
                 {user.spiritName} · {user.spiritType}
               </p>
             )}
-            <p style={{ fontSize: '12px', fontWeight: 400, color: '#9A9A9A' }}>
+            <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--muted)' }}>
               배지 {user?.badges.length || 0}개
             </p>
           </div>
@@ -71,7 +71,7 @@ const MyHome: React.FC = () => {
             style={{
               fontSize: '13px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
             }}
@@ -86,9 +86,9 @@ const MyHome: React.FC = () => {
           style={{ marginBottom: '32px' }}
         >
           {[
-            { label: '레시피', value: user?.recipes || 0, icon: <MessageSquare size={18} color="#9A9A9A" /> },
-            { label: '댓글', value: user?.comments || 0, icon: <MessageSquare size={18} color="#9A9A9A" /> },
-            { label: '좋아요', value: user?.likes || 0, icon: <Heart size={18} color="#9A9A9A" /> },
+            { label: '레시피', value: user?.recipes || 0, icon: <MessageSquare size={18} color="var(--muted)" /> },
+            { label: '댓글', value: user?.comments || 0, icon: <MessageSquare size={18} color="var(--muted)" /> },
+            { label: '좋아요', value: user?.likes || 0, icon: <Heart size={18} color="var(--muted)" /> },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -97,13 +97,13 @@ const MyHome: React.FC = () => {
                 padding: '20px 12px',
                 background: '#FFFFFF',
                 borderRadius: '4px',
-                border: '1px solid rgba(0,0,0,0.08)',
+                border: '1px solid rgba(26, 10, 5, 0.08)',
               }}
             >
-              <p style={{ fontSize: '20px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>
+              <p style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                 {stat.value}
               </p>
-              <p style={{ fontSize: '12px', fontWeight: 400, color: '#9A9A9A' }}>
+              <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--muted)' }}>
                 {stat.label}
               </p>
             </div>
@@ -113,7 +113,7 @@ const MyHome: React.FC = () => {
         {/* 최근 주문 */}
         <SectionCard title="최근 주문" moreLink="/mypage/orders">
           {RECENT_ORDERS.length === 0 ? (
-            <p style={{ fontSize: '14px', color: '#9A9A9A', textAlign: 'center', padding: '24px 0' }}>
+            <p style={{ fontSize: '14px', color: 'var(--muted)', textAlign: 'center', padding: '24px 0' }}>
               주문 내역이 없습니다.
             </p>
           ) : (
@@ -126,20 +126,20 @@ const MyHome: React.FC = () => {
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     padding: '12px 0',
-                    borderBottom: '1px solid rgba(0,0,0,0.05)',
+                    borderBottom: '1px solid rgba(26, 10, 5, 0.05)',
                   }}
                 >
                   <div>
-                    <p style={{ fontSize: '14px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>
+                    <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                       {order.name}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#9A9A9A' }}>
+                    <p style={{ fontSize: '12px', color: 'var(--muted)' }}>
                       {order.date}
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
                     <OrderStatusBadge status={order.status} />
-                    <p style={{ fontSize: '13px', fontWeight: 400, color: '#000', marginTop: '4px' }}>
+                    <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)', marginTop: '4px' }}>
                       {order.price.toLocaleString()}원
                     </p>
                   </div>
@@ -153,10 +153,10 @@ const MyHome: React.FC = () => {
         <div style={{ marginTop: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1px' }}>
             {[
-              { label: '관심상품', path: '/mypage/wishlist', icon: <Heart size={16} color="#6B6B6B" /> },
-              { label: '레시피 북마크', path: '/mypage/bookmarks', icon: <ShoppingBag size={16} color="#6B6B6B" /> },
-              { label: '상품 리뷰', path: '/mypage/reviews', icon: <MessageSquare size={16} color="#6B6B6B" /> },
-              { label: '회원정보', path: '/mypage/info', icon: <User size={16} color="#6B6B6B" /> },
+              { label: '관심상품', path: '/mypage/wishlist', icon: <Heart size={16} color="var(--warm-gray)" /> },
+              { label: '레시피 북마크', path: '/mypage/bookmarks', icon: <ShoppingBag size={16} color="var(--warm-gray)" /> },
+              { label: '상품 리뷰', path: '/mypage/reviews', icon: <MessageSquare size={16} color="var(--warm-gray)" /> },
+              { label: '회원정보', path: '/mypage/info', icon: <User size={16} color="var(--warm-gray)" /> },
             ].map((menu) => (
               <Link
                 key={menu.path}
@@ -168,14 +168,14 @@ const MyHome: React.FC = () => {
                   padding: '16px',
                   background: '#FFFFFF',
                   textDecoration: 'none',
-                  border: '1px solid rgba(0,0,0,0.05)',
+                  border: '1px solid rgba(26, 10, 5, 0.05)',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                   {menu.icon}
-                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>{menu.label}</span>
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>{menu.label}</span>
                 </div>
-                <ChevronRight size={16} color="#9A9A9A" />
+                <ChevronRight size={16} color="var(--muted)" />
               </Link>
             ))}
           </div>
@@ -195,7 +195,7 @@ const SectionCard: React.FC<{
     style={{
       background: '#FFFFFF',
       borderRadius: '4px',
-      border: '1px solid rgba(0,0,0,0.08)',
+      border: '1px solid rgba(26, 10, 5, 0.08)',
       padding: '20px',
     }}
   >
@@ -207,13 +207,13 @@ const SectionCard: React.FC<{
         marginBottom: '16px',
       }}
     >
-      <h3 style={{ fontSize: '15px', fontWeight: 400, color: '#000' }}>{title}</h3>
+      <h3 style={{ fontSize: '15px', fontWeight: 400, color: 'var(--palette-text)' }}>{title}</h3>
       <Link
         to={moreLink}
         style={{
           fontSize: '13px',
           fontWeight: 400,
-          color: '#6B6B6B',
+          color: 'var(--warm-gray)',
           textDecoration: 'none',
           display: 'flex',
           alignItems: 'center',
@@ -231,9 +231,9 @@ const SectionCard: React.FC<{
 // 주문 상태 뱃지
 const OrderStatusBadge: React.FC<{ status: '배송중' | '배송완료' | '준비중' }> = ({ status }) => {
   const colorMap = {
-    '배송중': '#3fa945',
-    '배송완료': '#9A9A9A',
-    '준비중': '#000000',
+    '배송중': 'var(--status-progress-icon)',
+    '배송완료': 'var(--muted)',
+    '준비중': 'var(--palette-text)',
   };
 
   return (

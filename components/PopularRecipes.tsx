@@ -179,7 +179,7 @@ export const PopularRecipes: React.FC = () => {
           fontSize: '12px',
           color: '#fff',
           fontVariantNumeric: 'tabular-nums',
-          textShadow: '0 1px 3px rgba(0,0,0,0.5)',
+          textShadow: '0 1px 3px rgba(26, 10, 5, 0.5)',
         }}>
           {current + 1} / {total}
         </span>
@@ -190,7 +190,7 @@ export const PopularRecipes: React.FC = () => {
             height: '32px',
             borderRadius: '50%',
             border: 'none',
-            background: 'rgba(0,0,0,0.4)',
+            background: 'rgba(26, 10, 5, 0.4)',
             color: '#fff',
             display: 'flex',
             alignItems: 'center',
@@ -199,8 +199,8 @@ export const PopularRecipes: React.FC = () => {
             backdropFilter: 'blur(4px)',
             transition: 'background 0.2s',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.7)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(26, 10, 5, 0.7)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(26, 10, 5, 0.4)'; }}
         >
           <ChevronLeft size={16} />
         </button>
@@ -211,7 +211,7 @@ export const PopularRecipes: React.FC = () => {
             height: '32px',
             borderRadius: '50%',
             border: 'none',
-            background: 'rgba(0,0,0,0.4)',
+            background: 'rgba(26, 10, 5, 0.4)',
             color: '#fff',
             display: 'flex',
             alignItems: 'center',
@@ -220,8 +220,8 @@ export const PopularRecipes: React.FC = () => {
             backdropFilter: 'blur(4px)',
             transition: 'background 0.2s',
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.7)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(0,0,0,0.4)'; }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(26, 10, 5, 0.7)'; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(26, 10, 5, 0.4)'; }}
         >
           <ChevronRight size={16} />
         </button>

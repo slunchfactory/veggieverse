@@ -98,7 +98,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
   return (
     <div
       style={{
-        border: '2px solid #000',
+        border: '2px solid var(--palette-text)',
         marginBottom: '40px',
         background: colors.bg,
       }}
@@ -108,7 +108,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
         <h2 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '8px' }}>
           나의 1주일 식단 구성하기
         </h2>
-        <p style={{ fontSize: '14px', color: '#666' }}>
+        <p style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>
           라인을 선택하고, 원하는 도시락을 요일별로 배치해보세요
         </p>
       </div>
@@ -152,18 +152,18 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
         style={{
           textAlign: 'center',
           padding: '16px 24px',
-          borderTop: '1px solid rgba(0,0,0,0.1)',
-          borderBottom: '1px solid rgba(0,0,0,0.1)',
+          borderTop: '1px solid rgba(26, 10, 5, 0.1)',
+          borderBottom: '1px solid rgba(26, 10, 5, 0.1)',
         }}
       >
         <p style={{ fontSize: '18px', fontWeight: 500, color: colors.main, marginBottom: '4px' }}>
           {currentLineInfo.name}
         </p>
-        <p style={{ fontSize: '13px', color: '#666' }}>{currentLineInfo.tagline}</p>
+        <p style={{ fontSize: '13px', color: 'var(--warm-gray)' }}>{currentLineInfo.tagline}</p>
       </div>
 
       {/* Exclude Ingredients Panel */}
-      <div style={{ padding: '16px 24px', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+      <div style={{ padding: '16px 24px', borderBottom: '1px solid rgba(26, 10, 5, 0.1)' }}>
         <button
           onClick={() => setShowExcludePanel(!showExcludePanel)}
           style={{
@@ -177,7 +177,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
             border: 'none',
             cursor: 'pointer',
             fontSize: '14px',
-            color: '#666',
+            color: 'var(--warm-gray)',
           }}
         >
           제외할 재료 선택
@@ -217,9 +217,9 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                     padding: '8px 14px',
                     fontSize: '13px',
                     borderRadius: '20px',
-                    border: isExcluded ? '2px solid #ef4444' : '1px solid #ddd',
+                    border: isExcluded ? '2px solid #ef4444' : '1px solid var(--border-divider)',
                     background: isExcluded ? '#fef2f2' : '#fff',
-                    color: isExcluded ? '#ef4444' : '#666',
+                    color: isExcluded ? '#ef4444' : 'var(--warm-gray)',
                     cursor: 'pointer',
                   }}
                 >
@@ -273,7 +273,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                   style={{
                     aspectRatio: '1',
                     background: '#fff',
-                    border: isActive ? `3px solid ${colors.main}` : '2px dashed #ccc',
+                    border: isActive ? `3px solid ${colors.main}` : '2px dashed var(--border-color-light)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -314,8 +314,8 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                     </>
                   ) : (
                     <>
-                      <span style={{ fontSize: '24px', color: '#ccc' }}>+</span>
-                      <span style={{ fontSize: '11px', color: '#999' }}>추가</span>
+                      <span style={{ fontSize: '24px', color: 'var(--border-color-light)' }}>+</span>
+                      <span style={{ fontSize: '11px', color: 'var(--muted)' }}>추가</span>
                     </>
                   )}
                 </div>
@@ -358,11 +358,11 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
       {activeSlot !== null && (
         <div
           style={{
-            borderTop: '1px solid rgba(0,0,0,0.1)',
+            borderTop: '1px solid rgba(26, 10, 5, 0.1)',
             padding: '20px 24px',
           }}
         >
-          <p style={{ fontSize: '14px', color: '#666', marginBottom: '12px', textAlign: 'center' }}>
+          <p style={{ fontSize: '14px', color: 'var(--warm-gray)', marginBottom: '12px', textAlign: 'center' }}>
             <strong>{DAYS_OF_WEEK[activeSlot].label}요일</strong>에 배치할 도시락을 선택하세요
           </p>
           <div
@@ -382,7 +382,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                   padding: '10px',
                   background: '#fff',
                   border:
-                    selectedSlots[activeSlot] === menu.id ? `2px solid ${colors.main}` : '1px solid #eee',
+                    selectedSlots[activeSlot] === menu.id ? `2px solid ${colors.main}` : '1px solid var(--border-hairline)',
                   cursor: 'pointer',
                   textAlign: 'center',
                 }}
@@ -390,7 +390,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                 <div
                   style={{
                     aspectRatio: '1',
-                    background: '#f5f5f5',
+                    background: 'var(--palette-bg-2)',
                     marginBottom: '6px',
                     display: 'flex',
                     alignItems: 'center',
@@ -401,7 +401,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
                   🍱
                 </div>
                 <p style={{ fontSize: '11px', lineHeight: 1.2, marginBottom: '4px' }}>{menu.name}</p>
-                <p style={{ fontSize: '11px', color: '#666' }}>{menu.price.toLocaleString()}원</p>
+                <p style={{ fontSize: '11px', color: 'var(--warm-gray)' }}>{menu.price.toLocaleString()}원</p>
               </div>
             ))}
           </div>
@@ -411,7 +411,7 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
       {/* Summary */}
       <div
         style={{
-          borderTop: '1px solid rgba(0,0,0,0.1)',
+          borderTop: '1px solid rgba(26, 10, 5, 0.1)',
           padding: '16px 24px',
           display: 'flex',
           justifyContent: 'space-between',
@@ -419,13 +419,13 @@ export const WeeklyMealBuilder: React.FC<WeeklyMealBuilderProps> = ({
         }}
       >
         <div>
-          <span style={{ fontSize: '14px', color: '#666' }}>선택한 도시락</span>
+          <span style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>선택한 도시락</span>
           <span style={{ fontSize: '18px', fontWeight: 600, marginLeft: '8px', color: colors.main }}>
             {filledCount}/7개
           </span>
         </div>
         <div>
-          <span style={{ fontSize: '14px', color: '#666' }}>예상 금액</span>
+          <span style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>예상 금액</span>
           <span style={{ fontSize: '20px', fontWeight: 600, marginLeft: '8px' }}>
             {totalPrice.toLocaleString()}원
           </span>

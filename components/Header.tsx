@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
         style={{
           height: 'var(--header-h)',
           zIndex: 50,
-          backgroundColor: '#DCFD4A',
+          backgroundColor: 'var(--primary)',
           position: 'relative',
         }}
       >
@@ -88,12 +88,13 @@ export const Header: React.FC<HeaderProps> = ({
             }}
             aria-label="메뉴 열기"
           >
-            <Menu size={24} strokeWidth={1} color="#000" />
+            <Menu size={24} strokeWidth={1} color="var(--palette-text)" />
           </button>
 
           {/* Center: Logo (Absolute Centered) */}
           <Link
             to="/"
+            className="link-plain"
             onClick={(e) => {
               // 타로 리딩 중이면 명시적으로 navigate
               if (window.location.pathname.includes('/spirit/step')) {
@@ -124,6 +125,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Cart - 숫자만 표시 */}
             <Link
               to="/cart"
+              className="link-plain"
               style={{
                 height: '40px',
                 display: 'flex',
@@ -132,7 +134,7 @@ export const Header: React.FC<HeaderProps> = ({
                 padding: '0 4px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 textDecoration: 'none',
               }}
               aria-label="장바구니"
@@ -165,7 +167,7 @@ export const Header: React.FC<HeaderProps> = ({
                     height: '28px',
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '1px solid #000',
+                    border: '1px solid var(--palette-text)',
                   }}
                 >
                   <img
@@ -188,13 +190,13 @@ export const Header: React.FC<HeaderProps> = ({
                     width: '28px',
                     height: '28px',
                     borderRadius: '50%',
-                    background: '#E5E5E5',
+                    background: 'var(--border-divider)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
                 >
-                  <User size={16} strokeWidth={1} color="#666" />
+                  <User size={16} strokeWidth={1} color="var(--warm-gray)" />
                 </div>
               )}
             </Link>

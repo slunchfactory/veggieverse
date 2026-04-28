@@ -67,11 +67,11 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
           justifyContent: 'space-between',
           padding: '0 0 16px',
           marginBottom: '20px',
-          borderBottom: '2px solid #000',
+          borderBottom: '2px solid var(--palette-text)',
         }}
       >
         <h2 style={{ fontSize: '20px', fontWeight: 500 }}>전체 도시락 메뉴</h2>
-        <span style={{ fontSize: '14px', color: '#666' }}>총 {SAMPLE_MENUS.length}개</span>
+        <span style={{ fontSize: '14px', color: 'var(--warm-gray)' }}>총 {SAMPLE_MENUS.length}개</span>
       </div>
 
       {/* Line Filter Tabs */}
@@ -88,9 +88,9 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
           style={{
             padding: '10px 20px',
             fontSize: '14px',
-            border: filterLine === 'all' ? '2px solid #000' : '1px solid #ddd',
-            background: filterLine === 'all' ? '#000' : '#fff',
-            color: filterLine === 'all' ? '#fff' : '#666',
+            border: filterLine === 'all' ? '2px solid var(--palette-text)' : '1px solid var(--border-divider)',
+            background: filterLine === 'all' ? 'var(--palette-text)' : '#fff',
+            color: filterLine === 'all' ? '#fff' : 'var(--warm-gray)',
             cursor: 'pointer',
           }}
         >
@@ -133,8 +133,8 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
             <div
               key={menu.id}
               style={{
-                background: '#FDFBF7',
-                border: '1px solid #000',
+                background: 'var(--cream)',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -148,7 +148,7 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
                   position: 'relative',
                   width: '100%',
                   aspectRatio: '1',
-                  background: '#f0f0f0',
+                  background: 'var(--border-hairline)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -196,7 +196,7 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
                   style={{
                     position: 'absolute',
                     inset: 0,
-                    background: 'rgba(0,0,0,0.5)',
+                    background: 'rgba(26, 10, 5, 0.5)',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -233,8 +233,8 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
                       style={{
                         padding: '3px 8px',
                         fontSize: '11px',
-                        background: '#f5f5f5',
-                        color: '#666',
+                        background: 'var(--palette-bg-2)',
+                        color: 'var(--warm-gray)',
                       }}
                     >
                       {diet === 'vegan' && '비건'}
@@ -248,8 +248,8 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
                       style={{
                         padding: '3px 8px',
                         fontSize: '11px',
-                        background: '#f5f5f5',
-                        color: '#666',
+                        background: 'var(--palette-bg-2)',
+                        color: 'var(--warm-gray)',
                       }}
                     >
                       {menu.calories}kcal
@@ -276,7 +276,7 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
                     style={{
                       padding: '6px 12px',
                       fontSize: '12px',
-                      border: '1px solid #000',
+                      border: '1px solid var(--palette-text)',
                       background: '#fff',
                       cursor: 'pointer',
                       display: 'flex',
@@ -299,7 +299,7 @@ export const MenuProductGrid: React.FC<MenuProductGridProps> = ({
           style={{
             padding: '60px',
             textAlign: 'center',
-            color: '#888',
+            color: 'var(--gray-light)',
           }}
         >
           조건에 맞는 메뉴가 없어요

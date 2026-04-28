@@ -8,12 +8,12 @@ const AboutBranchPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <div style={{
           aspectRatio: '4/3',
           background: '#E8E4DF',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -82,9 +82,9 @@ const AboutBranchPage: React.FC = () => {
               alignItems: 'center',
               gap: '8px',
               padding: '12px 24px',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               background: 'transparent',
-              color: '#000',
+              color: 'var(--palette-text)',
               fontSize: '14px',
               fontWeight: 400,
               textDecoration: 'none',
@@ -101,9 +101,9 @@ const AboutBranchPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
-        <div style={{ padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderRight: '1px solid #000' }}>
+        <div style={{ padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', borderRight: '1px solid var(--palette-text)' }}>
           <p style={{
             fontSize: '11px',
             color: 'var(--warm-gray)',
@@ -163,7 +163,7 @@ const AboutBranchPage: React.FC = () => {
       <div style={{
         padding: '64px',
         textAlign: 'center',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <p style={{
           fontSize: '11px',
@@ -199,7 +199,7 @@ const AboutBranchPage: React.FC = () => {
             alignItems: 'center',
             gap: '8px',
             padding: '14px 28px',
-            background: '#000',
+            background: 'var(--palette-text)',
             color: '#fff',
             fontSize: '14px',
             fontWeight: 400,

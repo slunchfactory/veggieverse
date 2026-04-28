@@ -195,13 +195,13 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={handleClose}
     >
       <div
         style={{
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           maxWidth: '480px',
           width: '100%',
@@ -221,7 +221,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
             <h2 style={{
               fontSize: '18px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '4px',
             }}>
               요리 인증
@@ -229,7 +229,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
             <p style={{
               fontSize: '13px',
               fontWeight: 400,
-              color: '#888',
+              color: 'var(--gray-light)',
             }}>
               {recipeTitle}
             </p>
@@ -249,7 +249,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
             }}
             aria-label="닫기"
           >
-            <X size={20} strokeWidth={1} color="#000" />
+            <X size={20} strokeWidth={1} color="var(--palette-text)" />
           </button>
         </div>
 
@@ -261,14 +261,14 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
               display: 'block',
               fontSize: '13px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '8px',
             }}>
               사진 첨부
             </label>
             <div
               style={{
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 padding: '24px',
                 textAlign: 'center',
@@ -296,7 +296,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
                 <span style={{
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: '#888',
+                  color: 'var(--gray-light)',
                 }}>
                   사진 첨부
                 </span>
@@ -317,7 +317,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
               display: 'block',
               fontSize: '13px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '8px',
             }}>
               별점
@@ -339,8 +339,8 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
-                    fill={star <= formData.rating ? '#000' : 'none'}
-                    stroke="#000"
+                    fill={star <= formData.rating ? 'var(--palette-text)' : 'none'}
+                    stroke="var(--palette-text)"
                     strokeWidth="1"
                   >
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -351,7 +351,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
                 marginLeft: '8px',
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#666',
+                color: 'var(--warm-gray)',
               }}>
                 {formData.rating} / 5
               </span>
@@ -364,7 +364,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
               display: 'block',
               fontSize: '13px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '8px',
             }}>
               한 줄 평
@@ -376,7 +376,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
               style={{
                 width: '100%',
                 padding: '12px',
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 400,
@@ -397,11 +397,11 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
                 flex: 1,
                 padding: '14px',
                 background: 'transparent',
-                border: '1px solid #000',
+                border: '1px solid var(--palette-text)',
                 borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 cursor: 'pointer',
               }}
             >
@@ -413,7 +413,7 @@ export const PhotoReviewModal: React.FC<PhotoReviewModalProps> = ({
               style={{
                 flex: 1,
                 padding: '14px',
-                background: '#000',
+                background: 'var(--palette-text)',
                 border: 'none',
                 borderRadius: '8px',
                 fontSize: '14px',

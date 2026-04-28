@@ -14,12 +14,12 @@
         --topbar-h: 48px;
         --cream: #FDFBF7;
         --lime: #DCFD4A;
-        --black: #000000;
-        --gray: #6B6B6B;
-        --gray-light: #9A9A9A;
-        --charcoal: #333;
-        --warm-gray: #888;
-        --muted: #999;
+        --black: var(--palette-text);
+        --gray: var(--warm-gray);
+        --gray-light: var(--muted);
+        --charcoal: var(--charcoal);
+        --warm-gray: var(--gray-light);
+        --muted: var(--muted);
         --green: #3fa945;
       }
       * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
@@ -85,7 +85,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: #E5E5E5;
+        background: var(--border-divider);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -185,7 +185,7 @@
         top: 12px;
         left: 12px;
         padding: 4px 8px;
-        background: #000;
+        background: var(--palette-text);
         color: #fff;
         font-size: 11px;
       }
@@ -199,8 +199,8 @@
         border: 1px solid;
       }
       .event-status.ongoing {
-        color: #000000;
-        border-color: #000000;
+        color: var(--palette-text);
+        border-color: var(--palette-text);
       }
       .event-status.upcoming {
         color: var(--green);
@@ -214,7 +214,7 @@
       .event-title {
         font-size: 16px;
         line-height: 1.3;
-        color: #000000;
+        color: var(--palette-text);
         margin-bottom: 6px;
       }
       .event-desc {
@@ -303,7 +303,7 @@
           <a href="cart.html" aria-label="장바구니">(0)</a>
           <a href="mypage.html" aria-label="마이페이지">
             <div class="header-profile">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warm-gray)" stroke-width="1">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
             </div>

@@ -374,8 +374,8 @@ export const ProductDetailPage: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#ffffff' }}>
         <div className="text-center">
-          <p className="text-stone-600 mb-4">상품을 찾을 수 없습니다.</p>
-          <Link to="/store" className="text-stone-900 underline">스토어로 돌아가기</Link>
+          <p className="text-warm-gray mb-4">상품을 찾을 수 없습니다.</p>
+          <Link to="/store" className="text-black underline">스토어로 돌아가기</Link>
         </div>
       </div>
     );
@@ -580,13 +580,13 @@ export const ProductDetailPage: React.FC = () => {
   }, [product]);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: 'var(--cream)' }}>
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--surface-soft)' }}>
       {/* 스크롤 투 탑 버튼 */}
       {showScrollToTop && (
         <button
           onClick={scrollToTop}
           className="fixed bottom-32 right-4 z-[95] w-12 h-12 flex items-center justify-center transition-opacity animate-fadeIn"
-          style={{ background: '#000000', border: '1px solid #000000' }}
+          style={{ background: 'var(--palette-text)', border: '1px solid var(--palette-text)' }}
           aria-label="상단으로 이동"
         >
           <ChevronUp className="w-5 h-5 text-white" />
@@ -601,7 +601,7 @@ export const ProductDetailPage: React.FC = () => {
           <div className="lg:w-1/2">
             {/* 메인 이미지 */}
             <div 
-              className="w-full aspect-square bg-[#333333] mb-4 relative overflow-hidden"
+              className="w-full aspect-square bg-[var(--charcoal)] mb-4 relative overflow-hidden"
             >
               {images.length > 0 ? (
                 <div className="relative w-full h-full">
@@ -662,7 +662,7 @@ export const ProductDetailPage: React.FC = () => {
                     key={idx}
                     onClick={() => setSelectedImageIndex(idx)}
                     className={`w-20 h-20 flex-shrink-0 overflow-hidden border-2 transition-colors ${
-                      selectedImageIndex === idx ? 'border-stone-900' : 'border-stone-200 hover:border-stone-400'
+                      selectedImageIndex === idx ? 'border-black' : 'border-[color:var(--border-hairline)] hover:border-[color:var(--border-color-light)]'
                     }`}
                   >
                     <img 
@@ -685,14 +685,14 @@ export const ProductDetailPage: React.FC = () => {
           <div className="lg:w-1/2">
             {/* BEST 뱃지 */}
             {product.isBest && (
-              <span className="inline-block px-3 py-1 bg-stone-100 text-stone-600 text-xs mb-4 font-accent">
+              <span className="inline-block px-3 py-1 bg-eggshell text-warm-gray text-xs mb-4 font-accent">
                 BEST
               </span>
             )}
 
             {/* 상품명 - H1: 24px Regular (Quiet Luxury) */}
             <h1 
-              className="text-stone-900 mb-4 font-normal"
+              className="text-black mb-4 font-normal"
               style={{ 
                 fontSize: '24px',
                 fontWeight: 400,
@@ -725,7 +725,7 @@ export const ProductDetailPage: React.FC = () => {
                         style={{
                           fontSize: '16px',
                           fontWeight: 600,
-                          color: '#87b5e1',
+                          color: 'var(--palette-sky)',
                         }}
                       >
                         {discountRate}%
@@ -750,7 +750,7 @@ export const ProductDetailPage: React.FC = () => {
             {/* 짧은 설명 - Body: 16px */}
             {product.description && (
               <p 
-                className="text-stone-600 mb-6"
+                className="text-warm-gray mb-6"
                 style={{ 
                   fontSize: 'var(--font-size-body)',
                   fontWeight: 'var(--font-weight-body)',
@@ -764,43 +764,43 @@ export const ProductDetailPage: React.FC = () => {
 
             {/* 태그 */}
             <div className="flex gap-2 mb-8">
-              <span className="px-3 py-1.5 border border-stone-300 text-stone-600 text-sm">
+              <span className="px-3 py-1.5 border border-[color:var(--border-divider)] text-warm-gray text-sm">
                 {product.spectrum}
               </span>
-              <span className="px-3 py-1.5 border border-stone-300 text-stone-600 text-sm">
+              <span className="px-3 py-1.5 border border-[color:var(--border-divider)] text-warm-gray text-sm">
                 {product.category}
               </span>
             </div>
 
             {/* 구분선 */}
-            <div style={{ borderTop: '1px solid #000000', margin: '24px 0' }} />
+            <div style={{ borderTop: '1px solid var(--palette-text)', margin: '24px 0' }} />
 
             {/* 구매혜택 및 배송 정보 */}
             <div className="space-y-1">
               {/* 구매혜택 */}
-              <div className="flex items-center gap-2 text-xs text-stone-600">
+              <div className="flex items-center gap-2 text-xs text-warm-gray">
                 <span>구매혜택</span>
                 <span className="font-normal">0 포인트 적립예정</span>
-                <button className="text-stone-400 hover:text-stone-600" aria-label="포인트 적립 안내">
+                <button className="text-muted hover:text-warm-gray" aria-label="포인트 적립 안내">
                   <Info className="w-3 h-3" />
                 </button>
               </div>
 
               {/* 배송 방법 */}
-              <div className="flex items-center gap-2 text-xs text-stone-600">
+              <div className="flex items-center gap-2 text-xs text-warm-gray">
                 <span>배송 방법</span>
                 <span className="font-normal">택배</span>
               </div>
 
               {/* 배송비 */}
-              <div className="flex items-center gap-2 text-xs text-stone-600">
+              <div className="flex items-center gap-2 text-xs text-warm-gray">
                 <span>배송비</span>
                 <span className="font-normal">
                   <span className="font-accent">3,500</span>원 (<span className="font-accent">55,000</span>원 이상 무료배송)
                 </span>
-                <span className="text-stone-400">|</span>
-                <span className="text-stone-500">도서산간 배송비 추가</span>
-                <button className="text-stone-400 hover:text-stone-600" aria-label="배송비 안내">
+                <span className="text-muted">|</span>
+                <span className="text-warm-gray">도서산간 배송비 추가</span>
+                <button className="text-muted hover:text-warm-gray" aria-label="배송비 안내">
                   <Info className="w-3 h-3" />
                 </button>
               </div>
@@ -808,46 +808,49 @@ export const ProductDetailPage: React.FC = () => {
 
             {/* 오늘출발 상품 */}
             <div className="mt-3 mb-6">
-              <div className="bg-stone-50 p-4 flex items-center gap-3 rounded-none">
-                <div className="w-10 h-10 bg-stone-300 rounded-full flex items-center justify-center flex-shrink-0">
-                  <Truck className="w-5 h-5 text-stone-600" />
+              <div
+                className="p-4 flex items-center gap-3 rounded-none"
+                style={{ backgroundColor: 'var(--surface-soft)' }}
+              >
+                <div className="w-10 h-10 bg-[rgba(26,10,5,0.04)] rounded-full flex items-center justify-center flex-shrink-0">
+                  <Truck className="w-5 h-5 text-warm-gray" />
                 </div>
                 <div className="flex-1">
-                  <p className="text-sm font-normal text-stone-900 mb-1">오늘출발 상품</p>
-                  <p className="text-xs text-stone-600">오늘 14:00까지 결제시 오늘 바로 발송됩니다.</p>
+                  <p className="text-sm font-normal text-black mb-1">오늘출발 상품</p>
+                  <p className="text-xs text-warm-gray">오늘 14:00까지 결제시 오늘 바로 발송됩니다.</p>
                 </div>
               </div>
             </div>
 
             {/* 구분선 */}
-            <div style={{ borderTop: '1px solid #000000', margin: '24px 0' }} />
+            <div style={{ borderTop: '1px solid var(--palette-text)', margin: '24px 0' }} />
 
             {/* 수량 선택 */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>수량</span>
-              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #000000' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)' }}>수량</span>
+              <div style={{ display: 'flex', alignItems: 'center', border: '1px solid var(--palette-text)' }}>
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
                   style={{ padding: '12px 16px', background: 'transparent', border: 'none', cursor: product.soldOut ? 'not-allowed' : 'pointer' }}
                   disabled={product.soldOut}
                 >
-                  <Minus className="w-4 h-4" style={{ color: '#000000' }} />
+                  <Minus className="w-4 h-4" style={{ color: 'var(--palette-text)' }} />
                 </button>
-                <span style={{ padding: '12px 24px', fontSize: '14px', fontWeight: 400, minWidth: '60px', textAlign: 'center', borderLeft: '1px solid #000000', borderRight: '1px solid #000000' }}>{quantity}</span>
+                <span style={{ padding: '12px 24px', fontSize: '14px', fontWeight: 400, minWidth: '60px', textAlign: 'center', borderLeft: '1px solid var(--palette-text)', borderRight: '1px solid var(--palette-text)' }}>{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
                   style={{ padding: '12px 16px', background: 'transparent', border: 'none', cursor: product.soldOut ? 'not-allowed' : 'pointer' }}
                   disabled={product.soldOut}
                 >
-                  <Plus className="w-4 h-4" style={{ color: '#000000' }} />
+                  <Plus className="w-4 h-4" style={{ color: 'var(--palette-text)' }} />
                 </button>
               </div>
             </div>
 
             {/* 총 금액 */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
-              <span style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B' }}>총 금액</span>
-              <span style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400, color: '#000000' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)' }}>총 금액</span>
+              <span style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {totalPrice.toLocaleString()}원
               </span>
             </div>
@@ -858,8 +861,8 @@ export const ProductDetailPage: React.FC = () => {
                 onClick={() => setIsLiked(!isLiked)}
                 style={{
                   padding: '16px',
-                  background: isLiked ? '#F5F5F5' : 'transparent',
-                  border: '1px solid #000000',
+                  background: isLiked ? 'var(--palette-bg-2)' : 'transparent',
+                  border: '1px solid var(--palette-text)',
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -881,8 +884,8 @@ export const ProductDetailPage: React.FC = () => {
                   justifyContent: 'center',
                   gap: '8px',
                   background: 'transparent',
-                  border: '1px solid #000000',
-                  color: product.soldOut ? '#A0A0A0' : '#000000',
+                  border: '1px solid var(--palette-text)',
+                  color: product.soldOut ? 'var(--muted)' : 'var(--palette-text)',
                   cursor: product.soldOut ? 'not-allowed' : 'pointer',
                 }}
               >
@@ -897,8 +900,8 @@ export const ProductDetailPage: React.FC = () => {
                   padding: '16px',
                   fontSize: '14px',
                   fontWeight: 400,
-                  background: product.soldOut ? '#A0A0A0' : '#000000',
-                  border: '1px solid #000000',
+                  background: product.soldOut ? 'var(--muted)' : 'var(--palette-text)',
+                  border: '1px solid var(--palette-text)',
                   color: '#ffffff',
                   cursor: product.soldOut ? 'not-allowed' : 'pointer',
                 }}
@@ -923,14 +926,14 @@ export const ProductDetailPage: React.FC = () => {
             : 'relative z-10'
         }`}
         style={{
-          background: 'var(--cream)',
+          background: 'var(--surface-soft)',
           ...(isTabSticky ? { width: '100%', maxWidth: '100%' } : {})
         }}
       >
-        <div style={{ background: 'var(--cream)' }}>
+        <div style={{ background: 'var(--surface-soft)' }}>
           <div className={`${isTabSticky ? 'page-container' : 'page-container'}`}>
             {/* 탭 버튼 */}
-            <div style={{ display: 'flex', borderBottom: '1px solid #000000' }}>
+            <div style={{ display: 'flex', borderBottom: '1px solid var(--palette-text)' }}>
               <button
                 onClick={() => scrollToSection('review')}
                 style={{
@@ -941,9 +944,9 @@ export const ProductDetailPage: React.FC = () => {
                   textAlign: 'center',
                   background: 'transparent',
                   border: 'none',
-                  borderRight: '1px solid #000000',
-                  borderBottom: activeSection === 'review' ? '2px solid #000000' : 'none',
-                  color: activeSection === 'review' ? '#000000' : '#6B6B6B',
+                  borderRight: '1px solid var(--palette-text)',
+                  borderBottom: activeSection === 'review' ? '2px solid var(--palette-text)' : 'none',
+                  color: activeSection === 'review' ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
               >
@@ -959,9 +962,9 @@ export const ProductDetailPage: React.FC = () => {
                   textAlign: 'center',
                   background: 'transparent',
                   border: 'none',
-                  borderRight: '1px solid #000000',
-                  borderBottom: activeSection === 'detail' ? '2px solid #000000' : 'none',
-                  color: activeSection === 'detail' ? '#000000' : '#6B6B6B',
+                  borderRight: '1px solid var(--palette-text)',
+                  borderBottom: activeSection === 'detail' ? '2px solid var(--palette-text)' : 'none',
+                  color: activeSection === 'detail' ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
               >
@@ -977,9 +980,9 @@ export const ProductDetailPage: React.FC = () => {
                   textAlign: 'center',
                   background: 'transparent',
                   border: 'none',
-                  borderRight: '1px solid #000000',
-                  borderBottom: activeSection === 'return' ? '2px solid #000000' : 'none',
-                  color: activeSection === 'return' ? '#000000' : '#6B6B6B',
+                  borderRight: '1px solid var(--palette-text)',
+                  borderBottom: activeSection === 'return' ? '2px solid var(--palette-text)' : 'none',
+                  color: activeSection === 'return' ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
               >
@@ -995,8 +998,8 @@ export const ProductDetailPage: React.FC = () => {
                   textAlign: 'center',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: activeSection === 'qna' ? '2px solid #000000' : 'none',
-                  color: activeSection === 'qna' ? '#000000' : '#6B6B6B',
+                  borderBottom: activeSection === 'qna' ? '2px solid var(--palette-text)' : 'none',
+                  color: activeSection === 'qna' ? 'var(--palette-text)' : 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
               >
@@ -1014,12 +1017,12 @@ export const ProductDetailPage: React.FC = () => {
           data-section="review"
           className="scroll-mt-[152px] mb-[60px] pt-8"
         >
-          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: 'var(--palette-text)', lineHeight: 1.2, marginBottom: '13px' }}>
             리뷰
           </h2>
           {reviews.length === 0 ? (
             <p 
-              className="text-stone-500 mb-8"
+              className="text-warm-gray mb-8"
               style={{ 
                 fontSize: 'var(--font-size-body)',
                 fontWeight: 'var(--font-weight-body)',
@@ -1032,7 +1035,7 @@ export const ProductDetailPage: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {reviews.map((review, index) => (
-                <div key={index} className="border-b border-stone-200 pb-4">
+                <div key={index} className="border-b border-[color:var(--border-hairline)] pb-4">
                   {/* 리뷰 아이템 렌더링 */}
                 </div>
               ))}
@@ -1041,12 +1044,12 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* 상세정보 섹션 */}
-        <div ref={detailRef} data-section="detail" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
+        <div ref={detailRef} data-section="detail" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid var(--palette-text)' }}>
           {/* 상세 설명 텍스트 - 13px (뉴스레터 상세 본문과 동일) */}
           {product.detailDescription && (
             <div className="prose prose-stone max-w-none mb-8">
               <p 
-                className="text-stone-600 whitespace-pre-line"
+                className="text-warm-gray whitespace-pre-line"
                 style={{ 
                   fontSize: '13px',
                   fontWeight: 'var(--font-weight-body)',
@@ -1062,20 +1065,20 @@ export const ProductDetailPage: React.FC = () => {
           {/* 상세 이미지 영역 - 센터 정렬 */}
           <div className="flex justify-center overflow-hidden">
             <div className="space-y-4 w-full max-w-4xl">
-              <div className="w-full aspect-[4/3] bg-stone-100 flex items-center justify-center">
-                <span className="text-stone-400">상세 이미지 영역</span>
+              <div className="w-full aspect-[4/3] bg-eggshell flex items-center justify-center">
+                <span className="text-muted">상세 이미지 영역</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* 반품/교환정보 섹션 */}
-        <div ref={returnRef} data-section="return" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
+        <div ref={returnRef} data-section="return" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid var(--palette-text)' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: 'var(--palette-text)', lineHeight: 1.2, marginBottom: '13px' }}>
             반품/교환정보
           </h2>
           <p 
-            className="text-stone-500 mb-8"
+            className="text-warm-gray mb-8"
             style={{ 
               fontSize: 'var(--font-size-body)',
               fontWeight: 'var(--font-weight-body)',
@@ -1088,13 +1091,13 @@ export const ProductDetailPage: React.FC = () => {
         </div>
 
         {/* 상품문의 섹션 */}
-        <div ref={qnaRef} data-section="qna" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid #000000' }}>
-          <h2 style={{ fontSize: '18px', fontWeight: 400, color: '#000000', lineHeight: 1.2, marginBottom: '13px' }}>
+        <div ref={qnaRef} data-section="qna" className="scroll-mt-[152px] mb-[60px] pt-8" style={{ borderTop: '1px solid var(--palette-text)' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 400, color: 'var(--palette-text)', lineHeight: 1.2, marginBottom: '13px' }}>
             상품문의
           </h2>
           {qnas.length === 0 ? (
             <p 
-              className="text-stone-500 mb-8"
+              className="text-warm-gray mb-8"
               style={{ 
                 fontSize: 'var(--font-size-body)',
                 fontWeight: 'var(--font-weight-body)',
@@ -1107,7 +1110,7 @@ export const ProductDetailPage: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {qnas.map((qna, index) => (
-                <div key={index} className="border-b border-stone-200 pb-4">
+                <div key={index} className="border-b border-[color:var(--border-hairline)] pb-4">
                   {/* 상품문의 아이템 렌더링 */}
                 </div>
               ))}
@@ -1126,8 +1129,8 @@ export const ProductDetailPage: React.FC = () => {
           right: 0,
           width: '100%',
           zIndex: 99999,
-          background: 'var(--cream)',
-          borderTop: '1px solid #000000',
+          background: 'var(--surface-soft)',
+          borderTop: '1px solid var(--palette-text)',
           padding: '12px 16px',
         }}
       >
@@ -1136,8 +1139,8 @@ export const ProductDetailPage: React.FC = () => {
             onClick={() => setIsLiked(!isLiked)}
             style={{
               padding: '12px',
-              background: isLiked ? '#F5F5F5' : 'transparent',
-              border: '1px solid #000000',
+              background: isLiked ? 'var(--palette-bg-2)' : 'transparent',
+              border: '1px solid var(--palette-text)',
               cursor: 'pointer',
               flexShrink: 0,
               display: 'flex',
@@ -1160,8 +1163,8 @@ export const ProductDetailPage: React.FC = () => {
               justifyContent: 'center',
               gap: '8px',
               background: 'transparent',
-              border: '1px solid #000000',
-              color: product.soldOut ? '#A0A0A0' : '#000000',
+              border: '1px solid var(--palette-text)',
+              color: product.soldOut ? 'var(--muted)' : 'var(--palette-text)',
               cursor: product.soldOut ? 'not-allowed' : 'pointer',
             }}
           >
@@ -1176,8 +1179,8 @@ export const ProductDetailPage: React.FC = () => {
               padding: '12px',
               fontSize: '14px',
               fontWeight: 400,
-              background: product.soldOut ? '#A0A0A0' : '#000000',
-              border: '1px solid #000000',
+              background: product.soldOut ? 'var(--muted)' : 'var(--palette-text)',
+              border: '1px solid var(--palette-text)',
               color: '#ffffff',
               cursor: product.soldOut ? 'not-allowed' : 'pointer',
             }}

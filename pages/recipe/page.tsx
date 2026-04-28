@@ -202,7 +202,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
       <div style={{
         width: '100%',
         aspectRatio: '1 / 1',
-        background: '#f5f5f5',
+        background: 'var(--palette-bg-2)',
         overflow: 'hidden',
         position: 'relative',
         borderRadius: '4px',
@@ -227,7 +227,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
             position: 'absolute',
             top: '8px',
             left: '8px',
-            background: '#000',
+            background: 'var(--palette-text)',
             color: '#fff',
             padding: '4px 8px',
             fontSize: '11px',
@@ -253,7 +253,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
             fontSize: '15px',
             fontWeight: 400,
             margin: 0,
-            color: '#000',
+            color: 'var(--palette-text)',
             lineHeight: 1.3,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
@@ -269,7 +269,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
             alignItems: 'center',
             gap: '3px',
             fontSize: '11px',
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             flexShrink: 0,
           }}>
             <Heart className="w-3 h-3" style={{ color: '#E53935', fill: '#E53935' }} />
@@ -280,7 +280,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
         {/* 설명 - 2줄 */}
         <p style={{
           fontSize: '13px',
-          color: '#6B6B6B',
+          color: 'var(--warm-gray)',
           margin: '0 0 8px 0',
           lineHeight: 1.4,
           overflow: 'hidden',
@@ -295,7 +295,7 @@ const RecipeCard: React.FC<{ recipe: Recipe; index?: number }> = ({ recipe, inde
         {/* 저자 */}
         <div style={{
           fontSize: '12px',
-          color: '#6B6B6B',
+          color: 'var(--warm-gray)',
         }}>
           <span>@{recipe.author || '슬런치'}</span>
         </div>
@@ -361,7 +361,7 @@ const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmark
           width: '200px',
           height: '200px',
           overflow: 'hidden',
-          background: '#f0f0f0',
+          background: 'var(--border-hairline)',
           flexShrink: 0,
           borderTopLeftRadius: '16px',
           borderTopRightRadius: '16px',
@@ -395,7 +395,7 @@ const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmark
             fontSize: '18px',
             fontWeight: 700,
             margin: 0,
-            color: '#000',
+            color: 'var(--palette-text)',
             lineHeight: 1.3,
             marginBottom: '4px',
             display: '-webkit-box',
@@ -412,7 +412,7 @@ const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmark
           <span style={{
             fontSize: '12px',
             fontWeight: 400,
-            color: '#888',
+            color: 'var(--gray-light)',
           }}>
             @{recipe.author || 'slunch'}
           </span>
@@ -433,9 +433,9 @@ const EditorialRecipeCard: React.FC<{ recipe: Recipe; index?: number; isBookmark
                 borderRadius: '50%',
                 fontSize: '11px',
                 fontWeight: 500,
-                border: (isBookmarked || isBookmarkHovered) ? 'none' : '1px solid #000',
-                background: (isBookmarked || isBookmarkHovered) ? '#000' : 'transparent',
-                color: (isBookmarked || isBookmarkHovered) ? '#fff' : '#000',
+                border: (isBookmarked || isBookmarkHovered) ? 'none' : '1px solid var(--palette-text)',
+                background: (isBookmarked || isBookmarkHovered) ? 'var(--palette-text)' : 'transparent',
+                color: (isBookmarked || isBookmarkHovered) ? '#fff' : 'var(--palette-text)',
                 transition: 'all 0.2s ease',
               }}
               onMouseEnter={() => setIsBookmarkHovered(true)}
@@ -468,17 +468,17 @@ const ViewAllCard: React.FC<{ categoryId: string; categoryTitle: string }> = ({ 
         minWidth: '200px',
         maxWidth: '200px',
         height: '330px',
-        background: '#F5F5F5',
+        background: 'var(--palette-bg-2)',
         borderRadius: '16px',
         textDecoration: 'none',
         transition: 'background 0.2s ease',
       }}
-      className="hover:bg-gray-200"
+      className="hover:bg-[rgba(26,10,5,0.04)]"
     >
       <span style={{
         fontSize: '12px',
         fontWeight: 400,
-        color: '#666',
+        color: 'var(--warm-gray)',
         letterSpacing: '0.1em',
         textTransform: 'uppercase',
       }}>
@@ -573,7 +573,7 @@ const RecipeSection: React.FC<{
           <span style={{
             fontSize: '11px',
             fontWeight: 400,
-            color: '#999',
+            color: 'var(--muted)',
             textTransform: 'uppercase',
             letterSpacing: '0.1em',
             display: 'block',
@@ -592,7 +592,7 @@ const RecipeSection: React.FC<{
             <h2 style={{
               fontSize: '24px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               lineHeight: 1.3,
               display: 'inline',
               borderBottom: '1px solid transparent',
@@ -606,7 +606,7 @@ const RecipeSection: React.FC<{
           <p style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#6B6B6B',
+            color: 'var(--warm-gray)',
             lineHeight: 1.6,
             marginBottom: '56px',
           }}>
@@ -623,7 +623,7 @@ const RecipeSection: React.FC<{
             <span style={{
               fontSize: '11px',
               fontWeight: 400,
-              color: '#999',
+              color: 'var(--muted)',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
             }}>
@@ -641,7 +641,7 @@ const RecipeSection: React.FC<{
                 style={{
                   fontSize: '20px',
                   fontWeight: 400,
-                  color: '#000',
+                  color: 'var(--palette-text)',
                   display: 'inline',
                   borderBottom: '1px solid transparent',
                   transition: 'border-color 0.2s',
@@ -672,24 +672,24 @@ const RecipeSection: React.FC<{
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
-                  border: '1px solid #E0E0E0',
+                  border: '1px solid var(--border-divider)',
                   background: 'rgba(255,255,255,0.95)',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  boxShadow: '0 2px 8px rgba(26, 10, 5, 0.1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#000';
-                  e.currentTarget.style.borderColor = '#000';
+                  e.currentTarget.style.background = 'var(--palette-text)';
+                  e.currentTarget.style.borderColor = 'var(--palette-text)';
                   e.currentTarget.style.color = '#fff';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
-                  e.currentTarget.style.borderColor = '#E0E0E0';
-                  e.currentTarget.style.color = '#000';
+                  e.currentTarget.style.borderColor = 'var(--border-divider)';
+                  e.currentTarget.style.color = 'var(--palette-text)';
                 }}
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -708,24 +708,24 @@ const RecipeSection: React.FC<{
                   width: '44px',
                   height: '44px',
                   borderRadius: '50%',
-                  border: '1px solid #E0E0E0',
+                  border: '1px solid var(--border-divider)',
                   background: 'rgba(255,255,255,0.95)',
                   alignItems: 'center',
                   justifyContent: 'center',
                   cursor: 'pointer',
                   transition: 'all 0.2s',
                   zIndex: 10,
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  boxShadow: '0 2px 8px rgba(26, 10, 5, 0.1)',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#000';
-                  e.currentTarget.style.borderColor = '#000';
+                  e.currentTarget.style.background = 'var(--palette-text)';
+                  e.currentTarget.style.borderColor = 'var(--palette-text)';
                   e.currentTarget.style.color = '#fff';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'rgba(255,255,255,0.95)';
-                  e.currentTarget.style.borderColor = '#E0E0E0';
-                  e.currentTarget.style.color = '#000';
+                  e.currentTarget.style.borderColor = 'var(--border-divider)';
+                  e.currentTarget.style.color = 'var(--palette-text)';
                 }}
               >
                 <ChevronRight className="w-5 h-5" />
@@ -806,9 +806,9 @@ const SpiritRecipeCarousel: React.FC<{
             transform: 'translateY(-50%)',
             width: '40px',
             height: '40px',
-            border: '1px solid #000',
+            border: '1px solid var(--palette-text)',
             background: '#fff',
-            color: '#000',
+            color: 'var(--palette-text)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -817,12 +817,12 @@ const SpiritRecipeCarousel: React.FC<{
             transition: 'all 0.15s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#000';
+            e.currentTarget.style.background = 'var(--palette-text)';
             e.currentTarget.style.color = '#fff';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.background = '#fff';
-            e.currentTarget.style.color = '#000';
+            e.currentTarget.style.color = 'var(--palette-text)';
           }}
         >
           <ChevronLeft className="w-5 h-5" />
@@ -840,8 +840,8 @@ const SpiritRecipeCarousel: React.FC<{
             transform: 'translateY(-50%)',
             width: '40px',
             height: '40px',
-            border: '1px solid #000',
-            background: '#000',
+            border: '1px solid var(--palette-text)',
+            background: 'var(--palette-text)',
             color: '#fff',
             display: 'flex',
             alignItems: 'center',
@@ -851,10 +851,10 @@ const SpiritRecipeCarousel: React.FC<{
             transition: 'all 0.15s ease',
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = '#333';
+            e.currentTarget.style.background = 'var(--charcoal)';
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = '#000';
+            e.currentTarget.style.background = 'var(--palette-text)';
           }}
         >
           <ChevronRight className="w-5 h-5" />
@@ -917,10 +917,10 @@ const RecipeHeroSection: React.FC<{ recipes: Recipe[] }> = ({ recipes }) => {
       <div className="px-4 md:px-8 lg:px-16 mb-6">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
               Popular
             </span>
-            <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#000', marginTop: '4px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)', marginTop: '4px' }}>
               인기 레시피
             </h2>
           </div>
@@ -929,11 +929,11 @@ const RecipeHeroSection: React.FC<{ recipes: Recipe[] }> = ({ recipes }) => {
             style={{
               fontSize: '13px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               textDecoration: 'none',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.color = '#000'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none'; e.currentTarget.style.color = '#6B6B6B'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.color = 'var(--palette-text)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.textDecoration = 'none'; e.currentTarget.style.color = 'var(--warm-gray)'; }}
           >
             전체보기 →
           </Link>
@@ -1008,10 +1008,10 @@ const RecipePage: React.FC = () => {
           {/* Section 1: 스피릿 Hero / Title */}
           <section className="w-full max-w-[1440px] px-10 py-20 text-center" style={{ background: '#EEF2EB' }}>
               <div className="text-5xl mb-4">{spiritInfo.emoji}</div>
-            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+            <h1 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                 {spiritName} 추천 레시피
               </h1>
-            <p className="text-stone-600 text-center max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B' }}>
+            <p className="text-warm-gray text-center max-w-2xl mx-auto" style={{ fontSize: '16px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 "{spiritInfo.description}"
               </p>
             </section>
@@ -1035,10 +1035,10 @@ const RecipePage: React.FC = () => {
                   >
                     스피릿 PICK
                   </span>
-                  <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                  <h2 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName} 스피릿이 좋아하는 레시피
                   </h2>
-                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
+                  <p className="text-warm-gray mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
                     {spiritName}과 같은 스피릿들이 가장 많이 좋아한 레시피예요
                   </p>
                 </div>
@@ -1057,10 +1057,10 @@ const RecipePage: React.FC = () => {
                 }}
               >
                 <div style={{ maxWidth: '1360px', textAlign: 'center', padding: '40px 0' }}>
-                  <p style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B', marginBottom: '8px' }}>
+                  <p style={{ fontSize: '16px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '8px' }}>
                     {spiritName} 스피릿에 맞는 추천 레시피를 준비 중이에요
                   </p>
-                  <p style={{ fontSize: '14px', fontWeight: 400, color: '#999' }}>
+                  <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--muted)' }}>
                     곧 새로운 레시피가 추가될 예정입니다
                   </p>
                 </div>
@@ -1080,10 +1080,10 @@ const RecipePage: React.FC = () => {
               <div style={{ padding: '40px 0' }}>
                 {/* 텍스트 콘텐츠 - 1360px 제한 */}
                 <div style={{ maxWidth: '1360px', paddingRight: '40px' }}>
-                  <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                  <h2 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                     {spiritName}에게 어울리는 레시피
                   </h2>
-                  <p className="text-stone-600 mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
+                  <p className="text-warm-gray mb-8 text-left" style={{ fontSize: '16px', fontWeight: 400 }}>
                     {getSpiritCurationMessage(spiritName)}
                   </p>
                 </div>
@@ -1102,11 +1102,11 @@ const RecipePage: React.FC = () => {
                               >
                                 {category.subtitle}
                               </span>
-                              <h3 className="text-stone-900 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                              <h3 className="text-black font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                                 {category.title}
                               </h3>
                             </div>
-                            <button className="text-stone-600 hover:text-stone-900 underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
+                            <button className="text-warm-gray hover:text-black underline underline-offset-4 text-sm font-medium flex-shrink-0 ml-4">
                               See all
                             </button>
                           </div>
@@ -1122,10 +1122,10 @@ const RecipePage: React.FC = () => {
               </div>
             ) : (
               <div style={{ padding: '80px 40px', textAlign: 'center' }}>
-                <p style={{ fontSize: '16px', fontWeight: 400, color: '#6B6B6B', marginBottom: '8px' }}>
+                <p style={{ fontSize: '16px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '8px' }}>
                   조건에 맞는 레시피가 없습니다
                 </p>
-                <p style={{ fontSize: '14px', fontWeight: 400, color: '#999' }}>
+                <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--muted)' }}>
                   다른 스피릿 유형으로 다시 시도해보세요
                 </p>
               </div>
@@ -1136,7 +1136,7 @@ const RecipePage: React.FC = () => {
               style={{
                 padding: '40px 0',
                 paddingRight: '40px',
-                borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                borderTop: '1px solid rgba(26, 10, 5, 0.06)',
                 maxWidth: '1360px',
               }}
             >
@@ -1145,7 +1145,7 @@ const RecipePage: React.FC = () => {
                   <Trophy className="w-5 h-5 text-emerald-700" />
                   <span className="text-emerald-700 font-semibold">스피릿 미션</span>
                 </div>
-                <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
+                <h3 className="text-black mb-3 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>
                   이 레시피를 만들어보고 후기를 남겨주시면
                 </h3>
                 <div className="flex items-center justify-center gap-3 mb-6">
@@ -1153,7 +1153,7 @@ const RecipePage: React.FC = () => {
                   <span className="text-emerald-700 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>{spiritName}</span>
                   <span className="text-4xl">배지를 드려요!</span>
                 </div>
-                <p className="text-stone-600 mb-8 text-center" style={{ fontSize: '16px', fontWeight: 400 }}>
+                <p className="text-warm-gray mb-8 text-center" style={{ fontSize: '16px', fontWeight: 400 }}>
                   레시피를 따라 만들어보고 사진과 후기를 공유해주세요.
                   <br />같은 스피릿 유저들과 함께 나누는 즐거움을 경험해보세요!
                 </p>
@@ -1244,19 +1244,19 @@ const RecipePage: React.FC = () => {
             <div style={{
               width: '48px',
               height: '48px',
-              background: '#F5F5F5',
+              background: 'var(--palette-bg-2)',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               margin: '0 auto 20px',
             }}>
-              <Plus className="w-6 h-6" style={{ color: '#6B6B6B' }} />
+              <Plus className="w-6 h-6" style={{ color: 'var(--warm-gray)' }} />
             </div>
             <h3 style={{
               fontSize: '18px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '8px',
             }}>
               나만의 레시피를 공유해보세요
@@ -1264,7 +1264,7 @@ const RecipePage: React.FC = () => {
             <p style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               marginBottom: '20px',
               lineHeight: 1.6,
             }}>
@@ -1281,7 +1281,7 @@ const RecipePage: React.FC = () => {
                 padding: '12px 24px',
                 fontSize: '14px',
                 fontWeight: 400,
-                background: '#000',
+                background: 'var(--palette-text)',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '4px',

@@ -107,7 +107,7 @@ const WishlistPage: React.FC = () => {
                   padding: '0',
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: selectedCategory === cat ? '#000000' : '#6B6B6B',
+                  color: selectedCategory === cat ? 'var(--palette-text)' : 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -115,8 +115,8 @@ const WishlistPage: React.FC = () => {
                   textUnderlineOffset: '4px',
                   transition: 'color 0.15s ease',
                 }}
-                onMouseEnter={(e) => { e.currentTarget.style.color = '#000000'; }}
-                onMouseLeave={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = '#6B6B6B'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = 'var(--palette-text)'; }}
+                onMouseLeave={(e) => { if (selectedCategory !== cat) e.currentTarget.style.color = 'var(--warm-gray)'; }}
               >
                 {cat}
               </button>
@@ -155,7 +155,7 @@ const WishlistPage: React.FC = () => {
                         zIndex: 10,
                       }}
                     >
-                      <X size={14} color="#6B6B6B" />
+                      <X size={14} color="var(--warm-gray)" />
                     </button>
 
                     {/* 카드 */}
@@ -167,7 +167,7 @@ const WishlistPage: React.FC = () => {
                         style={{
                           aspectRatio: '1/1',
                           overflow: 'hidden',
-                          background: '#F5F5F5',
+                          background: 'var(--palette-bg-2)',
                           borderRadius: '4px',
                         }}
                       >
@@ -181,19 +181,19 @@ const WishlistPage: React.FC = () => {
                         />
                       </div>
                       <div style={{ paddingTop: '12px' }}>
-                        <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', marginBottom: '4px' }}>
+                        <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '4px' }}>
                           {product.category}
                         </p>
-                        <h4 style={{ fontSize: '14px', fontWeight: 400, color: '#000000', marginBottom: '6px', lineHeight: 1.3 }}>
+                        <h4 style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '6px', lineHeight: 1.3 }}>
                           {product.name}
                         </h4>
                         <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px' }}>
                           {product.originalPrice && product.originalPrice > product.price && (
-                            <span style={{ fontSize: '12px', fontWeight: 400, color: '#9A9A9A', textDecoration: 'line-through' }}>
+                            <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--muted)', textDecoration: 'line-through' }}>
                               {product.originalPrice.toLocaleString()}원
                             </span>
                           )}
-                          <span style={{ fontSize: '14px', fontWeight: 400, color: '#000000' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
                             {product.price.toLocaleString()}원
                           </span>
                         </div>
@@ -205,8 +205,8 @@ const WishlistPage: React.FC = () => {
             </div>
           ) : (
             <div style={{ padding: '80px 0', textAlign: 'center' }}>
-              <Heart size={40} color="#D4D4D4" style={{ marginBottom: '16px' }} />
-              <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B', marginBottom: '16px' }}>
+              <Heart size={40} color="var(--gray-lighter)" style={{ marginBottom: '16px' }} />
+              <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '16px' }}>
                 관심상품이 없습니다.
               </p>
               <Link
@@ -214,7 +214,7 @@ const WishlistPage: React.FC = () => {
                 style={{
                   fontSize: '14px',
                   fontWeight: 400,
-                  color: '#000000',
+                  color: 'var(--palette-text)',
                   textDecoration: 'underline',
                   textUnderlineOffset: '3px',
                 }}

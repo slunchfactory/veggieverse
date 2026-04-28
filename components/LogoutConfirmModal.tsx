@@ -33,7 +33,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({ isOpen, 
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -42,7 +42,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({ isOpen, 
           maxWidth: '320px',
           margin: '0 16px',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           padding: '32px 24px',
           textAlign: 'center',
@@ -53,7 +53,7 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({ isOpen, 
         <p style={{
           fontSize: '15px',
           fontWeight: 400,
-          color: '#000',
+          color: 'var(--palette-text)',
           marginBottom: '24px',
           lineHeight: 1.5,
         }}>
@@ -69,9 +69,9 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({ isOpen, 
               padding: '12px',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               background: 'transparent',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               cursor: 'pointer',
             }}
@@ -86,8 +86,8 @@ export const LogoutConfirmModal: React.FC<LogoutConfirmModalProps> = ({ isOpen, 
               fontSize: '14px',
               fontWeight: 400,
               color: '#fff',
-              background: '#000',
-              border: '1px solid #000',
+              background: 'var(--palette-text)',
+              border: '1px solid var(--palette-text)',
               borderRadius: '8px',
               cursor: 'pointer',
             }}

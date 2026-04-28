@@ -21,7 +21,7 @@
       <div style="display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; max-width: 1440px; margin: 0 auto; position: relative;">
         <!-- Left: Hamburger Menu -->
         <button onclick="openDrawer()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0;" aria-label="메뉴 열기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--palette-text)" stroke-width="1">
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="12" x2="21" y2="12"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -36,11 +36,11 @@
         <!-- Right: Utility Icons -->
         <div style="display: flex; align-items: center; gap: 8px;">
           <!-- Cart -->
-          <a href="#" style="height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 4px; font-size: 14px; font-weight: 400; color: #000; text-decoration: none;" aria-label="장바구니">(0)</a>
+          <a href="#" style="height: 40px; display: flex; align-items: center; justify-content: center; padding: 0 4px; font-size: 14px; font-weight: 400; color: var(--palette-text); text-decoration: none;" aria-label="장바구니">(0)</a>
           <!-- User Profile -->
           <a href="#" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;" aria-label="로그인">
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: #E5E5E5; display: flex; align-items: center; justify-content: center;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--border-divider); display: flex; align-items: center; justify-content: center;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warm-gray)" stroke-width="1">
                 <circle cx="12" cy="8" r="4"></circle>
                 <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
               </svg>
@@ -52,11 +52,11 @@
 
     <!-- NAVIGATION DRAWER -->
     <div id="navOverlay" onclick="closeDrawer()" style="display: none; position: fixed; inset: 0; z-index: 100;"></div>
-    <nav id="navDrawer" style="position: fixed; top: 0; left: 0; bottom: 0; width: 80vw; max-width: 400px; background: #FFFFFF; transform: translateX(-100%); transition: transform 0.3s ease-out; display: flex; flex-direction: column; overflow-y: auto; border-right: 1px solid #000; z-index: 101;">
+    <nav id="navDrawer" style="position: fixed; top: 0; left: 0; bottom: 0; width: 80vw; max-width: 400px; background: #FFFFFF; transform: translateX(-100%); transition: transform 0.3s ease-out; display: flex; flex-direction: column; overflow-y: auto; border-right: 1px solid var(--palette-text); z-index: 101;">
       <!-- Drawer Header -->
-      <div style="height: var(--header-h); display: flex; align-items: center; justify-content: flex-start; padding: 0 16px; border-bottom: 1px solid #000; flex-shrink: 0;">
+      <div style="height: var(--header-h); display: flex; align-items: center; justify-content: flex-start; padding: 0 16px; border-bottom: 1px solid var(--palette-text); flex-shrink: 0;">
         <button onclick="closeDrawer()" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; padding: 0;" aria-label="메뉴 닫기">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--palette-text)" stroke-width="1">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -64,38 +64,38 @@
       </div>
       <!-- Menu Items -->
       <div style="flex: 1;">
-        <a href="index.html" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #000;">About</span>
+        <a href="index.html" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--palette-text);">About</span>
         </a>
-        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #333;">Store</span>
+        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--charcoal);">Store</span>
         </a>
-        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #333;">Subscription</span>
+        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--charcoal);">Subscription</span>
         </a>
-        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #333;">Recipe</span>
+        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--charcoal);">Recipe</span>
         </a>
-        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #333;">Newsletter</span>
+        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--charcoal);">Newsletter</span>
         </a>
-        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid #000; text-decoration: none;">
-          <span style="font-size: 18px; font-weight: 400; color: #333;">Event</span>
+        <a href="#" style="display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--palette-text); text-decoration: none;">
+          <span style="font-size: 18px; font-weight: 400; color: var(--charcoal);">Event</span>
         </a>
       </div>
       <!-- Bottom Section -->
-      <div style="padding: 24px; border-top: 1px solid #000; margin-top: auto;">
-        <button style="font-size: 15px; font-weight: 400; color: #000; background: none; border: none; cursor: pointer; text-align: left; padding: 0; margin-bottom: 16px;">Search</button>
-        <button style="font-size: 15px; font-weight: 400; color: #000; background: none; border: none; cursor: pointer; text-align: left; padding: 0;">Login / Sign Up</button>
+      <div style="padding: 24px; border-top: 1px solid var(--palette-text); margin-top: auto;">
+        <button style="font-size: 15px; font-weight: 400; color: var(--palette-text); background: none; border: none; cursor: pointer; text-align: left; padding: 0; margin-bottom: 16px;">Search</button>
+        <button style="font-size: 15px; font-weight: 400; color: var(--palette-text); background: none; border: none; cursor: pointer; text-align: left; padding: 0;">Login / Sign Up</button>
       </div>
     </nav>
 
     <!-- MAIN CONTENT -->
     <main style="background: var(--cream);">
       <!-- Hero Grid -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #000;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--palette-text);">
         <!-- Image -->
-        <div style="aspect-ratio: 4/3; background: #E8E4DF; border-right: 1px solid #000; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px;">
+        <div style="aspect-ratio: 4/3; background: #E8E4DF; border-right: 1px solid var(--palette-text); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px;">
           [브랜드 이미지]
         </div>
         <!-- Text -->
@@ -107,12 +107,12 @@
       </div>
 
       <!-- 3-Column Grid -->
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid #000;">
-        <div style="padding: 48px 32px; border-right: 1px solid #000;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); border-bottom: 1px solid var(--palette-text);">
+        <div style="padding: 48px 32px; border-right: 1px solid var(--palette-text);">
           <p style="font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">Philosophy</p>
           <p style="font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal);">고기 없이도 맛있을 수 있다는 걸 보여주고 싶었어요. "비건이라서 맛있는 게 아니라, 맛있는데 비건인 거" 그게 저희가 생각하는 방향이에요.</p>
         </div>
-        <div style="padding: 48px 32px; border-right: 1px solid #000;">
+        <div style="padding: 48px 32px; border-right: 1px solid var(--palette-text);">
           <p style="font-size: 11px; color: var(--warm-gray); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px;">Production</p>
           <p style="font-size: 15px; font-weight: 400; line-height: 1.8; color: var(--charcoal);">홍대와 더현대에서 직접 만든 음식을 팔고 있어요. 공장도 여전히 직접 운영하고요. 재료 고르는 것부터 포장까지, 다 저희 손을 거쳐요.</p>
         </div>
@@ -123,16 +123,16 @@
       </div>
 
       <!-- Full-width Image -->
-      <div style="height: 400px; background: #D4CFC7; border-bottom: 1px solid #000; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px;">
+      <div style="height: 400px; background: #D4CFC7; border-bottom: 1px solid var(--palette-text); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px;">
         [공장/매장 전경 이미지]
       </div>
 
       <!-- Tags Section -->
-      <div style="padding: 32px 64px; display: flex; gap: 16px; border-bottom: 1px solid #000;">
-        <span style="padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400;">#속편한</span>
-        <span style="padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400;">#재료가솔직한</span>
-        <span style="padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400;">#식물성</span>
-        <span style="padding: 8px 16px; border: 1px solid #000; font-size: 13px; font-weight: 400;">#천천히제대로</span>
+      <div style="padding: 32px 64px; display: flex; gap: 16px; border-bottom: 1px solid var(--palette-text);">
+        <span style="padding: 8px 16px; border: 1px solid var(--palette-text); font-size: 13px; font-weight: 400;">#속편한</span>
+        <span style="padding: 8px 16px; border: 1px solid var(--palette-text); font-size: 13px; font-weight: 400;">#재료가솔직한</span>
+        <span style="padding: 8px 16px; border: 1px solid var(--palette-text); font-size: 13px; font-weight: 400;">#식물성</span>
+        <span style="padding: 8px 16px; border: 1px solid var(--palette-text); font-size: 13px; font-weight: 400;">#천천히제대로</span>
       </div>
     </main>
 

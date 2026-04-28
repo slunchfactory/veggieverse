@@ -34,8 +34,8 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
         alignSelf: 'flex-start',
         height: 'fit-content',
         padding: '24px',
-        background: '#fafafa',
-        borderRight: '1px solid #eee',
+        background: 'var(--palette-bg-2)',
+        borderRight: '1px solid var(--border-hairline)',
       }}
     >
       {/* Header */}
@@ -67,7 +67,7 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
                 cursor: 'pointer',
                 padding: '8px 12px',
                 background: isExcluded ? '#fff' : 'transparent',
-                border: isExcluded ? '1px solid #000' : '1px solid transparent',
+                border: isExcluded ? '1px solid var(--palette-text)' : '1px solid transparent',
                 transition: 'all 0.2s',
               }}
             >
@@ -77,8 +77,8 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
                 style={{
                   width: '22px',
                   height: '22px',
-                  border: isExcluded ? '2px solid #000' : '2px solid #ccc',
-                  background: isExcluded ? '#000' : '#fff',
+                  border: isExcluded ? '2px solid var(--palette-text)' : '2px solid var(--border-color-light)',
+                  background: isExcluded ? 'var(--palette-text)' : '#fff',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -93,7 +93,7 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
                 style={{
                   fontSize: '15px',
                   fontWeight: isExcluded ? 500 : 400,
-                  color: isExcluded ? '#000' : '#333',
+                  color: isExcluded ? 'var(--palette-text)' : 'var(--charcoal)',
                 }}
               >
                 {option.label}
@@ -107,7 +107,7 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
       <div
         style={{
           height: '1px',
-          background: '#ddd',
+          background: 'var(--border-divider)',
           margin: '24px 0',
         }}
       />
@@ -125,12 +125,12 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
           >
             ✓ {excluded.map((e) => EXCLUSION_OPTIONS.find((o) => o.id === e)?.label).join(', ')} 제외 중
           </p>
-          <p style={{ fontSize: '12px', color: '#888' }}>
+          <p style={{ fontSize: '12px', color: 'var(--gray-light)' }}>
             {hiddenMenuCount}개 메뉴 숨김
           </p>
         </div>
       ) : (
-        <p style={{ fontSize: '13px', color: '#888', marginBottom: '16px' }}>
+        <p style={{ fontSize: '13px', color: 'var(--gray-light)', marginBottom: '16px' }}>
           제외할 재료를 선택하세요
         </p>
       )}
@@ -143,9 +143,9 @@ export const SidebarFilter: React.FC<SidebarFilterProps> = ({
             width: '100%',
             padding: '10px',
             fontSize: '13px',
-            border: '1px solid #ddd',
+            border: '1px solid var(--border-divider)',
             background: '#fff',
-            color: '#666',
+            color: 'var(--warm-gray)',
             cursor: 'pointer',
             transition: 'all 0.2s',
           }}

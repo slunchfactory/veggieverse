@@ -14,10 +14,10 @@
         --control-bar-h: 48px;
         --cream: #FDFBF7;
         --lime: #DCFD4A;
-        --black: #000000;
-        --gray: #6B6B6B;
-        --gray-light: #9A9A9A;
-        --gray-lighter: #E0E0E0;
+        --black: var(--palette-text);
+        --gray: var(--warm-gray);
+        --gray-light: var(--muted);
+        --gray-lighter: var(--border-divider);
         --white: #FFFFFF;
         --discount-blue: #87b5e1;
       }
@@ -87,7 +87,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: #E5E5E5;
+        background: var(--border-divider);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -142,7 +142,7 @@
       }
       .tab-count {
         margin-left: 4px;
-        color: #999;
+        color: var(--muted);
         font-size: 12px;
       }
       .control-right {
@@ -200,8 +200,8 @@
         border-bottom: 1px solid var(--gray-lighter);
         cursor: pointer;
       }
-      .sort-option:hover { background: #F5F5F5; }
-      .sort-option.active { color: var(--black); background: #F5F5F5; }
+      .sort-option:hover { background: var(--palette-bg-2); }
+      .sort-option.active { color: var(--black); background: var(--palette-bg-2); }
 
       /* === MAIN CONTENT === */
       main {
@@ -234,7 +234,7 @@
       .product-img-wrapper {
         position: relative;
         aspect-ratio: 1 / 1;
-        background: #F5F5F5;
+        background: var(--palette-bg-2);
         border-radius: 4px;
         overflow: hidden;
       }
@@ -257,7 +257,7 @@
       }
       .badge-new { background: #F2C94C; color: var(--black); }
       .badge-best { background: #3fa945; color: var(--white); }
-      .badge-soldout { background: #A0A0A0; color: var(--white); }
+      .badge-soldout { background: var(--muted); color: var(--white); }
       .product-card.soldout .product-img-wrapper::after {
         content: '';
         position: absolute;
@@ -504,7 +504,7 @@
           <a href="cart.html" aria-label="장바구니">(0)</a>
           <a href="mypage.html" aria-label="마이페이지">
             <div class="header-profile">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warm-gray)" stroke-width="1">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
             </div>

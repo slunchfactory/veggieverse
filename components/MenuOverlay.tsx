@@ -12,19 +12,19 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({ scale, onZoomIn, onZoo
     <>
       {/* Top Left Logo */}
       <div className="fixed top-8 left-8 z-40 pointer-events-none">
-        <h1 className="text-stone-900 pointer-events-auto cursor-default font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400, letterSpacing: '-0.02em' }}>
+        <h1 className="text-black pointer-events-auto cursor-default font-normal" style={{ fontSize: 'var(--font-size-h1)', fontWeight: 400, letterSpacing: '-0.02em' }}>
           veggieverse
         </h1>
       </div>
 
       {/* Bottom Controls */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 flex items-center gap-4 pointer-events-none">
-        <div className="flex bg-stone-900 text-white rounded-none shadow-xl pointer-events-auto">
-          <button className="flex items-center gap-2 px-6 py-3 hover:bg-stone-800 transition-colors rounded-l-md border-r border-stone-700">
+        <div className="flex bg-black text-white rounded-none shadow-xl pointer-events-auto">
+          <button className="flex items-center gap-2 px-6 py-3 hover:bg-charcoal transition-colors rounded-l-md border-r border-charcoal">
             <Menu className="w-4 h-4" />
             <span className="text-sm font-medium">Menu</span>
           </button>
-          <button className="flex items-center gap-2 px-6 py-3 hover:bg-stone-800 transition-colors rounded-r-md">
+          <button className="flex items-center gap-2 px-6 py-3 hover:bg-charcoal transition-colors rounded-r-md">
             <SlidersHorizontal className="w-4 h-4" />
             <span className="text-sm font-medium">Filter</span>
           </button>
@@ -33,20 +33,20 @@ export const MenuOverlay: React.FC<MenuOverlayProps> = ({ scale, onZoomIn, onZoo
 
       {/* Bottom Right Zoom/Nav Controls */}
       <div className="fixed bottom-8 right-8 z-40 flex items-center gap-3 pointer-events-none">
-        <div className="bg-stone-900/10 backdrop-blur-sm text-stone-800 p-3 rounded-none pointer-events-auto cursor-help" title="Drag to explore">
+        <div className="bg-black/10 backdrop-blur-sm text-charcoal p-3 rounded-none pointer-events-auto cursor-help" title="Drag to explore">
            <Move className="w-5 h-5 animate-pulse" />
         </div>
         
         <div className="flex gap-2 pointer-events-auto">
           <button 
             onClick={onZoomOut}
-            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-none shadow-lg hover:scale-105 transition-transform text-stone-800"
+            className="w-12 h-12 flex items-center justify-center bg-white border border-[color:var(--border-hairline)] rounded-none shadow-lg hover:scale-105 transition-transform text-charcoal"
           >
             <Minus className="w-5 h-5" />
           </button>
           <button 
             onClick={onZoomIn}
-            className="w-12 h-12 flex items-center justify-center bg-white border border-stone-200 rounded-none shadow-lg hover:scale-105 transition-transform text-stone-800"
+            className="w-12 h-12 flex items-center justify-center bg-white border border-[color:var(--border-hairline)] rounded-none shadow-lg hover:scale-105 transition-transform text-charcoal"
           >
             <Plus className="w-5 h-5" />
           </button>

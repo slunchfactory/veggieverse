@@ -26,7 +26,7 @@ const MyInfo: React.FC = () => {
               width: '100px',
               height: '100px',
               borderRadius: '50%',
-              background: '#F7F4EF',
+              background: 'var(--cream)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -36,7 +36,7 @@ const MyInfo: React.FC = () => {
             {user?.profileImage ? (
               <img src={user.profileImage} alt="프로필" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
-              <User size={40} color="#9A9A9A" />
+              <User size={40} color="var(--muted)" />
             )}
           </div>
         </div>
@@ -46,7 +46,7 @@ const MyInfo: React.FC = () => {
           style={{
             background: '#FFFFFF',
             borderRadius: '4px',
-            border: '1px solid rgba(0,0,0,0.08)',
+            border: '1px solid rgba(26, 10, 5, 0.08)',
             overflow: 'hidden',
           }}
         >
@@ -58,13 +58,13 @@ const MyInfo: React.FC = () => {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 padding: '16px 20px',
-                borderBottom: idx < infoItems.length - 1 ? '1px solid rgba(0,0,0,0.05)' : 'none',
+                borderBottom: idx < infoItems.length - 1 ? '1px solid rgba(26, 10, 5, 0.05)' : 'none',
               }}
             >
-              <span style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+              <span style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 {item.label}
               </span>
-              <span style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>
+              <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {item.value}
               </span>
             </div>
@@ -81,7 +81,7 @@ const MyInfo: React.FC = () => {
             fontSize: '14px',
             fontWeight: 400,
             color: '#fff',
-            background: '#000',
+            background: 'var(--palette-text)',
             border: 'none',
             borderRadius: '4px',
             textAlign: 'center',

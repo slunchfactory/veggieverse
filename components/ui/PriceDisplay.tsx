@@ -23,7 +23,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
           <span className="line-through font-sans"
             style={{ 
               fontSize: '14px',
-              color: '#CCCCCC' // 더 연한 회색
+              color: 'var(--border-color-light)' // 더 연한 회색
             }}
           >
             {originalPrice.toLocaleString()}원
@@ -36,7 +36,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
                 style={{
                   fontSize: '16px',
                   fontWeight: 600,
-                  color: '#87b5e1',
+                  color: 'var(--palette-sky)',
                 }}
               >
                 {discountRate}%

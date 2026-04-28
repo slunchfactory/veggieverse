@@ -54,6 +54,10 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
 
   const currentSortLabel = sortOptions.find(opt => opt.value === currentSort)?.label || '정렬';
 
+  const tabButtonStyle: React.CSSProperties = {
+    lineHeight: '48px',
+  };
+
   return (
     <div
       style={{
@@ -62,8 +66,8 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
         left: 0,
         right: 0,
         zIndex: 45,
-        background: '#FFFFFF',
-        borderBottom: '1px solid #000',
+        background: 'var(--white-pure)',
+        borderBottom: '1px solid var(--palette-text)',
       }}
     >
       <div
@@ -96,29 +100,16 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
           {tabs.map((tab) => (
             <button
               key={tab.id}
+              type="button"
               data-tab={tab.id}
+              className="ui-nav-tab"
+              data-ui-active={activeTab === tab.id ? 'true' : 'false'}
+              style={{ ...tabButtonStyle, fontSize: '14px', fontWeight: 400 }}
               onClick={() => onTabChange(tab.id)}
-              style={{
-                background: 'none',
-                border: 'none',
-                padding: '0',
-                fontSize: '14px',
-                fontWeight: 400,
-                lineHeight: '48px',
-                color: activeTab === tab.id ? '#000' : '#666',
-                textDecoration: activeTab === tab.id ? 'underline' : 'none',
-                textUnderlineOffset: '4px',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'color 0.15s ease',
-                flexShrink: 0,
-              }}
             >
-              {tab.label}
+              <span className="ui-nav-tab__label">{tab.label}</span>
               {tab.count !== undefined && (
-                <span style={{ marginLeft: '4px', color: '#999', fontSize: '12px' }}>
-                  ({tab.count})
-                </span>
+                <span className="ui-nav-tab__meta">({tab.count})</span>
               )}
             </button>
           ))}
@@ -129,6 +120,8 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
           {/* Filter Button */}
           {showFilter && (
             <button
+              type="button"
+              className="ui-text-action"
               onClick={onFilterClick}
               style={{
                 display: 'flex',
@@ -139,7 +132,7 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
                 padding: '8px 0',
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#666',
+                color: 'var(--warm-gray)',
                 cursor: 'pointer',
               }}
             >
@@ -150,7 +143,7 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
                   style={{
                     minWidth: '18px',
                     height: '18px',
-                    background: '#000',
+                    background: 'var(--palette-text)',
                     color: '#fff',
                     borderRadius: '50%',
                     fontSize: '11px',
@@ -169,6 +162,8 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
           {showSort && sortOptions.length > 0 && (
             <div style={{ position: 'relative' }}>
               <button
+                type="button"
+                className="ui-text-action"
                 onClick={() => setIsSortOpen(!isSortOpen)}
                 style={{
                   display: 'flex',
@@ -179,7 +174,7 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
                   padding: '8px 0',
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: '#666',
+                  color: 'var(--warm-gray)',
                   cursor: 'pointer',
                 }}
               >
@@ -208,13 +203,15 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
                       marginTop: '4px',
                       minWidth: '140px',
                       background: '#FFFFFF',
-                      border: '1px solid #000',
+                      border: '1px solid var(--palette-text)',
                       zIndex: 20,
                     }}
                   >
                     {sortOptions.map((option) => (
                       <button
                         key={option.value}
+                        type="button"
+                        className="ui-text-action"
                         onClick={() => {
                           onSortChange?.(option.value);
                           setIsSortOpen(false);
@@ -225,10 +222,10 @@ export const TopControlBar: React.FC<TopControlBarProps> = ({
                           padding: '10px 14px',
                           fontSize: '13px',
                           fontWeight: 400,
-                          color: currentSort === option.value ? '#000' : '#666',
-                          background: currentSort === option.value ? '#F5F5F5' : 'transparent',
+                          color: currentSort === option.value ? 'var(--palette-text)' : 'var(--warm-gray)',
+                          background: currentSort === option.value ? 'var(--palette-bg-2)' : 'transparent',
                           border: 'none',
-                          borderBottom: '1px solid #E0E0E0',
+                          borderBottom: '1px solid var(--border-divider)',
                           cursor: 'pointer',
                         }}
                       >

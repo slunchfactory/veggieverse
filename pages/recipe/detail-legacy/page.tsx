@@ -158,7 +158,7 @@ const RecipeDetailPage: React.FC = () => {
   // 레시피가 없을 때 Fallback UI
   if (!recipe) {
     return (
-      <div className="min-h-screen flex flex-col bg-stone-50" style={{ paddingTop: '48px' }}>
+      <div className="min-h-screen flex flex-col bg-cream" style={{ paddingTop: '48px' }}>
         {/* 카테고리 탭 바 (스티키) */}
         <TopControlBar
           tabs={recipeTabs}
@@ -167,11 +167,11 @@ const RecipeDetailPage: React.FC = () => {
         />
         <div className="flex-1 flex items-center justify-center px-4">
           <div className="max-w-md w-full bg-white rounded-none shadow-lg p-8 text-center">
-            <div className="w-20 h-20 bg-stone-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <ChefHat className="w-10 h-10 text-stone-400" />
+            <div className="w-20 h-20 bg-eggshell rounded-full flex items-center justify-center mx-auto mb-6">
+              <ChefHat className="w-10 h-10 text-muted" />
             </div>
-            <h1 className="text-stone-900 mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>준비 중인 레시피입니다</h1>
-            <p className="text-stone-600 mb-6">
+            <h1 className="text-black mb-2 font-normal" style={{ fontSize: 'var(--font-size-h2)', fontWeight: 400 }}>준비 중인 레시피입니다</h1>
+            <p className="text-warm-gray mb-6">
               아직 이 레시피의 상세 정보가 준비되지 않았습니다.
               <br />
               곧 만나볼 수 있을 거예요!
@@ -237,7 +237,7 @@ const RecipeDetailPage: React.FC = () => {
       />
 
       {/* 커버 이미지 영역 (표지 페이지) */}
-      <div className="relative h-[70vh] min-h-[600px] bg-[#F5F5F5]">
+      <div className="relative h-[70vh] min-h-[600px] bg-[var(--palette-bg-2)]">
         <img
           src={getImageUrl(recipe.heroImage || recipe.image || getRecipeHeroImage(Number(id) || 1))}
           alt={`${recipe.title} - 레시피 커버 이미지`}
@@ -315,7 +315,7 @@ const RecipeDetailPage: React.FC = () => {
                     fontWeight: 500,
                     border: isLiked ? 'none' : '1px solid rgba(255,255,255,0.8)',
                     background: isLiked ? '#fff' : 'transparent',
-                    color: isLiked ? '#000' : '#fff',
+                    color: isLiked ? 'var(--palette-text)' : '#fff',
                     transition: 'all 0.2s ease',
                     cursor: 'pointer',
                   }}
@@ -340,7 +340,7 @@ const RecipeDetailPage: React.FC = () => {
                       });
                     }
                   }}
-                  className="text-white hover:text-stone-200 transition-colors"
+                  className="text-white hover:text-gray-lighter transition-colors"
                   title="공유하기"
                 >
                   <Share2 className="w-5 h-5" />
@@ -352,28 +352,28 @@ const RecipeDetailPage: React.FC = () => {
       </div>
 
       {/* 총 시간 / 난이도 / 인원 띠지 (좌우 여백 없이 꽉 채움) */}
-      <div className="w-full bg-stone-50 border-y border-stone-200">
+      <div className="w-full bg-cream border-y border-[color:var(--border-hairline)]">
         <div className="flex items-center justify-center gap-6 py-4">
           <div className="flex items-center gap-2">
-            <Clock className="w-4 h-4 text-stone-500" />
+            <Clock className="w-4 h-4 text-warm-gray" />
             <div>
-              <p className="text-xs text-stone-500">총 시간</p>
-              <p className="text-sm font-normal text-stone-900">{recipe.totalTime || '30분'}</p>
+              <p className="text-xs text-warm-gray">총 시간</p>
+              <p className="text-sm font-normal text-black">{recipe.totalTime || '30분'}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <ChefHat className="w-4 h-4 text-stone-500" />
+            <ChefHat className="w-4 h-4 text-warm-gray" />
             <div>
-              <p className="text-xs text-stone-500">난이도</p>
-              <p className="text-sm font-normal text-stone-900">{recipe.difficulty || '보통'}</p>
+              <p className="text-xs text-warm-gray">난이도</p>
+              <p className="text-sm font-normal text-black">{recipe.difficulty || '보통'}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-stone-500" />
+            <Users className="w-4 h-4 text-warm-gray" />
             <div className="flex items-center gap-2">
               <div>
-                <p className="text-xs text-stone-500">인원</p>
-                <p className="text-sm font-normal text-stone-900">{servings}인분</p>
+                <p className="text-xs text-warm-gray">인원</p>
+                <p className="text-sm font-normal text-black">{servings}인분</p>
               </div>
               <div className="flex flex-col gap-1 ml-1">
                 <button
@@ -381,14 +381,14 @@ const RecipeDetailPage: React.FC = () => {
                   className="flex items-center justify-center hover:opacity-70 transition-opacity"
                   aria-label="인분 증가"
                 >
-                  <ChevronUp className="w-4 h-4 text-stone-700" />
+                  <ChevronUp className="w-4 h-4 text-charcoal" />
                 </button>
                 <button
                   onClick={() => setServings(Math.max(1, servings - 1))}
                   className="flex items-center justify-center hover:opacity-70 transition-opacity"
                   aria-label="인분 감소"
                 >
-                  <ChevronDown className="w-4 h-4 text-stone-700" />
+                  <ChevronDown className="w-4 h-4 text-charcoal" />
                 </button>
               </div>
             </div>
@@ -402,8 +402,8 @@ const RecipeDetailPage: React.FC = () => {
 
         {/* 알레르기 정보 */}
         {recipe.allergens && recipe.allergens.length > 0 && (
-          <div className="pb-4 border-b border-stone-200 mb-8">
-            <p className="text-xs text-stone-500 text-center">
+          <div className="pb-4 border-b border-[color:var(--border-hairline)] mb-8">
+            <p className="text-xs text-warm-gray text-center">
               <span className="font-medium">알레르기 유발 성분:</span> {recipe.allergens.join(', ')}
             </p>
           </div>
@@ -413,14 +413,14 @@ const RecipeDetailPage: React.FC = () => {
         <section style={{ marginBottom: '60px' }}>
           <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: '13px' }}>
             {/* 재료 섹션 - 띠지 스타일 */}
-            <div className="bg-stone-50 border border-stone-200 rounded-none p-6">
+            <div className="bg-cream border border-[color:var(--border-hairline)] rounded-none p-6">
               <div className="mb-4">
-                <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>재료</h2>
+                <h2 className="text-black font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>재료</h2>
               </div>
               <div className="space-y-2">
                 {recipe.ingredients && recipe.ingredients.map((ingredient, idx) => (
-                  <div key={idx} className="flex items-center gap-2 py-1.5 border-b border-stone-200">
-                    <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center overflow-hidden flex-shrink-0 border border-stone-200">
+                  <div key={idx} className="flex items-center gap-2 py-1.5 border-b border-[color:var(--border-hairline)]">
+                    <div className="w-8 h-8 rounded-md bg-white flex items-center justify-center overflow-hidden flex-shrink-0 border border-[color:var(--border-hairline)]">
                       <img 
                         src={getIngredientIcon(ingredient.name)} 
                         alt={ingredient.name}
@@ -430,10 +430,10 @@ const RecipeDetailPage: React.FC = () => {
                       />
                     </div>
                     <div className="flex-1 min-w-0 flex items-baseline gap-2">
-                      <span className="text-sm font-normal text-stone-900 truncate leading-tight">{ingredient.name}</span>
-                      <span className="text-sm font-medium text-stone-900 font-accent whitespace-nowrap leading-tight">{parseAmount(ingredient.amount)}</span>
+                      <span className="text-sm font-normal text-black truncate leading-tight">{ingredient.name}</span>
+                      <span className="text-sm font-medium text-black font-accent whitespace-nowrap leading-tight">{parseAmount(ingredient.amount)}</span>
                       {ingredient.note && (
-                        <span className="text-xs text-stone-500 whitespace-nowrap leading-tight">({ingredient.note})</span>
+                        <span className="text-xs text-warm-gray whitespace-nowrap leading-tight">({ingredient.note})</span>
                       )}
                     </div>
                   </div>
@@ -442,44 +442,44 @@ const RecipeDetailPage: React.FC = () => {
             </div>
 
             {/* 영양 정보 - 띠지 스타일 */}
-            <div className="bg-stone-50 border border-stone-200 rounded-none p-6">
+            <div className="bg-cream border border-[color:var(--border-hairline)] rounded-none p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>영양 정보</h2>
-                <span className="text-xs text-stone-500">1인분 기준</span>
+                <h2 className="text-black font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>영양 정보</h2>
+                <span className="text-xs text-warm-gray">1인분 기준</span>
               </div>
               {recipe.nutrition ? (
                 <div className="space-y-0">
-                  <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-normal text-stone-900">칼로리</span>
-                    <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.calories} kcal</span>
+                  <div className="flex justify-between py-2 border-b border-[color:var(--border-hairline)]">
+                    <span className="text-sm font-normal text-black">칼로리</span>
+                    <span className="text-sm font-medium text-black font-accent">{recipe.nutrition.calories} kcal</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-normal text-stone-900">지방</span>
-                    <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.fat}g</span>
+                  <div className="flex justify-between py-2 border-b border-[color:var(--border-hairline)]">
+                    <span className="text-sm font-normal text-black">지방</span>
+                    <span className="text-sm font-medium text-black font-accent">{recipe.nutrition.fat}g</span>
                   </div>
-                  <div className="flex justify-between py-1.5 border-b border-stone-200 pl-4">
-                    <span className="text-xs text-stone-500">포화지방</span>
-                    <span className="text-xs text-stone-700 font-accent">{recipe.nutrition.saturatedFat}g</span>
+                  <div className="flex justify-between py-1.5 border-b border-[color:var(--border-hairline)] pl-4">
+                    <span className="text-xs text-warm-gray">포화지방</span>
+                    <span className="text-xs text-charcoal font-accent">{recipe.nutrition.saturatedFat}g</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-stone-200">
-                    <span className="text-sm font-normal text-stone-900">탄수화물</span>
-                    <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.carbs}g</span>
+                  <div className="flex justify-between py-2 border-b border-[color:var(--border-hairline)]">
+                    <span className="text-sm font-normal text-black">탄수화물</span>
+                    <span className="text-sm font-medium text-black font-accent">{recipe.nutrition.carbs}g</span>
                   </div>
-                  <div className="flex justify-between py-1.5 border-b border-stone-200 pl-4">
-                    <span className="text-xs text-stone-500">당류</span>
-                    <span className="text-xs text-stone-700 font-accent">{recipe.nutrition.sugar}g</span>
+                  <div className="flex justify-between py-1.5 border-b border-[color:var(--border-hairline)] pl-4">
+                    <span className="text-xs text-warm-gray">당류</span>
+                    <span className="text-xs text-charcoal font-accent">{recipe.nutrition.sugar}g</span>
                   </div>
-                  <div className="flex justify-between py-1.5 border-b border-stone-200 pl-4">
-                    <span className="text-xs text-stone-500">식이섬유</span>
-                    <span className="text-xs text-stone-700 font-accent">{recipe.nutrition.fiber}g</span>
+                  <div className="flex justify-between py-1.5 border-b border-[color:var(--border-hairline)] pl-4">
+                    <span className="text-xs text-warm-gray">식이섬유</span>
+                    <span className="text-xs text-charcoal font-accent">{recipe.nutrition.fiber}g</span>
                   </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-sm font-normal text-stone-900">단백질</span>
-                    <span className="text-sm font-medium text-stone-900 font-accent">{recipe.nutrition.protein}g</span>
+                    <span className="text-sm font-normal text-black">단백질</span>
+                    <span className="text-sm font-medium text-black font-accent">{recipe.nutrition.protein}g</span>
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-stone-500">영양 정보 준비 중입니다.</p>
+                <p className="text-sm text-warm-gray">영양 정보 준비 중입니다.</p>
               )}
             </div>
           </div>
@@ -501,7 +501,7 @@ const RecipeDetailPage: React.FC = () => {
         {/* 조리 순서 */}
         <section style={{ marginBottom: '60px' }}>
           <div className="mb-8">
-            <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>조리 순서</h2>
+            <h2 className="text-black font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>조리 순서</h2>
           </div>
           
           <div className="space-y-0">
@@ -513,7 +513,7 @@ const RecipeDetailPage: React.FC = () => {
                     <div key={step.step} data-step={step.step}>
                       {/* 콘텐츠 영역 */}
                       <div>
-                        <h3 className="text-stone-900 mb-3 font-normal" style={{ fontSize: '20px', fontWeight: 600 }}>
+                        <h3 className="text-black mb-3 font-normal" style={{ fontSize: '20px', fontWeight: 600 }}>
                           {String(step.step).padStart(2, '0')}. {step.title}
                         </h3>
                         {/* 대제목 밑 실선 */}
@@ -522,7 +522,7 @@ const RecipeDetailPage: React.FC = () => {
                           {/* 단계 이미지 (조건부 렌더링) */}
                           {stepImage && (
                             <div className="mb-4">
-                              <div className="rounded-none overflow-hidden bg-stone-100">
+                              <div className="rounded-none overflow-hidden bg-eggshell">
                                 <img
                                   src={typeof stepImage === 'string' ? stepImage : stepImage.url || stepImage.src}
                                   alt={`${step.title} 단계 이미지`}
@@ -537,7 +537,7 @@ const RecipeDetailPage: React.FC = () => {
                               </div>
                               {/* 이미지 설명 (있는 경우) */}
                               {(typeof stepImage === 'object' && stepImage.caption) && (
-                                <p className="text-xs text-stone-500 mt-2 text-center" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
+                                <p className="text-xs text-warm-gray mt-2 text-center" style={{ fontFamily: 'Noto Sans KR, sans-serif' }}>
                                   {stepImage.caption}
                                 </p>
                               )}
@@ -548,7 +548,7 @@ const RecipeDetailPage: React.FC = () => {
                         <div className="mb-4">
                           {step.instructions.map((instruction, instIdx) => (
                             <div key={instIdx}>
-                              <p className="text-base text-stone-700 leading-relaxed">
+                              <p className="text-base text-charcoal leading-relaxed">
                                 {instruction}
                               </p>
                               {instIdx < step.instructions.length - 1 && (
@@ -561,8 +561,8 @@ const RecipeDetailPage: React.FC = () => {
                         {/* TIP */}
                         {step.tip && (
                           <div className="mt-4 pt-4 border-t border-black">
-                            <p className="text-sm text-stone-600">
-                              <span className="font-medium text-stone-900">TIP:</span> {step.tip}
+                            <p className="text-sm text-warm-gray">
+                              <span className="font-medium text-black">TIP:</span> {step.tip}
                             </p>
                           </div>
                         )}
@@ -613,11 +613,11 @@ const RecipeDetailPage: React.FC = () => {
         {/* 요리 리뷰 남기기 버튼 (리뷰 섹션 아래) */}
         <div style={{ paddingTop: '60px' }}>
           <div className="text-center mb-6">
-            <h2 className="text-stone-900 mb-2 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>요리 리뷰 남기기</h2>
-            <p className="text-sm text-stone-500 mb-6">이 레시피를 만들어보셨나요? 사진과 함께 후기를 남겨주세요!</p>
+            <h2 className="text-black mb-2 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>요리 리뷰 남기기</h2>
+            <p className="text-sm text-warm-gray mb-6">이 레시피를 만들어보셨나요? 사진과 함께 후기를 남겨주세요!</p>
             <button
               onClick={() => setShowPhotoReviewModal(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 hover:bg-stone-800 text-white rounded-2xl font-medium transition-colors duration-200 shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-black hover:bg-charcoal text-white rounded-2xl font-medium transition-colors duration-200 shadow-lg"
               style={{ fontFamily: 'Noto Sans KR, sans-serif' }}
             >
               <Camera className="w-5 h-5" />
@@ -644,8 +644,8 @@ const RecipeDetailPage: React.FC = () => {
         {recipe.relatedRecipes && recipe.relatedRecipes.length > 0 && (
           <section style={{ paddingTop: '60px' }}>
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-stone-900 font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>비슷한 재료로 만드는 레시피</h2>
-              <Link to="/recipe" className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 transition-colors">
+              <h2 className="text-black font-normal" style={{ fontSize: '22px', fontWeight: 600 }}>비슷한 재료로 만드는 레시피</h2>
+              <Link to="/recipe" className="flex items-center gap-1 text-sm text-warm-gray hover:text-black transition-colors">
                 <span>더보기</span>
                 <ChevronRight className="w-4 h-4" />
               </Link>
@@ -658,7 +658,7 @@ const RecipeDetailPage: React.FC = () => {
                   to={`/recipe/${relatedRecipe.id}`}
                   className="group cursor-pointer"
                 >
-                  <div className="aspect-square rounded-none overflow-hidden mb-3 bg-stone-100">
+                  <div className="aspect-square rounded-none overflow-hidden mb-3 bg-eggshell">
                     <img
                       src={getRecipeThumbnailImage(relatedRecipe.id)}
                       onError={(e) => {
@@ -671,10 +671,10 @@ const RecipeDetailPage: React.FC = () => {
                       decoding="async"
                     />
                   </div>
-                  <h3 className="font-medium text-stone-900 text-sm mb-1">
+                  <h3 className="font-medium text-black text-sm mb-1">
                     {relatedRecipe.title}
                   </h3>
-                  <p className="text-xs text-stone-500">{relatedRecipe.description}</p>
+                  <p className="text-xs text-warm-gray">{relatedRecipe.description}</p>
                 </Link>
               ))}
             </div>

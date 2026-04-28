@@ -41,7 +41,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
   return (
     <div
       className="fixed inset-0 z-[100] flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.4)' }}
+      style={{ background: 'rgba(26, 10, 5, 0.4)' }}
       onClick={onClose}
     >
       <div
@@ -49,7 +49,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
           width: '100%',
           maxWidth: '360px',
           background: '#FFFFFF',
-          border: '1px solid #000',
+          border: '1px solid var(--palette-text)',
           borderRadius: '16px',
           padding: '32px',
           position: 'relative',
@@ -76,7 +76,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
           }}
           aria-label="닫기"
         >
-          <X size={20} strokeWidth={1} color="#000" />
+          <X size={20} strokeWidth={1} color="var(--palette-text)" />
         </button>
 
         {/* 뱃지 아이콘 */}
@@ -86,20 +86,20 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
               width: '100px',
               height: '100px',
               margin: '0 auto 16px',
-              border: isLocked ? '1px dashed #D0D0D0' : '1px solid #000',
+              border: isLocked ? '1px dashed var(--border-color-light)' : '1px solid var(--palette-text)',
               borderRadius: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              background: isLocked ? '#F9F9F9' : '#FFFFFF',
+              background: isLocked ? 'var(--palette-bg-2)' : '#FFFFFF',
               transition: 'all 0.3s',
             }}
           >
             {isLocked ? (
               isHidden ? (
-                <span style={{ fontSize: '36px', color: '#D0D0D0' }}>?</span>
+                <span style={{ fontSize: '36px', color: 'var(--border-color-light)' }}>?</span>
               ) : (
-                <Lock size={32} strokeWidth={1} color="#D0D0D0" />
+                <Lock size={32} strokeWidth={1} color="var(--border-color-light)" />
               )
             ) : (
               <span style={{ fontSize: '48px' }}>{badgeInfo.icon}</span>
@@ -113,8 +113,8 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
               padding: '4px 10px',
               fontSize: '11px',
               fontWeight: 400,
-              color: isLocked ? '#999' : '#6B6B6B',
-              border: `1px solid ${isLocked ? '#E0E0E0' : '#000'}`,
+              color: isLocked ? 'var(--muted)' : 'var(--warm-gray)',
+              border: `1px solid ${isLocked ? 'var(--border-divider)' : 'var(--palette-text)'}`,
               borderRadius: '4px',
               marginBottom: '12px',
             }}
@@ -126,7 +126,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
           <h2 style={{
             fontSize: '18px',
             fontWeight: 400,
-            color: isLocked ? '#999' : '#000',
+            color: isLocked ? 'var(--muted)' : 'var(--palette-text)',
             marginBottom: '8px',
           }}>
             {isHidden && isLocked ? '???' : badgeInfo.name}
@@ -137,7 +137,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
         <div
           style={{
             padding: '20px',
-            background: '#FAFAFA',
+            background: 'var(--palette-bg-2)',
             borderRadius: '8px',
             marginBottom: '20px',
           }}
@@ -145,7 +145,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
           <p style={{
             fontSize: '14px',
             fontWeight: 400,
-            color: isLocked ? '#999' : '#333',
+            color: isLocked ? 'var(--muted)' : 'var(--charcoal)',
             textAlign: 'center',
             lineHeight: '1.5',
           }}>
@@ -167,12 +167,12 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
               marginBottom: '20px',
               fontSize: '13px',
               fontWeight: 400,
-              color: '#3fa945',
+              color: 'var(--status-success-icon)',
             }}
           >
             <Award size={16} strokeWidth={1} />
             획득 완료
-            <span style={{ color: '#6B6B6B', marginLeft: '8px' }}>
+            <span style={{ color: 'var(--warm-gray)', marginLeft: '8px' }}>
               <Calendar size={14} strokeWidth={1} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '4px' }} />
               {new Date(earnedBadge.earnedAt).toLocaleDateString('ko-KR')}
             </span>
@@ -184,7 +184,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
           <div
             style={{
               padding: '12px',
-              background: '#F9F9F9',
+              background: 'var(--palette-bg-2)',
               borderRadius: '8px',
               textAlign: 'center',
             }}
@@ -192,7 +192,7 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
             <p style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#999',
+              color: 'var(--muted)',
             }}>
               아직 획득하지 않은 뱃지입니다
             </p>
@@ -206,12 +206,12 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
             width: '100%',
             padding: '14px',
             marginTop: '16px',
-            background: isLocked ? '#F5F5F5' : '#000',
-            border: isLocked ? '1px solid #E0E0E0' : 'none',
+            background: isLocked ? 'var(--palette-bg-2)' : 'var(--palette-text)',
+            border: isLocked ? '1px solid var(--border-divider)' : 'none',
             borderRadius: '8px',
             fontSize: '14px',
             fontWeight: 400,
-            color: isLocked ? '#666' : '#fff',
+            color: isLocked ? 'var(--warm-gray)' : '#fff',
             cursor: 'pointer',
           }}
         >

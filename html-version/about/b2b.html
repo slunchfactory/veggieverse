@@ -13,12 +13,12 @@
         --header-h: 64px;
         --cream: #FDFBF7;
         --lime: #DCFD4A;
-        --black: #000000;
-        --gray: #6B6B6B;
-        --gray-light: #9A9A9A;
-        --charcoal: #333;
-        --warm-gray: #888;
-        --muted: #999;
+        --black: var(--palette-text);
+        --gray: var(--warm-gray);
+        --gray-light: var(--muted);
+        --charcoal: var(--charcoal);
+        --warm-gray: var(--gray-light);
+        --muted: var(--muted);
         --primary: #8C451D;
       }
       * { margin: 0; padding: 0; box-sizing: border-box; font-weight: 400 !important; }
@@ -84,7 +84,7 @@
         width: 28px;
         height: 28px;
         border-radius: 50%;
-        background: #E5E5E5;
+        background: var(--border-divider);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -94,10 +94,10 @@
       main { margin-top: var(--header-h); }
 
       /* Factory Section */
-      .factory-grid { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      .factory-grid { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .factory-grid { grid-template-columns: 2fr 1fr; } }
       .factory-text { padding: 40px 24px; }
-      @media (min-width: 768px) { .factory-text { padding: 64px; border-right: 1px solid #000; } }
+      @media (min-width: 768px) { .factory-text { padding: 64px; border-right: 1px solid var(--palette-text); } }
       .factory-image { aspect-ratio: 4/3; background: #E8E4DF; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px; }
       @media (min-width: 768px) { .factory-image { aspect-ratio: auto; min-height: 300px; } }
 
@@ -106,10 +106,10 @@
       .section-text { font-size: 15px; color: var(--charcoal); line-height: 1.8; margin-bottom: 16px; }
 
       /* Two Column */
-      .two-col { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid #000; }
+      .two-col { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .two-col { grid-template-columns: 1fr 1fr; } }
-      .col-item { padding: 32px 24px; border-bottom: 1px solid #000; }
-      @media (min-width: 768px) { .col-item { padding: 48px; border-bottom: none; } .col-item:first-child { border-right: 1px solid #000; } }
+      .col-item { padding: 32px 24px; border-bottom: 1px solid var(--palette-text); }
+      @media (min-width: 768px) { .col-item { padding: 48px; border-bottom: none; } .col-item:first-child { border-right: 1px solid var(--palette-text); } }
       .col-title { font-size: 20px; margin-bottom: 16px; }
       .col-text { font-size: 14px; color: var(--charcoal); line-height: 1.8; }
       .award-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
@@ -117,18 +117,18 @@
       .award-item span { font-size: 14px; color: var(--charcoal); }
 
       /* Partnership */
-      .partnership { padding: 40px 24px; border-bottom: 1px solid #000; }
+      .partnership { padding: 40px 24px; border-bottom: 1px solid var(--palette-text); }
       @media (min-width: 768px) { .partnership { padding: 64px; } }
       .partnership-content { max-width: 600px; }
-      .contact-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #000; color: #fff; font-size: 14px; text-decoration: none; margin-top: 8px; }
-      .contact-btn:hover { background: #333; }
+      .contact-btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: var(--palette-text); color: #fff; font-size: 14px; text-decoration: none; margin-top: 8px; }
+      .contact-btn:hover { background: var(--charcoal); }
 
       /* Partners */
       .partners-grid { display: grid; grid-template-columns: repeat(2, 1fr); }
       @media (min-width: 768px) { .partners-grid { grid-template-columns: repeat(4, 1fr); } }
-      .partner-item { padding: 32px 16px; text-align: center; border-right: 1px solid #000; border-bottom: 1px solid #000; }
+      .partner-item { padding: 32px 16px; text-align: center; border-right: 1px solid var(--palette-text); border-bottom: 1px solid var(--palette-text); }
       .partner-item:nth-child(2n) { border-right: none; }
-      @media (min-width: 768px) { .partner-item:nth-child(2n) { border-right: 1px solid #000; } .partner-item:nth-child(4n) { border-right: none; } }
+      @media (min-width: 768px) { .partner-item:nth-child(2n) { border-right: 1px solid var(--palette-text); } .partner-item:nth-child(4n) { border-right: none; } }
       .partner-logo { width: 80px; height: 80px; background: #E8E4DF; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--muted); }
       .partner-name { font-size: 14px; color: var(--charcoal); }
 
@@ -207,7 +207,7 @@
           <a href="cart.html" aria-label="장바구니">(0)</a>
           <a href="mypage.html" aria-label="마이페이지">
             <div class="header-profile">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warm-gray)" stroke-width="1">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
               </svg>
             </div>

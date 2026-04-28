@@ -25,8 +25,8 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          borderTop: '1px solid #000',
-          borderBottom: '1px solid #000',
+          borderTop: '1px solid var(--palette-text)',
+          borderBottom: '1px solid var(--palette-text)',
           marginBottom: '32px',
         }}
       >
@@ -41,12 +41,12 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
             gap: '4px',
             background: 'transparent',
             border: 'none',
-            borderRight: '1px solid #E5E5E5',
+            borderRight: '1px solid var(--border-divider)',
             cursor: 'pointer',
           }}
         >
-          <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>회원등급</span>
-          <span style={{ fontSize: '16px', fontWeight: 400, color: '#000' }}>{grade}</span>
+          <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>회원등급</span>
+          <span style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)' }}>{grade}</span>
         </button>
 
         <button
@@ -60,12 +60,12 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
             gap: '4px',
             background: 'transparent',
             border: 'none',
-            borderRight: '1px solid #E5E5E5',
+            borderRight: '1px solid var(--border-divider)',
             cursor: 'pointer',
           }}
         >
-          <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>보유쿠폰</span>
-          <span style={{ fontSize: '16px', fontWeight: 400, color: '#000' }}>{couponCount}장</span>
+          <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>보유쿠폰</span>
+          <span style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)' }}>{couponCount}장</span>
         </button>
 
         <button
@@ -82,8 +82,8 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
             cursor: 'pointer',
           }}
         >
-          <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>포인트</span>
-          <span style={{ fontSize: '16px', fontWeight: 400, color: '#000' }}>{points.toLocaleString()}P</span>
+          <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>포인트</span>
+          <span style={{ fontSize: '16px', fontWeight: 400, color: 'var(--palette-text)' }}>{points.toLocaleString()}P</span>
         </button>
       </section>
 
@@ -97,7 +97,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            background: 'rgba(0, 0, 0, 0.3)',
+            background: 'rgba(26, 10, 5, 0.3)',
             padding: '16px',
           }}
           onClick={closeModal}
@@ -107,7 +107,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
               background: '#fff',
               width: '100%',
               maxWidth: '400px',
-              border: '1px solid #000',
+              border: '1px solid var(--palette-text)',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -118,10 +118,10 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '16px 20px',
-                borderBottom: '1px solid #000',
+                borderBottom: '1px solid var(--palette-text)',
               }}
             >
-              <h3 style={{ fontSize: '15px', fontWeight: 400, color: '#000' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 400, color: 'var(--palette-text)' }}>
                 {activeModal === 'GRADE' && '멤버십 등급'}
                 {activeModal === 'COUPON' && '나의 쿠폰함'}
                 {activeModal === 'POINT' && '포인트 내역'}
@@ -146,22 +146,22 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
               {activeModal === 'GRADE' && (
                 <div>
                   <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                    <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', marginBottom: '4px' }}>현재 등급</p>
-                    <h2 style={{ fontSize: '24px', fontWeight: 400, color: '#000' }}>{grade}</h2>
+                    <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '4px' }}>현재 등급</p>
+                    <h2 style={{ fontSize: '24px', fontWeight: 400, color: 'var(--palette-text)' }}>{grade}</h2>
                   </div>
 
                   {/* Progress Bar */}
-                  <div style={{ background: '#E5E5E5', height: '4px', marginBottom: '8px' }}>
-                    <div style={{ background: '#000', height: '4px', width: '30%' }}></div>
+                  <div style={{ background: 'var(--border-divider)', height: '4px', marginBottom: '8px' }}>
+                    <div style={{ background: 'var(--palette-text)', height: '4px', width: '30%' }}></div>
                   </div>
-                  <p style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B', textAlign: 'center', marginBottom: '24px' }}>
-                    다음 <span style={{ color: '#000' }}>GREEN</span> 등급까지 70,000원 남았어요!
+                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)', textAlign: 'center', marginBottom: '24px' }}>
+                    다음 <span style={{ color: 'var(--palette-text)' }}>GREEN</span> 등급까지 70,000원 남았어요!
                   </p>
 
                   {/* Benefits */}
-                  <div style={{ background: '#F9F9F9', padding: '16px' }}>
-                    <h4 style={{ fontSize: '13px', fontWeight: 400, color: '#000', marginBottom: '12px' }}>{grade} 등급 혜택</h4>
-                    <ul style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', paddingLeft: '16px', margin: 0 }}>
+                  <div style={{ background: 'var(--palette-bg-2)', padding: '16px' }}>
+                    <h4 style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '12px' }}>{grade} 등급 혜택</h4>
+                    <ul style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', paddingLeft: '16px', margin: 0 }}>
                       <li style={{ marginBottom: '6px' }}>구매 금액의 1% 포인트 적립</li>
                       <li style={{ marginBottom: '6px' }}>생일 축하 5,000원 쿠폰 지급</li>
                       <li>신규 레시피 등록 시 추가 포인트</li>
@@ -183,8 +183,8 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                         padding: '10px 12px',
                         fontSize: '13px',
                         fontWeight: 400,
-                        border: '1px solid #E5E5E5',
-                        borderBottom: '1px solid #000',
+                        border: '1px solid var(--border-divider)',
+                        borderBottom: '1px solid var(--palette-text)',
                         outline: 'none',
                       }}
                     />
@@ -193,9 +193,9 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                         padding: '10px 16px',
                         fontSize: '13px',
                         fontWeight: 400,
-                        background: '#000',
+                        background: 'var(--palette-text)',
                         color: '#fff',
-                        border: '1px solid #000',
+                        border: '1px solid var(--palette-text)',
                         cursor: 'pointer',
                       }}
                     >
@@ -212,7 +212,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                       <div
                         key={idx}
                         style={{
-                          border: '1px solid #E5E5E5',
+                          border: '1px solid var(--border-divider)',
                           padding: '16px',
                           display: 'flex',
                           justifyContent: 'space-between',
@@ -220,10 +220,10 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                         }}
                       >
                         <div>
-                          <h4 style={{ fontSize: '13px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>{coupon.name}</h4>
-                          <p style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B' }}>{coupon.date}</p>
+                          <h4 style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>{coupon.name}</h4>
+                          <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)' }}>{coupon.date}</p>
                         </div>
-                        <span style={{ fontSize: '18px', fontWeight: 400, color: '#000' }}>{coupon.discount}</span>
+                        <span style={{ fontSize: '18px', fontWeight: 400, color: 'var(--palette-text)' }}>{coupon.discount}</span>
                       </div>
                     ))}
                   </div>
@@ -238,13 +238,13 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'flex-end',
-                      borderBottom: '1px solid #000',
+                      borderBottom: '1px solid var(--palette-text)',
                       paddingBottom: '16px',
                       marginBottom: '16px',
                     }}
                   >
-                    <span style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B' }}>사용 가능 포인트</span>
-                    <span style={{ fontSize: '20px', fontWeight: 400, color: '#000' }}>{points.toLocaleString()}P</span>
+                    <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)' }}>사용 가능 포인트</span>
+                    <span style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)' }}>{points.toLocaleString()}P</span>
                   </div>
 
                   {/* History List */}
@@ -261,12 +261,12 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                           justifyContent: 'space-between',
                           alignItems: 'center',
                           padding: '12px 0',
-                          borderBottom: '1px solid #E5E5E5',
+                          borderBottom: '1px solid var(--border-divider)',
                         }}
                       >
                         <div>
-                          <p style={{ fontSize: '13px', fontWeight: 400, color: '#000', marginBottom: '2px' }}>{item.title}</p>
-                          <p style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B' }}>{item.date}</p>
+                          <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '2px' }}>{item.title}</p>
+                          <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)' }}>{item.date}</p>
                         </div>
                         <span
                           style={{
@@ -287,7 +287,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
             {/* Modal Footer */}
             <div
               style={{
-                background: '#F9F9F9',
+                background: 'var(--palette-bg-2)',
                 padding: '12px 20px',
                 display: 'flex',
                 justifyContent: 'flex-end',
@@ -297,7 +297,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({
                 style={{
                   fontSize: '11px',
                   fontWeight: 400,
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',

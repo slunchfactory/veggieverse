@@ -7,13 +7,13 @@ const AboutStoryPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         {/* Image */}
         <div style={{
           aspectRatio: '4/3',
           background: '#E8E4DF',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -59,11 +59,11 @@ const AboutStoryPage: React.FC = () => {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(3, 1fr)',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         <div style={{
           padding: '48px 32px',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
         }}>
           <p style={{
             fontSize: '11px',
@@ -88,7 +88,7 @@ const AboutStoryPage: React.FC = () => {
 
         <div style={{
           padding: '48px 32px',
-          borderRight: '1px solid #000',
+          borderRight: '1px solid var(--palette-text)',
         }}>
           <p style={{
             fontSize: '11px',
@@ -138,7 +138,7 @@ const AboutStoryPage: React.FC = () => {
       <div style={{
         height: '400px',
         background: '#D4CFC7',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -153,12 +153,12 @@ const AboutStoryPage: React.FC = () => {
         padding: '32px 64px',
         display: 'flex',
         gap: '16px',
-        borderBottom: '1px solid #000',
+        borderBottom: '1px solid var(--palette-text)',
       }}>
         {['#속편한', '#재료가솔직한', '#식물성', '#천천히제대로'].map((tag) => (
           <span key={tag} style={{
             padding: '8px 16px',
-            border: '1px solid #000',
+            border: '1px solid var(--palette-text)',
             fontSize: '13px',
             fontWeight: 400,
           }}>

@@ -17,7 +17,7 @@ const EventDetail: React.FC = () => {
             padding: '120px 20px',
           }}
         >
-          <p style={{ fontSize: '14px', color: '#6B6B6B', marginBottom: '16px' }}>
+          <p style={{ fontSize: '14px', color: 'var(--warm-gray)', marginBottom: '16px' }}>
             존재하지 않는 이벤트입니다.
           </p>
           <Link
@@ -25,7 +25,7 @@ const EventDetail: React.FC = () => {
             style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               textDecoration: 'underline',
               textUnderlineOffset: '3px',
             }}
@@ -50,7 +50,7 @@ const EventDetail: React.FC = () => {
           right: 0,
           zIndex: 45,
           background: '#FFFFFF',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid var(--palette-text)',
         }}
       >
         <div
@@ -74,7 +74,7 @@ const EventDetail: React.FC = () => {
               cursor: 'pointer',
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               padding: 0,
             }}
           >
@@ -91,7 +91,7 @@ const EventDetail: React.FC = () => {
           style={{
             width: '100%',
             aspectRatio: '16/9',
-            background: '#E5E5E0',
+            background: 'var(--border-divider)',
             overflow: 'hidden',
             borderRadius: '4px',
             position: 'relative',
@@ -134,7 +134,7 @@ const EventDetail: React.FC = () => {
                 top: '16px',
                 left: '16px',
                 padding: '6px 12px',
-                background: '#000',
+                background: 'var(--palette-text)',
                 color: '#fff',
                 fontSize: '12px',
                 fontWeight: 400,
@@ -153,7 +153,7 @@ const EventDetail: React.FC = () => {
               fontSize: '24px',
               fontWeight: 400,
               lineHeight: 1.3,
-              color: '#000',
+              color: 'var(--palette-text)',
               marginBottom: '12px',
             }}
           >
@@ -165,7 +165,7 @@ const EventDetail: React.FC = () => {
             style={{
               fontSize: '15px',
               fontWeight: 400,
-              color: '#6B6B6B',
+              color: 'var(--warm-gray)',
               lineHeight: 1.6,
               marginBottom: '24px',
             }}
@@ -180,7 +180,7 @@ const EventDetail: React.FC = () => {
               alignItems: 'center',
               gap: '8px',
               fontSize: '13px',
-              color: '#9A9A9A',
+              color: 'var(--muted)',
               marginBottom: '32px',
             }}
           >
@@ -189,7 +189,7 @@ const EventDetail: React.FC = () => {
           </div>
 
           {/* 구분선 */}
-          <div style={{ borderTop: '1px solid rgba(0,0,0,0.08)', marginBottom: '32px' }} />
+          <div style={{ borderTop: '1px solid rgba(26, 10, 5, 0.08)', marginBottom: '32px' }} />
 
           {/* 이벤트 상세 내용 (mock) */}
           <div style={{ marginBottom: '40px' }}>
@@ -197,7 +197,7 @@ const EventDetail: React.FC = () => {
               style={{
                 fontSize: '16px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 marginBottom: '16px',
               }}
             >
@@ -207,7 +207,7 @@ const EventDetail: React.FC = () => {
               style={{
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#3D3D3D',
+                color: 'var(--charcoal)',
                 lineHeight: 1.8,
               }}
             >
@@ -233,7 +233,7 @@ const EventDetail: React.FC = () => {
                 fontSize: '14px',
                 fontWeight: 400,
                 color: '#fff',
-                background: '#000',
+                background: 'var(--palette-text)',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'pointer',
@@ -252,8 +252,8 @@ const EventDetail: React.FC = () => {
                 padding: '14px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#9A9A9A',
-                background: '#F5F5F5',
+                color: 'var(--muted)',
+                background: 'var(--palette-bg-2)',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'not-allowed',
@@ -272,8 +272,8 @@ const EventDetail: React.FC = () => {
                 padding: '14px',
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#9A9A9A',
-                background: '#F5F5F5',
+                color: 'var(--muted)',
+                background: 'var(--palette-bg-2)',
                 border: 'none',
                 borderRadius: '4px',
                 cursor: 'not-allowed',

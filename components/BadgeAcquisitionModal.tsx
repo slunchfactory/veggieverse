@@ -38,7 +38,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
         className="fixed inset-0 z-[3000]"
         onClick={onClose}
         style={{
-          background: 'rgba(0,0,0,0.4)',
+          background: 'rgba(26, 10, 5, 0.4)',
         }}
       />
 
@@ -51,7 +51,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
           className="pointer-events-auto"
           style={{
             background: '#FFFFFF',
-            border: '1px solid #000',
+            border: '1px solid var(--palette-text)',
             borderRadius: '16px',
             width: '100%',
             maxWidth: '400px',
@@ -81,7 +81,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
             }}
             aria-label="닫기"
           >
-            <X size={20} strokeWidth={1} color="#000" />
+            <X size={20} strokeWidth={1} color="var(--palette-text)" />
           </button>
 
           {/* 콘텐츠 */}
@@ -95,12 +95,12 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
                     width: '80px',
                     height: '80px',
                     margin: '0 auto',
-                    border: '1px solid #000',
+                    border: '1px solid var(--palette-text)',
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: '#FAFAFA',
+                    background: 'var(--palette-bg-2)',
                   }}
                 >
                   <span style={{ fontSize: '40px' }}>{badgeEmoji}</span>
@@ -111,7 +111,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: 400,
-                color: '#000',
+                color: 'var(--palette-text)',
                 marginBottom: '8px',
               }}>
                 미션 완료!
@@ -120,7 +120,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
                 <p style={{
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#666',
+                  color: 'var(--warm-gray)',
                 }}>
                   {spiritName} 배지를 획득했습니다
                 </p>
@@ -131,14 +131,14 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
             {couponCode && (
               <div style={{ marginBottom: '32px' }}>
                 <div style={{
-                  border: '1px solid #000',
+                  border: '1px solid var(--palette-text)',
                   borderRadius: '8px',
                   padding: '20px',
                 }}>
                   <p style={{
                     fontSize: '13px',
                     fontWeight: 400,
-                    color: '#666',
+                    color: 'var(--warm-gray)',
                     marginBottom: '4px',
                   }}>
                     {couponName} 발급 완료
@@ -146,19 +146,19 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
                   <p style={{
                     fontSize: '12px',
                     fontWeight: 400,
-                    color: '#888',
+                    color: 'var(--gray-light)',
                     marginBottom: '16px',
                   }}>
                     쿠폰 코드
                   </p>
                   <div style={{
                     paddingTop: '16px',
-                    borderTop: '1px solid #E0E0E0',
+                    borderTop: '1px solid var(--border-divider)',
                   }}>
                     <p style={{
                       fontSize: '20px',
                       fontWeight: 400,
-                      color: '#000',
+                      color: 'var(--palette-text)',
                       textAlign: 'center',
                       letterSpacing: '0.1em',
                     }}>
@@ -179,7 +179,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
                   display: 'block',
                   width: '100%',
                   padding: '14px',
-                  background: '#000',
+                  background: 'var(--palette-text)',
                   border: 'none',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -205,7 +205,7 @@ export const BadgeAcquisitionModal: React.FC<BadgeAcquisitionModalProps> = ({
                   border: 'none',
                   fontSize: '13px',
                   fontWeight: 400,
-                  color: '#888',
+                  color: 'var(--gray-light)',
                   textAlign: 'center',
                   cursor: 'pointer',
                 }}

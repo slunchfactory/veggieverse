@@ -72,7 +72,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
       </h2>
       <p style={{
         fontSize: '14px',
-        color: '#666',
+        color: 'var(--warm-gray)',
         textAlign: 'center',
         marginBottom: '32px',
       }}>
@@ -101,8 +101,8 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
                 alignItems: 'center',
                 justifyContent: 'center',
                 padding: '20px 12px',
-                border: isSelected ? '2px solid #000' : '1px solid #ddd',
-                background: isSelected ? '#f5f5f5' : '#fff',
+                border: isSelected ? '2px solid var(--palette-text)' : '1px solid var(--border-divider)',
+                background: isSelected ? 'var(--palette-bg-2)' : '#fff',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
@@ -115,7 +115,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
                   left: '8px',
                   width: '20px',
                   height: '20px',
-                  background: '#000',
+                  background: 'var(--palette-text)',
                   borderRadius: '50%',
                   display: 'flex',
                   alignItems: 'center',
@@ -131,7 +131,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
               <span style={{
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#333',
+                color: 'var(--charcoal)',
               }}>
                 {option.title}
               </span>
@@ -142,7 +142,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
 
       {/* 구분선 */}
       <div style={{
-        borderTop: '1px solid #ddd',
+        borderTop: '1px solid var(--border-divider)',
         margin: '0 auto 24px',
         maxWidth: '400px',
         width: '100%',
@@ -151,7 +151,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
       {/* 추가 옵션 */}
       <p style={{
         fontSize: '14px',
-        color: '#666',
+        color: 'var(--warm-gray)',
         textAlign: 'center',
         marginBottom: '16px',
       }}>
@@ -176,8 +176,8 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
                 alignItems: 'center',
                 gap: '8px',
                 padding: '12px 20px',
-                border: isSelected ? '2px solid #000' : '1px solid #ddd',
-                background: isSelected ? '#f5f5f5' : '#fff',
+                border: isSelected ? '2px solid var(--palette-text)' : '1px solid var(--border-divider)',
+                background: isSelected ? 'var(--palette-bg-2)' : '#fff',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
@@ -190,7 +190,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
                   left: '-8px',
                   width: '20px',
                   height: '20px',
-                  background: '#000',
+                  background: 'var(--palette-text)',
                   borderRadius: '4px',
                   display: 'flex',
                   alignItems: 'center',
@@ -206,7 +206,7 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
               <span style={{
                 fontSize: '14px',
                 fontWeight: 400,
-                color: '#333',
+                color: 'var(--charcoal)',
               }}>
                 {option.title}
               </span>
@@ -229,8 +229,8 @@ export const DietGridSelect: React.FC<DietGridSelectProps> = ({ onComplete, onBa
             margin: '0 auto',
             display: 'block',
             padding: '16px 24px',
-            background: isComplete ? '#000' : '#ddd',
-            color: isComplete ? '#fff' : '#999',
+            background: isComplete ? 'var(--palette-text)' : 'var(--border-divider)',
+            color: isComplete ? '#fff' : 'var(--muted)',
             fontSize: '16px',
             fontWeight: 400,
             border: 'none',

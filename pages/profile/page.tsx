@@ -80,7 +80,7 @@ const ProfilePage: React.FC = () => {
         }}
       >
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontSize: '14px', fontWeight: 400, color: '#6B6B6B', marginBottom: '16px' }}>
+          <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '16px' }}>
             로그인이 필요합니다.
           </p>
           <a
@@ -90,9 +90,9 @@ const ProfilePage: React.FC = () => {
               padding: '12px 24px',
               fontSize: '14px',
               fontWeight: 400,
-              background: '#000000',
+              background: 'var(--palette-text)',
               color: '#fff',
-              border: '1px solid #000000',
+              border: '1px solid var(--palette-text)',
               textDecoration: 'none',
             }}
           >
@@ -127,7 +127,7 @@ const ProfilePage: React.FC = () => {
           top: '56px',
           zIndex: 40,
           background: '#fff',
-          borderBottom: '1px solid #000',
+          borderBottom: '1px solid var(--palette-text)',
         }}
       >
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 16px' }}>
@@ -139,7 +139,7 @@ const ProfilePage: React.FC = () => {
                 className={`py-3.5 text-sm border-b hover:border-b hover:border-black ${
                   activeTab === item.key
                     ? 'border-black text-black'
-                    : 'border-transparent text-gray-500'
+                    : 'border-transparent text-warm-gray'
                 }`}
                 style={{
                   fontWeight: 400,
@@ -164,11 +164,11 @@ const ProfilePage: React.FC = () => {
             {/* 환영 메시지 */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div>
-                <h1 style={{ fontSize: '20px', fontWeight: 400, color: '#000' }}>
+                <h1 style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)' }}>
                   {user.username || 'Guest'}님, 어서오세요
                 </h1>
                 {spiritProfile?.veganType && (
-                  <p style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', marginTop: '4px' }}>
+                  <p style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', marginTop: '4px' }}>
                     {spiritProfile.veganType}
                   </p>
                 )}
@@ -181,7 +181,7 @@ const ProfilePage: React.FC = () => {
                     height: '56px',
                     borderRadius: '50%',
                     overflow: 'hidden',
-                    border: '1px solid #000',
+                    border: '1px solid var(--palette-text)',
                     flexShrink: 0,
                   }}
                 >
@@ -204,7 +204,7 @@ const ProfilePage: React.FC = () => {
             {/* 1. 이벤트 배너 */}
             <div className="grid grid-cols-2 gap-4 mb-10">
               <div
-                className="bg-gray-50 p-6 flex flex-col justify-between h-32 cursor-pointer hover:bg-gray-100 transition-colors"
+                className="bg-cream p-6 flex flex-col justify-between h-32 cursor-pointer hover:bg-eggshell transition-colors"
                 onClick={() => {
                   setSelectedEvent({
                     id: 1,
@@ -221,12 +221,12 @@ const ProfilePage: React.FC = () => {
               >
                 <div>
                   <h3 className="text-sm font-medium mb-1">새해를 여는 첫 선택</h3>
-                  <p className="text-xs text-gray-500 font-light">매일 낮 12시, 최대 50% 행운</p>
+                  <p className="text-xs text-warm-gray font-light">매일 낮 12시, 최대 50% 행운</p>
                 </div>
-                <span className="text-xs text-gray-400 underline">쿠폰 받으러가기 &gt;</span>
+                <span className="text-xs text-muted underline">쿠폰 받으러가기 &gt;</span>
               </div>
               <div
-                className="bg-gray-50 p-6 flex flex-col justify-between h-32 cursor-pointer hover:bg-gray-100 transition-colors"
+                className="bg-cream p-6 flex flex-col justify-between h-32 cursor-pointer hover:bg-eggshell transition-colors"
                 onClick={() => {
                   setSelectedEvent({
                     id: 2,
@@ -243,15 +243,15 @@ const ProfilePage: React.FC = () => {
               >
                 <div>
                   <h3 className="text-sm font-medium mb-1">친구 초대 이벤트</h3>
-                  <p className="text-xs text-gray-500 font-light">첫 주문 후 친구 초대하면 3,000원</p>
+                  <p className="text-xs text-warm-gray font-light">첫 주문 후 친구 초대하면 3,000원</p>
                 </div>
-                <span className="text-xs text-gray-400 underline">이벤트 보러가기 &gt;</span>
+                <span className="text-xs text-muted underline">이벤트 보러가기 &gt;</span>
               </div>
             </div>
 
             {/* 2. 내 쿠폰 */}
             <section style={{ marginBottom: '48px' }}>
-              <h2 style={{ fontSize: '14px', fontWeight: 400, color: '#000', marginBottom: '12px' }}>
+              <h2 style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '12px' }}>
                 내 쿠폰
               </h2>
               <div
@@ -260,7 +260,7 @@ const ProfilePage: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   borderRadius: '8px',
-                  background: '#3D3D3D',
+                  background: 'var(--charcoal)',
                   padding: '16px 20px 16px 28px',
                   position: 'relative',
                   overflow: 'visible',
@@ -288,7 +288,7 @@ const ProfilePage: React.FC = () => {
                   <h3 style={{ fontSize: '14px', fontWeight: 400, color: '#fff', marginBottom: '4px' }}>
                     [Beginner] 이달의 장바구니 10% 쿠폰
                   </h3>
-                  <p style={{ fontSize: '11px', fontWeight: 400, color: '#A0A0A0' }}>
+                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--muted)' }}>
                     최소주문 20,000원 | 2026.02.01까지
                   </p>
                 </div>
@@ -298,15 +298,15 @@ const ProfilePage: React.FC = () => {
             {/* 3. 최근 주문 */}
             <div className="mb-12">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                <h3 style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>최근 주문</h3>
+                <h3 style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>최근 주문</h3>
                 <button
                   onClick={() => setActiveTab('ORDER')}
-                  style={{ fontSize: '12px', fontWeight: 400, color: '#6B6B6B', background: 'none', border: 'none', cursor: 'pointer' }}
+                  style={{ fontSize: '12px', fontWeight: 400, color: 'var(--warm-gray)', background: 'none', border: 'none', cursor: 'pointer' }}
                 >
                   전체보기 &gt;
                 </button>
               </div>
-              <div className="py-10 text-center bg-gray-50 text-xs text-gray-400 font-light">
+              <div className="py-10 text-center bg-cream text-xs text-muted font-light">
                 최근 1개월 내 주문 내역이 없습니다.
               </div>
             </div>
@@ -327,7 +327,7 @@ const ProfilePage: React.FC = () => {
         {/* [TAB 2] ORDER: 주문/배송 */}
         {activeTab === 'ORDER' && (
           <div>
-            <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#000', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '24px' }}>
               주문/배송 내역
             </h2>
 
@@ -340,9 +340,9 @@ const ProfilePage: React.FC = () => {
                     padding: '8px 12px',
                     fontSize: '12px',
                     fontWeight: 400,
-                    border: idx === 0 ? '1px solid #000' : '1px solid #E5E5E5',
-                    background: idx === 0 ? '#000' : 'transparent',
-                    color: idx === 0 ? '#fff' : '#6B6B6B',
+                    border: idx === 0 ? '1px solid var(--palette-text)' : '1px solid var(--border-divider)',
+                    background: idx === 0 ? 'var(--palette-text)' : 'transparent',
+                    color: idx === 0 ? '#fff' : 'var(--warm-gray)',
                     cursor: 'pointer',
                   }}
                 >
@@ -352,13 +352,13 @@ const ProfilePage: React.FC = () => {
             </div>
 
             {/* 주문 리스트 */}
-            <div style={{ borderTop: '1px solid #000' }}>
+            <div style={{ borderTop: '1px solid var(--palette-text)' }}>
               {[1, 2].map((item) => (
                 <div
                   key={item}
                   style={{
                     padding: '16px 0',
-                    borderBottom: '1px solid #E5E5E5',
+                    borderBottom: '1px solid var(--border-divider)',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
@@ -384,19 +384,19 @@ const ProfilePage: React.FC = () => {
                   }}
                 >
                   <div style={{ display: 'flex', gap: '16px' }}>
-                    <div style={{ width: '64px', height: '64px', background: '#F5F5F5', flexShrink: 0 }} />
+                    <div style={{ width: '64px', height: '64px', background: 'var(--palette-bg-2)', flexShrink: 0 }} />
                     <div>
-                      <p style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B', marginBottom: '4px' }}>
+                      <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '4px' }}>
                         2024.12.15 (ORD-20241215-{item})
                       </p>
-                      <p style={{ fontSize: '14px', fontWeight: 400, color: '#000', marginBottom: '4px' }}>
+                      <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '4px' }}>
                         비건 김치 볶음밥 키트 외 2건
                       </p>
-                      <p style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>24,000원</p>
+                      <p style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>24,000원</p>
                     </div>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                    <span style={{ fontSize: '12px', fontWeight: 400, color: '#4CAF50' }}>배송완료</span>
+                    <span style={{ fontSize: '12px', fontWeight: 400, color: 'var(--status-success-icon)' }}>배송완료</span>
                     <div style={{ display: 'flex', gap: '8px' }}>
                       <button
                         onClick={(e) => e.stopPropagation()}
@@ -404,9 +404,9 @@ const ProfilePage: React.FC = () => {
                           padding: '6px 12px',
                           fontSize: '11px',
                           fontWeight: 400,
-                          border: '1px solid #E5E5E5',
+                          border: '1px solid var(--border-divider)',
                           background: 'transparent',
-                          color: '#6B6B6B',
+                          color: 'var(--warm-gray)',
                           cursor: 'pointer',
                         }}
                       >
@@ -418,9 +418,9 @@ const ProfilePage: React.FC = () => {
                           padding: '6px 12px',
                           fontSize: '11px',
                           fontWeight: 400,
-                          border: '1px solid #E5E5E5',
+                          border: '1px solid var(--border-divider)',
                           background: 'transparent',
-                          color: '#6B6B6B',
+                          color: 'var(--warm-gray)',
                           cursor: 'pointer',
                         }}
                       >
@@ -438,16 +438,16 @@ const ProfilePage: React.FC = () => {
         {activeTab === 'WISHLIST' && (
           <div>
             {/* 서브 탭 */}
-            <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', borderBottom: '1px solid #E5E5E5' }}>
+            <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', borderBottom: '1px solid var(--border-divider)' }}>
               <button
                 style={{
                   padding: '12px 0',
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#000',
+                  color: 'var(--palette-text)',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: '2px solid #000',
+                  borderBottom: '2px solid var(--palette-text)',
                   marginBottom: '-1px',
                   cursor: 'pointer',
                 }}
@@ -459,7 +459,7 @@ const ProfilePage: React.FC = () => {
                   padding: '12px 0',
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -483,18 +483,18 @@ const ProfilePage: React.FC = () => {
                     style={{
                       width: '100%',
                       aspectRatio: '1',
-                      background: '#F5F5F5',
+                      background: 'var(--palette-bg-2)',
                       marginBottom: '8px',
                     }}
                   />
-                  <p style={{ fontSize: '11px', fontWeight: 400, color: '#6B6B6B', marginBottom: '2px' }}>
+                  <p style={{ fontSize: '11px', fontWeight: 400, color: 'var(--warm-gray)', marginBottom: '2px' }}>
                     Category
                   </p>
                   <p
                     style={{
                       fontSize: '13px',
                       fontWeight: 400,
-                      color: '#000',
+                      color: 'var(--palette-text)',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -512,16 +512,16 @@ const ProfilePage: React.FC = () => {
         {activeTab === 'REVIEW' && (
           <div>
             {/* 서브 탭 */}
-            <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', borderBottom: '1px solid #E5E5E5' }}>
+            <div style={{ display: 'flex', gap: '24px', marginBottom: '24px', borderBottom: '1px solid var(--border-divider)' }}>
               <button
                 style={{
                   padding: '12px 0',
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#000',
+                  color: 'var(--palette-text)',
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: '2px solid #000',
+                  borderBottom: '2px solid var(--palette-text)',
                   marginBottom: '-1px',
                   cursor: 'pointer',
                 }}
@@ -533,7 +533,7 @@ const ProfilePage: React.FC = () => {
                   padding: '12px 0',
                   fontSize: '15px',
                   fontWeight: 400,
-                  color: '#6B6B6B',
+                  color: 'var(--warm-gray)',
                   background: 'transparent',
                   border: 'none',
                   cursor: 'pointer',
@@ -546,15 +546,15 @@ const ProfilePage: React.FC = () => {
             <div
               style={{
                 padding: '48px',
-                border: '1px solid #E5E5E5',
+                border: '1px solid var(--border-divider)',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 gap: '12px',
               }}
             >
-              <Edit3 size={32} strokeWidth={1} color="#E5E5E5" />
-              <p style={{ fontSize: '13px', fontWeight: 400, color: '#6B6B6B' }}>
+              <Edit3 size={32} strokeWidth={1} color="var(--border-divider)" />
+              <p style={{ fontSize: '13px', fontWeight: 400, color: 'var(--warm-gray)' }}>
                 작성 가능한 리뷰가 1건 있습니다.
               </p>
               <button
@@ -562,9 +562,9 @@ const ProfilePage: React.FC = () => {
                   padding: '10px 16px',
                   fontSize: '12px',
                   fontWeight: 400,
-                  background: '#000',
+                  background: 'var(--palette-text)',
                   color: '#fff',
-                  border: '1px solid #000',
+                  border: '1px solid var(--palette-text)',
                   cursor: 'pointer',
                 }}
               >
@@ -577,7 +577,7 @@ const ProfilePage: React.FC = () => {
         {/* [TAB 5] INFO: 내 정보 */}
         {activeTab === 'INFO' && (
           <div style={{ maxWidth: '400px', margin: '0 auto' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 400, color: '#000', marginBottom: '32px', textAlign: 'center' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 400, color: 'var(--palette-text)', marginBottom: '32px', textAlign: 'center' }}>
               회원 정보 관리
             </h2>
 
@@ -589,16 +589,16 @@ const ProfilePage: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '16px',
-                  border: '1px solid #E5E5E5',
+                  border: '1px solid var(--border-divider)',
                   background: '#fff',
                   cursor: 'pointer',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <Settings size={18} strokeWidth={1} color="#6B6B6B" />
-                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>개인정보 수정</span>
+                  <Settings size={18} strokeWidth={1} color="var(--warm-gray)" />
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>개인정보 수정</span>
                 </div>
-                <span style={{ color: '#E5E5E5' }}>&gt;</span>
+                <span style={{ color: 'var(--border-divider)' }}>&gt;</span>
               </button>
 
               <button
@@ -608,16 +608,16 @@ const ProfilePage: React.FC = () => {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '16px',
-                  border: '1px solid #E5E5E5',
+                  border: '1px solid var(--border-divider)',
                   background: '#fff',
                   cursor: 'pointer',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <MapPin size={18} strokeWidth={1} color="#6B6B6B" />
-                  <span style={{ fontSize: '14px', fontWeight: 400, color: '#000' }}>배송지 관리</span>
+                  <MapPin size={18} strokeWidth={1} color="var(--warm-gray)" />
+                  <span style={{ fontSize: '14px', fontWeight: 400, color: 'var(--palette-text)' }}>배송지 관리</span>
                 </div>
-                <span style={{ color: '#E5E5E5' }}>&gt;</span>
+                <span style={{ color: 'var(--border-divider)' }}>&gt;</span>
               </button>
 
               <div style={{ paddingTop: '24px', textAlign: 'center' }}>
@@ -625,7 +625,7 @@ const ProfilePage: React.FC = () => {
                   style={{
                     fontSize: '12px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     background: 'transparent',
                     border: 'none',
                     textDecoration: 'underline',
@@ -634,12 +634,12 @@ const ProfilePage: React.FC = () => {
                 >
                   로그아웃
                 </button>
-                <span style={{ margin: '0 8px', color: '#E5E5E5' }}>|</span>
+                <span style={{ margin: '0 8px', color: 'var(--border-divider)' }}>|</span>
                 <button
                   style={{
                     fontSize: '12px',
                     fontWeight: 400,
-                    color: '#6B6B6B',
+                    color: 'var(--warm-gray)',
                     background: 'transparent',
                     border: 'none',
                     textDecoration: 'underline',

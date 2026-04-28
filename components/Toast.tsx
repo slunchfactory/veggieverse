@@ -34,7 +34,7 @@ export const Toast: React.FC<ToastProps> = ({
     <div
       style={{
         background: '#FFFFFF',
-        border: '1px solid #000',
+        border: '1px solid var(--palette-text)',
         borderRadius: '8px',
         padding: '16px',
         minWidth: '300px',
@@ -56,7 +56,7 @@ export const Toast: React.FC<ToastProps> = ({
             <h4 style={{
               fontSize: '14px',
               fontWeight: 400,
-              color: '#000',
+              color: 'var(--palette-text)',
               margin: 0,
             }}>
               {title}
@@ -76,13 +76,13 @@ export const Toast: React.FC<ToastProps> = ({
               }}
               aria-label="닫기"
             >
-              <X size={16} strokeWidth={1} color="#000" />
+              <X size={16} strokeWidth={1} color="var(--palette-text)" />
             </button>
           </div>
           <p style={{
             fontSize: '13px',
             fontWeight: 400,
-            color: '#666',
+            color: 'var(--warm-gray)',
             margin: '0 0 4px 0',
           }}>
             {message}
@@ -91,10 +91,10 @@ export const Toast: React.FC<ToastProps> = ({
             <p style={{
               fontSize: '12px',
               fontWeight: 400,
-              color: '#888',
+              color: 'var(--gray-light)',
               margin: '8px 0 0 0',
             }}>
-              쿠폰 코드: <span style={{ color: '#000' }}>{couponCode}</span>
+              쿠폰 코드: <span style={{ color: 'var(--palette-text)' }}>{couponCode}</span>
             </p>
           )}
         </div>
